@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="697a8ac3-0d46-448b-b98f-9a3d1a0a2d59" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../hellocucumber/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/seng202/team1/RunCucumberTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/seng202/team1/RunCucumberTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/seng202/team1/Stepdefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/seng202/team1/Stepdefs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/seng202.team1/orders.feature" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-seng202.team1.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-seng202.team1.AppTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/seng202.team1.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/seng202.team1.AppTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hellocucumber/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../hellocucumber/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/seng202.team1/.gitkeep" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,7 +25,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
-          <entry key="feature" value="1" />
+          <entry key="feature" value="2" />
           <entry key="gitkeep" value="1" />
           <entry key="java" value="5" />
           <entry key="xml" value="2" />
@@ -42,7 +34,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="Cucumber" value="1" />
+          <entry key="Cucumber" value="2" />
           <entry key="JAVA" value="5" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="XML" value="2" />
@@ -52,7 +44,7 @@
         <counts>
           <entry key="feature" value="73" />
           <entry key="java" value="309" />
-          <entry key="txt" value="48" />
+          <entry key="txt" value="167" />
           <entry key="xml" value="22" />
         </counts>
       </usages-collector>
@@ -60,7 +52,7 @@
         <counts>
           <entry key="Cucumber" value="73" />
           <entry key="JAVA" value="309" />
-          <entry key="PLAIN_TEXT" value="48" />
+          <entry key="PLAIN_TEXT" value="167" />
           <entry key="XML" value="22" />
         </counts>
       </usages-collector>
@@ -92,8 +84,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/seng202/team1/RunCucumberTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+            <state relative-caret-position="150">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -101,11 +93,20 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/resources/seng202/team1/orders.feature">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="49" lean-forward="true" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/seng202/team1/Stepdefs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+            <state relative-caret-position="375">
+              <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -275,7 +276,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564707245278" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564708801088" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../hellocucumber" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
@@ -346,7 +347,7 @@
       <option name="presentableId" value="Default" />
       <updated>1564097207300</updated>
       <workItem from="1564097209505" duration="4393000" />
-      <workItem from="1564697751329" duration="5171000" />
+      <workItem from="1564697751329" duration="6422000" />
     </task>
     <task id="LOCAL-00001" summary="added cucumber.io dependencies and folders">
       <created>1564703393605</created>
@@ -355,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564703393605</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added an acceptance test in the orders.feature test resource file, and added step definitions in the Stepdefs file">
+      <created>1564707391039</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1564707391039</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -364,7 +372,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9564000" />
+    <option name="totallyTimeSpent" value="10815000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-1" width="1680" height="1050" extended-state="6" />
@@ -438,7 +446,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added cucumber.io dependencies and folders" />
-    <option name="LAST_COMMIT_MESSAGE" value="added cucumber.io dependencies and folders" />
+    <MESSAGE value="added an acceptance test in the orders.feature test resource file, and added step definitions in the Stepdefs file" />
+    <option name="LAST_COMMIT_MESSAGE" value="added an acceptance test in the orders.feature test resource file, and added step definitions in the Stepdefs file" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/seng202/team1/MyObject.java">
@@ -495,18 +504,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/seng202/team1/RunCucumberTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/seng202/team1/orders.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="49" lean-forward="true" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/seng202/team1/Stepdefs.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+        <state relative-caret-position="375">
+          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
