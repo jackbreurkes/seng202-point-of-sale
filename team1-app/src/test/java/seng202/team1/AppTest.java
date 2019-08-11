@@ -31,8 +31,15 @@ public class AppTest
     /**
      * Rigourous Test :-)
      */
+    @Test
     public void testApp()
     {
         assertTrue( true );
+    }
+    
+    @Test
+    public void jacksTest()
+    {
+        assertTrue( 1 + 1 == 2 );
     }
 }
