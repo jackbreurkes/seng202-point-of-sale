@@ -42,4 +42,10 @@ public class AppTest
     {
         assertTrue( 1 + 1 == 2 );
     }
+
+    @Test
+    public void davidsTest()
+    {
+        assertTrue( 10 + 10 == 20 );
+    }
 }
