@@ -42,4 +42,7 @@ public class AppTest
     {
         assertTrue( 1 + 1 == 2 );
     }
+
+    @Test
+    public void euansTest() { assertTrue( 2 * 3 == 6 ); }
 }
