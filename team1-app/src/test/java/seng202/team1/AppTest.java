@@ -48,4 +48,10 @@ public class AppTest
     {
         assertTrue( 10 + 10 == 20 );
     }
+
+    @Test
+    public void euansTest() {
+        assertTrue( 1 * 2020 == 2020 );
+    }
+
 }
