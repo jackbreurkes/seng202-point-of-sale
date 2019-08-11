@@ -44,5 +44,8 @@ public class AppTest
     }
 
     @Test
-    public void euansTest() { assertTrue( 2 * 3 == 6 ); }
+    public void davidsTest()
+    {
+        assertTrue( 10 + 10 == 20 );
+    }
 }
