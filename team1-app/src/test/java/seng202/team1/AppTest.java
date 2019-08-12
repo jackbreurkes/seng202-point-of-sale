@@ -57,5 +57,9 @@ public class AppTest
     public void louisTest() {
         assertTrue( 1 - 1 == 0 );
     }
+    
+    public void phillipsTest() {
+        assertTrue( 1 + 1 == 2 );
+    }
 
 }
