@@ -53,5 +53,9 @@ public class AppTest
     public void richardsTest() {
         assertTrue( 2 + 3 == 5 );
     }
+    
+    public void louisTest() {
+        assertTrue( 1 - 1 == 0 );
+    }
 
 }
