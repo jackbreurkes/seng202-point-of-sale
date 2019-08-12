@@ -31,25 +31,21 @@ public class AppTest
     /**
      * Rigourous Test :-)
      */
-    @Test
     public void testApp()
     {
         assertTrue( true );
     }
     
-    @Test
     public void jacksTest()
     {
         assertTrue( 1 + 1 == 2 );
     }
 
-    @Test
     public void davidsTest()
     {
         assertTrue( 10 + 10 == 20 );
     }
 
-    @Test
     public void euansTest() {
         assertTrue( 1 * 2020 == 2020 );
     }
