@@ -50,8 +50,8 @@ public class AppTest
         assertTrue( 1 * 2020 == 2020 );
     }
     
-    public void louisTest() {
-        assertTrue( 1 - 1 == 0);
+    public void richardsTest() {
+        assertTrue( 2 + 3 == 5 );
     }
 
 }
