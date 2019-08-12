@@ -49,5 +49,9 @@ public class AppTest
     public void euansTest() {
         assertTrue( 1 * 2020 == 2020 );
     }
+    
+    public void louisTest() {
+        assertTrue( 1 - 1 == 0);
+    }
 
 }
