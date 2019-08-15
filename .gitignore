@@ -1,2 +1,4 @@
-.idea/
-team1-app/.idea/
+.idea/*
+team1-app/.idea/*
+team1-app/target/*
+team1-app/dependency-reduced-pom.xml
