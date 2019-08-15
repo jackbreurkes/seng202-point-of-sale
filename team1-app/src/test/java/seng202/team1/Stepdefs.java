@@ -3,16 +3,20 @@ package seng202.team1;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertEquals;
+
 
 public class Stepdefs {
+    private Menu menu;
+    private Order order;
 
-    @Given("there are menu items available to order")
+    @Given("there is a menu with food items available")
     public void there_are_menu_items_available_to_order() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        menu = new Menu();
+        menu.add(new FoodItem());
     }
 
-    @When("the user selects items to order")
+    @When("the user adds food items to an order")
     public void the_user_selects_items_to_order() {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
@@ -23,4 +27,5 @@ public class Stepdefs {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
+
 }
