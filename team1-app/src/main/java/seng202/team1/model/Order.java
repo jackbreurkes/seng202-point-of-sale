@@ -1,5 +1,6 @@
-package seng202.team1;
+package seng202.team1.model;
 
+import seng202.team1.model.FoodItem;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;

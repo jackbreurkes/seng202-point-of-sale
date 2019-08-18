@@ -1,19 +1,24 @@
-package seng202.team1;
+package seng202.team1.stepdefs;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import seng202.team1.model.FoodItem;
+import seng202.team1.model.Menu;
+import seng202.team1.model.Order;
+
 import static org.junit.Assert.assertEquals;
 
 
-public class Stepdefs {
+public class OrderSteps {
     private Menu menu;
     private Order order;
 
     @Given("there is a menu with food items available")
     public void there_are_menu_items_available_to_order() {
-        menu = new Menu();
-        menu.add(new FoodItem());
+        throw new cucumber.api.PendingException();
+//        menu = new Menu();
+//        menu.add(new FoodItem());
     }
 
     @When("the user adds food items to an order")
