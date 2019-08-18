@@ -1,19 +1,41 @@
 package seng202.team1.model;
 
-import seng202.team1.model.FoodItem;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import java.util.*;
 
-import java.util.List;
-
+/**
+ * 
+ */
 public class Menu {
+
+    /**
+     * Default constructor
+     */
+    public Menu() {
+    }
+
+    /**
+     * 
+     */
     private String name;
+
+    /**
+     * 
+     */
     private List<FoodItem> items;
 
-    public void add(FoodItem item) {
-        throw new NotImplementedException();
+
+    /**
+     * @param item
+     */
+    public void addItem(FoodItem item) {
+        // TODO implement here
     }
 
-    public void remove(FoodItem item) {
-        throw new NotImplementedException();
+    /**
+     * @param item
+     */
+    public void removeItem(FoodItem item) {
+        // TODO implement here
     }
+
 }

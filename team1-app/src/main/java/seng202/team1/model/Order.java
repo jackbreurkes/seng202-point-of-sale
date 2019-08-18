@@ -1,28 +1,54 @@
 package seng202.team1.model;
 
-import seng202.team1.model.FoodItem;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import seng202.team1.util.OrderStatus;
 
-import java.util.List;
+import java.util.*;
 
+/**
+ * 
+ */
 public class Order {
+
     private List<FoodItem> foodItems;
-    private List<FoodItem> modifiedFoodItems;
     private String orderNote;
+    private OrderStatus status;
+    // private Location location;
+    // private Weather weather;
 
+
+
+    /**
+     * Default constructor
+     */
+    public Order() {
+    }
+
+    /**
+     * @param item
+     */
     public void addItem(FoodItem item) {
-        throw new NotImplementedException();
+        // TODO implement here
     }
 
+    /**
+     * @param item
+     */
     public void removeItem(FoodItem item) {
-        throw new NotImplementedException();
+        // TODO implement here
     }
 
+    /**
+     * 
+     */
     public void cancelOrder() {
-        throw new NotImplementedException();
+        // TODO implement here
     }
 
+    /**
+     * 
+     */
     public void refundOrder() {
-        throw new NotImplementedException();
+        // TODO implement here
     }
+
 }

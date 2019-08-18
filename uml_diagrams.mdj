@@ -195,7 +195,7 @@
 											"top": 373,
 											"width": 332.0078125,
 											"height": 13,
-											"text": "+addIngredient(ingredient: Ingredient)",
+											"text": "+addIngredient(ingredient: SuppliedFoodItem)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -212,7 +212,7 @@
 											"top": 388,
 											"width": 332.0078125,
 											"height": 13,
-											"text": "+getIngredient(ingredientId: int): Ingredient",
+											"text": "+getIngredient(ingredientId: int): SuppliedFoodItem",
 											"horizontalAlignment": 0
 										},
 										{
@@ -229,7 +229,7 @@
 											"top": 403,
 											"width": 332.0078125,
 											"height": 13,
-											"text": "+getAllIngredients(): List<Ingredient>",
+											"text": "+getAllIngredients(): List<SuppliedFoodItem>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3377,7 +3377,7 @@
 											"top": 890,
 											"width": 88.49267578125,
 											"height": 13,
-											"text": "+CONFIRMED",
+											"text": "+SUBMITTED",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5093,7 +5093,9 @@
 										"$ref": "AAAAAAFsnhxVsPHPS6A="
 									},
 									"name": "ingredient",
-									"type": "Ingredient"
+									"type": {
+										"$ref": "AAAAAAFsoc+zSgJDvOg="
+									}
 								}
 							]
 						},
@@ -5120,7 +5122,9 @@
 									"_parent": {
 										"$ref": "AAAAAAFsnhyIyvHVt0s="
 									},
-									"type": "Ingredient",
+									"type": {
+										"$ref": "AAAAAAFsoc+zSgJDvOg="
+									},
 									"direction": "return"
 								}
 							]
@@ -5139,7 +5143,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFsnh06H/HkaMk="
 									},
-									"type": "List<Ingredient>",
+									"type": "List<SuppliedFoodItem>",
 									"direction": "return"
 								}
 							]
@@ -5510,7 +5514,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsocpkyvzQnz8="
 							},
-							"name": "MOBILE"
+							"name": "MOBILE",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5518,7 +5523,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsocpkyvzQnz8="
 							},
-							"name": "WORK"
+							"name": "WORK",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5526,7 +5532,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsocpkyvzQnz8="
 							},
-							"name": "HOME"
+							"name": "HOME",
+							"type": ""
 						}
 					]
 				},
@@ -5910,7 +5917,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsod9swgzX8hA="
 							},
-							"name": "YES"
+							"name": "YES",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5918,7 +5926,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsod9swgzX8hA="
 							},
-							"name": "NO"
+							"name": "NO",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5926,7 +5935,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsod9swgzX8hA="
 							},
-							"name": "OPTIONAL"
+							"name": "OPTIONAL",
+							"type": ""
 						}
 					]
 				},
@@ -5945,7 +5955,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoeCWaw4TOAI="
 							},
-							"name": "GRAM"
+							"name": "GRAM",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5953,7 +5964,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoeCWaw4TOAI="
 							},
-							"name": "ML"
+							"name": "ML",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5961,7 +5973,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoeCWaw4TOAI="
 							},
-							"name": "COUNT"
+							"name": "COUNT",
+							"type": ""
 						}
 					]
 				},
@@ -6130,7 +6143,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoe9fMRMRa+4="
 							},
-							"name": "CREATING"
+							"name": "CREATING",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -6138,7 +6152,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoe9fMRMRa+4="
 							},
-							"name": "CONFIRMED"
+							"name": "SUBMITTED"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -6146,7 +6160,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoe9fMRMRa+4="
 							},
-							"name": "COMPLETED"
+							"name": "COMPLETED",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -6154,7 +6169,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFsoe9fMRMRa+4="
 							},
-							"name": "CANCELLED"
+							"name": "CANCELLED",
+							"type": ""
 						}
 					]
 				},
