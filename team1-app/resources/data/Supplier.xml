@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE suppliers SYSTEM "../dtd/suppliers.dtd">
+<!DOCTYPE supplier SYSTEM "supplier.dtd">
 <suppliers>
     <description>Some sample supplier data</description>
     <supplier>
-        <sid>s1</sid>
+        <id>s1</id>
         <name>Countup</name>
         <address>12 High Street, Christchurch</address>
         <phone type="work">3451234</phone>
@@ -11,14 +11,14 @@
         <url>countup.co.nz/high</url>
     </supplier>
     <supplier>
-        <sid>s2</sid>
+        <id>s2</id>
         <name>Funky Kumquat</name>
         <address>125 Woodside Lane, Christchurch</address>
         <phone type="mobile">021352176</phone>
         <email>maryC@fkveg.co.nz</email>
     </supplier>
     <supplier>
-        <sid>s3</sid>
+        <id>s3</id>
         <name>Admiral Benjamin's Seafoods</name>
         <address>86 Low Street, Christchurch</address>
         <phone type="mobile">021345666</phone>
@@ -26,7 +26,7 @@
         <url>cfoods.co.nz</url>
     </supplier>
     <supplier>
-        <sid>s4</sid>
+        <id>s4</id>
         <name>Dave's Drinks</name>
         <address>Unit 5, Bert's Business Park, Christchurch</address>
         <phone type="work">3515666</phone>
