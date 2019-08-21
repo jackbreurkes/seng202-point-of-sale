@@ -14,14 +14,14 @@ public class Menu {
     }
 
     private String name;
-    private List<FoodItem> items;
+    private List<CompositeFoodItem> items;
 
 
     /**
      * adds a FoodItem to the menu
      * @param item
      */
-    public void addItem(FoodItem item) {
+    public void addItem(CompositeFoodItem item) {
         // TODO implement here
     }
 
@@ -29,7 +29,7 @@ public class Menu {
      * removes a FoodItem from the menu
      * @param item
      */
-    public void removeItem(FoodItem item) {
+    public void removeItem(CompositeFoodItem item) {
         // TODO implement here
     }
 
