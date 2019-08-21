@@ -1,9 +1,6 @@
 package seng202.team1.data;
 
-import seng202.team1.model.Menu;
-import seng202.team1.model.Order;
-import seng202.team1.model.SuppliedFoodItem;
-import seng202.team1.model.Supplier;
+import seng202.team1.model.*;
 
 import java.util.*;
 
@@ -16,6 +13,14 @@ public class PersistentStorage {
      * Default constructor
      */
     public PersistentStorage() {
+    }
+
+
+    /**
+     * @param item
+     */
+    public void removeSingleFoodItem(FoodItem item) {
+        // TODO implement here
     }
 
 

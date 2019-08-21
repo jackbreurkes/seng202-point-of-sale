@@ -11,22 +11,13 @@ import java.util.function.Supplier;
  */
 public class SuppliedFoodItem extends FoodItem {
 
-    private UnitType unit;
     private Supplier supplier;
-
 
     /**
      * Default constructor
      */
-    public SuppliedFoodItem() {
-    }
-
-    /**
-     * @param count
-     */
-    @Override
-    public void removeUnits(int count) {
-        // TODO implement me
+    public SuppliedFoodItem(String code, String name) {
+        super(code, name);
     }
 
 }

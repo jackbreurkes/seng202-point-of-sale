@@ -13,18 +13,12 @@ public class Menu {
     public Menu() {
     }
 
-    /**
-     * 
-     */
     private String name;
-
-    /**
-     * 
-     */
     private List<FoodItem> items;
 
 
     /**
+     * adds a FoodItem to the menu
      * @param item
      */
     public void addItem(FoodItem item) {
@@ -32,6 +26,7 @@ public class Menu {
     }
 
     /**
+     * removes a FoodItem from the menu
      * @param item
      */
     public void removeItem(FoodItem item) {
