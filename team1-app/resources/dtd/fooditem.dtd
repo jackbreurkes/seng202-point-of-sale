@@ -1,0 +1,15 @@
+
+<!ENTITY version "V0.01 (C) Rosemary">
+<!ELEMENT fooditems (description, (fooditem*))>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT fooditem (code, name, calorieCount)>
+<!ATTLIST fooditem
+        unit (ml|g|count) #REQUIRED
+        stockCostPerUnit (ml|g|count) #REQUIRED
+        isVegetarian (yes|no|unknown) "no"
+        isVegan (yes|no|unknown) "no"
+        isGlutenFree (yes|no|unknown) "unknown"
+>
+<!ELEMENT code (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT calorieCount (#PCDATA)>
