@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SuppliedFoodItemTest {
 
     @Test
-    public void testConstructors() {
+    public void testConstructor() {
         SuppliedFoodItem coke = new SuppliedFoodItem("COKE", "Coca Cola");
 
         assertEquals("COKE", coke.getCode());

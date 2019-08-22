@@ -11,13 +11,21 @@ import java.util.function.Supplier;
  */
 public class SuppliedFoodItem extends FoodItem {
 
-    private Supplier supplier;
+    private List<Supplier> suppliers;
 
     /**
      * Default constructor
      */
     public SuppliedFoodItem(String code, String name) {
         super(code, name);
+    }
+
+    public void addSupplier(Supplier supplier) {
+        // TODO implement
+    }
+
+    public void removeSupplier(Supplier supplier) {
+        // TODO implement
     }
 
 }
