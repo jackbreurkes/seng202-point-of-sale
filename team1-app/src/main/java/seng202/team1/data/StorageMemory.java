@@ -38,6 +38,11 @@ public class StorageMemory implements FoodStorage {
         return null;
     }
 
+    @Override
+    public void addSuppliedFoodItem(SuppliedFoodItem item, int count) {
+
+    }
+
     public void addSuppliedFoodItem(SuppliedFoodItem item) {
 
     }
@@ -54,7 +59,7 @@ public class StorageMemory implements FoodStorage {
 
     }
 
-    public void getSuppliedFoodItemStock(String code) {
-
+    public int getSuppliedFoodItemStock(String code) {
+        return 0;
     }
 }
