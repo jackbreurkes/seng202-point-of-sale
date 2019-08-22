@@ -1,12 +1,12 @@
 junit:
   stage: test
   script:
-   - mvn -B clean test
+   - mvn -f ./team1-app/pom.xml -B clean test
 
 generate_artifacts:
   stage: deploy
   script:
-   - mvn -B clean site package
+   - mvn -f ./team1-app/pom.xml -B clean site package
   artifacts:
     paths:
-    - target/s202*.jar
+    - team1-app/target/s202*.jar
