@@ -16,8 +16,9 @@ public class SuppliedFoodItem extends FoodItem {
     /**
      * Default constructor
      */
-    public SuppliedFoodItem(String code, String name) {
+    public SuppliedFoodItem(String code, String name, UnitType unitType) {
         super(code, name);
+        super.setUnit(unitType);
     }
 
     public void addSupplier(Supplier supplier) {

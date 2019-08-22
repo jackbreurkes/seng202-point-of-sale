@@ -54,13 +54,14 @@ public interface FoodStorage {
      * @param code the SuppliedFoodItem's unique code
      * @return the desired SuppliedFoodItem or null if not found
      */
-    SuppliedFoodItem getSuppliedFoodItemById(String code);
+    SuppliedFoodItem getSuppliedFoodItemByCode(String code);
 
     /**
      * adds a SuppliedFoodItem to storage. the item will be stored using its code attribute.
      * @param item the CompositeFoodItem to store
+     * @param count the amount to store initially
      */
-    void addSuppliedFoodItem(SuppliedFoodItem item);
+    void addSuppliedFoodItem(SuppliedFoodItem item, int count);
 
     /**
      * sets the properties of a SuppliedFoodItem to those of a new SuppliedFoodItem.
@@ -86,7 +87,8 @@ public interface FoodStorage {
     /**
      * get the current stock level of a SuppliedFoodItem within the system.
      * @param code the SuppliedFoodItem's unique code
+     * @return the current stock level
      */
-    void getSuppliedFoodItemStock(String code);
+    int getSuppliedFoodItemStock(String code);
 
 }
