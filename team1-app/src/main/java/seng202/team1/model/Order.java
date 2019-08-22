@@ -51,4 +51,11 @@ public class Order {
         // TODO implement here
     }
 
+    /**
+     *
+     */
+    public void completeOrder() {
+        // TODO implement here
+    }
+
 }
