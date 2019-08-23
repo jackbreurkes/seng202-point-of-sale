@@ -9,31 +9,37 @@ import java.util.*;
  */
 public class StorageMemory implements SuppliedFoodItemStorage {
 
+    private static StorageMemory instance;
 
-    public List<CompositeFoodItem> getAllCompositeFoodItems() {
-        return null;
+    private List<SuppliedFoodItem> suppliedFoodItems;
+    private Map<String, Integer> suppliedFoodItemCounts; // maps code to a count
+
+    /**
+     * private constructor to enforce singleton pattern
+     */
+    private StorageMemory() {
+        suppliedFoodItems = new ArrayList<SuppliedFoodItem>();
+        suppliedFoodItemCounts = new HashMap<String, Integer>();
     }
 
-    public CompositeFoodItem getCompositeFoodItemById(String code) {
-        return null;
+    /**
+     * function used to get an instance of a StorageMemory object.
+     *Implements the singleton pattern
+     * @return an instance of StorageMemory
+     */
+    public static StorageMemory getInstance() {
+        if (instance == null) {
+            instance = new StorageMemory();
+        }
+        return instance;
     }
 
-    public void addCompositeFoodItem(CompositeFoodItem item) {
-
-    }
-
-    public void editCompositeFoodItem(String code, CompositeFoodItem alteredItem) {
-
-    }
-
-    public void removeCompositeFoodItem(String code) {
-
-    }
-
+    @Override
     public List<SuppliedFoodItem> getAllSuppliedFoodItems() {
         return null;
     }
 
+    @Override
     public SuppliedFoodItem getSuppliedFoodItemByCode(String code) {
         return null;
     }
@@ -43,22 +49,22 @@ public class StorageMemory implements SuppliedFoodItemStorage {
 
     }
 
-    public void addSuppliedFoodItem(SuppliedFoodItem item) {
-
-    }
-
+    @Override
     public void editSuppliedFoodItem(String code, SuppliedFoodItem alteredItem) {
 
     }
 
+    @Override
     public void removeSuppliedFoodItem(String code) {
 
     }
 
+    @Override
     public void setSuppliedFoodItemStock(String code, int count) {
 
     }
 
+    @Override
     public int getSuppliedFoodItemStock(String code) {
         return 0;
     }

@@ -19,7 +19,7 @@ class SuppliedFoodItemStorageTest {
 
     @BeforeEach
     void setupStorage() {
-        foodStorage = new StorageMemory();
+        foodStorage = StorageMemory.getInstance(); // TODO make this more modular??
         suppliedTestItem = new SuppliedFoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 
@@ -76,6 +76,10 @@ class SuppliedFoodItemStorageTest {
 
         foodStorage.removeSuppliedFoodItem(suppliedTestItem.getCode());
         assertNull(foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
+
+        assertThrows(InvalidDataCodeException.class, () -> {
+            foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode());
+        });
 
         assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.removeSuppliedFoodItem(suppliedTestItem.getCode());
