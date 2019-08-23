@@ -4,10 +4,10 @@
 <!ELEMENT suppliers (description, (supplier*))>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT supplier (id, name, address, phone, phoneType email?, url?)>
-<!ELEMENT sid (#PCDATA)>
+<!ELEMENT id (#PCDATA)>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT address (#PCDATA)>
 <!ELEMENT phone (#PCDATA)>
-<!ELEMENT phoneType (mobile|work|home) #REQUIRED>
+<!ELEMENT phoneType (#PCDATA)>
 <!ELEMENT email (#PCDATA)>
 <!ELEMENT url (#PCDATA)>

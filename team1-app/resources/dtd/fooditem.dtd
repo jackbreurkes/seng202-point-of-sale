@@ -1,4 +1,3 @@
-
 <!ENTITY version "V0.01 (C) Rosemary">
 <!ELEMENT fooditems (description, (fooditem*))>
 <!ELEMENT description (#PCDATA)>
