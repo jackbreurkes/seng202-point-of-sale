@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * 
  */
-public class StorageMemory implements FoodStorage {
+public class StorageMemory implements SuppliedFoodItemStorage {
 
 
     public List<CompositeFoodItem> getAllCompositeFoodItems() {

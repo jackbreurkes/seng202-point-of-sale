@@ -7,31 +7,48 @@ import seng202.team1.model.SuppliedFoodItem;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled
-class FoodStorageTest {
+class SuppliedFoodItemStorageTest {
 
-    private FoodStorage foodStorage;
+    private SuppliedFoodItemStorage foodStorage;
     private SuppliedFoodItem suppliedTestItem;
 
     @BeforeEach
-    public void setupStorage() {
+    void setupStorage() {
         foodStorage = new StorageMemory();
         suppliedTestItem = new SuppliedFoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 
     @Test
-    public void testGetInstance() {
-        fail();
-        // TODO implement
+    void testGetByCode() {
+        assertNull(foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
+
+        foodStorage.addSuppliedFoodItem(suppliedTestItem, 1);
+        assertEquals(suppliedTestItem, foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
+
+        assertNull(foodStorage.getSuppliedFoodItemByCode("UNUSED CODE"));
     }
 
     @Test
-    public void testAddSupplied() {
+    void testGetAllSupplied() {
+        List<SuppliedFoodItem> items = foodStorage.getAllSuppliedFoodItems();
+        assertEquals(0, items.size());
+
+        foodStorage.addSuppliedFoodItem(suppliedTestItem, 0);
+        items = foodStorage.getAllSuppliedFoodItems();
+        assertEquals(1, items.size());
+        assertTrue(items.contains(suppliedTestItem));
+    }
+
+    @Test
+    void testAddSupplied() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
-        // should we have equality checking in fooditems??
-        // TODO check if item is in storage
+        assertEquals(suppliedTestItem,
+                foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
 
         // test adding an already added item
         assertThrows(InvalidDataCodeException.class, () -> {
@@ -40,12 +57,12 @@ class FoodStorageTest {
     }
 
     @Test
-    public void testEditSupplied() {
+    void testEditSupplied() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
 
         SuppliedFoodItem alteredItem = new SuppliedFoodItem("ITEM1", "Canola Oil", UnitType.GRAM);
         foodStorage.editSuppliedFoodItem(suppliedTestItem.getCode(), alteredItem);
-        // TODO check correct operation
+        assertEquals(alteredItem, foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
 
         assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.editSuppliedFoodItem(suppliedTestItem.getCode(),
@@ -54,7 +71,7 @@ class FoodStorageTest {
     }
 
     @Test
-    public void testRemoveSupplied() {
+    void testRemoveSupplied() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
 
         foodStorage.removeSuppliedFoodItem(suppliedTestItem.getCode());
@@ -66,14 +83,21 @@ class FoodStorageTest {
     }
 
     @Test
-    public void testGetSetSuppliedStock() {
+    void testGetSetSuppliedStock() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
         foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), 500);
         assertEquals(500, foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode()));
 
-        // TODO set the right exception to throw here
-        assertThrows(Exception.class, () -> {
+        foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), 0);
+        assertEquals(0, foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode()));
+
+
+        assertThrows(IllegalArgumentException.class, () -> {
             foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), -1);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), Integer.MAX_VALUE + 1);
         });
     }
 
