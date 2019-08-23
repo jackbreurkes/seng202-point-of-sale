@@ -9,4 +9,4 @@ generate_artifacts:
    - mvn -f ./team1-app/pom.xml -B clean site package
   artifacts:
     paths:
-    - team1-app/target/s202*.jar
+    - team1-app/target/team1*.jar
