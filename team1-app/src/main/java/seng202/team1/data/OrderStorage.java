@@ -2,7 +2,7 @@ package seng202.team1.data;
 
 import seng202.team1.model.Order;
 
-import java.util.List;
+import java.util.Set;
 
 public interface OrderStorage {
 
@@ -10,7 +10,7 @@ public interface OrderStorage {
      * returns all the Orders stored in the system.
      * @return a List of all Orders stored in the system
      */
-    List<Order> getAllOrders();
+    Set<Order> getAllOrders();
 
     /**
      * gets a single Order from the system.

@@ -11,14 +11,14 @@ public class StorageMemory implements SuppliedFoodItemStorage {
 
     private static StorageMemory instance;
 
-    private List<SuppliedFoodItem> suppliedFoodItems;
+    private Set<SuppliedFoodItem> suppliedFoodItems;
     private Map<String, Integer> suppliedFoodItemCounts; // maps code to a count
 
     /**
      * private constructor to enforce singleton pattern
      */
     private StorageMemory() {
-        suppliedFoodItems = new ArrayList<SuppliedFoodItem>();
+        suppliedFoodItems = new HashSet<SuppliedFoodItem>();
         suppliedFoodItemCounts = new HashMap<String, Integer>();
     }
 
@@ -36,18 +36,25 @@ public class StorageMemory implements SuppliedFoodItemStorage {
     }
 
     @Override
-    public List<SuppliedFoodItem> getAllSuppliedFoodItems() {
-        return null;
+    public Set<SuppliedFoodItem> getAllSuppliedFoodItems() {
+        return suppliedFoodItems;
     }
 
     @Override
     public SuppliedFoodItem getSuppliedFoodItemByCode(String code) {
+        for (SuppliedFoodItem item : suppliedFoodItems) {
+            if (item.getCode().equals(code)) {
+                return item;
+            }
+        }
         return null;
     }
 
     @Override
     public void addSuppliedFoodItem(SuppliedFoodItem item, int count) {
-
+        // code is assumed to be valid, is that good practice? seems fine imo but should ask
+        suppliedFoodItems.add(item);
+        suppliedFoodItemCounts.put(item.getCode(), count);
     }
 
     @Override

@@ -3,6 +3,7 @@ package seng202.team1.data;
 import seng202.team1.model.Supplier;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SupplierStorage {
 
@@ -10,7 +11,7 @@ public interface SupplierStorage {
      * returns all the Suppliers stored in the system.
      * @return a List of all Suppliers stored in the system
      */
-    List<Supplier> getAllSuppliers();
+    Set<Supplier> getAllSuppliers();
 
     /**
      * gets a single Supplier from the system.
