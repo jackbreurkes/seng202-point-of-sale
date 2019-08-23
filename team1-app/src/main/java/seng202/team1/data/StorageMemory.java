@@ -32,6 +32,7 @@ public class StorageMemory implements SuppliedFoodItemStorage {
             instance = new StorageMemory();
         }
         return instance;
+        // TODO move this into a parent class??
     }
 
     @Override
