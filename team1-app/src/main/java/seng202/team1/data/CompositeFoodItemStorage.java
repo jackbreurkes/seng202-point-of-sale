@@ -3,6 +3,7 @@ package seng202.team1.data;
 import seng202.team1.model.CompositeFoodItem;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CompositeFoodItemStorage {
 
@@ -10,7 +11,7 @@ public interface CompositeFoodItemStorage {
      * returns all the CompositeFoodItems stored in the system.
      * @return a List of all CompositeFoodItems stored in the system
      */
-    List<CompositeFoodItem> getAllCompositeFoodItems();
+    Set<CompositeFoodItem> getAllCompositeFoodItems();
 
     /**
      * gets a single CompositeFoodItem stored in the system.

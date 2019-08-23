@@ -2,7 +2,7 @@ package seng202.team1.data;
 
 import seng202.team1.model.SuppliedFoodItem;
 
-import java.util.List;
+import java.util.Set;
 
 public interface SuppliedFoodItemStorage {
 
@@ -10,7 +10,7 @@ public interface SuppliedFoodItemStorage {
      * returns all the SuppliedFoodItems stored in the system.
      * @return a List of all SuppliedFoodItems stored in the system
      */
-    List<SuppliedFoodItem> getAllSuppliedFoodItems();
+    Set<SuppliedFoodItem> getAllSuppliedFoodItems();
 
     /**
      * gets a single SuppliedFoodItem stored in the system.
@@ -21,6 +21,7 @@ public interface SuppliedFoodItemStorage {
 
     /**
      * adds a SuppliedFoodItem to storage. the item will be stored using its code attribute.
+     * the item's code should be
      * @param item the CompositeFoodItem to store
      * @param count the amount to store initially
      */

@@ -8,6 +8,7 @@ import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +36,7 @@ class SuppliedFoodItemStorageTest {
 
     @Test
     void testGetAllSupplied() {
-        List<SuppliedFoodItem> items = foodStorage.getAllSuppliedFoodItems();
+        Set<SuppliedFoodItem> items = foodStorage.getAllSuppliedFoodItems();
         assertEquals(0, items.size());
 
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 0);
@@ -54,6 +55,11 @@ class SuppliedFoodItemStorageTest {
         assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
         });
+
+        // test adding null
+        assertThrows(IllegalArgumentException.class, () -> {
+            foodStorage.addSuppliedFoodItem(null, 1000);
+        });
     }
 
     @Test
@@ -67,6 +73,10 @@ class SuppliedFoodItemStorageTest {
         assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.editSuppliedFoodItem(suppliedTestItem.getCode(),
                     new SuppliedFoodItem("ITEM2", "Linseed Oil", UnitType.GRAM));
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            foodStorage.editSuppliedFoodItem(suppliedTestItem.getCode(), null);
         });
     }
 
@@ -95,13 +105,16 @@ class SuppliedFoodItemStorageTest {
         foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), 0);
         assertEquals(0, foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode()));
 
-
         assertThrows(IllegalArgumentException.class, () -> {
             foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), -1);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), Integer.MAX_VALUE + 1);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            foodStorage.setSuppliedFoodItemStock(null, 100);
         });
     }
 

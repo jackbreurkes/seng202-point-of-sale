@@ -2,7 +2,7 @@ package seng202.team1.data;
 
 import seng202.team1.model.Menu;
 
-import java.util.List;
+import java.util.Set;
 
 public interface MenuStorage {
 
@@ -10,7 +10,7 @@ public interface MenuStorage {
      * returns all the Menus stored in the system.
      * @return a List of all Menus stored in the system
      */
-    List<Menu> getAllMenus();
+    Set<Menu> getAllMenus();
 
     /**
      * gets a single Menu from the system.

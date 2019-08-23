@@ -18,4 +18,9 @@ class SuppliedFoodItemTest {
         assertEquals(UnitType.ML, coke.getUnit());
     }
 
+    @Test
+    void testCheckCode() {
+
+    }
+
 }
