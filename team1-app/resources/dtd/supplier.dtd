@@ -4,6 +4,8 @@
 <!ELEMENT suppliers (description, (supplier*))>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT supplier (id, name, address, phone, phoneType email?, url?)>
+<!ATTLIST supplier
+        phoneType (work|mobile|home) #REQUIRED>
 <!ELEMENT id (#PCDATA)>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT address (#PCDATA)>
