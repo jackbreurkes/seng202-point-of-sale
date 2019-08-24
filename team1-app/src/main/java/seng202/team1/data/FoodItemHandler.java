@@ -4,7 +4,7 @@ import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
 
-public class DOMFoodItemHandler {
+public class FoodItemHandler {
     public static void main(String[] args) throws Exception {
 
         File xmlFile = new File("resources/data/FoodItem.xml");
@@ -19,6 +19,13 @@ public class DOMFoodItemHandler {
 
         NodeList nodeList = document.getElementsByTagName("fooditem");
 
-        System.out.println(nodeList);
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Element node = (Element) nodeList.item(i);
+            String code = node.getElementsByTagName("code").item(0).getTextContent();
+            //String unit = node.getElementsByTagName("unit").item(0).getTextContent();
+            
+        }
+
+        System.out.println(root.getElementsByTagName("name").item(0).getTextContent());
     }
 }
