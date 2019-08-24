@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import org.joda.money.Money;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
@@ -12,7 +13,7 @@ public abstract class FoodItem {
     private double caloriesPerUnit;
     private String name;
     private UnitType unit;
-    private double stockCostPerUnit;
+    private Money stockCostPerUnit;
     private DietaryLogic isVegetarian;
     private DietaryLogic isVegan;
     private DietaryLogic isGlutenFree;
@@ -56,10 +57,6 @@ public abstract class FoodItem {
         return unit;
     }
 
-    public double getStockCostPerUnit() {
-        return stockCostPerUnit;
-    }
-
     public DietaryLogic getIsVegetarian() {
         return isVegetarian;
     }
@@ -85,10 +82,6 @@ public abstract class FoodItem {
 
     public void setUnit(UnitType unit) {
         this.unit = unit;
-    }
-
-    public void setStockCostPerUnit(double stockCostPerUnit) {
-        this.stockCostPerUnit = stockCostPerUnit;
     }
 
     public void setIsVegetarian(DietaryLogic isVegetarian) {

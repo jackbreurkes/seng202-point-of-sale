@@ -7,7 +7,6 @@ import seng202.team1.model.SuppliedFoodItem;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +19,7 @@ class SuppliedFoodItemStorageTest {
 
     @BeforeEach
     void setupStorage() {
-        foodStorage = StorageMemory.getInstance(); // TODO make this more modular??
+        foodStorage = InMemoryDAO.getInstance(); // TODO make this more modular??
         suppliedTestItem = new SuppliedFoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 

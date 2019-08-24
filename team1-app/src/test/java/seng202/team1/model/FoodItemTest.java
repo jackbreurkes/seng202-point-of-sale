@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import org.joda.money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -132,6 +133,18 @@ class FoodItemTest {
         assertEquals(DietaryLogic.YES, testItem.getIsGlutenFree());
 
         // do we need tests for every possibility??
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testItem.setIsVegetarian(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testItem.setIsVegan(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testItem.setIsGlutenFree(null);
+        });
     }
 
 }

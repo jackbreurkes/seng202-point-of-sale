@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled
-class StorageMemoryTest {
+class InMemoryDAOTest {
 
     @Test
     void testSingleton() {
-        StorageMemory instance1 = StorageMemory.getInstance();
-        StorageMemory instance2 = StorageMemory.getInstance();
+        InMemoryDAO instance1 = InMemoryDAO.getInstance();
+        InMemoryDAO instance2 = InMemoryDAO.getInstance();
         assertSame(instance1, instance2);
         // ^^ is this the right way to handle this?
     }
