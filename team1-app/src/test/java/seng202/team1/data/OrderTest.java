@@ -32,6 +32,8 @@ class OrderTest {
     @Test
     void testGetOrderContents() {
         assertNull(testOrder.getOrderContents());
+
+        // TODO add more here for if items exist
     }
 
     @Test
@@ -49,6 +51,7 @@ class OrderTest {
         testOrder.addItem(testItem2);
         assertEquals(testOrder.getOrderContents(), testList);
 
+        // TODO test adding invalid items, ensuring that more than one of the same item can be added
     }
 
     @Test
@@ -68,6 +71,9 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.removeItem(testItem);
         });
+
+        // TODO don't just check for empty orders, check non-existant item
+        // TODO check you can remove an item twice if its added twice etc
     }
 
     @Test
@@ -79,18 +85,20 @@ class OrderTest {
         testOrder.addItem(testItem2);
         testOrder.cancelOrder();
 
-        //makes sure that a cancelled order is null (is this what is should do?)
-        assertEquals(testOrder, null);
+        // TODO a cancelled order will still exist. Think about OrderStatus maybe
 
         //makes sure an order can't be cancelled twice
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.cancelOrder();
+            // TODO maybe write a custom exception for this?
         });
 
         //Makes sure a cancelled order cannot be completed
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.completeOrder();
         });
+
+        // TODO does cancelling orders happen at a certain time? different behaviour for different order statuses
     }
 
     @Test
@@ -101,8 +109,7 @@ class OrderTest {
         testOrder.addItem(testItem2);
         testOrder.completeOrder();
 
-        //makes sure that a completed order is null (is this what is should do?)
-        assertEquals(testOrder, null);
+        // TODO ues OrderStatus
 
         //Makes sure an order cannot be completed twice
         assertThrows(IllegalArgumentException.class, () -> {
@@ -116,6 +123,8 @@ class OrderTest {
         //sets a starting amount of money
         double cash = 20;
         testOrder.completeOrder();
+
+        // TODO more stuff with orderstatus here, some more tests
     }
 
 
