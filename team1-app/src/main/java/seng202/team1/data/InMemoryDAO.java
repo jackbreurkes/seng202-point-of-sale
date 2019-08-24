@@ -1,6 +1,7 @@
 package seng202.team1.data;
 
 import seng202.team1.model.*;
+import seng202.team1.util.InvalidDataCodeException;
 
 import java.util.*;
 
@@ -35,6 +36,15 @@ public class InMemoryDAO implements SuppliedFoodItemStorage {
         // TODO move this into a parent class??
     }
 
+    /**
+     * I don't think we should ever ues this outside of testing? not sure?
+     */
+    public void resetInstance() {
+        // TODO get rid of this? we need it for testing but it seems bad?
+        suppliedFoodItems = new HashSet<SuppliedFoodItem>();
+        suppliedFoodItemCounts = new HashMap<String, Integer>();
+    }
+
     @Override
     public Set<SuppliedFoodItem> getAllSuppliedFoodItems() {
         return suppliedFoodItems;
@@ -64,16 +74,26 @@ public class InMemoryDAO implements SuppliedFoodItemStorage {
 
     @Override
     public void removeSuppliedFoodItem(String code) {
-
+        boolean itemRemoved = suppliedFoodItems.removeIf(item -> item.getCode().equals(code));
+        if (!itemRemoved) {
+            throw new InvalidDataCodeException("no SuppliedFoodItem found with corresponding code");
+        }
+        suppliedFoodItemCounts.remove(code);
     }
 
     @Override
     public void setSuppliedFoodItemStock(String code, int count) {
-
+        if (count < 0) {
+            throw new IllegalArgumentException("count must be non-negative.");
+        }
+        if (getSuppliedFoodItemByCode(code) == null) {
+            throw new InvalidDataCodeException("no SuppliedFoodItem found with corresponding code");
+        }
+        suppliedFoodItemCounts.put(code, count);
     }
 
     @Override
     public int getSuppliedFoodItemStock(String code) {
-        return 0;
+        return suppliedFoodItemCounts.get(code);
     }
 }

@@ -21,12 +21,4 @@ public class SuppliedFoodItem extends FoodItem {
         super.setUnit(unitType);
     }
 
-    public void addSupplier(Supplier supplier) {
-        // TODO implement
-    }
-
-    public void removeSupplier(Supplier supplier) {
-        // TODO implement
-    }
-
 }

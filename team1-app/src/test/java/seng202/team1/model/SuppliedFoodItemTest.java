@@ -6,7 +6,6 @@ import seng202.team1.util.UnitType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled
 class SuppliedFoodItemTest {
 
     @Test
@@ -16,11 +15,6 @@ class SuppliedFoodItemTest {
         assertEquals("COKE", coke.getCode());
         assertEquals("Coca Cola", coke.getName());
         assertEquals(UnitType.ML, coke.getUnit());
-    }
-
-    @Test
-    void testCheckCode() {
-
     }
 
 }

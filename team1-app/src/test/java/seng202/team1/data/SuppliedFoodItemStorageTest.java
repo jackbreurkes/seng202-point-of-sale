@@ -11,7 +11,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 class SuppliedFoodItemStorageTest {
 
     private SuppliedFoodItemStorage foodStorage;
@@ -20,6 +19,7 @@ class SuppliedFoodItemStorageTest {
     @BeforeEach
     void setupStorage() {
         foodStorage = InMemoryDAO.getInstance(); // TODO make this more modular??
+        ((InMemoryDAO) foodStorage).resetInstance(); // TODO this feels bad
         suppliedTestItem = new SuppliedFoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 
@@ -31,6 +31,8 @@ class SuppliedFoodItemStorageTest {
         assertEquals(suppliedTestItem, foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
 
         assertNull(foodStorage.getSuppliedFoodItemByCode("UNUSED CODE"));
+
+        assertNull(foodStorage.getSuppliedFoodItemByCode(null));
     }
 
     @Test
@@ -45,6 +47,7 @@ class SuppliedFoodItemStorageTest {
     }
 
     @Test
+    @Disabled
     void testAddSupplied() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
         assertEquals(suppliedTestItem,
@@ -62,6 +65,7 @@ class SuppliedFoodItemStorageTest {
     }
 
     @Test
+    @Disabled
     void testEditSupplied() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
 
@@ -87,10 +91,6 @@ class SuppliedFoodItemStorageTest {
         assertNull(foodStorage.getSuppliedFoodItemByCode(suppliedTestItem.getCode()));
 
         assertThrows(InvalidDataCodeException.class, () -> {
-            foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode());
-        });
-
-        assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.removeSuppliedFoodItem(suppliedTestItem.getCode());
         });
     }
@@ -98,6 +98,8 @@ class SuppliedFoodItemStorageTest {
     @Test
     void testGetSetSuppliedStock() {
         foodStorage.addSuppliedFoodItem(suppliedTestItem, 1000);
+        assertEquals(1000, foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode()));
+
         foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), 500);
         assertEquals(500, foodStorage.getSuppliedFoodItemStock(suppliedTestItem.getCode()));
 
@@ -112,7 +114,11 @@ class SuppliedFoodItemStorageTest {
             foodStorage.setSuppliedFoodItemStock(suppliedTestItem.getCode(), Integer.MAX_VALUE + 1);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataCodeException.class, () -> {
+            foodStorage.setSuppliedFoodItemStock("UNUSED CODE", 100);
+        });
+
+        assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.setSuppliedFoodItemStock(null, 100);
         });
     }
