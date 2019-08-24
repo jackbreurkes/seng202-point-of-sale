@@ -58,4 +58,11 @@ public class Order {
         // TODO implement here
     }
 
+    /**
+     *
+     */
+    public List getOrderContents() {
+        // TODO implement here
+        return foodItems;
+    }
 }
