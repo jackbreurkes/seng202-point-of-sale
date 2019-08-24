@@ -1,6 +1,5 @@
 package seng202.team1.model;
 
-import org.joda.money.Money;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
@@ -13,10 +12,9 @@ public abstract class FoodItem {
     private double caloriesPerUnit;
     private String name;
     private UnitType unit;
-    private Money stockCostPerUnit;
-    private DietaryLogic isVegetarian;
-    private DietaryLogic isVegan;
-    private DietaryLogic isGlutenFree;
+    private DietaryLogic isVegetarian = DietaryLogic.NO;
+    private DietaryLogic isVegan = DietaryLogic.NO;
+    private DietaryLogic isGlutenFree = DietaryLogic.NO;
 
 
     /**
@@ -33,7 +31,7 @@ public abstract class FoodItem {
         if (!code.matches("[A-Z0-9]+")) {
             throw new IllegalArgumentException("food item codes must be uppercase alphanumeric");
         }
-        code = code.toUpperCase();
+        this.code = code.toUpperCase();
         setName(name);
     }
 
@@ -70,6 +68,9 @@ public abstract class FoodItem {
     }
 
     public void setCaloriesPerUnit(double caloriesPerUnit) {
+        if (caloriesPerUnit < 0) {
+            throw new IllegalArgumentException("caloriesPerUnit must be non-negative");
+        }
         this.caloriesPerUnit = caloriesPerUnit;
     }
 
@@ -81,18 +82,30 @@ public abstract class FoodItem {
     }
 
     public void setUnit(UnitType unit) {
+        if (unit == null) {
+            throw new NullPointerException();
+        }
         this.unit = unit;
     }
 
     public void setIsVegetarian(DietaryLogic isVegetarian) {
+        if (isVegetarian == null) {
+            throw new NullPointerException();
+        }
         this.isVegetarian = isVegetarian;
     }
 
     public void setIsVegan(DietaryLogic isVegan) {
+        if (isVegan == null) {
+            throw new NullPointerException();
+        }
         this.isVegan = isVegan;
     }
 
     public void setIsGlutenFree(DietaryLogic isGlutenFree) {
+        if (isGlutenFree == null) {
+            throw new NullPointerException();
+        }
         this.isGlutenFree = isGlutenFree;
     }
 }

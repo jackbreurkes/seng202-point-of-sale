@@ -1,6 +1,5 @@
 package seng202.team1.model;
 
-import org.joda.money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -32,20 +31,20 @@ class FoodItemTest {
 
         // code not enough chars
         assertThrows(IllegalArgumentException.class, () -> {
-            SuppliedFoodItem item = new SuppliedFoodItem("CC", "E", UnitType.COUNT);
+            new SuppliedFoodItem("CC", "E", UnitType.COUNT);
         });
 
         // code too many chars
         assertThrows(IllegalArgumentException.class, () -> {
-            SuppliedFoodItem item = new SuppliedFoodItem("1234567890", "E", UnitType.COUNT);
+            new SuppliedFoodItem("elevenchars", "E", UnitType.COUNT);
         });
 
         // code not uppercase alphanumeric
         assertThrows(IllegalArgumentException.class, () -> {
-            SuppliedFoodItem item = new SuppliedFoodItem("code", "Test Name", UnitType.COUNT);
+            new SuppliedFoodItem("code", "Test Name", UnitType.COUNT);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            SuppliedFoodItem item = new SuppliedFoodItem("COD\u2202", "Test Name", UnitType.COUNT);
+            new SuppliedFoodItem("COD\u2202", "Test Name", UnitType.COUNT);
         });
 
         // ask about testing name for characters? some foreign places might use funky chars
@@ -53,8 +52,8 @@ class FoodItemTest {
 
         // should we be testing if setName is called vs name = "whatever" or is that overkill
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            SuppliedFoodItem item = new SuppliedFoodItem(null, "Test Name", UnitType.COUNT);
+        assertThrows(NullPointerException.class, () -> {
+            new SuppliedFoodItem(null, "Test Name", UnitType.COUNT);
         });
     }
 
@@ -77,7 +76,7 @@ class FoodItemTest {
             testItem.setName("thisstringistwentyone");
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             testItem.setName(null);
         });
     }
@@ -105,7 +104,7 @@ class FoodItemTest {
         testItem.setUnit(UnitType.COUNT);
         assertEquals(UnitType.COUNT, testItem.getUnit());
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             testItem.setUnit(null);
         });
     }
@@ -134,15 +133,15 @@ class FoodItemTest {
 
         // do we need tests for every possibility??
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             testItem.setIsVegetarian(null);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             testItem.setIsVegan(null);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             testItem.setIsGlutenFree(null);
         });
     }
