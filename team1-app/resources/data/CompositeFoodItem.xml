@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE fooditems SYSTEM "../dtd/fooditem.dtd">
-<fooditems>
+<!DOCTYPE cfooditems SYSTEM "compositeFooditem.dtd">
+<cfooditems>
     <description>Food sold by our food truck</description>
-    <fooditem unit="gram">
+    <cfooditem unit="g">
         <code>BeefBurg</code>
         <name>Hamburger</name>
         <calorieCount>295</calorieCount>
-    </fooditem>
-    <fooditem unit="gram">
+        <components></components>
+        <ingredientCounts></ingredientCounts>
+        <recipeNotes></recipeNotes>
+        <salePrice></salePrice>
+    </cfooditem>
+    <cfooditem unit="g">
         <code>CheeseBurg</code>
         <name>Cheeseburger</name>
         <calorieCount>303</calorieCount>
-    </fooditem>
-    <fooditem unit="gram" isVegetarian="yes">
+        <components></components>
+        <ingredientCounts></ingredientCounts>
+        <recipeNotes></recipeNotes>
+        <salePrice></salePrice>
+    </cfooditem>
+    <cfooditem unit="g" isVegetarian="yes">
         <code>TofuBurg</code>
         <name>Tofu Burger</name>
         <calorieCount>168.4</calorieCount>
-    </fooditem>
-    <fooditem unit="ml" isVegan="yes">
+        <components></components>
+        <ingredientCounts></ingredientCounts>
+        <recipeNotes></recipeNotes>
+        <salePrice></salePrice>
+    </cfooditem>
+    <cfooditem unit="ml" isVegan="yes">
         <code>AppleSoda</code>
         <name>Sparkling Apple Juice</name>
         <calorieCount>87</calorieCount>
-    </fooditem>
-</fooditems>
+        <components></components>
+        <ingredientCounts></ingredientCounts>
+        <recipeNotes></recipeNotes>
+        <salePrice></salePrice>
+    </cfooditem>
+</cfooditems>
