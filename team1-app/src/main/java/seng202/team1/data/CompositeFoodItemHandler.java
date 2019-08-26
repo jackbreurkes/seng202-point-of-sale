@@ -122,9 +122,9 @@ public class CompositeFoodItemHandler {
             case "yes":
                 logic = DietaryLogic.YES;
                 break;
-            case "no":
-                logic = DietaryLogic.NO;
-                break;
+//            case "no":        // HELLO Euan here. I commented this out as the case NO is already covered with the default case :)
+//                logic = DietaryLogic.NO;
+//                break;
             case "optional":
                 logic = DietaryLogic.OPTIONAL;
                 break;
