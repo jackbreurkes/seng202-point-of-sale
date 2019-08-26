@@ -11,6 +11,16 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+// Hello future Euan or not future Euan
+// To future Euan: Can you please remember to buy boneless chicken breasts
+// for the butter chicken dinner on Friday thank you.
+// To everybody:
+// Just a heads up:
+// The starter kit's DTD dictates that Email and URL are optional.
+// But since that is not OUR DTD then the code below has not
+// made choices regarding assigning 'NULL' values to email and url.
+// Chur.
+
 /**
  * Processes supplier using DOM
  */
