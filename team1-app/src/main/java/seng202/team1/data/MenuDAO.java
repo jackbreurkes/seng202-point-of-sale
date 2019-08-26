@@ -4,7 +4,7 @@ import seng202.team1.model.Menu;
 
 import java.util.Set;
 
-public interface MenuStorage {
+public interface MenuDAO {
 
     /**
      * returns all the Menus stored in the system.

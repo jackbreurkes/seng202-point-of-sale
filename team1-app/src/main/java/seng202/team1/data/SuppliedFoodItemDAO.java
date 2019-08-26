@@ -4,7 +4,7 @@ import seng202.team1.model.SuppliedFoodItem;
 
 import java.util.Set;
 
-public interface SuppliedFoodItemStorage {
+public interface SuppliedFoodItemDAO {
 
     /**
      * returns all the SuppliedFoodItems stored in the system.

@@ -5,7 +5,7 @@ import seng202.team1.model.CompositeFoodItem;
 import java.util.List;
 import java.util.Set;
 
-public interface CompositeFoodItemStorage {
+public interface CompositeFoodItemDAO {
 
     /**
      * returns all the CompositeFoodItems stored in the system.

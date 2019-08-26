@@ -4,7 +4,7 @@ import seng202.team1.model.Order;
 
 import java.util.Set;
 
-public interface OrderStorage {
+public interface OrderDAO {
 
     /**
      * returns all the Orders stored in the system.

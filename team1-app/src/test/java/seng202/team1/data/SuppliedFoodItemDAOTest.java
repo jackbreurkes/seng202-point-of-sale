@@ -11,15 +11,15 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SuppliedFoodItemStorageTest {
+class SuppliedFoodItemDAOTest {
 
-    private SuppliedFoodItemStorage foodStorage;
+    private SuppliedFoodItemDAO foodStorage;
     private SuppliedFoodItem suppliedTestItem;
 
     @BeforeEach
     void setupStorage() {
-        foodStorage = InMemoryDAO.getInstance(); // TODO make this more modular??
-        ((InMemoryDAO) foodStorage).resetInstance(); // TODO this feels bad
+        foodStorage = MemoryStorage.getInstance(); // TODO make this more modular??
+        ((MemoryStorage) foodStorage).resetInstance(); // TODO this feels bad
         suppliedTestItem = new SuppliedFoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 

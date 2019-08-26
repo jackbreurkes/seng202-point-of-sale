@@ -2,10 +2,9 @@ package seng202.team1.data;
 
 import seng202.team1.model.Supplier;
 
-import java.util.List;
 import java.util.Set;
 
-public interface SupplierStorage {
+public interface SupplierDAO {
 
     /**
      * returns all the Suppliers stored in the system.

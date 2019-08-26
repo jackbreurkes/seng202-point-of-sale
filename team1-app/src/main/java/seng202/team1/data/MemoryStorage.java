@@ -8,9 +8,9 @@ import java.util.*;
 /**
  * 
  */
-public class InMemoryDAO implements SuppliedFoodItemStorage {
+public class MemoryStorage implements SuppliedFoodItemDAO {
 
-    private static InMemoryDAO instance;
+    private static MemoryStorage instance;
 
     private Set<SuppliedFoodItem> suppliedFoodItems;
     private Map<String, Integer> suppliedFoodItemCounts; // maps code to a count
@@ -18,7 +18,7 @@ public class InMemoryDAO implements SuppliedFoodItemStorage {
     /**
      * private constructor to enforce singleton pattern
      */
-    private InMemoryDAO() {
+    private MemoryStorage() {
         suppliedFoodItems = new HashSet<SuppliedFoodItem>();
         suppliedFoodItemCounts = new HashMap<String, Integer>();
     }
@@ -28,9 +28,9 @@ public class InMemoryDAO implements SuppliedFoodItemStorage {
      *Implements the singleton pattern
      * @return an instance of InMemoryDAO
      */
-    public static InMemoryDAO getInstance() {
+    public static MemoryStorage getInstance() {
         if (instance == null) {
-            instance = new InMemoryDAO();
+            instance = new MemoryStorage();
         }
         return instance;
         // TODO move this into a parent class??
