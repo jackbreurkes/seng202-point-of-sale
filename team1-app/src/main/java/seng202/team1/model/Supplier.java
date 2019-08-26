@@ -20,7 +20,15 @@ public class Supplier {
     /**
      * Default constructor
      */
-    public Supplier() {
+    public Supplier(String id, String name, String address, String phone, PhoneType phoneType,
+                    String email, String url) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.phoneType = phoneType;
+        this.email = email;
+        this.url = url;
     }
 
 }

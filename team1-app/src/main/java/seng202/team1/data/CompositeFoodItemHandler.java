@@ -18,10 +18,11 @@ import java.util.Map;
  */
 public class CompositeFoodItemHandler {
 
-    private DocumentBuilder builder;
-    private Document parsedDoc;
+    private DocumentBuilder builder = null;
+    private Document parsedDoc = null;
     private String path;
     private File xmlFile;
+
     private Map<String, CompositeFoodItem> compositeFoodItem;
     private List<FoodItem> components;
     private Map<FoodItem, Integer> ingredientCounts;
@@ -39,7 +40,7 @@ public class CompositeFoodItemHandler {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validate);
         xmlFile = new File("resources/data/CompositeFoodItem.xml");
-        path = filePath;
+        path = filePath;    // NOT SURE WHY WE NEED THIS.
 
         try {
             builder = factory.newDocumentBuilder();
@@ -121,9 +122,6 @@ public class CompositeFoodItemHandler {
         switch (s) {
             case "yes":
                 logic = DietaryLogic.YES;
-                break;
-            case "no":
-                logic = DietaryLogic.NO;
                 break;
             case "optional":
                 logic = DietaryLogic.OPTIONAL;
