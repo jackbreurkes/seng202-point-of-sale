@@ -48,6 +48,7 @@ public class Order {
 
     /**
      * updates the status of the order to refunded (returns the amount of refunded money calculated by components?)
+     * only completed orders can be refunded
      */
     public void refundOrder() {
         // TODO implement here

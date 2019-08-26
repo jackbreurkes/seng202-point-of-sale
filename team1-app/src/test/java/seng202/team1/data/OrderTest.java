@@ -92,7 +92,7 @@ class OrderTest {
 
         //checks that removing the item again will make the order empty
         testOrder.removeItem(testItem);
-        assertEquals(testOrder.getOrderContents(), null);
+        assertNull(testOrder.getOrderContents());
 
         //tests that an item that is not in the list cannot be removed
         testItem2 = new SuppliedFoodItem("TESB", "Test Item 2", UnitType.COUNT);
@@ -164,15 +164,41 @@ class OrderTest {
 
     @Test
     void testRefundOrder(){
-        //TODO
+        //TODO sort out the actual refund part (money stuff)
         //sets a starting amount of money
         double cash = 20;
+
+        //makes sure an incomplete order cannot be refunded
+        assertThrows(IllegalArgumentException.class, () -> {
+            testOrder.refundOrder();
+        });
+
         testOrder.completeOrder();
         testOrder.refundOrder();
+
         // checks the status of the order has correctly been set to refunded
         assertEquals(testOrder.getOrderStatus(), "Refunded");
 
-        // TODO more stuff with orderstatus here, some more tests
+        //makes sure a refunded order cannot be completed
+        assertThrows(IllegalArgumentException.class, () -> {
+            testOrder.completeOrder();
+        });
+
+        //checks a refunded order cannot have items removed from it
+        assertThrows(IllegalArgumentException.class, () -> {
+            testOrder.removeItem(testItem);
+        });
+
+        //Makes sure a refunded order cannot be cancelled
+        assertThrows(IllegalArgumentException.class, () -> {
+            testOrder.completeOrder();
+        });
+
+        //Makes sure an order cannot be refunded twice
+        assertThrows(IllegalArgumentException.class, () -> {
+            testOrder.refundOrder();
+        });
+
     }
 
 
