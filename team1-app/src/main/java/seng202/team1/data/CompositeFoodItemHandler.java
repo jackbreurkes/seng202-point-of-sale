@@ -38,8 +38,8 @@ public class CompositeFoodItemHandler {
     public CompositeFoodItemHandler(String filePath, boolean validate) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validate);
-        xmlFile = new File("resources/data/CompositeFoodItem.xml");
         path = filePath;
+        xmlFile = new File(path);
 
         try {
             builder = factory.newDocumentBuilder();
@@ -67,7 +67,7 @@ public class CompositeFoodItemHandler {
 
     public Map<String, CompositeFoodItem> getCompositeFoodItem() {
         compositeFoodItem = new HashMap<String, CompositeFoodItem>();
-        NodeList nodeList = parsedDoc.getElementsByTagName("fooditem");
+        NodeList nodeList = parsedDoc.getElementsByTagName("cfooditem");
         Element node;
 
         for (int i = 0; i < nodeList.getLength(); i++) {
