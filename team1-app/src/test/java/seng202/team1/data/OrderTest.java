@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
-import seng202.team1.model.SuppliedFoodItem;
 import seng202.team1.util.UnitType;
 
 import java.util.ArrayList;
@@ -17,16 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderTest {
 
     Order testOrder;
-    SuppliedFoodItem testItem;
-    SuppliedFoodItem testItem2;
-    SuppliedFoodItem testItem3;
+    FoodItem testItem;
+    FoodItem testItem2;
+    FoodItem testItem3;
     List<FoodItem> testList;
 
 
     @BeforeEach
     void beforeEach() {
         testOrder = new Order();
-        testItem = new SuppliedFoodItem("TEST", "Test Item", UnitType.COUNT);
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     }
 
 
@@ -49,7 +48,7 @@ class OrderTest {
         assertEquals(testOrder.getOrderContents(), testList);
 
         //make a second item and add it to the order, check the order is as expected
-        testItem2 = new SuppliedFoodItem("TESB", "Test Item 2", UnitType.COUNT);
+        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testList.add(testItem2);
         testOrder.addItem(testItem2);
         assertEquals(testOrder.getOrderContents(), testList);
@@ -60,7 +59,7 @@ class OrderTest {
         assertEquals(testOrder.getOrderContents(), testList);
 
         //adds an item that doesn't fit proper criteria of an item
-        testItem3 = new SuppliedFoodItem("COD\u2202", "Test Name", UnitType.COUNT);
+        testItem3 = new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.addItem(testItem);
         });
@@ -95,7 +94,7 @@ class OrderTest {
         assertNull(testOrder.getOrderContents());
 
         //tests that an item that is not in the list cannot be removed
-        testItem2 = new SuppliedFoodItem("TESB", "Test Item 2", UnitType.COUNT);
+        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.removeItem(testItem2);
         });
@@ -105,7 +104,7 @@ class OrderTest {
     void testCancelOrder(){
         //TODO come up with some more tests, write a custom exception for whe an order is cancelled twice
         testOrder.addItem(testItem);
-        testItem2 = new SuppliedFoodItem("TESB", "Test Item 2", UnitType.COUNT);
+        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
         testOrder.cancelOrder();
         // TODO specify how the order status works (is it a string, etc)
@@ -140,7 +139,7 @@ class OrderTest {
     void testCompleteOrder(){
         //TODO come up with some more tests
         testOrder.addItem(testItem);
-        testItem2 = new SuppliedFoodItem("TESB", "Test Item 2", UnitType.COUNT);
+        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
         testOrder.completeOrder();
         // checks the status of the order has correctly been set to completed

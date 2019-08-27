@@ -6,15 +6,15 @@ import seng202.team1.util.UnitType;
 /**
  * 
  */
-public abstract class FoodItem {
+public class FoodItem {
 
     private String code; // uppercase alphanumeric
-    private double caloriesPerUnit;
     private String name;
     private UnitType unit;
     private DietaryLogic isVegetarian = DietaryLogic.NO;
     private DietaryLogic isVegan = DietaryLogic.NO;
     private DietaryLogic isGlutenFree = DietaryLogic.NO;
+    private double caloriesPerUnit;
 
 
     /**
@@ -22,7 +22,7 @@ public abstract class FoodItem {
      * @param code simple code to use when referencing the item. between 3 and 10 characters (inclusive). uppercase alphanumeric
      * @param name the name to give the food item. between 1 and 20 characters (inclusive)
      */
-    public FoodItem(String code, String name) {
+    public FoodItem(String code, String name, UnitType unit) {
         // have this in setCode method?? it would only be used in the constructor anyway, but
         // maybe cleaner/better if someone messes up?
         if (code.length() < 3 || code.length() > 10) {
@@ -33,6 +33,7 @@ public abstract class FoodItem {
         }
         this.code = code.toUpperCase();
         setName(name);
+        setUnit(unit);
     }
 
     public String getCode() {

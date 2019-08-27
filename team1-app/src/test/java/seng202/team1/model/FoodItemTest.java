@@ -13,36 +13,36 @@ class FoodItemTest {
 
     @BeforeEach
     void beforeEach() {
-        testItem = new SuppliedFoodItem("TEST", "Test Item", UnitType.COUNT);
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     }
 
     @Test
     void testConstructor() {
         // how should we test abstract classes??
-        SuppliedFoodItem item1 = new SuppliedFoodItem("COD", "1", UnitType.COUNT);
+        FoodItem item1 = new FoodItem("COD", "1", UnitType.COUNT);
         assertEquals("COD", item1.getCode());
         assertEquals("1", item1.getName());
 
 
-        SuppliedFoodItem item2 = new SuppliedFoodItem("THISIS10", "thisstring is twenty", UnitType.COUNT);
+        FoodItem item2 = new FoodItem("THISIS10", "thisstring is twenty", UnitType.COUNT);
         assertEquals(item2.getName(), "thisstring is twenty");
 
         // code not enough chars
         assertThrows(IllegalArgumentException.class, () -> {
-            new SuppliedFoodItem("CC", "E", UnitType.COUNT);
+            new FoodItem("CC", "E", UnitType.COUNT);
         });
 
         // code too many chars
         assertThrows(IllegalArgumentException.class, () -> {
-            new SuppliedFoodItem("elevenchars", "E", UnitType.COUNT);
+            new FoodItem("elevenchars", "E", UnitType.COUNT);
         });
 
         // code not uppercase alphanumeric
         assertThrows(IllegalArgumentException.class, () -> {
-            new SuppliedFoodItem("code", "Test Name", UnitType.COUNT);
+            new FoodItem("code", "Test Name", UnitType.COUNT);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            new SuppliedFoodItem("COD\u2202", "Test Name", UnitType.COUNT);
+            new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
         });
 
         // ask about testing name for characters? some foreign places might use funky chars
@@ -51,7 +51,7 @@ class FoodItemTest {
         // should we be testing if setName is called vs name = "whatever" or is that overkill
 
         assertThrows(NullPointerException.class, () -> {
-            new SuppliedFoodItem(null, "Test Name", UnitType.COUNT);
+            new FoodItem(null, "Test Name", UnitType.COUNT);
         });
     }
 

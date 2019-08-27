@@ -2,7 +2,6 @@ package seng202.team1.data;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-import seng202.team1.model.CompositeFoodItem;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
@@ -16,13 +15,13 @@ import java.util.Map;
 /**
  * Processes FoodItem using DOM
  */
-public class CompositeFoodItemHandler {
+public class FoodItemHandler {
 
     private DocumentBuilder builder;
     private Document parsedDoc;
     private String path;
     private File xmlFile;
-    private Map<String, CompositeFoodItem> compositeFoodItem;
+    private Map<String, FoodItem> compositeFoodItem;
     private List<FoodItem> components;
     private Map<FoodItem, Integer> ingredientCounts;
     private String recipeNotes;
@@ -35,7 +34,7 @@ public class CompositeFoodItemHandler {
     private String name;
     private double caloriesPerUnit;
 
-    public CompositeFoodItemHandler(String filePath, boolean validate) {
+    public FoodItemHandler(String filePath, boolean validate) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validate);
         path = filePath;
@@ -65,8 +64,8 @@ public class CompositeFoodItemHandler {
         return parsedDoc;
     }
 
-    public Map<String, CompositeFoodItem> getCompositeFoodItem() {
-        compositeFoodItem = new HashMap<String, CompositeFoodItem>();
+    public Map<String, FoodItem> getFoodItem() {
+        compositeFoodItem = new HashMap<String, FoodItem>();
         NodeList nodeList = parsedDoc.getElementsByTagName("cfooditem");
         Element node;
 
@@ -85,7 +84,7 @@ public class CompositeFoodItemHandler {
             caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("calorieCount").item(0).getTextContent());
             // I'm not sure how components and ingredientCounts should be done.
 
-            CompositeFoodItem food = new CompositeFoodItem(code, name);
+            FoodItem food = new FoodItem(code, name, UnitType.COUNT);
             food.setCaloriesPerUnit(caloriesPerUnit);
             food.setIsGlutenFree(isGlutenFree);
             food.setIsVegan(isVegan);
