@@ -23,15 +23,7 @@ public class FoodItem {
      * @param name the name to give the food item. between 1 and 20 characters (inclusive)
      */
     public FoodItem(String code, String name, UnitType unit) {
-        // have this in setCode method?? it would only be used in the constructor anyway, but
-        // maybe cleaner/better if someone messes up?
-        if (code.length() < 3 || code.length() > 10) {
-            throw new IllegalArgumentException("food item codes must be between 3 and 10 characters (inclusive)");
-        }
-        if (!code.matches("[A-Z0-9]+")) {
-            throw new IllegalArgumentException("food item codes must be uppercase alphanumeric");
-        }
-        this.code = code.toUpperCase();
+        setCode(code);
         setName(name);
         setUnit(unit);
     }
@@ -73,6 +65,16 @@ public class FoodItem {
             throw new IllegalArgumentException("caloriesPerUnit must be non-negative");
         }
         this.caloriesPerUnit = caloriesPerUnit;
+    }
+
+    public void setCode(String code) {
+        if (code.length() < 3 || code.length() > 10) {
+            throw new IllegalArgumentException("food item codes must be between 3 and 10 characters (inclusive)");
+        }
+        if (!code.matches("[A-Z0-9]+")) {
+            throw new IllegalArgumentException("food item codes must be uppercase alphanumeric");
+        }
+        this.code = code;
     }
 
     public void setName(String name) {
