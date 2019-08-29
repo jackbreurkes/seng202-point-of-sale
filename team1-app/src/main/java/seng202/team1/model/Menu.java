@@ -33,4 +33,30 @@ public class Menu {
         // TODO implement here
     }
 
+    /**
+     * obtains menu name
+     * @param name
+     */
+    public void setMenuName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * obtains a list of food items in the menu
+     * @return
+     */
+    public List<FoodItem> getMenuItems() {
+        return items;
+    }
+
+
+    /**
+     *  erases the content of a menu
+     */
+    public void removeMenu() {
+        items.removeAll(items);
+    }
+
+
+
 }
