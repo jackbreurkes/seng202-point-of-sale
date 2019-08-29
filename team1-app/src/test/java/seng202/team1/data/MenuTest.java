@@ -4,16 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
-import seng202.team1.model.Order;
 import seng202.team1.util.UnitType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 
 
 public class MenuTest {
@@ -33,12 +30,15 @@ public class MenuTest {
 
     @Test
     void testAddItem() {
-        assertNull(menu.getMenuItems());
+        assertEquals(menu.getMenuLength(), 0);
+        menu.setMenuName("Beverages");
+        assertEquals(menu.getMenuName(), "Beverages");
         menu.addItem(testFood1);
         testList = new ArrayList<FoodItem>();
         testList.add(testFood1);
         assertEquals(menu.getMenuItems(), testList);
     }
+
 
     @Test
     void testRemoveItem() {
@@ -55,8 +55,10 @@ public class MenuTest {
         assertEquals(menu.getMenuItems(), testList);
         // removes item from menu and checks if it is empty
         menu.removeItem(testFood1);
-        assertNull(menu.getMenuItems());
+        assertEquals(menu.getMenuLength(), 0);
     }
+
+
     @Test
     void testRemoveMenu() {
         testList = new ArrayList<FoodItem>();
@@ -68,7 +70,7 @@ public class MenuTest {
         menu.addItem(testFood3);
         assertEquals(menu.getMenuItems(), testList);
         menu.removeMenu();
-        assertNull(menu.getMenuItems());
+        assertEquals(menu.getMenuLength(), 0);
     }
 }
 
