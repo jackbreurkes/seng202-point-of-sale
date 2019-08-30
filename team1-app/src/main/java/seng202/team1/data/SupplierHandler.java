@@ -11,9 +11,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Hello future Euan or not future Euan
-// To future Euan: Can you please remember to buy boneless chicken breasts
-// for the butter chicken dinner on Friday thank you.
+// Hello from Euan
 // To everybody:
 // Just a heads up:
 // The starter kit's DTD dictates that Email and URL are optional.
@@ -22,7 +20,7 @@ import java.util.Map;
 // Chur.
 
 /**
- * Processes supplier using DOM
+ * Processes an XML file containing suppliers using DOM.
  */
 public class SupplierHandler {
     private DocumentBuilder builder = null;
@@ -39,9 +37,15 @@ public class SupplierHandler {
     private String url;
 
 
+    /**
+     * Constructor for SupplierHandler class.
+     *
+     * @param pathName
+     * @param validating
+     */
     public SupplierHandler(String pathName, boolean validating) {
-        File xmlFile = new File("resources/data/Supplier.xml");
-
+        //xmlFile = new File("resources/data/Supplier.xml");
+        xmlFile = new File(pathName);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
         try {
@@ -52,10 +56,13 @@ public class SupplierHandler {
         }
     }
 
-
+    /**
+     * The DocumentBuilder can be used to parse the input XML file,
+     * which generates a tree for processing.
+     */
     public void parseInput() {
         try {
-            Document parsedDoc = builder.parse(xmlFile);
+            parsedDoc = builder.parse(xmlFile);
         } catch (SAXException se) {
             System.err.println(se.getMessage());
             System.exit(1);
@@ -65,11 +72,21 @@ public class SupplierHandler {
         }
     }
 
-
+    /**
+     * Obtains parsed document Document.
+     *
+     * @return parsedDoc
+     */
     public Document parsedDoc() {
         return parsedDoc;
     }
 
+    /**
+     * Selects each "supplier" element and constructs a Supplier object
+     * by assigning its values from the "supplier" element.
+     *
+     * @return Map<String, Supplier>
+     */
     public Map<String, Supplier> getSuppliers() {
         suppliers = new HashMap<String, Supplier>();
         NodeList nodes = parsedDoc.getElementsByTagName("supplier");
@@ -77,13 +94,13 @@ public class SupplierHandler {
 
         Node aNode;
         NodeList kids;
-        NamedNodeMap atts;
+        NamedNodeMap attributes;
 
         for (int i = 0; i < numNodes; i++) {
             reset();
             aNode = nodes.item(i);
             kids = aNode.getChildNodes();
-            atts = aNode.getAttributes();
+            attributes = aNode.getAttributes();
             id = kids.item(1).getTextContent();
             name = kids.item(3).getTextContent();
             address = kids.item(5).getTextContent();
@@ -91,15 +108,15 @@ public class SupplierHandler {
             email = kids.item(9).getTextContent();
             url = kids.item(11).getTextContent();
 
-            switch (atts.getNamedItem("phoneType").getNodeValue()) {
+            switch (attributes.getNamedItem("phoneType").getNodeValue()) {
                 case "mobile":
                     phoneType = PhoneType.MOBILE;
                     break;
                 case "work":
-                    phoneType =PhoneType.WORK;
+                    phoneType = PhoneType.WORK;
                     break;
                 case "home":
-                    phoneType =PhoneType.HOME;
+                    phoneType = PhoneType.HOME;
                     break;
                 default:
                     // error since phoneType is REQUIRED
@@ -109,6 +126,9 @@ public class SupplierHandler {
         return suppliers;
     }
 
+    /**
+     * Resets the Supplier fields before constructing next Supplier.
+     */
     public void reset() {
         id = "";
         name = "";
@@ -117,33 +137,5 @@ public class SupplierHandler {
         phoneType = PhoneType.UNKNOWN;
         email = "";
         url = "";
-    }
-
-
-
-    public static void main(String[] args) {
-
-
-
-
-
-
-
-
-//
-//
-//        document.getDocumentElement().normalize();
-//
-//        Element root = document.getDocumentElement();
-//
-//        NodeList nodeList = document.getElementsByTagName("supplier");
-//
-//        for (int i = 0; i < nodeList.getLength(); i++) {
-//            Element node = (Element) nodeList.item(i);
-//            String id = node.getElementsByTagName("id").item(0).getTextContent();
-//            String name = node.getElementsByTagName("name").item(0).getTextContent();
-//            String address = node.getElementsByTagName("address").item(0).getTextContent();
-//
-//        }
     }
 }
