@@ -22,10 +22,6 @@ public class FoodItemHandler {
     private String path;
     private File xmlFile;
     private Map<String, FoodItem> foodItem;
-    private List<FoodItem> components;
-    private Map<FoodItem, Integer> ingredientCounts;
-    private String recipeNotes;
-    private double salePrice;
     private String code;
     private UnitType unit;
     private DietaryLogic isVegetarian;
@@ -73,8 +69,6 @@ public class FoodItemHandler {
             reset();
             node = (Element) nodeList.item(i);
 
-            recipeNotes = node.getElementsByTagName("recipeNotes").item(0).getTextContent();
-            salePrice = Double.parseDouble(node.getElementsByTagName("salePrice").item(0).getTextContent());
             code = node.getElementsByTagName("code").item(0).getTextContent();
             unit = units(node.getAttribute("unit"));
             isVegetarian = diet(node.getAttribute("isVeg"));
@@ -82,7 +76,6 @@ public class FoodItemHandler {
             isGlutenFree = diet(node.getAttribute("isgf"));
             name = node.getElementsByTagName("name").item(0).getTextContent();
             caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("calorieCount").item(0).getTextContent());
-            // I'm not sure how components and ingredientCounts should be done.
 
             FoodItem food = new FoodItem(code, name, UnitType.COUNT);
             food.setCaloriesPerUnit(caloriesPerUnit);
@@ -135,8 +128,6 @@ public class FoodItemHandler {
 
 
     private void reset() {
-        recipeNotes = "";
-        salePrice = 0;
         code = "";
         name = "";
         unit = UnitType.UNKNOWN;
