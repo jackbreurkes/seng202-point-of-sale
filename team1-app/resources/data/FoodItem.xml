@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE fooditems SYSTEM "foodItem.dtd">
+<!DOCTYPE fooditems SYSTEM "../dtd/fooditems.dtd">
 <fooditems>
     <description>Food sold by our food truck</description>
     <fooditem unit="g">
-        <code>BeefBurg</code>
+        <code>BEEFBURG</code>
         <name>Hamburger</name>
-        <calorieCount>295</calorieCount>
+        <caloriesPerUnit>295</caloriesPerUnit>
     </fooditem>
     <fooditem unit="g">
-        <code>CheeseBurg</code>
+        <code>CHEESEBURG</code>
         <name>Cheeseburger</name>
-        <calorieCount>303</calorieCount>
+        <caloriesPerUnit>303</caloriesPerUnit>
     </fooditem>
     <fooditem unit="g" isVegetarian="yes">
-        <code>TofuBurg</code>
+        <code>TOFUBURG</code>
         <name>Tofu Burger</name>
-        <calorieCount>168.4</calorieCount>
+        <caloriesPerUnit>168.4</caloriesPerUnit>
     </fooditem>
     <fooditem unit="ml" isVegan="yes">
-        <code>AppleSoda</code>
-        <name>Sparkling Apple Juice</name>
-        <calorieCount>87</calorieCount>
+        <code>APPLESODA</code>
+        <name>Sparkling Apple</name>
+        <caloriesPerUnit>87</caloriesPerUnit>
     </fooditem>
 </fooditems>
