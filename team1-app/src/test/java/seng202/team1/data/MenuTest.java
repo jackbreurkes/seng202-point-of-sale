@@ -12,7 +12,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-
 public class MenuTest {
 
     Menu menu;
@@ -30,7 +29,7 @@ public class MenuTest {
 
     @Test
     void testAddItem() {
-        assertEquals(menu.getMenuLength(), 0);
+        assertEquals(menu.getMenuItems().size(), 0);
         menu.setMenuName("Beverages");
         assertEquals(menu.getMenuName(), "Beverages");
         menu.addItem(testFood1);
@@ -55,7 +54,7 @@ public class MenuTest {
         assertEquals(menu.getMenuItems(), testList);
         // removes item from menu and checks if it is empty
         menu.removeItem(testFood1);
-        assertEquals(menu.getMenuLength(), 0);
+        assertEquals(menu.getMenuItems().size(), 0);
     }
 
 
@@ -70,7 +69,7 @@ public class MenuTest {
         menu.addItem(testFood3);
         assertEquals(menu.getMenuItems(), testList);
         menu.removeMenu();
-        assertEquals(menu.getMenuLength(), 0);
+        assertEquals(menu.getMenuItems().size(), 0);
     }
 }
 

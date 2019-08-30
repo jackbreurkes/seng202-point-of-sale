@@ -12,14 +12,14 @@ public class MemoryStorage implements FoodItemDAO {
 
     private static MemoryStorage instance;
 
-    private Set<FoodItem> suppliedFoodItems;
+    private Map<String, FoodItem> suppliedFoodItems;
     private Map<String, Integer> suppliedFoodItemCounts; // maps code to a count
 
     /**
      * private constructor to enforce singleton pattern
      */
     private MemoryStorage() {
-        suppliedFoodItems = new HashSet<FoodItem>();
+        suppliedFoodItems = new HashMap<String, FoodItem>();
         suppliedFoodItemCounts = new HashMap<String, Integer>();
     }
 
@@ -41,41 +41,48 @@ public class MemoryStorage implements FoodItemDAO {
      */
     public void resetInstance() {
         // TODO get rid of this? we need it for testing but it seems bad?
-        suppliedFoodItems = new HashSet<FoodItem>();
+        suppliedFoodItems = new HashMap<String, FoodItem>();
         suppliedFoodItemCounts = new HashMap<String, Integer>();
     }
 
     @Override
     public Set<FoodItem> getAllFoodItems() {
-        return suppliedFoodItems;
+        return new HashSet<FoodItem>(suppliedFoodItems.values());
     }
 
     @Override
     public FoodItem getFoodItemByCode(String code) {
-        for (FoodItem item : suppliedFoodItems) {
-            if (item.getCode().equals(code)) {
-                return item;
-            }
-        }
-        return null;
+        return suppliedFoodItems.get(code);
     }
 
     @Override
     public void addFoodItem(FoodItem item, int count) {
         // code is assumed to be valid, is that good practice? seems fine imo but should ask
-        suppliedFoodItems.add(item);
+        if (item == null) {
+            throw new NullPointerException();
+        }
+        if (suppliedFoodItems.containsKey(item.getCode())) {
+            throw new InvalidDataCodeException("FoodItem with given code is already in storage");
+        }
+        suppliedFoodItems.put(item.getCode(), item);
         suppliedFoodItemCounts.put(item.getCode(), count);
     }
 
     @Override
-    public void editFoodItem(String code, FoodItem alteredItem) {
-
+    public void updateFoodItem(FoodItem alteredItem) {
+        if (alteredItem == null) {
+            throw new NullPointerException();
+        }
+        String code = alteredItem.getCode();
+        if (!suppliedFoodItems.containsKey(code)) {
+            throw new InvalidDataCodeException("no item exists with the given code, please use addFoodItem instead");
+        }
+        suppliedFoodItems.put(code, alteredItem);
     }
 
     @Override
     public void removeFoodItem(String code) {
-        boolean itemRemoved = suppliedFoodItems.removeIf(item -> item.getCode().equals(code));
-        if (!itemRemoved) {
+        if (suppliedFoodItems.remove(code) == null) {
             throw new InvalidDataCodeException("no FoodItem found with corresponding code");
         }
         suppliedFoodItemCounts.remove(code);

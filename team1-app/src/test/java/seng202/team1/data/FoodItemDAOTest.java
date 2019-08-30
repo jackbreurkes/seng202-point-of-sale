@@ -1,7 +1,6 @@
 package seng202.team1.data;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.InvalidDataCodeException;
@@ -36,7 +35,7 @@ class FoodItemDAOTest {
     }
 
     @Test
-    void testGetAllSupplied() {
+    void testGetAll() {
         Set<FoodItem> items = foodStorage.getAllFoodItems();
         assertEquals(0, items.size());
 
@@ -47,8 +46,7 @@ class FoodItemDAOTest {
     }
 
     @Test
-    @Disabled
-    void testAddSupplied() {
+    void testAdd() {
         foodStorage.addFoodItem(suppliedTestItem, 1000);
         assertEquals(suppliedTestItem,
                 foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
@@ -59,32 +57,32 @@ class FoodItemDAOTest {
         });
 
         // test adding null
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             foodStorage.addFoodItem(null, 1000);
         });
     }
 
     @Test
-    @Disabled
-    void testEditSupplied() {
+    void testEdit() {
         foodStorage.addFoodItem(suppliedTestItem, 1000);
 
         FoodItem alteredItem = new FoodItem("ITEM1", "Canola Oil", UnitType.GRAM);
-        foodStorage.editFoodItem(suppliedTestItem.getCode(), alteredItem);
+        foodStorage.updateFoodItem(alteredItem);
         assertEquals(alteredItem, foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
 
+        // the item's code does not exist within storage
+        FoodItem notStoredItem = new FoodItem("ITEM2", "Eggs", UnitType.COUNT);
         assertThrows(InvalidDataCodeException.class, () -> {
-            foodStorage.editFoodItem(suppliedTestItem.getCode(),
-                    new FoodItem("ITEM2", "Linseed Oil", UnitType.GRAM));
+            foodStorage.updateFoodItem(notStoredItem);
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            foodStorage.editFoodItem(suppliedTestItem.getCode(), null);
+        assertThrows(NullPointerException.class, () -> {
+            foodStorage.updateFoodItem(null);
         });
     }
 
     @Test
-    void testRemoveSupplied() {
+    void testRemove() {
         foodStorage.addFoodItem(suppliedTestItem, 1000);
 
         foodStorage.removeFoodItem(suppliedTestItem.getCode());
@@ -96,7 +94,7 @@ class FoodItemDAOTest {
     }
 
     @Test
-    void testGetSetSuppliedStock() {
+    void testGetSetStock() {
         foodStorage.addFoodItem(suppliedTestItem, 1000);
         assertEquals(1000, foodStorage.getFoodItemStock(suppliedTestItem.getCode()));
 

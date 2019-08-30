@@ -29,11 +29,10 @@ public interface FoodItemDAO {
 
     /**
      * sets the properties of a FoodItem to those of a new FoodItem.
-     * the new item's code should be the same as the one that is being changed.
-     * @param code the code of the item to edit
-     * @param alteredItem the FoodItem
+     * the new item's code should be the same as the one that is being updated.
+     * @param alteredItem the FoodItem to update in storage
      */
-    void editFoodItem(String code, FoodItem alteredItem);
+    void updateFoodItem(FoodItem alteredItem);
 
     /**
      * remove a FoodItem from storage entirely.
