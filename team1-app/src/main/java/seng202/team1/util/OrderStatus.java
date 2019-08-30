@@ -6,5 +6,5 @@ import java.util.*;
  * enum to represent the status of an order.
  */
 public enum OrderStatus {
-    CREATING, SUBMITTED, COMPLETED, CANCELLED
+    CREATING, SUBMITTED, COMPLETED, CANCELLED, REFUNDED
 }
