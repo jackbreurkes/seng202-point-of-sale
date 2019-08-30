@@ -120,7 +120,7 @@ public class SupplierHandler {
                     // ask about phoneType
             }
 
-            //FOR TESTING
+//            //FOR TESTING
 //            System.out.println("ID is: " + id);
 //            System.out.println("Name is: " + name);
 //            System.out.println("Address is: " + address);
