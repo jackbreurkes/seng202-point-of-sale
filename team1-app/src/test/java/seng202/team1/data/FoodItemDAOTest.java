@@ -13,21 +13,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class FoodItemDAOTest {
 
     private FoodItemDAO foodStorage;
-    private FoodItem suppliedTestItem;
+    private FoodItem testItem;
 
     @BeforeEach
     void setupStorage() {
         foodStorage = MemoryStorage.getInstance(); // TODO make this more modular??
         ((MemoryStorage) foodStorage).resetInstance(); // TODO this feels bad
-        suppliedTestItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
+        testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
     }
 
     @Test
     void testGetByCode() {
-        assertNull(foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
+        assertNull(foodStorage.getFoodItemByCode(testItem.getCode()));
 
-        foodStorage.addFoodItem(suppliedTestItem, 1);
-        assertEquals(suppliedTestItem, foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
+        foodStorage.addFoodItem(testItem, 1);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
 
         assertNull(foodStorage.getFoodItemByCode("UNUSED CODE"));
 
@@ -39,21 +39,21 @@ class FoodItemDAOTest {
         Set<FoodItem> items = foodStorage.getAllFoodItems();
         assertEquals(0, items.size());
 
-        foodStorage.addFoodItem(suppliedTestItem, 0);
+        foodStorage.addFoodItem(testItem, 0);
         items = foodStorage.getAllFoodItems();
         assertEquals(1, items.size());
-        assertTrue(items.contains(suppliedTestItem));
+        assertTrue(items.contains(testItem));
     }
 
     @Test
     void testAdd() {
-        foodStorage.addFoodItem(suppliedTestItem, 1000);
-        assertEquals(suppliedTestItem,
-                foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
+        foodStorage.addFoodItem(testItem, 1000);
+        assertEquals(testItem,
+                foodStorage.getFoodItemByCode(testItem.getCode()));
 
         // test adding an already added item
         assertThrows(InvalidDataCodeException.class, () -> {
-            foodStorage.addFoodItem(suppliedTestItem, 1000);
+            foodStorage.addFoodItem(testItem, 1000);
         });
 
         // test adding null
@@ -64,11 +64,11 @@ class FoodItemDAOTest {
 
     @Test
     void testEdit() {
-        foodStorage.addFoodItem(suppliedTestItem, 1000);
+        foodStorage.addFoodItem(testItem, 1000);
 
         FoodItem alteredItem = new FoodItem("ITEM1", "Canola Oil", UnitType.GRAM);
         foodStorage.updateFoodItem(alteredItem);
-        assertEquals(alteredItem, foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
+        assertEquals(alteredItem, foodStorage.getFoodItemByCode(testItem.getCode()));
 
         // the item's code does not exist within storage
         FoodItem notStoredItem = new FoodItem("ITEM2", "Eggs", UnitType.COUNT);
@@ -83,33 +83,33 @@ class FoodItemDAOTest {
 
     @Test
     void testRemove() {
-        foodStorage.addFoodItem(suppliedTestItem, 1000);
+        foodStorage.addFoodItem(testItem, 1000);
 
-        foodStorage.removeFoodItem(suppliedTestItem.getCode());
-        assertNull(foodStorage.getFoodItemByCode(suppliedTestItem.getCode()));
+        foodStorage.removeFoodItem(testItem.getCode());
+        assertNull(foodStorage.getFoodItemByCode(testItem.getCode()));
 
         assertThrows(InvalidDataCodeException.class, () -> {
-            foodStorage.removeFoodItem(suppliedTestItem.getCode());
+            foodStorage.removeFoodItem(testItem.getCode());
         });
     }
 
     @Test
     void testGetSetStock() {
-        foodStorage.addFoodItem(suppliedTestItem, 1000);
-        assertEquals(1000, foodStorage.getFoodItemStock(suppliedTestItem.getCode()));
+        foodStorage.addFoodItem(testItem, 1000);
+        assertEquals(1000, foodStorage.getFoodItemStock(testItem.getCode()));
 
-        foodStorage.setFoodItemStock(suppliedTestItem.getCode(), 500);
-        assertEquals(500, foodStorage.getFoodItemStock(suppliedTestItem.getCode()));
+        foodStorage.setFoodItemStock(testItem.getCode(), 500);
+        assertEquals(500, foodStorage.getFoodItemStock(testItem.getCode()));
 
-        foodStorage.setFoodItemStock(suppliedTestItem.getCode(), 0);
-        assertEquals(0, foodStorage.getFoodItemStock(suppliedTestItem.getCode()));
+        foodStorage.setFoodItemStock(testItem.getCode(), 0);
+        assertEquals(0, foodStorage.getFoodItemStock(testItem.getCode()));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            foodStorage.setFoodItemStock(suppliedTestItem.getCode(), -1);
+            foodStorage.setFoodItemStock(testItem.getCode(), -1);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            foodStorage.setFoodItemStock(suppliedTestItem.getCode(), Integer.MAX_VALUE + 1);
+            foodStorage.setFoodItemStock(testItem.getCode(), Integer.MAX_VALUE + 1);
         });
 
         assertThrows(InvalidDataCodeException.class, () -> {

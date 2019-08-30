@@ -12,15 +12,15 @@ public class MemoryStorage implements FoodItemDAO {
 
     private static MemoryStorage instance;
 
-    private Map<String, FoodItem> suppliedFoodItems;
-    private Map<String, Integer> suppliedFoodItemCounts; // maps code to a count
+    private Map<String, FoodItem> foodItems;
+    private Map<String, Integer> foodItemCounts; // maps code to a count
 
     /**
      * private constructor to enforce singleton pattern
      */
     private MemoryStorage() {
-        suppliedFoodItems = new HashMap<String, FoodItem>();
-        suppliedFoodItemCounts = new HashMap<String, Integer>();
+        foodItems = new HashMap<String, FoodItem>();
+        foodItemCounts = new HashMap<String, Integer>();
     }
 
     /**
@@ -41,18 +41,18 @@ public class MemoryStorage implements FoodItemDAO {
      */
     public void resetInstance() {
         // TODO get rid of this? we need it for testing but it seems bad?
-        suppliedFoodItems = new HashMap<String, FoodItem>();
-        suppliedFoodItemCounts = new HashMap<String, Integer>();
+        foodItems = new HashMap<String, FoodItem>();
+        foodItemCounts = new HashMap<String, Integer>();
     }
 
     @Override
     public Set<FoodItem> getAllFoodItems() {
-        return new HashSet<FoodItem>(suppliedFoodItems.values());
+        return new HashSet<FoodItem>(foodItems.values());
     }
 
     @Override
     public FoodItem getFoodItemByCode(String code) {
-        return suppliedFoodItems.get(code);
+        return foodItems.get(code);
     }
 
     @Override
@@ -61,11 +61,11 @@ public class MemoryStorage implements FoodItemDAO {
         if (item == null) {
             throw new NullPointerException();
         }
-        if (suppliedFoodItems.containsKey(item.getCode())) {
+        if (foodItems.containsKey(item.getCode())) {
             throw new InvalidDataCodeException("FoodItem with given code is already in storage");
         }
-        suppliedFoodItems.put(item.getCode(), item);
-        suppliedFoodItemCounts.put(item.getCode(), count);
+        foodItems.put(item.getCode(), item);
+        foodItemCounts.put(item.getCode(), count);
     }
 
     @Override
@@ -74,18 +74,18 @@ public class MemoryStorage implements FoodItemDAO {
             throw new NullPointerException();
         }
         String code = alteredItem.getCode();
-        if (!suppliedFoodItems.containsKey(code)) {
+        if (!foodItems.containsKey(code)) {
             throw new InvalidDataCodeException("no item exists with the given code, please use addFoodItem instead");
         }
-        suppliedFoodItems.put(code, alteredItem);
+        foodItems.put(code, alteredItem);
     }
 
     @Override
     public void removeFoodItem(String code) {
-        if (suppliedFoodItems.remove(code) == null) {
+        if (foodItems.remove(code) == null) {
             throw new InvalidDataCodeException("no FoodItem found with corresponding code");
         }
-        suppliedFoodItemCounts.remove(code);
+        foodItemCounts.remove(code);
     }
 
     @Override
@@ -96,11 +96,11 @@ public class MemoryStorage implements FoodItemDAO {
         if (getFoodItemByCode(code) == null) {
             throw new InvalidDataCodeException("no FoodItem found with corresponding code");
         }
-        suppliedFoodItemCounts.put(code, count);
+        foodItemCounts.put(code, count);
     }
 
     @Override
     public int getFoodItemStock(String code) {
-        return suppliedFoodItemCounts.get(code);
+        return foodItemCounts.get(code);
     }
 }

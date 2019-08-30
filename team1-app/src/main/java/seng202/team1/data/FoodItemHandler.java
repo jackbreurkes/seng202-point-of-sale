@@ -21,7 +21,7 @@ public class FoodItemHandler {
     private Document parsedDoc;
     private String path;
     private File xmlFile;
-    private Map<String, FoodItem> compositeFoodItem;
+    private Map<String, FoodItem> foodItem;
     private List<FoodItem> components;
     private Map<FoodItem, Integer> ingredientCounts;
     private String recipeNotes;
@@ -65,7 +65,7 @@ public class FoodItemHandler {
     }
 
     public Map<String, FoodItem> getFoodItem() {
-        compositeFoodItem = new HashMap<String, FoodItem>();
+        foodItem = new HashMap<String, FoodItem>();
         NodeList nodeList = parsedDoc.getElementsByTagName("cfooditem");
         Element node;
 
@@ -92,9 +92,9 @@ public class FoodItemHandler {
             food.setName(name);
             food.setUnit(unit);
 
-            compositeFoodItem.put(code, food);
+            foodItem.put(code, food);
         }
-        return compositeFoodItem;
+        return foodItem;
     }
 
     private UnitType units(String s) {

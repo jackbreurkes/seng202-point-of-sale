@@ -23,15 +23,14 @@ public interface SupplierDAO {
      * adds a Supplier to storage. the supplier will be stored using its code attribute.
      * @param supplier the Supplier to store
      */
-    void addCompositeFoodItem(Supplier supplier);
+    void addSupplier(Supplier supplier);
 
     /**
-     * sets the properties of a Supplier to those of a new Supplier.
+     * sets the properties of a Supplier in storage to those of a new Supplier.
      * the new supplier's code should be the same as the one that is being changed.
-     * @param code the code of the supplier to edit
      * @param alteredSupplier the Supplier
      */
-    void editCompositeFoodItem(String code, Supplier alteredSupplier);
+    void updateSupplier(Supplier alteredSupplier);
 
     /**
      * remove a Supplier from storage.

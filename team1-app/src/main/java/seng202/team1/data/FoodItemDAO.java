@@ -22,7 +22,7 @@ public interface FoodItemDAO {
     /**
      * adds a FoodItem to storage. the item will be stored using its code attribute.
      * the item's code should be
-     * @param item the CompositeFoodItem to store
+     * @param item the FoodItem to store
      * @param count the amount to store initially
      */
     void addFoodItem(FoodItem item, int count);
