@@ -31,7 +31,7 @@ class OrderTest {
 
     @Test
     void testGetOrderContents() {
-        assertNull(testOrder.getOrderContents());
+        assertNull(testOrder.getOrderContents()); // TODO should this be null, or an empty List?
         testOrder.addItem(testItem);
         testList = new ArrayList<FoodItem>();
         testList.add(testItem);
@@ -63,6 +63,8 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.addItem(testItem);
         });
+
+        // TODO what happens if you try to add null?
     }
 
     @Test
@@ -98,6 +100,8 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> {
             testOrder.removeItem(testItem2);
         });
+
+        // TODO What happens if you try to remove null?
     }
 
     @Test
