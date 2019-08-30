@@ -25,7 +25,7 @@ import java.util.Map;
 public class SupplierHandler {
     private DocumentBuilder builder = null;
     private Document parsedDoc = null;
-    private File xmlFile;
+    private String source;
 
     private Map<String, Supplier> suppliers;
     private String id;
@@ -44,10 +44,8 @@ public class SupplierHandler {
      * @param validating
      */
     public SupplierHandler(String pathName, boolean validating) {
-        //xmlFile = new File("resources/data/Supplier.xml");
-        xmlFile = new File(pathName);
+        source = pathName;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(validating);
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException pce) {
@@ -57,24 +55,23 @@ public class SupplierHandler {
     }
 
     /**
-     * The DocumentBuilder can be used to parse the input XML file,
-     * which generates a tree for processing.
+     * Uses DocumentBuilder builder to parse the input XML file
+     * and generates a tree for processing.
      */
     public void parseInput() {
         try {
-            parsedDoc = builder.parse(xmlFile);
+            parsedDoc = builder.parse(source);
         } catch (SAXException se) {
             System.err.println(se.getMessage());
             System.exit(1);
         } catch (IOException ioe) {
-            System.err.println(ioe);
+            System.err.println(ioe.getMessage());
             System.exit(1);
         }
     }
 
     /**
      * Obtains parsed document Document.
-     *
      * @return parsedDoc
      */
     public Document parsedDoc() {
@@ -89,8 +86,8 @@ public class SupplierHandler {
      */
     public Map<String, Supplier> getSuppliers() {
         suppliers = new HashMap<String, Supplier>();
-        NodeList nodes = parsedDoc.getElementsByTagName("supplier");
-        int numNodes = nodes.getLength();
+        NodeList nodeList = parsedDoc.getElementsByTagName("supplier");
+        int numNodes = nodeList.getLength();
 
         Node aNode;
         NodeList kids;
@@ -98,7 +95,7 @@ public class SupplierHandler {
 
         for (int i = 0; i < numNodes; i++) {
             reset();
-            aNode = nodes.item(i);
+            aNode = nodeList.item(i);
             kids = aNode.getChildNodes();
             attributes = aNode.getAttributes();
             id = kids.item(1).getTextContent();
@@ -120,7 +117,18 @@ public class SupplierHandler {
                     break;
                 default:
                     // error since phoneType is REQUIRED
+                    // ask about phoneType
             }
+
+            //FOR TESTING
+//            System.out.println("ID is: " + id);
+//            System.out.println("Name is: " + name);
+//            System.out.println("Address is: " + address);
+//            System.out.println("Phone: " + phone);
+//            System.out.println("Email: " + email);
+//            System.out.println("URL: " + url);
+//            System.out.println("PhoneType: " + phoneType);
+//            System.out.println();
             suppliers.put(id, new Supplier(id, name, address, phone, phoneType, email, url));
         }
         return suppliers;
@@ -137,5 +145,15 @@ public class SupplierHandler {
         phoneType = PhoneType.UNKNOWN;
         email = "";
         url = "";
+    }
+
+    /**
+     * Main function for testing.
+     * @param args
+     */
+    public static void main(String args[]) {
+        SupplierHandler sh = new SupplierHandler("team1-app/resources/data/Supplier.xml", true);
+        sh.parseInput();
+        sh.getSuppliers();
     }
 }
