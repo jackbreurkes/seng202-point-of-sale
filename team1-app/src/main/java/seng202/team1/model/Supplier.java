@@ -59,4 +59,115 @@ public class Supplier {
         this.url = url;
     }
 
+    /**
+     * Obtains supplier ID.
+     * @return String
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets supplier ID.
+     * @param id String
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Obtains name of supplier.
+     * @return String
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets name of supplier.
+     * @param name String
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Obtains supplier address.
+     * @return String
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * Sets supplier address.
+     * @param address String
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * Obtains supplier phone number.
+     * @return String
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * Sets supplier phone number.
+     * @param phone String
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * Obtains supplier phone type.
+     * @return PhoneType
+     */
+    public PhoneType getPhoneType() {
+        return phoneType;
+    }
+
+    /**
+     * Sets supplier phone type.
+     * @param phoneType PhoneType
+     */
+    public void setPhoneType(PhoneType phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    /**
+     * Obtains supplier email.
+     * @return String
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets supplier email.
+     * @param email String
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Obtains supplier url.
+     * @return String
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Sets supplier url.
+     * @param url String
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

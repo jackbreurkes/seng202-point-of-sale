@@ -27,6 +27,8 @@ public class SupplierHandler {
     private Document parsedDoc = null;
     private String source;
 
+//    private PrintStream dest; //Ask Tutors what this is for
+
     private Map<String, Supplier> suppliers;
     private String id;
     private String name;
@@ -45,7 +47,12 @@ public class SupplierHandler {
      */
     public SupplierHandler(String pathName, boolean validating) {
         source = pathName;
+
+//        dest = System.out;
+//        this.dest = new PrintStream(dest);
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(validating);
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException pce) {
@@ -147,13 +154,13 @@ public class SupplierHandler {
         url = "";
     }
 
-    /**
-     * Main function for testing.
-     * @param args
-     */
-    public static void main(String args[]) {
-        SupplierHandler sh = new SupplierHandler("team1-app/resources/data/Supplier.xml", true);
-        sh.parseInput();
-        sh.getSuppliers();
-    }
+//    /**
+//     * Main function for testing.
+//     * @param args
+//     */
+//    public static void main(String args[]) {
+//        SupplierHandler sh = new SupplierHandler("team1-app/resources/data/Supplier.xml", true);
+//        sh.parseInput();
+//        sh.getSuppliers().values();
+//    }
 }

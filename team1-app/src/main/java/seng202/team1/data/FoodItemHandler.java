@@ -110,7 +110,7 @@ public class FoodItemHandler {
             // I'm not sure how components and ingredientCounts should be done.
 
             // set up FoodItem
-            FoodItem food = new FoodItem(code, name, UnitType.COUNT);
+            FoodItem food = new FoodItem(code, name, unit);
             food.setIsGlutenFree(isGlutenFree);
             food.setIsVegan(isVegan);
             food.setIsVegetarian(isVegetarian);
