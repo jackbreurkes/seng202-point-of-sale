@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Class Supplier contains methods to set and obtain attributes associated with a supplier.
  */
-public class Supplier {
+public class Supplier implements FoodSource {
 
     /**
      * A unique ID to identify a supplier. Attribute must be a String.
@@ -45,6 +45,8 @@ public class Supplier {
      */
     private String url;
 
+    private Set<FoodItem> itemsStocked;
+
     /**
      * Default constructor. Assigns id, name, address, phone, phoneType, email, and url values.
      */
@@ -57,6 +59,15 @@ public class Supplier {
         this.phoneType = phoneType;
         this.email = email;
         this.url = url;
+    }
+
+    @Override
+    /**
+     * creates FoodItems using money.
+     * TODO we don't have a way of using money yet within the system.
+     */
+    public List<FoodItem> createFoodItems(String code, int amount) {
+        return null;
     }
 
     /**
