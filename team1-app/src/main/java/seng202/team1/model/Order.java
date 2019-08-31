@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
 
 import java.util.*;
@@ -39,7 +40,11 @@ public class Order {
      */
     public void removeItem(FoodItem item) {
         // TODO need to change it so we only remove ONE instance of the item specified
-        foodItems.remove(item);
+        if (foodItems.size() > 0) {
+            foodItems.remove(item);
+        } else {
+            throw new IllegalArgumentException("Items cannot be removed from an empty order.");
+        }
     }
 
     /**
@@ -47,21 +52,18 @@ public class Order {
      */
     public void cancelOrder() {
         // TODO change exception to custom exception
-        //if status is still being processed it can be cancelled
+        //if status is still being processed the order can be cancelled
         if (status == CREATING) {
             status = CANCELLED;
         }
-        //orders cannot be cancelled twice
         else if(status == CANCELLED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("An order cannot be cancelled twice.");
         }
-        //orders cannot be cancelled if they've been refunded
         else if(status == REFUNDED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Orders cannot be cancelled if they've been refunded.");
         }
-        //completed orders cannot be cancelled
         else if(status == COMPLETED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Completed orders cannot be cancelled.");
         }
 
     }
@@ -78,15 +80,13 @@ public class Order {
         }
         //cancelled orders cannot be refunded
         else if(status == CANCELLED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Cancelled orders cannot be refunded.");
         }
-        //orders cannot be refunded twice
         else if(status == REFUNDED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Orders cannot be refunded twice.");
         }
-        //incomplete orders cannot be cancelled
         else if(status == CREATING) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Incomplete orders cannot be cancelled.");
         }
     }
 
@@ -99,17 +99,15 @@ public class Order {
             status = COMPLETED;
             //refund the order or something
         }
-        //cancelled orders cannot be completed
         else if(status == CANCELLED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Cancelled orders cannot be completed.");
         }
-        //refunded orders cannot be completed
         else if(status == REFUNDED) {
-            throw new IllegalArgumentException();
+            throw new InvalidOrderStatusException("Refunded orders cannot be completed.");
         }
-        //incomplete orders cannot be cancelled
-        else if(status == CREATING) {
-            throw new IllegalArgumentException();
+        //Completed orders cannot be completed twice
+        else if(status == COMPLETED) {
+            throw new InvalidOrderStatusException("An order cannot be completed twice.");
         }
     }
 
