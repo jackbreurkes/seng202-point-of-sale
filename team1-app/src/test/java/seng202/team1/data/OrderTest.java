@@ -5,12 +5,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.util.InvalidOrderStatusException;
+import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static seng202.team1.util.OrderStatus.*;
 
 @Disabled
 class OrderTest {
@@ -31,7 +34,8 @@ class OrderTest {
 
     @Test
     void testGetOrderContents() {
-        assertNull(testOrder.getOrderContents()); // TODO should this be null, or an empty List?
+        testList = new ArrayList<FoodItem>();
+        assertEquals(testOrder.getOrderContents(), testList);
         testOrder.addItem(testItem);
         testList = new ArrayList<FoodItem>();
         testList.add(testItem);
@@ -60,11 +64,10 @@ class OrderTest {
 
         //adds an item that doesn't fit proper criteria of an item
         testItem3 = new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.addItem(testItem);
-        });
+        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(testItem));
 
-        // TODO what happens if you try to add null?
+        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
+
     }
 
     @Test
@@ -78,63 +81,48 @@ class OrderTest {
 
         //removes the item and checks it is no longer in the order
         testOrder.removeItem(testItem);
-        assertEquals(testOrder.getOrderContents(), null);
-
+        testList.remove(testItem);
+        assertEquals(testOrder.getOrderContents(), testList);
         //checks items cannot be removed from an empty order
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.removeItem(testItem);
-        });
+        assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem));
 
         //tests that removing an item only removes one instance of said item
         testOrder.addItem(testItem);
         testOrder.addItem(testItem);
         testOrder.removeItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
-
+        testList.remove(testItem);
         //checks that removing the item again will make the order empty
         testOrder.removeItem(testItem);
-        assertNull(testOrder.getOrderContents());
+        assertEquals(testOrder.getOrderContents(), testList);
 
         //tests that an item that is not in the list cannot be removed
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.removeItem(testItem2);
-        });
+        assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem2));
 
-        // TODO What happens if you try to remove null?
+        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
     }
 
     @Test
     void testCancelOrder(){
-        //TODO come up with some more tests, write a custom exception for whe an order is cancelled twice
         testOrder.addItem(testItem);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
         testOrder.cancelOrder();
-        // TODO specify how the order status works (is it a string, etc)
         // checks the status of the order has correctly been set to cancelled
-        assertEquals(testOrder.getOrderStatus(), "Cancelled");
+        assertEquals(testOrder.getOrderStatus(), CANCELLED);
 
         //makes sure an order can't be cancelled twice
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.cancelOrder();
-            // TODO maybe write a custom exception for this?
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.cancelOrder());
 
         //checks a cancelled order cannot have items added to it
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.addItem(testItem);
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.addItem(testItem));
 
         //checks a cancelled order cannot have items removed from it
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.removeItem(testItem);
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
 
         //Makes sure a cancelled order cannot be completed
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.completeOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
 
         // TODO does cancelling orders happen at a certain time? different behaviour for different order statuses
     }
@@ -147,22 +135,16 @@ class OrderTest {
         testOrder.addItem(testItem2);
         testOrder.completeOrder();
         // checks the status of the order has correctly been set to completed
-        assertEquals(testOrder.getOrderStatus(), "Complete");
+        assertEquals(testOrder.getOrderStatus(), COMPLETED);
 
         //Makes sure an order cannot be completed twice
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.completeOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
 
         //checks a completed order cannot have items removed from it
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.removeItem(testItem);
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
 
         //Makes sure a completed order cannot be cancelled
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.completeOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
 
     @Test
@@ -172,35 +154,25 @@ class OrderTest {
         double cash = 20;
 
         //makes sure an incomplete order cannot be refunded
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.refundOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
         testOrder.completeOrder();
         testOrder.refundOrder();
 
         // checks the status of the order has correctly been set to refunded
-        assertEquals(testOrder.getOrderStatus(), "Refunded");
+        assertEquals(testOrder.getOrderStatus(), REFUNDED);
 
         //makes sure a refunded order cannot be completed
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.completeOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
 
         //checks a refunded order cannot have items removed from it
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.removeItem(testItem);
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
 
         //Makes sure a refunded order cannot be cancelled
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.completeOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
 
         //Makes sure an order cannot be refunded twice
-        assertThrows(IllegalArgumentException.class, () -> {
-            testOrder.refundOrder();
-        });
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
     }
 

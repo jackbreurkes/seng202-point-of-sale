@@ -31,7 +31,11 @@ public class Order {
      * adds a single instance of the specified item to the foodItems list
      */
     public void addItem(FoodItem item) {
-        foodItems.add(item);
+        if (item == null) {
+            throw new IllegalArgumentException("A null item cannot be added to an order.");
+        } else {
+            foodItems.add(item);
+        }
     }
 
     /**
@@ -39,6 +43,9 @@ public class Order {
      * removes a single instance of the specified item from the foodItems list
      */
     public void removeItem(FoodItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("A null item cannot be removed from an order.");
+        }
         if (foodItems.size() > 0) {
             foodItems.remove(item);
         } else {
