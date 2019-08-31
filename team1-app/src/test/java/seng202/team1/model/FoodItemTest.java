@@ -1,6 +1,7 @@
 package seng202.team1.model;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
@@ -108,6 +109,7 @@ class FoodItemTest {
     }
 
     @Test
+    @Disabled
     void testDietary() {
         // default values
         assertEquals(DietaryLogic.NO, testItem.getIsVegetarian());
@@ -116,9 +118,11 @@ class FoodItemTest {
 
         testItem.setIsVegan(DietaryLogic.YES);
         assertEquals(DietaryLogic.YES, testItem.getIsVegan());
+        assertEquals(DietaryLogic.YES, testItem.getIsVegetarian());
 
         testItem.setIsVegan(DietaryLogic.OPTIONAL);
         assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegan());
+        assertNotEquals(DietaryLogic.NO, testItem.getIsVegetarian()); // must be YES or OPTIONAL
 
         testItem.setIsVegan(DietaryLogic.NO);
         assertEquals(DietaryLogic.NO, testItem.getIsVegan());

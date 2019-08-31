@@ -3,6 +3,7 @@ package seng202.team1.model;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
+import java.util.Objects;
 
 
 /**
@@ -114,4 +115,30 @@ public class FoodItem {
         this.isGlutenFree = isGlutenFree;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodItem foodItem = (FoodItem) o;
+        return Double.compare(foodItem.caloriesPerUnit, caloriesPerUnit) == 0 &&
+                code.equals(foodItem.code) &&
+                name.equals(foodItem.name) &&
+                unit == foodItem.unit &&
+                isVegetarian == foodItem.isVegetarian &&
+                isVegan == foodItem.isVegan &&
+                isGlutenFree == foodItem.isGlutenFree;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodItem{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", unit=" + unit +
+                ", isVegetarian=" + isVegetarian +
+                ", isVegan=" + isVegan +
+                ", isGlutenFree=" + isGlutenFree +
+                ", caloriesPerUnit=" + caloriesPerUnit +
+                '}';
+    }
 }
