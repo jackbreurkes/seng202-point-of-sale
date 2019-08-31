@@ -39,7 +39,6 @@ public class Order {
      * removes a single instance of the specified item from the foodItems list
      */
     public void removeItem(FoodItem item) {
-        // TODO need to change it so we only remove ONE instance of the item specified
         if (foodItems.size() > 0) {
             foodItems.remove(item);
         } else {
