@@ -51,7 +51,6 @@ public class Order {
      * changes the status of the order to cancelled, (registers it in the database?)
      */
     public void cancelOrder() {
-        // TODO change exception to custom exception
         //if status is still being processed the order can be cancelled
         if (status == CREATING) {
             status = CANCELLED;
@@ -94,7 +93,6 @@ public class Order {
      * changes the status of the order to complete, (registers it in the database?)
      */
     public void completeOrder() {
-        // TODO implement here
         if (status == CREATING) {
             status = COMPLETED;
             //refund the order or something
