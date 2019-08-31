@@ -51,7 +51,7 @@ public class FoodItemHandler {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-            System.exit(1);
+            System.exit(1); // TODO this seems a bit extreme???
         }
     }
 
@@ -134,7 +134,7 @@ public class FoodItemHandler {
     private UnitType units(String s) {
         UnitType uni;
         switch (s) {
-            case "gram":
+            case "g":
                 uni = UnitType.GRAM;
                 break;
             case "ml":
@@ -186,7 +186,7 @@ public class FoodItemHandler {
      * @param args
      */
     public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("team1-app/resources/data/FoodItem.xml", true);
+        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         fh.parseInput();
         fh.getFoodItems();
     }
