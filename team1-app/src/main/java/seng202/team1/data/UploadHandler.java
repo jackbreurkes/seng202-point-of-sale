@@ -59,7 +59,6 @@ public class UploadHandler {
         for (FoodItem foo: foodItemsLoaded.values()) {
             System.out.println(foo.getName());
         }
-
     }
 
 
