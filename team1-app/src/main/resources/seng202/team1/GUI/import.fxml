@@ -21,7 +21,8 @@
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
    </padding>
    <children>
-      <Button fx:id="importButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#importFile" text="import from file" GridPane.halignment="CENTER">
+       <Button fx:id="importButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#changeSceneToSelectType"
+               text="import from file" GridPane.halignment="CENTER">
          <GridPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </GridPane.margin>

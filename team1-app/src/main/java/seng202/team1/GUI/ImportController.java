@@ -3,24 +3,28 @@ package seng202.team1.GUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.SortEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.data.UploadHandler;
 import seng202.team1.model.FoodItem;
-import seng202.team1.util.UnitType;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ImportController {
 
     @FXML
-    private Text statusText;
+    private static Text statusText;
     @FXML
     private TableView foodItemTable;
 
@@ -42,34 +46,8 @@ public class ImportController {
         updateTable();
     }
 
-    /**
-     * Opens file chooser and then imports file if a file of the correct type is selected
-     */
-    public void importFile() {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
-
-        if (selectedFile != null) {
-            String fileName = selectedFile.getName();
-            String fileExtension = "";
-            int i = fileName.lastIndexOf('.');
-            if (i >= 0) { fileExtension = fileName.substring(i+1); }
-            if (fileExtension.equals("xml")) {
-                statusText.setText("File import started.");
-                // call to import method from xml import class
-
-                // to upload filename if it's food item
-                UploadHandler.uploadFoodItems(fileName);
-
-
-
-                //
-            } else {
-                statusText.setText("Incorrect file type.");
-            }
-        } else {
-            statusText.setText("No file selected.");
-        }
+    public static void setStatusText(String text) {
+        statusText.setText(text);
     }
 
     public void updateTable() {
@@ -91,4 +69,16 @@ public class ImportController {
         foodItemTable.setItems(items);
     }
 
+    /**
+     * Changes scene to data type select
+     */
+    public void changeSceneToSelectType(javafx.event.ActionEvent event) throws IOException {
+        Parent typeSelectParent = FXMLLoader.load(getClass().getResource("typeSelect.fxml"));
+        Scene typeSelectScene = new Scene(typeSelectParent);
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        window.setScene(typeSelectScene);
+        window.show();
+    }
 }
