@@ -159,7 +159,7 @@ public class SupplierHandler {
 //     * @param args
 //     */
 //    public static void main(String args[]) {
-//        SupplierHandler sh = new SupplierHandler("team1-app/resources/data/Supplier.xml", true);
+//        SupplierHandler sh = new SupplierHandler("resources/data/Supplier.xml", true);
 //        sh.parseInput();
 //        sh.getSuppliers().values();
 //    }
