@@ -26,31 +26,25 @@ class FoodItemHandlerTest {
     @BeforeEach
     void beforeEach() {
         source = "src/test/resources/xml/TESTXML1.xml";
+        handler = new FoodItemHandler(source, true);
     }
 
     @Test
     void parseInput() throws ParserConfigurationException, IOException, SAXException {
-        handler = new FoodItemHandler(source, true);
         assertNull(handler.parsedDoc());
         handler.parseInput();
-
+        // Create another document to parse and assert equals to.
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document parsedDoc = builder.parse(source);
         assertEquals(handler.parsedDoc().toString(), parsedDoc.toString());
 
-
-
     }
 
-    @Test
-    void parsedDoc() {
-    }
 
     @Test
     void testParseTESTXML1() {
-        handler = new FoodItemHandler(source, true);
         handler.parseInput();
 
         FoodItem beefburg = new FoodItem("BEEFBURG", "Hamburger", UnitType.GRAM);
@@ -63,6 +57,7 @@ class FoodItemHandlerTest {
         FoodItem applesoda = new FoodItem("APPLESODA", "Sparkling Apple", UnitType.ML);
         applesoda.setCaloriesPerUnit(87);
         applesoda.setIsVegan(DietaryLogic.YES);
+        applesoda.setIsGlutenFree(DietaryLogic.YES);
 
         List<FoodItem> expectedItems = Arrays.asList(
                 beefburg, cheeseburg, tofuburg, applesoda
@@ -74,5 +69,11 @@ class FoodItemHandlerTest {
 
         assertEquals(expectedItems.size(), items.size());
         assertEquals(expectedItems, items);
+//        for (int i = 0; i < items.size(); i++) {
+//            assertEquals(expectedItems.get(i), items.get(i));
+//        }
+//
+//        I wrote this test then realised that I am not sure if this test
+//        is necessary since assertEquals(expectedItems, items) pretty much does the same thing.. - Euan
     }
 }

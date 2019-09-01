@@ -184,8 +184,16 @@ public class FoodItemHandler {
      * @param args
      */
     public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("team1-app/resources/data/FoodItem.xml", true);
+        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         fh.parseInput();
         fh.getFoodItems();
+        System.out.println(fh.getFoodItems().keySet());
+        System.out.println(fh.getFoodItems().values());
+        System.out.println("");
+
+        System.out.println("");
+        for (FoodItem foo: fh.getFoodItems().values()) {
+            System.out.println(foo.getName());
+        }
     }
 }
