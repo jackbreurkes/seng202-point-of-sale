@@ -13,14 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class FoodItemHandlerTest {
 
     @Test
-    void parseInput() {
-    }
-
-    @Test
-    void parsedDoc() {
-    }
-
-    @Test
     void testParseTESTXML1() {
         FoodItemHandler handler = new FoodItemHandler("src/test/resources/xml/TESTXML1.xml", true);
         handler.parseInput();
@@ -35,6 +27,7 @@ class FoodItemHandlerTest {
         FoodItem applesoda = new FoodItem("APPLESODA", "Sparkling Apple", UnitType.ML);
         applesoda.setCaloriesPerUnit(87);
         applesoda.setIsVegan(DietaryLogic.YES);
+        applesoda.setIsGlutenFree(DietaryLogic.YES);
 
         List<FoodItem> expectedItems = Arrays.asList(
                 beefburg, cheeseburg, tofuburg, applesoda

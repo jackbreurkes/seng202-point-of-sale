@@ -17,7 +17,7 @@
         <name>Tofu Burger</name>
         <caloriesPerUnit>168.4</caloriesPerUnit>
     </fooditem>
-    <fooditem unit="ml" isVegan="yes">
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>APPLESODA</code>
         <name>Sparkling Apple</name>
         <caloriesPerUnit>87</caloriesPerUnit>

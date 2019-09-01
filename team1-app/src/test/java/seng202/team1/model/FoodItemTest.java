@@ -109,39 +109,71 @@ class FoodItemTest {
     }
 
     @Test
-    @Disabled
-    void testDietary() {
-        // default values
+    void testIsVegetarian() {
+        assertEquals(DietaryLogic.NO, testItem.getIsVegetarian()); // default value
+
+        testItem.setIsVegetarian(DietaryLogic.YES);
+        assertEquals(DietaryLogic.YES, testItem.getIsVegetarian());
+        assertEquals(DietaryLogic.NO, testItem.getIsVegan()); // should not change
+
+        testItem.setIsVegan(DietaryLogic.YES);
+        testItem.setIsVegetarian(DietaryLogic.OPTIONAL);
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegetarian());
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegan()); // should change from YES to OPTIONAL
+
+        testItem.setIsVegan(DietaryLogic.OPTIONAL);
+        testItem.setIsVegetarian(DietaryLogic.NO);
         assertEquals(DietaryLogic.NO, testItem.getIsVegetarian());
-        assertEquals(DietaryLogic.NO, testItem.getIsVegan());
-        assertEquals(DietaryLogic.NO, testItem.getIsGlutenFree());
+        assertEquals(DietaryLogic.NO, testItem.getIsVegan()); // should change from OPTIONAL to NO
+
+        assertThrows(NullPointerException.class, () -> {
+            testItem.setIsVegetarian(null);
+        });
+    }
+
+    @Test
+    void testIsVegan() {
+        assertEquals(DietaryLogic.NO, testItem.getIsVegan()); // default value
 
         testItem.setIsVegan(DietaryLogic.YES);
         assertEquals(DietaryLogic.YES, testItem.getIsVegan());
         assertEquals(DietaryLogic.YES, testItem.getIsVegetarian());
 
+        testItem.setIsVegan(DietaryLogic.NO);
+        assertEquals(DietaryLogic.NO, testItem.getIsVegan());
+        assertEquals(DietaryLogic.YES, testItem.getIsVegetarian()); // should not change
+
+
         testItem.setIsVegan(DietaryLogic.OPTIONAL);
         assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegan());
-        assertNotEquals(DietaryLogic.NO, testItem.getIsVegetarian()); // must be YES or OPTIONAL
+        assertEquals(DietaryLogic.YES, testItem.getIsVegetarian()); // should not change
+
+        testItem.setIsVegetarian(DietaryLogic.NO);
+        testItem.setIsVegan(DietaryLogic.OPTIONAL);
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegan());
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegetarian()); // should change from NO to OPTIONAL
 
         testItem.setIsVegan(DietaryLogic.NO);
         assertEquals(DietaryLogic.NO, testItem.getIsVegan());
-
-        testItem.setIsVegetarian(DietaryLogic.YES);
-        assertEquals(DietaryLogic.YES, testItem.getIsVegetarian());
-
-        testItem.setIsGlutenFree(DietaryLogic.YES);
-        assertEquals(DietaryLogic.YES, testItem.getIsGlutenFree());
-
-        // do we need tests for every possibility??
-
-        assertThrows(NullPointerException.class, () -> {
-            testItem.setIsVegetarian(null);
-        });
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsVegetarian()); // should not change
 
         assertThrows(NullPointerException.class, () -> {
             testItem.setIsVegan(null);
         });
+    }
+
+    @Test
+    void testIsGlutenFree() {
+        assertEquals(DietaryLogic.NO, testItem.getIsGlutenFree()); // default value
+
+        testItem.setIsGlutenFree(DietaryLogic.YES);
+        assertEquals(DietaryLogic.YES, testItem.getIsGlutenFree());
+
+        testItem.setIsGlutenFree(DietaryLogic.OPTIONAL);
+        assertEquals(DietaryLogic.OPTIONAL, testItem.getIsGlutenFree());
+
+        testItem.setIsGlutenFree(DietaryLogic.NO);
+        assertEquals(DietaryLogic.NO, testItem.getIsGlutenFree());
 
         assertThrows(NullPointerException.class, () -> {
             testItem.setIsGlutenFree(null);

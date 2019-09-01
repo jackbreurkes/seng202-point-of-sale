@@ -98,23 +98,26 @@ public class FoodItemHandler {
             reset();
             node = (Element) nodeList.item(i);
 
-//            recipeNotes = node.getElementsByTagName("recipeNotes").item(0).getTextContent();
-//            salePrice = Double.parseDouble(node.getElementsByTagName("salePrice").item(0).getTextContent());
             code = node.getElementsByTagName("code").item(0).getTextContent();
             name = node.getElementsByTagName("name").item(0).getTextContent();
             unit = units(node.getAttribute("unit"));
-            isVegetarian = diet(node.getAttribute("isVegetarian"));
-            isVegan = diet(node.getAttribute("isVegan"));
-            isGlutenFree = diet(node.getAttribute("isGlutenFree"));
-            caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
-            // I'm not sure how components and ingredientCounts should be done.
 
-            // set up FoodItem
             FoodItem food = new FoodItem(code, name, unit);
-            food.setIsGlutenFree(isGlutenFree);
-            food.setIsVegan(isVegan);
-            food.setIsVegetarian(isVegetarian);
+            if (node.hasAttribute("isVegetarian")) {
+                isVegetarian = diet(node.getAttribute("isVegetarian"));
+                food.setIsVegetarian(isVegetarian);
+            }
+            if (node.hasAttribute("isVegan")) {
+                isVegan = diet(node.getAttribute("isVegan"));
+                food.setIsVegan(isVegan);
+            }
+            if (node.hasAttribute("isGlutenFree")) {
+                isGlutenFree = diet(node.getAttribute("isGlutenFree"));
+                food.setIsGlutenFree(isGlutenFree);
+            }
+            caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
             food.setCaloriesPerUnit(caloriesPerUnit);
+//            salePrice = Double.parseDouble(node.getElementsByTagName("salePrice").item(0).getTextContent());
 
             // FOR TESTING
 //            System.out.println("Code is: " + code);
@@ -140,11 +143,8 @@ public class FoodItemHandler {
             case "ml":
                 uni = UnitType.ML;
                 break;
-            case "count":
-                uni = UnitType.COUNT;
-                break;
             default:
-                uni = UnitType.UNKNOWN;
+                uni = UnitType.COUNT;
         }
         return uni;
     }
@@ -155,14 +155,12 @@ public class FoodItemHandler {
             case "yes":
                 logic = DietaryLogic.YES;
                 break;
-//            case "no":        // HELLO Euan here. I commented this out as the case NO is already covered with the default case :)
-//                logic = DietaryLogic.NO;
-//                break;
             case "optional":
                 logic = DietaryLogic.OPTIONAL;
                 break;
             default:
                 logic = DietaryLogic.NO;
+                break;
         }
         return logic;
     }
@@ -173,7 +171,7 @@ public class FoodItemHandler {
 //        salePrice = 0;
         code = "";
         name = "";
-        unit = UnitType.UNKNOWN;
+        unit = UnitType.COUNT;
         isVegetarian = DietaryLogic.NO;
         isVegan = DietaryLogic.NO;
         isGlutenFree = DietaryLogic.NO;
@@ -186,7 +184,7 @@ public class FoodItemHandler {
      * @param args
      */
     public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
+        FoodItemHandler fh = new FoodItemHandler("team1-app/resources/data/FoodItem.xml", true);
         fh.parseInput();
         fh.getFoodItems();
     }

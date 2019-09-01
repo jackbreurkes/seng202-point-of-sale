@@ -98,6 +98,13 @@ public class FoodItem {
         if (isVegetarian == null) {
             throw new NullPointerException();
         }
+
+        if (isVegetarian == DietaryLogic.NO) {
+            this.isVegan = DietaryLogic.NO;
+        } else if (isVegetarian == DietaryLogic.OPTIONAL && getIsVegan() == DietaryLogic.YES) {
+            this.isVegan = DietaryLogic.OPTIONAL;
+        }
+
         this.isVegetarian = isVegetarian;
     }
 
@@ -105,6 +112,13 @@ public class FoodItem {
         if (isVegan == null) {
             throw new NullPointerException();
         }
+
+        if (isVegan == DietaryLogic.YES) {
+            isVegetarian = DietaryLogic.YES;
+        } else if (isVegan == DietaryLogic.OPTIONAL && getIsVegetarian() == DietaryLogic.NO) {
+            isVegetarian = DietaryLogic.OPTIONAL;
+        }
+
         this.isVegan = isVegan;
     }
 
