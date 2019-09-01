@@ -132,21 +132,21 @@ public class FoodItemHandler {
     }
 
     private UnitType units(String s) {
-        UnitType uni;
+        UnitType unit;
         switch (s) {
             case "g":
-                uni = UnitType.GRAM;
+                unit = UnitType.GRAM;
                 break;
             case "ml":
-                uni = UnitType.ML;
+                unit = UnitType.ML;
                 break;
             case "count":
-                uni = UnitType.COUNT;
+                unit = UnitType.COUNT;
                 break;
             default:
-                uni = UnitType.UNKNOWN;
+                unit = UnitType.UNKNOWN;
         }
-        return uni;
+        return unit;
     }
 
     private DietaryLogic diet(String s) {
@@ -187,7 +187,11 @@ public class FoodItemHandler {
      */
     public static void main(String args[]) {
         FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
+        System.out.println(fh.parsedDoc());
         fh.parseInput();
+        System.out.println(fh.parsedDoc().toString());
+
+
         fh.getFoodItems();
     }
 }

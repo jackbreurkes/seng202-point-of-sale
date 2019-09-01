@@ -1,10 +1,17 @@
 package seng202.team1.data;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -12,8 +19,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FoodItemHandlerTest {
 
+    FoodItemHandler handler;
+    String source;
+
+
+    @BeforeEach
+    void beforeEach() {
+        source = "src/test/resources/xml/TESTXML1.xml";
+    }
+
     @Test
-    void parseInput() {
+    void parseInput() throws ParserConfigurationException, IOException, SAXException {
+        handler = new FoodItemHandler(source, true);
+        assertNull(handler.parsedDoc());
+        handler.parseInput();
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document parsedDoc = builder.parse(source);
+        assertEquals(handler.parsedDoc().toString(), parsedDoc.toString());
+
+
+
     }
 
     @Test
@@ -22,7 +50,7 @@ class FoodItemHandlerTest {
 
     @Test
     void testParseTESTXML1() {
-        FoodItemHandler handler = new FoodItemHandler("src/test/resources/xml/TESTXML1.xml", true);
+        handler = new FoodItemHandler(source, true);
         handler.parseInput();
 
         FoodItem beefburg = new FoodItem("BEEFBURG", "Hamburger", UnitType.GRAM);
