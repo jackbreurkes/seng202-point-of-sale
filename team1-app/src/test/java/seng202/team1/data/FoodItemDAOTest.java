@@ -32,6 +32,8 @@ class FoodItemDAOTest {
         assertNull(foodStorage.getFoodItemByCode("UNUSED CODE"));
 
         assertNull(foodStorage.getFoodItemByCode(null));
+
+        // TODO invalid codes
     }
 
     @Test

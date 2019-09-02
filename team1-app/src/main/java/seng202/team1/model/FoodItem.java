@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import seng202.team1.util.CodeValidator;
 import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
@@ -71,13 +72,7 @@ public class FoodItem {
     }
 
     public void setCode(String code) {
-        if (code.length() < 3 || code.length() > 10) {
-            throw new IllegalArgumentException("food item codes must be between 3 and 10 characters (inclusive)");
-        }
-        if (!code.matches("[A-Z0-9]+")) {
-            throw new IllegalArgumentException("food item codes must be uppercase alphanumeric");
-        }
-        this.code = code;
+        this.code = CodeValidator.checkCode(code);
     }
 
     public void setName(String name) {
