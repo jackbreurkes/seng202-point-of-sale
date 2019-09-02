@@ -1,6 +1,7 @@
 package seng202.team1.data;
 
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.FoodSource;
 
 import java.util.Set;
 
