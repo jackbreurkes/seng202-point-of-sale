@@ -18,7 +18,7 @@ public class SampleApplication extends Application {
     /**
      * Runs automatically to start primary state (import.fxml)
      * @param primaryStage is the stage it will call
-     * @throws IOException
+     * @throws IOException exception for any IO errors
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
