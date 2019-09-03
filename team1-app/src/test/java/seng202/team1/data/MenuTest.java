@@ -27,6 +27,19 @@ public class MenuTest {
         testFood2 = new FoodItem("TS02", "Test food 2", UnitType.GRAM);
     }
 
+
+    @Test
+    void testGetMenuLength() {
+        // Test Menu length against menuTest list
+        List<FoodItem> menuTest = new ArrayList<FoodItem>();
+        assertEquals(menu.getMenuLength(), menuTest.size());
+        menu.addItem(testFood1);
+        menu.addItem(testFood2);
+        menuTest.add(testFood1);
+        menuTest.add(testFood2);
+        assertEquals(menu.getMenuLength(), menuTest.size());
+    }
+
     @Test
     void testAddItem() {
         assertEquals(menu.getMenuItems().size(), 0);
@@ -41,7 +54,7 @@ public class MenuTest {
 
     @Test
     void testRemoveItem() {
-        // initializes a list to check against the order
+        // Initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
         // adds an item on the testList on two items on the menu
         testList.add(testFood1);
