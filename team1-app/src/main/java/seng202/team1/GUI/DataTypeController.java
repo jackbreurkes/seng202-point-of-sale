@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seng202.team1.data.MemoryStorage;
 import seng202.team1.data.UploadHandler;
 
 import java.io.File;
@@ -58,13 +59,14 @@ public class DataTypeController {
                 fileExtension = fileName.substring(i + 1);
             }
             if (fileExtension.equals("xml")) {
-                ImportController.setStatusText("File import started.");
+                //ImportController.setStatusText("File import started.");
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
                     UploadHandler.uploadFoodItems(selectedFile.getPath());
-                    ImportController.setStatusText("File import started.");
+                    System.out.println(MemoryStorage.getInstance().getAllFoodItems());
+                    //ImportController.setStatusText("File import started.");
                 } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
                     UploadHandler.uploadSuppliers(selectedFile.getPath());
-                    ImportController.setStatusText("File import started.");
+                    //ImportController.setStatusText("File import started.");
                 } else {
                     dataTypeStatus.setText("No data type selected.");
                 }

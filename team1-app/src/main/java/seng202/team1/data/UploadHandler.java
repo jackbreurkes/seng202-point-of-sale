@@ -58,6 +58,11 @@ public class UploadHandler {
             FoodItemHandler foodItemHandler = new FoodItemHandler(pathName, validating);
             foodItemHandler.parseInput();
             foodItemsUploaded = foodItemHandler.getFoodItems();
+
+            FoodItemDAO itemStorage = MemoryStorage.getInstance();
+            for (FoodItem foodItem: foodItemsUploaded.values()) {
+                itemStorage.addFoodItem(foodItem, 1);
+            }
         }
     }
 
@@ -81,21 +86,21 @@ public class UploadHandler {
     public static void main(String args[]) {
         UploadHandler u = new UploadHandler();
         u.uploadSuppliers("resources/data/Supplier.xml");
-        System.out.println(suppliersUploaded.keySet());
-        System.out.println(suppliersUploaded.values());
-        System.out.println("");
+//        System.out.println(suppliersUploaded.keySet());
+//        System.out.println(suppliersUploaded.values());
+//        System.out.println("");
 
         u.uploadFoodItems("resources/data/FoodItem.xml");
-        System.out.println(foodItemsUploaded.keySet());
-        System.out.println(foodItemsUploaded.values());
-        System.out.println("");
-        for (Supplier supplier: suppliersUploaded.values()) {
-            System.out.println(supplier.getName());
-        }
-        System.out.println("");
-        for (FoodItem foo: foodItemsUploaded.values()) {
-            System.out.println(foo.getName());
-        }
+//        System.out.println(foodItemsUploaded.keySet());
+//        System.out.println(foodItemsUploaded.values());
+//        System.out.println("");
+//        for (Supplier supplier: suppliersUploaded.values()) {
+//            System.out.println(supplier.getName());
+//        }
+//        System.out.println("");
+//        for (FoodItem foo: foodItemsUploaded.values()) {
+//            System.out.println(foo.getName());
+//        }
     }
 
 
