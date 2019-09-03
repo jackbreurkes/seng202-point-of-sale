@@ -18,6 +18,7 @@ import seng202.team1.data.MemoryStorage;
 import seng202.team1.data.UploadHandler;
 import seng202.team1.model.FoodItem;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -81,6 +82,22 @@ public class ImportController {
         window.setScene(typeSelectScene);
         window.show();
     }
+
+    /**
+     * When this methods is called, it will change the scene to datatype controller view
+     */
+    public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
+    {
+        Parent editDataParent = FXMLLoader.load(getClass().getResource("editData.fxml"));
+        Scene editDataScene = new Scene(editDataParent);
+
+        //This lines gets the Stage information
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        window.setScene(editDataScene);
+        window.show();
+    }
+
 
 
 }

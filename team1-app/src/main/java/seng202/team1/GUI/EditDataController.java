@@ -31,4 +31,5 @@ public class EditDataController {
     public void goBack(javafx.event.ActionEvent event) throws IOException {
         changeSceneToImport(event);
     }
+
 }
