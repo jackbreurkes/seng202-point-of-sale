@@ -42,7 +42,9 @@ public class EditDataController {
         updateTable();
     }
 
-
+    /**
+     * Updates table with foodItem data
+     */
     public void updateTable() {
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
 

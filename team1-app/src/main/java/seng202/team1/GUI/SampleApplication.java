@@ -14,6 +14,12 @@ import java.io.IOException;
 
 public class SampleApplication extends Application {
 
+
+    /**
+     * Runs automatically to start primary state (import.fxml)
+     * @param primaryStage is the stage it will call
+     * @throws IOException
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("import.fxml"));

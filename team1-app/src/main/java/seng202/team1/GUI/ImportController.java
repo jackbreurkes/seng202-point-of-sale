@@ -51,6 +51,9 @@ public class ImportController {
         statusText.setText(text);
     }
 
+    /**
+     * Update table with food item data
+     */
     public void updateTable() {
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
 
