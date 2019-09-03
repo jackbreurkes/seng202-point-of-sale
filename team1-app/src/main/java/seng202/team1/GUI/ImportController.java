@@ -81,6 +81,7 @@ public class ImportController {
         Scene typeSelectScene = new Scene(typeSelectParent);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("ROSEMARY | Type select screen");
 
         window.setScene(typeSelectScene);
         window.show();
@@ -94,8 +95,10 @@ public class ImportController {
         Parent editDataParent = FXMLLoader.load(getClass().getResource("editData.fxml"));
         Scene editDataScene = new Scene(editDataParent);
 
-        //This lines gets the Stage information
+        //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        //This line sets the screen title
+        window.setTitle("ROSEMARY | Edit Data Screen");
 
         window.setScene(editDataScene);
         window.show();

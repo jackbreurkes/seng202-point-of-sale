@@ -74,6 +74,7 @@ public class EditDataController {
         Scene importScene = new Scene(importParent);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("ROSEMARY | Import Screen");
 
         window.setScene(importScene);
         window.show();
