@@ -40,7 +40,7 @@
       <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
       <HBox prefHeight="33.0" prefWidth="615.0">
          <children>
-            <Button mnemonicParsing="false" text="Order Screen">
+            <Button mnemonicParsing="false" onAction="#changeSceneToOrder" text="Order Screen">
                <font>
                   <Font size="15.0" />
                </font>

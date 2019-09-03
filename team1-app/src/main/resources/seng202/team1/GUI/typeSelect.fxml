@@ -27,7 +27,7 @@
         <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="Back" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Order Screen">
+            <Button mnemonicParsing="false" onAction="#changeSceneToOrder" text="Order Screen">
                <font>
                   <Font size="15.0" />
                </font>

@@ -87,4 +87,21 @@ public class EditDataController {
         changeSceneToImport(event);
     }
 
+    /**
+     * When this methods is called, it will change the scene to datatype controller view
+     */
+    public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
+    {
+        Parent editDataParent = FXMLLoader.load(getClass().getResource("order.fxml"));
+        Scene editDataScene = new Scene(editDataParent);
+
+        //This line gets the Stage information
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        //This line sets the screen title
+        window.setTitle("ROSEMARY | Order Screen");
+
+        window.setScene(editDataScene);
+        window.show();
+    }
+
 }
