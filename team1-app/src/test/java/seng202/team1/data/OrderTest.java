@@ -15,7 +15,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static seng202.team1.util.OrderStatus.*;
 
-@Disabled
 class OrderTest {
 
     Order testOrder;
@@ -28,20 +27,18 @@ class OrderTest {
     @BeforeEach
     void beforeEach() {
         testOrder = new Order();
-        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     }
 
-
+    @Disabled
     @Test
     void testGetOrderContents() {
-        testList = new ArrayList<FoodItem>();
         assertEquals(testOrder.getOrderContents(), testList);
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testOrder.addItem(testItem);
-        testList = new ArrayList<FoodItem>();
         testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
     }
-
+    @Disabled
     @Test
     void testAddItem() {
         //initializes a list to check against the order
@@ -69,7 +66,7 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
 
     }
-
+    @Disabled
     @Test
     void testRemoveItem(){
         //initializes a list to check against the order
@@ -102,7 +99,7 @@ class OrderTest {
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
     }
-
+    @Disabled
     @Test
     void testCancelOrder(){
         testOrder.addItem(testItem);
@@ -126,7 +123,7 @@ class OrderTest {
 
         // TODO does cancelling orders happen at a certain time? different behaviour for different order statuses
     }
-
+    @Disabled
     @Test
     void testCompleteOrder(){
         //TODO come up with some more tests
@@ -146,7 +143,7 @@ class OrderTest {
         //Makes sure a completed order cannot be cancelled
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
-
+    @Disabled
     @Test
     void testRefundOrder(){
         //TODO sort out the actual refund part (money stuff)
