@@ -2,3 +2,4 @@
 team1-app/.idea/*
 team1-app/target/*
 team1-app/dependency-reduced-pom.xml
+team1-app.iml
