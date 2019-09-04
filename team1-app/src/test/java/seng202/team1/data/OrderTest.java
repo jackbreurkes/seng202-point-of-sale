@@ -17,11 +17,10 @@ import static seng202.team1.util.OrderStatus.*;
 
 class OrderTest {
 
-    Order testOrder;
-    FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
-    FoodItem testItem2;
-    FoodItem testItem3;
-    List<FoodItem> testList = new ArrayList<FoodItem>();
+    private Order testOrder;
+    private FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+    private FoodItem testItem2;
+    private List<FoodItem> testList = new ArrayList<FoodItem>();
 
 
     @BeforeEach
@@ -93,7 +92,6 @@ class OrderTest {
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
     }
-    @Disabled
     @Test
     void testCancelOrder(){
         testOrder.addItem(testItem);
@@ -114,13 +112,9 @@ class OrderTest {
 
         //Makes sure a cancelled order cannot be completed
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
-
-        // TODO does cancelling orders happen at a certain time? different behaviour for different order statuses
     }
-    @Disabled
     @Test
     void testCompleteOrder(){
-        //TODO come up with some more tests
         testOrder.addItem(testItem);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
@@ -137,13 +131,8 @@ class OrderTest {
         //Makes sure a completed order cannot be cancelled
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
-    @Disabled
     @Test
     void testRefundOrder(){
-        //TODO sort out the actual refund part (money stuff)
-        //sets a starting amount of money
-        double cash = 20;
-
         //makes sure an incomplete order cannot be refunded
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
