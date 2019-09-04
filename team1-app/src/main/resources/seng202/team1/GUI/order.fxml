@@ -70,7 +70,7 @@
             </Label>
          </children>
       </VBox>
-      <Label text="WINTER MENU" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <Label fx:id="menuName" text="WINTER MENU" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <font>
             <Font name="System Bold" size="31.0" />
          </font>

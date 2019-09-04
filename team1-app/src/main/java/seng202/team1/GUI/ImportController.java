@@ -25,7 +25,7 @@ import java.io.IOException;
 public class ImportController {
 
     @FXML
-    private static Text statusText;
+    private static Text statusText; // TODO why is this static?
     @FXML
     private TableView foodItemTable;
 
