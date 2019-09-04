@@ -18,7 +18,7 @@ import static seng202.team1.util.OrderStatus.*;
 class OrderTest {
 
     Order testOrder;
-    FoodItem testItem;
+    FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     FoodItem testItem2;
     FoodItem testItem3;
     List<FoodItem> testList = new ArrayList<FoodItem>();
@@ -29,7 +29,6 @@ class OrderTest {
         testOrder = new Order();
     }
 
-    @Disabled
     @Test
     void testGetOrderContents() {
         assertEquals(testOrder.getOrderContents(), testList);
@@ -42,7 +41,6 @@ class OrderTest {
     void testAddItem() {
         //initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
-        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testList.add(testItem);
         //adds an item and the checks the order for the item
         testOrder.addItem(testItem);
@@ -63,11 +61,9 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
 
     }
-    @Disabled
     @Test
     void testRemoveItem(){
         //initializes a list to check against the order
-        testList = new ArrayList<FoodItem>();
         testList.add(testItem);
         //adds an item
         testOrder.addItem(testItem);
@@ -84,9 +80,10 @@ class OrderTest {
         testOrder.addItem(testItem);
         testOrder.addItem(testItem);
         testOrder.removeItem(testItem);
+        testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
-        testList.remove(testItem);
         //checks that removing the item again will make the order empty
+        testList.remove(testItem);
         testOrder.removeItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
