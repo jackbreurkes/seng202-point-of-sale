@@ -25,8 +25,8 @@ public class MenuTest {
         menu = new Menu();
         testFood1 = new FoodItem("TS01", "Test Food 1", UnitType.ML);
         testFood2 = new FoodItem("TS02", "Test food 2", UnitType.GRAM);
+        testFood3 = new FoodItem("TS03", "Test food 3", UnitType.COUNT);
     }
-
 
     @Test
     void testGetMenuLength() {
@@ -49,8 +49,8 @@ public class MenuTest {
         testList = new ArrayList<FoodItem>();
         testList.add(testFood1);
         assertEquals(menu.getMenuItems(), testList);
+        assertEquals(menu.getMenuItems().get(0).getCode(), testList.get(0).getCode());
     }
-
 
     @Test
     void testRemoveItem() {
@@ -70,7 +70,6 @@ public class MenuTest {
         assertEquals(menu.getMenuItems().size(), 0);
     }
 
-
     @Test
     void testRemoveMenu() {
         testList = new ArrayList<FoodItem>();
@@ -85,7 +84,3 @@ public class MenuTest {
         assertEquals(menu.getMenuItems().size(), 0);
     }
 }
-
-
-
-
