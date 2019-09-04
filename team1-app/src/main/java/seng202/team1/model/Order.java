@@ -35,10 +35,14 @@ public class Order {
      */
     public void addItem(FoodItem item) {
 
-        if (item == null) {
-            throw new IllegalArgumentException("A null item cannot be added to an order.");
+        if (status == CREATING) {
+            if (item == null) {
+                throw new IllegalArgumentException("A null item cannot be added to an order.");
+            } else {
+                foodItems.add(item);
+            }
         } else {
-            foodItems.add(item);
+            throw new InvalidOrderStatusException("Only orders that are still in the creation process can have items added to them");
         }
     }
 
@@ -47,13 +51,17 @@ public class Order {
      * removes a single instance of the specified item from the foodItems list
      */
     public void removeItem(FoodItem item) {
-        if (item == null) {
-            throw new IllegalArgumentException("A null item cannot be removed from an order.");
-        }
-        if (foodItems.size() > 0) {
-            foodItems.remove(item);
+        if (status == CREATING) {
+            if (item == null) {
+                throw new IllegalArgumentException("A null item cannot be removed from an order.");
+            }
+            if (foodItems.size() > 0) {
+                foodItems.remove(item);
+            } else {
+                throw new IllegalArgumentException("Items cannot be removed from an empty order.");
+            }
         } else {
-            throw new IllegalArgumentException("Items cannot be removed from an empty order.");
+            throw new InvalidOrderStatusException("Only orders that are still in the creation process can have items removed from them");
         }
     }
 
