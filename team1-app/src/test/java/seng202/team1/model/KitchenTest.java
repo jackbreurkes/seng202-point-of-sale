@@ -72,7 +72,7 @@ class KitchenTest {
 
         // TODO reconsider how missing stock is handled
         // recipe exists enough stock in storage
-        Recipe recipe = new Recipe();
+        Recipe recipe = new Recipe(null, null, 0, null);
 
         // TODO add recipe to memory storage with a code TESTITEM2
         // TODO add required ingredients to storage
