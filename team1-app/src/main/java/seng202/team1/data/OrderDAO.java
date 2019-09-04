@@ -17,7 +17,7 @@ public interface OrderDAO {
      * @param code the Order's unique code
      * @return the desired Order or null if not found
      */
-    Order getOrderById(String code);
+    Order getOrderByCode(String code);
 
     /**
      * adds an Order to storage. the order will be stored using its code attribute.
@@ -26,12 +26,11 @@ public interface OrderDAO {
     void addOrder(Order order);
 
     /**
-     * sets the properties of a Order to those of a new Order.
-     * the new order's code should be the same as the one that is being changed.
-     * @param code the code of the order to edit
-     * @param alteredOrder the new Order whose information should replace the old order's
+     * sets the properties of an Order to those of a new Order.
+     * the new Order's code should be the same as the one that is being updated.
+     * @param alteredOrder the Order to update in storage
      */
-    void editOrder(String code, Order alteredOrder);
+    void updateOrder(Order alteredOrder);
 
     /**
      * remove an Order from storage.

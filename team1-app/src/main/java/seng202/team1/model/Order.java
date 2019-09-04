@@ -2,6 +2,8 @@ package seng202.team1.model;
 
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
+import seng202.team1.model.FoodItem;
+
 
 import java.util.*;
 
@@ -12,7 +14,8 @@ import static seng202.team1.util.OrderStatus.*;
  */
 public class Order {
 
-    private List<FoodItem> foodItems;
+    private String code;
+    private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = CREATING;
     // private Location location;
@@ -31,10 +34,15 @@ public class Order {
      * adds a single instance of the specified item to the foodItems list
      */
     public void addItem(FoodItem item) {
-        if (item == null) {
-            throw new IllegalArgumentException("A null item cannot be added to an order.");
+
+        if (status == CREATING) {
+            if (item == null) {
+                throw new IllegalArgumentException("A null item cannot be added to an order.");
+            } else {
+                foodItems.add(item);
+            }
         } else {
-            foodItems.add(item);
+            throw new InvalidOrderStatusException("Only orders that are still in the creation process can have items added to them");
         }
     }
 
@@ -43,18 +51,23 @@ public class Order {
      * removes a single instance of the specified item from the foodItems list
      */
     public void removeItem(FoodItem item) {
-        if (item == null) {
-            throw new IllegalArgumentException("A null item cannot be removed from an order.");
-        }
-        if (foodItems.size() > 0) {
-            foodItems.remove(item);
+        if (status == CREATING) {
+            if (item == null) {
+                throw new IllegalArgumentException("A null item cannot be removed from an order.");
+            }
+            if (foodItems.size() > 0) {
+                foodItems.remove(item);
+            } else {
+                throw new IllegalArgumentException("Items cannot be removed from an empty order.");
+            }
         } else {
-            throw new IllegalArgumentException("Items cannot be removed from an empty order.");
+            throw new InvalidOrderStatusException("Only orders that are still in the creation process can have items removed from them");
         }
     }
 
     /**
      * changes the status of the order to cancelled, (registers it in the database?)
+     * Only CREATING orders can be cancelled.
      */
     public void cancelOrder() {
         //if status is still being processed the order can be cancelled
@@ -78,12 +91,9 @@ public class Order {
      * only completed orders can be refunded
      */
     public void refundOrder() {
-        //TODO discuss what actually gets refunded and how it works
         if (status == COMPLETED) {
             status = REFUNDED;
-            //refund the order or something
         }
-        //cancelled orders cannot be refunded
         else if(status == CANCELLED) {
             throw new InvalidOrderStatusException("Cancelled orders cannot be refunded.");
         }
@@ -91,17 +101,17 @@ public class Order {
             throw new InvalidOrderStatusException("Orders cannot be refunded twice.");
         }
         else if(status == CREATING) {
-            throw new InvalidOrderStatusException("Incomplete orders cannot be cancelled.");
+            throw new InvalidOrderStatusException("Incomplete orders cannot be refunded.");
         }
     }
 
     /**
      * changes the status of the order to complete, (registers it in the database?)
+     * only CREATING orders can be set to complete.
      */
     public void completeOrder() {
         if (status == CREATING) {
             status = COMPLETED;
-            //refund the order or something
         }
         else if(status == CANCELLED) {
             throw new InvalidOrderStatusException("Cancelled orders cannot be completed.");
@@ -109,7 +119,6 @@ public class Order {
         else if(status == REFUNDED) {
             throw new InvalidOrderStatusException("Refunded orders cannot be completed.");
         }
-        //Completed orders cannot be completed twice
         else if(status == COMPLETED) {
             throw new InvalidOrderStatusException("An order cannot be completed twice.");
         }

@@ -15,33 +15,27 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static seng202.team1.util.OrderStatus.*;
 
-@Disabled
 class OrderTest {
 
-    Order testOrder;
-    FoodItem testItem;
-    FoodItem testItem2;
-    FoodItem testItem3;
-    List<FoodItem> testList;
+    private Order testOrder;
+    private FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+    private FoodItem testItem2;
+    private List<FoodItem> testList = new ArrayList<FoodItem>();
 
 
     @BeforeEach
     void beforeEach() {
         testOrder = new Order();
-        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     }
-
 
     @Test
     void testGetOrderContents() {
-        testList = new ArrayList<FoodItem>();
         assertEquals(testOrder.getOrderContents(), testList);
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testOrder.addItem(testItem);
-        testList = new ArrayList<FoodItem>();
         testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
     }
-
     @Test
     void testAddItem() {
         //initializes a list to check against the order
@@ -62,18 +56,13 @@ class OrderTest {
         testOrder.addItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
-        //adds an item that doesn't fit proper criteria of an item
-        testItem3 = new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
-        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(testItem));
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
 
     }
-
     @Test
     void testRemoveItem(){
         //initializes a list to check against the order
-        testList = new ArrayList<FoodItem>();
         testList.add(testItem);
         //adds an item
         testOrder.addItem(testItem);
@@ -90,9 +79,10 @@ class OrderTest {
         testOrder.addItem(testItem);
         testOrder.addItem(testItem);
         testOrder.removeItem(testItem);
+        testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
-        testList.remove(testItem);
         //checks that removing the item again will make the order empty
+        testList.remove(testItem);
         testOrder.removeItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
@@ -102,7 +92,6 @@ class OrderTest {
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
     }
-
     @Test
     void testCancelOrder(){
         testOrder.addItem(testItem);
@@ -123,13 +112,9 @@ class OrderTest {
 
         //Makes sure a cancelled order cannot be completed
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
-
-        // TODO does cancelling orders happen at a certain time? different behaviour for different order statuses
     }
-
     @Test
     void testCompleteOrder(){
-        //TODO come up with some more tests
         testOrder.addItem(testItem);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
@@ -146,13 +131,8 @@ class OrderTest {
         //Makes sure a completed order cannot be cancelled
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
-
     @Test
     void testRefundOrder(){
-        //TODO sort out the actual refund part (money stuff)
-        //sets a starting amount of money
-        double cash = 20;
-
         //makes sure an incomplete order cannot be refunded
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
