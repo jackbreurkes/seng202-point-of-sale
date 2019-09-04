@@ -21,7 +21,7 @@ class OrderTest {
     FoodItem testItem;
     FoodItem testItem2;
     FoodItem testItem3;
-    List<FoodItem> testList;
+    List<FoodItem> testList = new ArrayList<FoodItem>();
 
 
     @BeforeEach
@@ -38,11 +38,11 @@ class OrderTest {
         testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
     }
-    @Disabled
     @Test
     void testAddItem() {
         //initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testList.add(testItem);
         //adds an item and the checks the order for the item
         testOrder.addItem(testItem);
@@ -59,9 +59,6 @@ class OrderTest {
         testOrder.addItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
-        //adds an item that doesn't fit proper criteria of an item
-        testItem3 = new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
-        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(testItem));
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
 

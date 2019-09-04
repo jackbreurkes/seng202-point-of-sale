@@ -15,7 +15,7 @@ import static seng202.team1.util.OrderStatus.*;
 public class Order {
 
     private String code;
-    private List<FoodItem> foodItems;
+    private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = CREATING;
     // private Location location;
