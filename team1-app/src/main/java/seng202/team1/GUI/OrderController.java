@@ -15,13 +15,13 @@ public class OrderController {
      */
     public void changeSceneToImport(javafx.event.ActionEvent event) throws IOException
     {
-        Parent editDataParent = FXMLLoader.load(getClass().getResource("order.fxml"));
+        Parent editDataParent = FXMLLoader.load(getClass().getResource("import.fxml"));
         Scene editDataScene = new Scene(editDataParent);
 
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         //This line sets the screen title
-        window.setTitle("ROSEMARY | Order Screen");
+        window.setTitle("ROSEMARY | Import Screen");
 
         window.setScene(editDataScene);
         window.show();
