@@ -5,14 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import seng202.team1.model.FoodItem;
-import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,11 +51,11 @@ class FoodItemHandlerTest {
         cheeseburg.setCaloriesPerUnit(303);
         FoodItem tofuburg = new FoodItem("TOFUBURG", "Tofu Burger", UnitType.GRAM);
         tofuburg.setCaloriesPerUnit(168.4);
-        tofuburg.setIsVegetarian(DietaryLogic.YES);
+        tofuburg.setIsVegetarian(true);
         FoodItem applesoda = new FoodItem("APPLESODA", "Sparkling Apple", UnitType.ML);
         applesoda.setCaloriesPerUnit(87);
-        applesoda.setIsVegan(DietaryLogic.YES);
-        applesoda.setIsGlutenFree(DietaryLogic.YES);
+        applesoda.setIsVegan(true);
+        applesoda.setIsGlutenFree(true);
 
         List<FoodItem> expectedItems = Arrays.asList(
                 beefburg, cheeseburg, tofuburg, applesoda

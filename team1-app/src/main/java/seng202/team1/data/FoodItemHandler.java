@@ -3,13 +3,11 @@ package seng202.team1.data;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import seng202.team1.model.FoodItem;
-import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
 
 import javax.xml.parsers.*;
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,9 +28,9 @@ public class FoodItemHandler {
     private String code;
     private String name;
     private UnitType unit;
-    private DietaryLogic isVegetarian;
-    private DietaryLogic isVegan;
-    private DietaryLogic isGlutenFree;
+    private boolean isVegetarian;
+    private boolean isVegan;
+    private boolean isGlutenFree;
     private double caloriesPerUnit;
 
 
@@ -149,17 +147,14 @@ public class FoodItemHandler {
         return uni;
     }
 
-    private DietaryLogic diet(String s) {
-        DietaryLogic logic;
+    private boolean diet(String s) {
+        boolean logic;
         switch (s) {
             case "yes":
-                logic = DietaryLogic.YES;
-                break;
-            case "optional":
-                logic = DietaryLogic.OPTIONAL;
+                logic = true;
                 break;
             default:
-                logic = DietaryLogic.NO;
+                logic = false;
                 break;
         }
         return logic;
@@ -172,9 +167,9 @@ public class FoodItemHandler {
         code = "";
         name = "";
         unit = UnitType.COUNT;
-        isVegetarian = DietaryLogic.NO;
-        isVegan = DietaryLogic.NO;
-        isGlutenFree = DietaryLogic.NO;
+        isVegetarian = false;
+        isVegan = false;
+        isGlutenFree = false;
         caloriesPerUnit = 0;
     }
 

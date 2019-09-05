@@ -4,9 +4,9 @@
 <!ELEMENT fooditem (code, name, caloriesPerUnit)>
 <!ATTLIST fooditem
         unit (g|ml|count|unknown) #REQUIRED
-        isVegetarian (yes|no|optional) #IMPLIED
-        isVegan (yes|no|optional) #IMPLIED
-        isGlutenFree (yes|no|optional) #IMPLIED
+        isVegetarian (yes|no) #IMPLIED
+        isVegan (yes|no) #IMPLIED
+        isGlutenFree (yes|no) #IMPLIED
 >
 <!ELEMENT code (#PCDATA)>
 <!ELEMENT name (#PCDATA)>

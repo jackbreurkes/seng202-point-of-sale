@@ -1,7 +1,5 @@
 package seng202.team1.model;
 
-import seng202.team1.util.DietaryLogic;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +12,6 @@ public class Recipe {
     private Map<String, Integer> ingredientAmount = new HashMap<>();
     private Set<FoodItem> ingredients = new HashSet<>();
     private Set<FoodItem> addableIngredients = new HashSet<>();
-    private boolean isOptionallyVegetarian, isOptionallyVegan, isOptionallyGlutenFree;
 
     /**
      * Default constructor
@@ -85,24 +82,24 @@ public class Recipe {
      * Returns if the recipe is vegetarian or not. Returns optionally if the recipe is currently not vegetarian and can be vegetarian
      * @return YES if vegetarian, OPTIONAL if currently not vegetarian and can be made vegetarian, NO otherwise
      */
-    public DietaryLogic getIsVegetarian() {
-        return null;
+    public boolean getIsVegetarian() {
+        return false;
     }
 
     /**
      * Returns if the recipe is vegan or not. Returns optionally if the recipe is currently not vegan and can be vegan
      * @return YES if vegan, OPTIONAL if currently not vegan and can be made vegan, NO otherwise
      */
-    public DietaryLogic getIsVegan() {
-        return null;
+    public boolean getIsVegan() {
+        return false;
     }
 
     /**
      * Returns if the recipe is glutenFree or not. Returns optionally if the recipe is currently not glutenFree and can be glutenFree
      * @return YES if glutenFree, OPTIONAL if currently not glutenFree and can be made glutenFree, NO otherwise
      */
-    public DietaryLogic getIsGlutenFree() {
-        return null;
+    public boolean getIsGlutenFree() {
+        return false;
     }
 
     /**

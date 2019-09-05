@@ -1,10 +1,7 @@
 package seng202.team1.model;
 
 import seng202.team1.util.CodeValidator;
-import seng202.team1.util.DietaryLogic;
 import seng202.team1.util.UnitType;
-
-import java.util.Objects;
 
 
 /**
@@ -15,9 +12,9 @@ public class FoodItem {
     private String code; // uppercase alphanumeric
     private String name;
     private UnitType unit;
-    private DietaryLogic isVegetarian = DietaryLogic.NO;
-    private DietaryLogic isVegan = DietaryLogic.NO;
-    private DietaryLogic isGlutenFree = DietaryLogic.NO;
+    private boolean isVegetarian = false;
+    private boolean isVegan = false;
+    private boolean isGlutenFree = false;
     private double caloriesPerUnit;
 
 
@@ -52,15 +49,15 @@ public class FoodItem {
         return unit;
     }
 
-    public DietaryLogic getIsVegetarian() {
+    public boolean getIsVegetarian() {
         return isVegetarian;
     }
 
-    public DietaryLogic getIsVegan() {
+    public boolean getIsVegan() {
         return isVegan;
     }
 
-    public DietaryLogic getIsGlutenFree() {
+    public boolean getIsGlutenFree() {
         return isGlutenFree;
     }
 
@@ -89,38 +86,21 @@ public class FoodItem {
         this.unit = unit;
     }
 
-    public void setIsVegetarian(DietaryLogic isVegetarian) {
-        if (isVegetarian == null) {
-            throw new NullPointerException();
+    public void setIsVegetarian(boolean isVegetarian) {
+        if (!isVegetarian) {
+            this.isVegan = false;
         }
-
-        if (isVegetarian == DietaryLogic.NO) {
-            this.isVegan = DietaryLogic.NO;
-        } else if (isVegetarian == DietaryLogic.OPTIONAL && getIsVegan() == DietaryLogic.YES) {
-            this.isVegan = DietaryLogic.OPTIONAL;
-        }
-
         this.isVegetarian = isVegetarian;
     }
 
-    public void setIsVegan(DietaryLogic isVegan) {
-        if (isVegan == null) {
-            throw new NullPointerException();
+    public void setIsVegan(boolean isVegan) {
+        if (isVegan) {
+            isVegetarian = true;
         }
-
-        if (isVegan == DietaryLogic.YES) {
-            isVegetarian = DietaryLogic.YES;
-        } else if (isVegan == DietaryLogic.OPTIONAL && getIsVegetarian() == DietaryLogic.NO) {
-            isVegetarian = DietaryLogic.OPTIONAL;
-        }
-
         this.isVegan = isVegan;
     }
 
-    public void setIsGlutenFree(DietaryLogic isGlutenFree) {
-        if (isGlutenFree == null) {
-            throw new NullPointerException();
-        }
+    public void setIsGlutenFree(boolean isGlutenFree) {
         this.isGlutenFree = isGlutenFree;
     }
 
