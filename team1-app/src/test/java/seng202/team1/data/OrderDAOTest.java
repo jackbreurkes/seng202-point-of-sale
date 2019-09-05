@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import seng202.team1.model.Order;
+import seng202.team1.util.InvalidDataCodeException;
 
 import java.util.Set;
 
@@ -21,7 +22,7 @@ class OrderDAOTest {
     }
 
     @Test
-    void getAllOrders() {
+    void testGetAllOrders() {
         //test an empty set of orders has size 0
         Set<Order> items = orderStorage.getAllOrders();
         assertEquals(0, items.size());
@@ -35,22 +36,43 @@ class OrderDAOTest {
     }
 
     @Test
-    void getOrderByCode() {
+    void testGetOrderByCode() {
         //TODO Need to setup a system for Order Codes.
     }
 
     @Test
-    void addOrder() {
+    void TestAddOrder() {
+        orderStorage.addOrder(testOrder);
+        //test for when order-code is implemented in the order class
+        //assertEquals(testOrder, orderStorage.getOrderByCode(testOrder.getCode()));
 
+        // test adding an already added order
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.addOrder(testOrder);
+        });
+
+        // test adding null
+        assertThrows(NullPointerException.class, () -> {
+            orderStorage.addOrder(null);
+        });
     }
 
     @Test
-    void updateOrder() {
-
+    void testUpdateOrder() {
+        //TODO update the order using the provided order code? still gotta get order codes done
     }
 
     @Test
-    void removeOrder() {
-
+    void testRemoveOrder() {
+        orderStorage.addOrder(testOrder);
+        /*
+        //needs getCode to work
+        orderStorage.removeOrder(testOrder.getCode());
+        assertNull(orderStorage.getOrderByCode(testOrder.getCode()));
+        //needs getCode to work
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.removeOrder(testOrder.getCode());
+        });
+        */
     }
 }
