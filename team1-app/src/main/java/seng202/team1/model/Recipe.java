@@ -21,7 +21,7 @@ public class Recipe {
      * @param ingredients the set of food items
      * @param addableIngredients the set of food items that can be added to a recipe during an order
      */
-    public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, int amountCreated, Map<String, Integer> ingredientAmount) {
+    public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, int amountCreated, Map<String, Integer> ingredientAmount, FoodItem product) {
 
     }
 
@@ -29,7 +29,7 @@ public class Recipe {
      * Gets the ingredient amounts used in the recipe and the ingredient amounts of the addable food items
      * @return the ingredient amounts used in the recipe
      */
-    public Map<String, Integer> getIngredientAmount() {
+    public Map<String, Integer> getIngredientAmounts() {
         return ingredientAmount;
     }
 
