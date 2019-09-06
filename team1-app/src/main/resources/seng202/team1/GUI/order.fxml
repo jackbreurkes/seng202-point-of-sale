@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.OrderController">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.OrderController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="906.0" minWidth="10.0" prefWidth="829.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="726.0" minWidth="10.0" prefWidth="401.0" />
@@ -77,21 +71,9 @@
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <TilePane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../../../../../../../../../opt/JavaFXSceneBuilder2.0/app/fxml-16.png" />
-                           </image>
-                        </ImageView>
-                        <Label text="PLACEHOLDER" />
-                        <Button mnemonicParsing="false" text="Button" />
-                     </children>
-                  </VBox>
-               </children>
-            </TilePane>
+
+            <TilePane fx:id="menuItems" prefHeight="200.0" prefWidth="200.0" />
+
          </children>
       </VBox>
    </children>

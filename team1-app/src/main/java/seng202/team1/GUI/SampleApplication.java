@@ -23,6 +23,7 @@ public class SampleApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("import.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("order.fxml"));
         primaryStage.setTitle("ROSEMARY | Import a file");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

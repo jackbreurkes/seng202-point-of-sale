@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
@@ -21,15 +23,26 @@ public class OrderController {
 
     private Menu activeMenu;
 
+    @FXML
+    private TilePane menuItems;
+
     public void initialize() {
         Menu testMenu = new Menu();
         testMenu.setMenuName("Test menu");
-        testMenu.addItem(new FoodItem("CODE1", "test1", UnitType.COUNT));
-        testMenu.addItem(new FoodItem("CODE2", "test2", UnitType.COUNT));
-        testMenu.addItem(new FoodItem("CODE3", "test3", UnitType.COUNT));
+        testMenu.addItem(new FoodItem("CODE1", "test item 1", UnitType.COUNT));
+        testMenu.addItem(new FoodItem("CODE2", "test item 2", UnitType.COUNT));
+        testMenu.addItem(new FoodItem("CODE3", "test item 3", UnitType.COUNT));
         activeMenu = testMenu;
 
         menuName.setText(activeMenu.getMenuName());
+        populateMenuItemsDisplay(activeMenu);
+    }
+
+    private void populateMenuItemsDisplay(Menu menu) {
+        for (FoodItem item : menu.getMenuItems()) {
+            FoodItemDisplay itemDisplay = new FoodItemDisplay(item);
+            menuItems.getChildren().add(itemDisplay);
+        }
     }
 
     /**
