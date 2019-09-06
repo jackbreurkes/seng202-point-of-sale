@@ -5,8 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.team1.model.FoodItem;
@@ -18,13 +20,15 @@ import java.io.IOException;
 
 public class OrderController {
 
-    @FXML
-    private Label menuName;
+    @FXML private Label menuName;
+    @FXML private TilePane menuItems;
+    @FXML private VBox ordersDisplay;
+    @FXML private VBox createOrderDisplay;
+    @FXML private Button cancelOrderButton;
 
     private Menu activeMenu;
+    private Order activeOrder;
 
-    @FXML
-    private TilePane menuItems;
 
     public void initialize() {
         Menu testMenu = new Menu();
@@ -33,6 +37,8 @@ public class OrderController {
         testMenu.addItem(new FoodItem("CODE2", "test item 2", UnitType.COUNT));
         testMenu.addItem(new FoodItem("CODE3", "test item 3", UnitType.COUNT));
         activeMenu = testMenu;
+
+        createOrderDisplay.setVisible(false); // TODO put ordersDisplay and createOrderDisplay in custom components
 
         menuName.setText(activeMenu.getMenuName());
         populateMenuItemsDisplay(activeMenu);
@@ -44,6 +50,41 @@ public class OrderController {
             menuItems.getChildren().add(itemDisplay);
         }
     }
+
+    @FXML
+    private void createOrderButtonPressed() {
+        activeOrder = new Order();
+        showOrderCreationElements();
+    }
+
+    @FXML
+    private void cancelOrderButtonPressed() {
+        hideOrderCreationElements();
+    }
+
+    private void showOrderCreationElements() {
+        menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
+        ordersDisplay.setVisible(false);
+        createOrderDisplay.setVisible(true);
+        for (Node node : menuItems.getChildren()) {
+            FoodItemDisplay display = (FoodItemDisplay)node;
+            display.linkToOrder(activeOrder);
+        }
+    }
+
+    private void hideOrderCreationElements() {
+        menuName.setText(activeMenu.getMenuName());
+        ordersDisplay.setVisible(true);
+        createOrderDisplay.setVisible(false);
+        for (Node node : menuItems.getChildren()) {
+            FoodItemDisplay display = (FoodItemDisplay)node;
+            display.unlinkFromOrder();
+        }
+    }
+
+
+
+
 
     /**
      * When this methods is called, it will change the scene to datatype controller view
