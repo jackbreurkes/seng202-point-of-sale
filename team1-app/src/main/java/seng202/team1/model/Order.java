@@ -145,4 +145,7 @@ public class Order {
     public String getCost() {
         return "not implemented";
     }
+
+    public String getOrderCode() { return code; }
 }
+

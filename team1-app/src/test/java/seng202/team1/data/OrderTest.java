@@ -43,6 +43,12 @@ class OrderTest {
         assertNotNull(testOrder.getOrderCode());
     }
 
+    @Disabled
+    @Test
+    void testGetCost() {
+        //TODO add tests here.
+    }
+
     @Test
     void testAddItem() {
         //initializes a list to check against the order
