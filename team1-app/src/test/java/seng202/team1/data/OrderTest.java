@@ -36,6 +36,13 @@ class OrderTest {
         testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
     }
+
+    @Disabled
+    @Test
+    void testGetOrderCode() {
+        assertNotNull(testOrder.getOrderCode());
+    }
+
     @Test
     void testAddItem() {
         //initializes a list to check against the order
