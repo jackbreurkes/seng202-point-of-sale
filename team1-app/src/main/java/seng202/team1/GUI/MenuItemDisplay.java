@@ -16,7 +16,7 @@ import seng202.team1.model.Order;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class FoodItemDisplay extends VBox {
+public class MenuItemDisplay extends VBox {
 
     @FXML private Image itemImage;
     @FXML private Label itemName;
@@ -24,7 +24,7 @@ public class FoodItemDisplay extends VBox {
 
     private FoodItem model;
 
-    public FoodItemDisplay(FoodItem model) {
+    public MenuItemDisplay(FoodItem model) {
 
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
 
@@ -43,16 +43,15 @@ public class FoodItemDisplay extends VBox {
     // note: initialize() is called as part of loader.load() I think?
     public void initialize() {
         itemName.setText(model.getName());
-        addToOrder.setText("add to order");
         addToOrder.setVisible(false);
     }
 
-    public void linkToOrder(Order order) {
+    public void linkToCreateOrderDisplay(CreateOrderDisplay createDisplay) {
         addToOrder.setVisible(true);
         addToOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                order.addItem(model);
+                createDisplay.addItemToOrder(model);
             }
         });
     }

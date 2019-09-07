@@ -44,40 +44,7 @@
             </Button>
          </children>
       </HBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <children>
-            <VBox fx:id="ordersDisplay">
-               <children>
-                  <Label text="Orders">
-                     <font>
-                        <Font name="System Bold" size="23.0" />
-                     </font>
-                  </Label>
-                  <Button mnemonicParsing="false" onAction="#createOrderButtonPressed" text="+ Create order" />
-                  <Label text="Pending">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label text="Completed">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox fx:id="createOrderDisplay" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Order Total - $0.00">
-                     <font>
-                        <Font name="System Bold" size="23.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="cancelOrderButton" mnemonicParsing="false" onAction="#cancelOrderButtonPressed" text="Cancel order" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+      <VBox fx:id="ordersInfo" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
          <children>
             <Label fx:id="menuName" text="WINTER MENU">

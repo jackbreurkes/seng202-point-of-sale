@@ -15,12 +15,12 @@
             <Image fx:id="itemImage" url="@../../../../../../resources/images/almondMilk.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="itemName" text="TESTING" />
-      <Button fx:id="addToOrder" mnemonicParsing="false" text="Button" />
+      <Label fx:id="itemName" text="ITEM NAME" />
+      <Button fx:id="addToOrder" mnemonicParsing="false" text="Add to order" />
    </children>
 </fx:root>
 
-<!--<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.FoodItemDisplay">-->
+<!--<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.MenuItemDisplay">-->
 <!--<children>-->
 <!--   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">-->
 <!--      <image>-->

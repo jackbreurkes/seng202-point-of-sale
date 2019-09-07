@@ -137,4 +137,12 @@ public class Order {
     public OrderStatus getOrderStatus() {
         return status;
     }
+
+    /**
+     * returns the cost of the order TODO use a proper money type for this!!
+     * @return the total cost of the order
+     */
+    public String getCost() {
+        return "not implemented";
+    }
 }

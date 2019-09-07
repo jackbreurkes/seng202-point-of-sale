@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
@@ -22,12 +21,11 @@ public class OrderController {
 
     @FXML private Label menuName;
     @FXML private TilePane menuItems;
-    @FXML private VBox ordersDisplay;
-    @FXML private VBox createOrderDisplay;
+    @FXML private VBox ordersInfo;
     @FXML private Button cancelOrderButton;
 
     private Menu activeMenu;
-    private Order activeOrder;
+    private OrderProgressDisplay orderProgressDisplay;
 
 
     public void initialize() {
@@ -38,7 +36,8 @@ public class OrderController {
         testMenu.addItem(new FoodItem("CODE3", "test item 3", UnitType.COUNT));
         activeMenu = testMenu;
 
-        createOrderDisplay.setVisible(false); // TODO put ordersDisplay and createOrderDisplay in custom components
+        orderProgressDisplay = new OrderProgressDisplay(this);
+        ordersInfo.getChildren().add(orderProgressDisplay);
 
         menuName.setText(activeMenu.getMenuName());
         populateMenuItemsDisplay(activeMenu);
@@ -46,38 +45,38 @@ public class OrderController {
 
     private void populateMenuItemsDisplay(Menu menu) {
         for (FoodItem item : menu.getMenuItems()) {
-            FoodItemDisplay itemDisplay = new FoodItemDisplay(item);
+            MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
             menuItems.getChildren().add(itemDisplay);
         }
     }
 
-    @FXML
-    private void createOrderButtonPressed() {
-        activeOrder = new Order();
+    public void startCreatingOrder() {
         showOrderCreationElements();
     }
 
-    @FXML
-    private void cancelOrderButtonPressed() {
+    public void stopCreatingOrder() {
         hideOrderCreationElements();
     }
 
     private void showOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
-        ordersDisplay.setVisible(false);
-        createOrderDisplay.setVisible(true);
+        ordersInfo.getChildren().clear();
+        CreateOrderDisplay createOrderDisplay = new CreateOrderDisplay(this, new Order());
+        ordersInfo.getChildren().add(createOrderDisplay);
+
         for (Node node : menuItems.getChildren()) {
-            FoodItemDisplay display = (FoodItemDisplay)node;
-            display.linkToOrder(activeOrder);
+            MenuItemDisplay display = (MenuItemDisplay)node;
+            display.linkToCreateOrderDisplay(createOrderDisplay);
         }
     }
 
     private void hideOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName());
-        ordersDisplay.setVisible(true);
-        createOrderDisplay.setVisible(false);
+        ordersInfo.getChildren().clear();
+        ordersInfo.getChildren().add(orderProgressDisplay);
+
         for (Node node : menuItems.getChildren()) {
-            FoodItemDisplay display = (FoodItemDisplay)node;
+            MenuItemDisplay display = (MenuItemDisplay)node;
             display.unlinkFromOrder();
         }
     }
