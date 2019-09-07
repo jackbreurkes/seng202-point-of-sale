@@ -42,6 +42,20 @@ class OrderDAOTest {
     @Test
     void testGetOrderByCode() {
         //TODO Need to setup a system for Order Codes.
+        testOrder.addItem(testItem);
+        orderStorage.addOrder(testOrder);
+
+        //assertEquals(testOrder, orderStorage.getOrderByCode(testOrder.getCode()));
+
+        //cant get a null Order
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.getOrderByCode(null);
+        });
+
+        //cant get an order that doesnt exist in the system (needs to be changed when codes are implemented.)
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.getOrderByCode("ORDERCODE  :O");
+        });
     }
 
     @Test
