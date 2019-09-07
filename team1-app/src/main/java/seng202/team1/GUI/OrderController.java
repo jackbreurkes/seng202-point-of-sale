@@ -45,7 +45,7 @@ public class OrderController {
 
     private void populateMenuItemsDisplay(Menu menu) {
         for (FoodItem item : menu.getMenuItems()) {
-            FoodItemDisplay itemDisplay = new FoodItemDisplay(item);
+            MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
             menuItems.getChildren().add(itemDisplay);
         }
     }
@@ -65,7 +65,7 @@ public class OrderController {
         ordersInfo.getChildren().add(createOrderDisplay);
 
         for (Node node : menuItems.getChildren()) {
-            FoodItemDisplay display = (FoodItemDisplay)node;
+            MenuItemDisplay display = (MenuItemDisplay)node;
             display.linkToCreateOrderDisplay(createOrderDisplay);
         }
     }
@@ -76,7 +76,7 @@ public class OrderController {
         ordersInfo.getChildren().add(orderProgressDisplay);
 
         for (Node node : menuItems.getChildren()) {
-            FoodItemDisplay display = (FoodItemDisplay)node;
+            MenuItemDisplay display = (MenuItemDisplay)node;
             display.unlinkFromOrder();
         }
     }
