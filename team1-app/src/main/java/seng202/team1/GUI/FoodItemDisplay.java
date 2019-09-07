@@ -43,16 +43,15 @@ public class FoodItemDisplay extends VBox {
     // note: initialize() is called as part of loader.load() I think?
     public void initialize() {
         itemName.setText(model.getName());
-        addToOrder.setText("add to order");
         addToOrder.setVisible(false);
     }
 
-    public void linkToOrder(Order order) {
+    public void linkToCreateOrderDisplay(CreateOrderDisplay createDisplay) {
         addToOrder.setVisible(true);
         addToOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                order.addItem(model);
+                createDisplay.addItemToOrder(model);
             }
         });
     }

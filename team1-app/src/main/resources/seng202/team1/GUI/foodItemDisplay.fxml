@@ -15,8 +15,8 @@
             <Image fx:id="itemImage" url="@../../../../../../resources/images/almondMilk.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="itemName" text="TESTING" />
-      <Button fx:id="addToOrder" mnemonicParsing="false" text="Button" />
+      <Label fx:id="itemName" text="ITEM NAME" />
+      <Button fx:id="addToOrder" mnemonicParsing="false" text="Add to order" />
    </children>
 </fx:root>
 
