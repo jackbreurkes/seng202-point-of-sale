@@ -1,23 +1,17 @@
-<!-- DTD for representing menu -->
-<!-- (C) Neville Churcher 2019 -->
-<!-- Note that the ingredient names need to match the 
-    corresponding codes in fooditem.dtd
--->
-<!ENTITY version "V0.01 (C) Neville Churcher 2019">
-<!ELEMENT menu (title, description, (item*))>
+<!ENTITY version "V0.01 (C) Rosemary">
+<!ELEMENT menu (name, description, (fooditem*))>
 <!ATTLIST menu
     from CDATA #IMPLIED
     to CDATA #IMPLIED
 >
-<!ELEMENT title (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
-<!ELEMENT item (id, name, (ingredient*))>
-<!ATTLIST item type (beverage|cocktail|snack|asian|grill|main) #IMPLIED>
-<!ELEMENT id (#PCDATA)>
 <!ELEMENT name (#PCDATA)>
-<!ATTLIST name serves CDATA "1">
-<!ELEMENT ingredient (name)>
-<!ATTLIST ingredient
+<!ELEMENT fooditem (code)>
+<!ELEMENT code (#PCDATA)>
+
+-- <!ATTLIST name serves CDATA "1">
+<!ELEMENT item (name)>
+<!ATTLIST item
     unit (ml|g|count) #REQUIRED
     quantity CDATA #REQUIRED
->
+> --
