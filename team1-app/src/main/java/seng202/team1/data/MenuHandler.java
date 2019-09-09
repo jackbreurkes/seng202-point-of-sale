@@ -22,7 +22,9 @@ public class MenuHandler {
     private Map<String, Menu> menus;
 
     private String name;
-    private List<FoodItem> items;
+    private String code;
+    private FoodItem item;
+    private Map<String, FoodItem> items;
 
     /**
      * Constructor for the MenuHandler class.
@@ -30,10 +32,11 @@ public class MenuHandler {
      * @param filePath
      * @param validating
      */
-    public MenuHandler(String filePath, boolean validating) {
+    public MenuHandler(String filePath, boolean validating, Map<String, FoodItem> fooditems) {
         source = filePath;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
+        items = fooditems;
 
         try {
             builder = factory.newDocumentBuilder();
@@ -83,22 +86,20 @@ public class MenuHandler {
         NamedNodeMap attributes;
         Element node;
 
+        node = (Element) nodeList.item(0);
+        name = node.getElementsByTagName("name").item(0).getTextContent();
+        Menu menu = new Menu();
+        menu.setMenuName(name);
+
         for (int i = 0; i < numNodes; i++) {
             reset();
             node = (Element) nodeList.item(i);
 
-            name = node.getElementsByTagName("name").item(0).getTextContent();
-            //items = node.getElementsByTagName("items").item(0).getTextContent();
+            code = node.getElementsByTagName("code").item(0).getTextContent();
+            item = items.get(code);
+            menu.addItem(item);
 
-            Menu menu = new Menu();
-            menu.setMenuName(name);
-            //to whoever implements this
-            //separate the string into some sort of array
-            //and then use a loop to add them to the items array in menu
-            //I realised we don't have a clear structure for menu xml and dtd so I'll get on that
-            //and finish this later
-            //or someone else can do it
-            //shouldn't be hard
+            //this but needs to be edited
         }
 
         return menus;
