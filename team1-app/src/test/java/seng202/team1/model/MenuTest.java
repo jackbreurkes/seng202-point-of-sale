@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
@@ -20,7 +21,7 @@ public class MenuTest {
     FoodItem testFood3;
     List<FoodItem> testList;
 
-    @BeforeEach
+    @Ignore
     void beforeEach() {
         menu = new Menu();
         testFood1 = new FoodItem("TS01", "Test Food 1", UnitType.ML);
@@ -28,7 +29,7 @@ public class MenuTest {
         testFood3 = new FoodItem("TS03", "Test food 3", UnitType.COUNT);
     }
 
-    @Test
+    @Ignore
     void testGetMenuLength() {
         // Test Menu length against menuTest list
         List<FoodItem> menuTest = new ArrayList<FoodItem>();
@@ -40,7 +41,7 @@ public class MenuTest {
         assertEquals(menu.getMenuLength(), menuTest.size());
     }
 
-    @Test
+    @Ignore
     void testAddItem() {
         assertEquals(menu.getMenuItems().size(), 0);
         menu.setMenuName("Beverages");
@@ -52,7 +53,7 @@ public class MenuTest {
         assertEquals(menu.getMenuItems().get(0).getCode(), testList.get(0).getCode());
     }
 
-    @Test
+    @Ignore
     void testRemoveItem() {
         // Initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
@@ -70,7 +71,7 @@ public class MenuTest {
         assertEquals(menu.getMenuItems().size(), 0);
     }
 
-    @Test
+    @Ignore
     void testRemoveMenu() {
         testList = new ArrayList<FoodItem>();
         testList.add(testFood1);
@@ -83,4 +84,14 @@ public class MenuTest {
         menu.removeMenu();
         assertEquals(menu.getMenuItems().size(), 0);
     }
+
+    @Ignore
+    void testSetDietaryFoodItems() {
+        // Sets a vegan/vegetarian/gluten-free menu automatically
+        // When new menu items are added, function can be called
+        // to automatically add food item.
+    }
+
+
+    // Add fooditem to a specific menu
 }
