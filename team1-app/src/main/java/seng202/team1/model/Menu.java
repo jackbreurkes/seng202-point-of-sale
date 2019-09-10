@@ -24,7 +24,7 @@ public class Menu {
      * @param name String name
      */
     public void setMenuName(String name) {
-        this.name = name;
+
     }
 
 
@@ -33,7 +33,7 @@ public class Menu {
      * @return a String value
      */
     public String getMenuName() {
-        return name;
+        return null;
     }
 
 
@@ -42,7 +42,7 @@ public class Menu {
      * @return a List<FoodItem>
      */
     public List<FoodItem> getMenuItems() {
-        return items;
+        return null;
     }
 
 
@@ -51,7 +51,7 @@ public class Menu {
      * @return an int
      */
     public int getMenuLength() {
-        return items.size();
+        return 0;
     }
 
 
@@ -60,7 +60,7 @@ public class Menu {
      * @param item FoodItem
      */
     public void addItem(FoodItem item) {
-        items.add(item);
+
     }
 
 
@@ -69,13 +69,11 @@ public class Menu {
      * @param item FoodItem
      */
     public void removeItem(FoodItem item) {
-        items.remove(item);
     }
 
     /**
      *  erases the content of a menu
      */
     public void removeMenu() {
-        items.clear();
     }
 }
