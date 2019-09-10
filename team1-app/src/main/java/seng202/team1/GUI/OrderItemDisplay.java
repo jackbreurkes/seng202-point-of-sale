@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
+import seng202.team1.util.UnitType;
 
 import java.io.IOException;
 
@@ -18,6 +19,9 @@ public class OrderItemDisplay extends VBox {
 
     @FXML
     private Button removeItem;
+
+    @FXML
+    private VBox ingredients;
 
     private CreateOrderDisplay createOrderDisplay;
     private FoodItem model;
@@ -42,12 +46,23 @@ public class OrderItemDisplay extends VBox {
     public void initialize() {
         itemName.setText(model.getName());
         OrderItemDisplay display = this;
+
+        if (model.getRecipe() != null) {
+            // TODO implement the below once Recipe class is implemented
+//            for (FoodItem ingredient : model.getRecipe().getIngredients()) {
+//                // do the stuff below
+//            }
+            FoodItem testIngredient = new FoodItem("TEST", "test ingredient", UnitType.COUNT);
+            ingredients.getChildren().add(new OrderIngredientDisplay(testIngredient));
+        }
+
         removeItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 createOrderDisplay.removeItemFromOrder(model, display);
             }
         });
+
     }
 
 }

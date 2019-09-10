@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
 import seng202.team1.model.Order;
@@ -31,9 +32,9 @@ public class OrderController {
     public void initialize() {
         Menu testMenu = new Menu();
         testMenu.setMenuName("Test menu");
-        testMenu.addItem(new FoodItem("CODE1", "test item 1", UnitType.COUNT));
-        testMenu.addItem(new FoodItem("CODE2", "test item 2", UnitType.COUNT));
-        testMenu.addItem(new FoodItem("CODE3", "test item 3", UnitType.COUNT));
+        for (FoodItem item : MemoryStorage.getInstance().getAllFoodItems()) {
+            testMenu.addItem(item);
+        }
         activeMenu = testMenu;
 
         orderProgressDisplay = new OrderProgressDisplay(this);
