@@ -18,7 +18,6 @@ class RecipeTest {
 
     @BeforeEach
     void beforeEach() {
-        FoodItem burger = new FoodItem("1234", "Burger", UnitType.COUNT);
         FoodItem bun = new FoodItem("1111", "bun", UnitType.COUNT);
         FoodItem pattie = new FoodItem("2222", "pattie", UnitType.COUNT);
         FoodItem tofuPattie = new FoodItem("3333", "tofuPattie", UnitType.COUNT);
@@ -41,14 +40,14 @@ class RecipeTest {
         ingredientAmount.put(lettuce.getCode(), 1);
         ingredientAmount.put(glutenFreeBun.getCode(), 1);
 
-        recipe = new Recipe(ingredients, addableIngredients, 1, ingredientAmount, burger);
+        recipe = new Recipe(ingredients, addableIngredients, ingredientAmount, 1);
     }
 
     @Test
-    void testConstructor(){
+    void testConstructor() {
         // Pass null pointer
         // Test if set of ingredients is empty
-        // Test if amount created is 0
+        // Test if the amount of its product created is 0
         // Test ingredient amount does not have an entry for every ingredient
         // Test everything works
 
@@ -74,27 +73,24 @@ class RecipeTest {
 
     @Test
     void getIsVegetarian() {
-        // When food item is vegetarian
-        // When food item is not vegetarian
-        // When food item can be optionally made vegetarian
-        // Adding a non vegetarian food item to a vegetarian recipe
-        //TODO write this after refactoring dietary logic
+        // Adding a non vegetarian food item to a currently vegetarian recipe
+        // TODO write this after refactoring dietary logic
     }
 
     @Test
     void getIsVegan() {
-        //TODO write this after refactoring dietary logic
+        // TODO write this after refactoring dietary logic
     }
 
     @Test
     void getIsGlutenFree() {
-        //TODO write this after refactoring dietary logic
+        // TODO write this after refactoring dietary logic
     }
 
     @Test
     void testCalories() {
         // Test correct initial number of calories
         // Correct after adding an addable ingredient
-        // Correct after removing a removable ingredient
+        // Correct after removing an ingredient
     }
 }

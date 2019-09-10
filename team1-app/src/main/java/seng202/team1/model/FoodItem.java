@@ -16,6 +16,7 @@ public class FoodItem {
     private boolean isVegan = false;
     private boolean isGlutenFree = false;
     private double caloriesPerUnit;
+    private Recipe recipe;
 
 
     /**
@@ -61,6 +62,10 @@ public class FoodItem {
         return isGlutenFree;
     }
 
+    public Recipe getRecipe() {
+        return this.recipe;
+    }
+
     public void setCaloriesPerUnit(double caloriesPerUnit) {
         if (caloriesPerUnit < 0) {
             throw new IllegalArgumentException("caloriesPerUnit must be non-negative");
@@ -102,6 +107,10 @@ public class FoodItem {
 
     public void setIsGlutenFree(boolean isGlutenFree) {
         this.isGlutenFree = isGlutenFree;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override

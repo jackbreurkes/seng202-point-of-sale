@@ -7,9 +7,8 @@ import java.util.Set;
 
 public class Recipe {
 
-    private FoodItem product; // the FoodItem the recipe produces
     private int amountCreated;
-    private Map<String, Integer> ingredientAmount = new HashMap<>();
+    private Map<String, Integer> ingredientAmounts = new HashMap<>();
     private Set<FoodItem> ingredients = new HashSet<>();
     private Set<FoodItem> addableIngredients = new HashSet<>();
 
@@ -18,7 +17,7 @@ public class Recipe {
      * @param ingredients the set of food items
      * @param addableIngredients the set of food items that can be added to a recipe during an order
      */
-    public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, int amountCreated, Map<String, Integer> ingredientAmount, FoodItem product) {
+    public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts, int amountCreated) {
 
     }
 
@@ -27,7 +26,7 @@ public class Recipe {
      * @return the ingredient amounts used in the recipe
      */
     public Map<String, Integer> getIngredientAmounts() {
-        return ingredientAmount;
+        return ingredientAmounts;
     }
 
     /**
@@ -36,14 +35,6 @@ public class Recipe {
      */
     public int getAmountCreated() {
         return amountCreated;
-    }
-
-    /**
-     * Returns the food item that the recipe creates
-     * @return product
-     */
-    public FoodItem getProduct() {
-        return product;
     }
 
     /**
