@@ -113,16 +113,8 @@ public class ImportController {
      */
     public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
     {
-        Parent editDataParent = FXMLLoader.load(getClass().getResource("editData.fxml"));
-        Scene editDataScene = new Scene(editDataParent);
-
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //This line sets the screen title
-        window.setTitle("ROSEMARY | Edit Data Screen");
-
-        window.setScene(editDataScene);
-        window.show();
+        SceneController sceneChanger = new SceneController();
+        sceneChanger.changeScene(event, "editData.fxml", "ROSEMARY | Edit Data Screen");
     }
 
     /**
@@ -130,16 +122,8 @@ public class ImportController {
      */
     public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
     {
-        Parent editDataParent = FXMLLoader.load(getClass().getResource("order.fxml"));
-        Scene editDataScene = new Scene(editDataParent);
-
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //This line sets the screen title
-        window.setTitle("ROSEMARY | Order Screen");
-
-        window.setScene(editDataScene);
-        window.show();
+        SceneController sceneChanger = new SceneController();
+        sceneChanger.changeScene(event, "order.fxml", "ROSEMARY | Order Screen");
     }
 
 
