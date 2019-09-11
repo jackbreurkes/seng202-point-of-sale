@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,9 +26,11 @@ import java.io.IOException;
 public class ImportController {
 
     @FXML
-    private static Text statusText; // TODO why is this static?
+    private Text statusText; // TODO why is this static?
     @FXML
     private TableView foodItemTable;
+    @FXML
+    private ComboBox dataTypeComboBox;
 
     TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
 
@@ -45,10 +48,8 @@ public class ImportController {
         calories = new TableColumn("kcal/unit");
         foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
-    }
 
-    public static void setStatusText(String text) {
-        statusText.setText(text);
+        dataTypeComboBox.getItems().addAll("Suppliers", "Food Items");
     }
 
     /**
@@ -74,17 +75,37 @@ public class ImportController {
     }
 
     /**
-     * Changes scene to data type select
+     * Opens file chooser and then imports file if a file of the correct type is selected
+     * also runs error control on file type
      */
-    public void changeSceneToSelectType(javafx.event.ActionEvent event) throws IOException {
-        Parent typeSelectParent = FXMLLoader.load(getClass().getResource("typeSelect.fxml"));
-        Scene typeSelectScene = new Scene(typeSelectParent);
+    public void importFile(javafx.event.ActionEvent event) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("ROSEMARY | Type select screen");
-
-        window.setScene(typeSelectScene);
-        window.show();
+        if (selectedFile != null) {
+            String fileName = selectedFile.getName();
+            String fileExtension = "";
+            int i = fileName.lastIndexOf('.');
+            if (i >= 0) {
+                fileExtension = fileName.substring(i + 1);
+            }
+            if (fileExtension.equals("xml")) {
+                if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
+                    UploadHandler.uploadFoodItems(selectedFile.getPath());
+                    System.out.println(MemoryStorage.getInstance().getAllFoodItems());
+                    updateTable();
+                } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
+                    UploadHandler.uploadSuppliers(selectedFile.getPath());
+                    updateTable();
+                } else {
+                    statusText.setText("No data type selected.");
+                }
+            } else {
+                statusText.setText("Incorrect file type.");
+            }
+        } else {
+            statusText.setText("No file selected.");
+        }
     }
 
     /**
