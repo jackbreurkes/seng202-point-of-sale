@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class SupplierDAOTest {
     @BeforeEach
     void setupStorage() {
