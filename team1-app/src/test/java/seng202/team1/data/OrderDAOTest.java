@@ -33,7 +33,7 @@ class OrderDAOTest {
 
         //TODO Jack used MemoryStorage.getInstance here, maybe refactor this to use that.
         orderStorage.addOrder(testOrder);
-
+        items = orderStorage.getAllOrders();
         assertEquals(1, items.size());
         assertTrue(items.contains(testOrder));
 
