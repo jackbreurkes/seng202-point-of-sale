@@ -1,5 +1,7 @@
 package seng202.team1.model;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
 import seng202.team1.model.FoodItem;
@@ -139,11 +141,12 @@ public class Order {
     }
 
     /**
-     * returns the cost of the order TODO use a proper money type for this!!
+     * returns the cost of the order
      * @return the total cost of the order
      */
-    public String getCost() {
-        return "not implemented";
+    public Money getCost() {
+        // TODO add money stuff to tests
+        return Money.parse("NZD 0.00");
     }
 
     public String getOrderCode() { return code; }
