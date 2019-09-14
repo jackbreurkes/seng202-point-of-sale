@@ -1,5 +1,8 @@
 package seng202.team1.model;
 
+import org.joda.money.BigMoney;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
@@ -12,6 +15,7 @@ public class FoodItem {
     private String code; // uppercase alphanumeric
     private String name;
     private UnitType unit;
+    private BigMoney cost = BigMoney.zero(CurrencyUnit.ofCountry("NZD"));
     private boolean isVegetarian = false;
     private boolean isVegan = false;
     private boolean isGlutenFree = false;
@@ -36,6 +40,10 @@ public class FoodItem {
 
     public String getName() {
         return name;
+    }
+
+    public BigMoney getCost() {
+        return cost;
     }
 
     /**
@@ -89,6 +97,13 @@ public class FoodItem {
             throw new NullPointerException();
         }
         this.unit = unit;
+    }
+
+    public void setCost(BigMoney cost) {
+        if (cost == null) {
+            throw new NullPointerException();
+        }
+        this.cost = cost;
     }
 
     public void setIsVegetarian(boolean isVegetarian) {
