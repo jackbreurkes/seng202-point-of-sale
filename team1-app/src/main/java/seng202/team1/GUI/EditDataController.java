@@ -24,7 +24,7 @@ public class EditDataController {
     @FXML
     private TableView foodItemTable;
 
-    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
+    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories, edit;
 
     /**
      * runs automatically when the window is created
@@ -38,7 +38,9 @@ public class EditDataController {
         isVegan = new TableColumn("Vegan");
         isGlutenFree = new TableColumn("Gluten Free");
         calories = new TableColumn("kcal/unit");
-        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
+        edit = new TableColumn<>("Edit");
+
+        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories, edit);
         updateTable();
     }
 
@@ -60,6 +62,7 @@ public class EditDataController {
         isVegan.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegan"));
         isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isGlutenFree"));
         calories.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("caloriesPerUnit"));
+        edit.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("button"));
 
         foodItemTable.setItems(items);
     }

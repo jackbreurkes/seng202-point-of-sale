@@ -1,5 +1,7 @@
 package seng202.team1.model;
 
+import com.sun.javafx.application.PlatformImpl;
+import javafx.scene.control.Button;
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -21,6 +23,7 @@ public class FoodItem {
     private boolean isGlutenFree = false;
     private double caloriesPerUnit;
     private Recipe recipe;
+    private Button button;
 
 
     /**
@@ -29,9 +32,11 @@ public class FoodItem {
      * @param name the name to give the food item. between 1 and 20 characters (inclusive)
      */
     public FoodItem(String code, String name, UnitType unit) {
+        PlatformImpl.startup(() -> {});
         setCode(code);
         setName(name);
         setUnit(unit);
+        setButton(new Button("edit item"));
     }
 
     public String getCode() {
@@ -73,6 +78,8 @@ public class FoodItem {
     public Recipe getRecipe() {
         return this.recipe;
     }
+
+    public Button getButton() { return this.button; }
 
     public void setCaloriesPerUnit(double caloriesPerUnit) {
         if (caloriesPerUnit < 0) {
@@ -127,6 +134,8 @@ public class FoodItem {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
+
+    public void setButton(Button button) { this.button = button; }
 
     @Override
     public boolean equals(Object o) {
