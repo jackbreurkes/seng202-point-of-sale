@@ -15,7 +15,7 @@ public class FoodItem {
     private String code; // uppercase alphanumeric
     private String name;
     private UnitType unit;
-    private BigMoney cost = BigMoney.zero(CurrencyUnit.ofCountry("NZD"));
+    private BigMoney cost = BigMoney.parse("NZD 0.00");
     private boolean isVegetarian = false;
     private boolean isVegan = false;
     private boolean isGlutenFree = false;
