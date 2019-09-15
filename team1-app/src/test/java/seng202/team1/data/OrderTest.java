@@ -1,5 +1,7 @@
 package seng202.team1.data;
 
+import org.joda.money.BigMoney;
+import org.joda.money.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +21,7 @@ import static seng202.team1.util.OrderStatus.*;
 class OrderTest {
 
     private Order testOrder;
-    private FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+    private FoodItem testItem;
     private FoodItem testItem2;
     private List<FoodItem> testList = new ArrayList<FoodItem>();
 
@@ -26,12 +29,13 @@ class OrderTest {
     @BeforeEach
     void beforeEach() {
         testOrder = new Order();
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
     }
 
     @Test
     void testGetOrderContents() {
         assertEquals(testOrder.getOrderContents(), testList);
-        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testOrder.addItem(testItem);
         testList.add(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
@@ -46,7 +50,35 @@ class OrderTest {
     @Disabled
     @Test
     void testGetCost() {
-        //TODO add tests here.
+        // empty order
+        assertEquals(Money.parse("NZD 0.0"), testOrder.getCost());
+
+        // single item
+        BigMoney testItemCost = BigMoney.parse("NZD 8.32");
+        testItem.setCost(testItemCost);
+        testOrder.addItem(testItem);
+        assertEquals(testItemCost.toMoney(), testOrder.getCost());
+
+        // multiple items
+        BigMoney testItem2Cost = BigMoney.parse("NZD 3.21");
+        testItem2.setCost(testItem2Cost);
+        testOrder.addItem(testItem2);
+        assertEquals(testItemCost.plus(testItem2Cost).toMoney(), testOrder.getCost());
+        // TODO toMoney rounding mode? undecided as of yet. maybe custom?
+
+        // after removing an item
+        testOrder.removeItem(testItem);
+        assertEquals(testItem2Cost.toMoney(), testOrder.getCost());
+
+        // items with sub-cent cost
+        BigMoney subCentCost = BigMoney.parse("NZD 0.05324214");
+        FoodItem subCentCostItem = new FoodItem("SUBCENT", "Oil", UnitType.ML);
+        subCentCostItem.setCost(subCentCost);
+        int amount = 27;
+        for (int i = 0; i < amount; i++) { // add 27
+            testOrder.addItem(subCentCostItem);
+        }
+        assertEquals(testItemCost.plus(subCentCost.multipliedBy(amount)).toMoney(), testOrder.getCost());
     }
 
     @Test
@@ -69,10 +101,9 @@ class OrderTest {
         testOrder.addItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
-
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
-
     }
+
     @Test
     void testRemoveItem(){
         //initializes a list to check against the order
@@ -100,15 +131,14 @@ class OrderTest {
         assertEquals(testOrder.getOrderContents(), testList);
 
         //tests that an item that is not in the list cannot be removed
-        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem2));
 
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
     }
+
     @Test
     void testCancelOrder(){
         testOrder.addItem(testItem);
-        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
         testOrder.cancelOrder();
         // checks the status of the order has correctly been set to cancelled
@@ -126,10 +156,10 @@ class OrderTest {
         //Makes sure a cancelled order cannot be completed
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
+
     @Test
     void testCompleteOrder(){
         testOrder.addItem(testItem);
-        testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
         testOrder.addItem(testItem2);
         testOrder.completeOrder();
         // checks the status of the order has correctly been set to completed
@@ -144,6 +174,7 @@ class OrderTest {
         //Makes sure a completed order cannot be cancelled
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
+
     @Test
     void testRefundOrder(){
         //makes sure an incomplete order cannot be refunded

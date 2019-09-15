@@ -193,7 +193,6 @@ class FoodItemTest {
         assertEquals(false, testItem.getIsGlutenFree());
     }
 
-    @Disabled
     @Test
     void testCost() {
         // default value

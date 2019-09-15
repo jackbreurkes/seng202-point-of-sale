@@ -51,16 +51,16 @@ public class FoodItem {
         return cost;
     }
 
+    public UnitType getUnit() {
+        return unit;
+    }
+
     /**
      * returns the number of calories in
      * @return
      */
     public double getCaloriesPerUnit() {
         return caloriesPerUnit;
-    }
-
-    public UnitType getUnit() {
-        return unit;
     }
 
     public boolean getIsVegetarian() {
@@ -109,6 +109,9 @@ public class FoodItem {
     public void setCost(BigMoney cost) {
         if (cost == null) {
             throw new NullPointerException();
+        }
+        if (cost.isNegative()) {
+            throw new IllegalArgumentException("cost cannot be negative");
         }
         this.cost = cost;
     }
