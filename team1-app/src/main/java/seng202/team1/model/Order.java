@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import seng202.team1.util.InvalidOrderStatusException;
@@ -7,6 +8,7 @@ import seng202.team1.util.OrderStatus;
 import seng202.team1.model.FoodItem;
 
 
+import java.math.RoundingMode;
 import java.util.*;
 
 import static seng202.team1.util.OrderStatus.*;
@@ -146,7 +148,12 @@ public class Order {
      */
     public Money getCost() {
         // TODO add money stuff to tests
-        return Money.parse("NZD 0.00");
+        BigMoney totalCost = BigMoney.parse("NZD 0.00");
+        for (FoodItem item : foodItems) {
+            totalCost = totalCost.plus(item.getCost());
+        }
+        return totalCost.toMoney(RoundingMode.HALF_UP);
+        // TODO do we want this type of rounding here?
     }
 
     public String getOrderCode() { return code; }

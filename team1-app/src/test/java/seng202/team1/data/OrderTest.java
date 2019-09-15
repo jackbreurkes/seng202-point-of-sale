@@ -47,7 +47,6 @@ class OrderTest {
         assertNotNull(testOrder.getOrderCode());
     }
 
-    @Disabled
     @Test
     void testGetCost() {
         // empty order
@@ -71,6 +70,7 @@ class OrderTest {
         assertEquals(testItem2Cost.toMoney(), testOrder.getCost());
 
         // items with sub-cent cost
+        testOrder.removeItem(testItem2);
         BigMoney subCentCost = BigMoney.parse("NZD 0.05324214");
         FoodItem subCentCostItem = new FoodItem("SUBCENT", "Oil", UnitType.ML);
         subCentCostItem.setCost(subCentCost);
@@ -78,7 +78,7 @@ class OrderTest {
         for (int i = 0; i < amount; i++) { // add 27
             testOrder.addItem(subCentCostItem);
         }
-        assertEquals(testItemCost.plus(subCentCost.multipliedBy(amount)).toMoney(), testOrder.getCost());
+        assertEquals(subCentCost.multipliedBy(amount).toMoney(RoundingMode.HALF_UP), testOrder.getCost());
     }
 
     @Test
