@@ -61,17 +61,20 @@ public class ImportController {
         ObservableList<FoodItem> items = FXCollections.observableArrayList(
                 itemStorage.getAllFoodItems()
         );
-
+        //System.out.println(items.get(0));
+        System.out.println(items);
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("name"));
         unitType.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
-        //stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
+        //stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("stock"));
         isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegetarian"));
         isVegan.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegan"));
         isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isGlutenFree"));
         calories.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("caloriesPerUnit"));
 
         foodItemTable.setItems(items);
+
+        System.out.println(foodItemTable);
     }
 
     /**
@@ -92,7 +95,6 @@ public class ImportController {
             if (fileExtension.equals("xml")) {
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
                     UploadHandler.uploadFoodItems(selectedFile.getPath());
-                    System.out.println(MemoryStorage.getInstance().getAllFoodItems());
                     updateTable();
                 } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
                     UploadHandler.uploadSuppliers(selectedFile.getPath());
