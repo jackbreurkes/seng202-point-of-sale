@@ -65,9 +65,6 @@ public class MemoryStorage implements FoodItemDAO {
             throw new InvalidDataCodeException("FoodItem with given code is already in storage");
         }
 
-        System.out.println(item);
-        System.out.println(count);
-
         foodItems.put(item.getCode(), item);
         foodItemCounts.put(item.getCode(), count);
     }

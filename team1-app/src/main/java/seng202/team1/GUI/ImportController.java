@@ -61,8 +61,7 @@ public class ImportController {
         ObservableList<FoodItem> items = FXCollections.observableArrayList(
                 itemStorage.getAllFoodItems()
         );
-        //System.out.println(items.get(0));
-        System.out.println(items);
+
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("name"));
         unitType.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
@@ -74,7 +73,6 @@ public class ImportController {
 
         foodItemTable.setItems(items);
 
-        System.out.println(foodItemTable);
     }
 
     /**
