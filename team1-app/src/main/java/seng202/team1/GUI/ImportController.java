@@ -65,13 +65,14 @@ public class ImportController {
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("name"));
         unitType.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
-        //stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
+        //stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("stock"));
         isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegetarian"));
         isVegan.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegan"));
         isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isGlutenFree"));
         calories.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("caloriesPerUnit"));
 
         foodItemTable.setItems(items);
+
     }
 
     /**
@@ -92,7 +93,6 @@ public class ImportController {
             if (fileExtension.equals("xml")) {
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
                     UploadHandler.uploadFoodItems(selectedFile.getPath());
-                    System.out.println(MemoryStorage.getInstance().getAllFoodItems());
                     updateTable();
                 } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
                     UploadHandler.uploadSuppliers(selectedFile.getPath());

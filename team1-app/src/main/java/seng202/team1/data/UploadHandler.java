@@ -58,7 +58,6 @@ public class UploadHandler {
             FoodItemHandler foodItemHandler = new FoodItemHandler(pathName, validating);
             foodItemHandler.parseInput();
             foodItemsUploaded = foodItemHandler.getFoodItems();
-
             FoodItemDAO itemStorage = MemoryStorage.getInstance();
             for (FoodItem foodItem: foodItemsUploaded.values()) {
                 itemStorage.addFoodItem(foodItem, 1);
