@@ -83,7 +83,6 @@ class OrderTest {
 
     @Test
     void testAddItem() {
-        // TODO you should only be able to add items to CREATING orders
 
         //initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
@@ -103,13 +102,17 @@ class OrderTest {
         testOrder.addItem(testItem);
         assertEquals(testOrder.getOrderContents(), testList);
 
+        //makes sure you can't add null items
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
+
+        //only CREATING orders can have items added to them
+        testOrder.addItem(testItem);
+        testOrder.completeOrder();
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.addItem(testItem));
     }
 
     @Test
     void testRemoveItem(){
-        // TODO you should only be able to remove items from CREATING orders
-
         //initializes a list to check against the order
         testList.add(testItem);
         //adds an item
@@ -137,11 +140,20 @@ class OrderTest {
         //tests that an item that is not in the list cannot be removed
         assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem2));
 
+        //makes sure you can't  try remove a null item from an order
         assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
+
+        //checks that only orders with  the CREATING status can have items removed from them
+        testOrder.addItem(testItem);
+        testOrder.completeOrder();
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
     }
 
     @Test
     void testCancelOrder(){
+        // checks trying to cancel an empty order
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.cancelOrder());
+
         testOrder.addItem(testItem);
         testOrder.addItem(testItem2);
         testOrder.cancelOrder();
@@ -163,6 +175,9 @@ class OrderTest {
 
     @Test
     void testCompleteOrder(){
+        // checks trying to complete an empty order
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
+
         testOrder.addItem(testItem);
         testOrder.addItem(testItem2);
         testOrder.completeOrder();
@@ -172,22 +187,41 @@ class OrderTest {
         //Makes sure an order cannot be completed twice
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
 
+        //checks a completed order cannot have items added to it
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.addItem(testItem));
+
         //checks a completed order cannot have items removed from it
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
 
         //Makes sure a completed order cannot be cancelled
-        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.cancelOrder());
     }
 
-    @Disabled
     @Test
     void testSubmitOrder(){
-        // TODO write tests here
+        testOrder.addItem(testItem);
+        testOrder.submitOrder();
+
+        // checks the status of the order has correctly been set to submitted
+        assertEquals(testOrder.getOrderStatus(), SUBMITTED);
+
+        //Makes sure an order cannot be submitted twice
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.submitOrder());
+
+        //checks a submitted order cannot have items added to it
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.addItem(testItem));
+
+        //checks a submitted order cannot have items removed from it
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
+
+        //Makes sure a submitted order cannot be cancelled
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
     }
 
     @Test
     void testRefundOrder(){
-        //makes sure an incomplete order cannot be refunded
+        //makes sure only completed orders can be refunded
+        testOrder.addItem(testItem);
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
         testOrder.completeOrder();

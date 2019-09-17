@@ -96,16 +96,13 @@ public class Order {
     public void cancelOrder() {
         //if status is still being processed the order can be cancelled
         if (status == CREATING) {
-            status = CANCELLED;
-        }
-        else if(status == CANCELLED) {
-            throw new InvalidOrderStatusException("An order cannot be cancelled twice.");
-        }
-        else if(status == REFUNDED) {
-            throw new InvalidOrderStatusException("Orders cannot be cancelled if they've been refunded.");
-        }
-        else if(status == COMPLETED) {
-            throw new InvalidOrderStatusException("Completed orders cannot be cancelled.");
+            if (foodItems.size() > 0) {
+                status = CANCELLED;
+            } else {
+                throw new InvalidOrderStatusException("cannot cancel an empty order");
+            }
+        } else {
+            throw new InvalidOrderStatusException("Only orders with the CREATING status can be cancelled.");
         }
     }
 
@@ -115,35 +112,29 @@ public class Order {
      */
     public void refundOrder() {
         if (status == COMPLETED) {
-            status = REFUNDED;
-        }
-        else if(status == CANCELLED) {
-            throw new InvalidOrderStatusException("Cancelled orders cannot be refunded.");
-        }
-        else if(status == REFUNDED) {
-            throw new InvalidOrderStatusException("Orders cannot be refunded twice.");
-        }
-        else if(status == CREATING) {
-            throw new InvalidOrderStatusException("Incomplete orders cannot be refunded.");
+            if (foodItems.size() > 0) {
+                status = REFUNDED;
+            } else {
+                throw new InvalidOrderStatusException("cannot refund an empty order");
+            }
+        } else {
+            throw new InvalidOrderStatusException("Only orders with the COMPLETED status can be refunded.");
         }
     }
 
     /**
-     * changes the status of the order to complete, (registers it in the database?)
+     * changes the status of the order to complete
      * only CREATING orders can be set to complete.
      */
     public void completeOrder() {
         if (status == CREATING) {
-            status = COMPLETED;
-        }
-        else if(status == CANCELLED) {
-            throw new InvalidOrderStatusException("Cancelled orders cannot be completed.");
-        }
-        else if(status == REFUNDED) {
-            throw new InvalidOrderStatusException("Refunded orders cannot be completed.");
-        }
-        else if(status == COMPLETED) {
-            throw new InvalidOrderStatusException("An order cannot be completed twice.");
+            if (foodItems.size() > 0) {
+                status = COMPLETED;
+            } else {
+                throw new InvalidOrderStatusException("cannot complete an empty order");
+            }
+        } else {
+            throw new InvalidOrderStatusException("Only orders with the CREATING status can be completed.");
         }
     }
 
