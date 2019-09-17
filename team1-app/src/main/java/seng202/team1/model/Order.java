@@ -131,7 +131,7 @@ public class Order {
             if (foodItems.size() > 0) {
                 status = COMPLETED;
             } else {
-                throw new InvalidOrderStatusException("cannot submit an empty order");
+                throw new InvalidOrderStatusException("cannot complete an empty order");
             }
         } else {
             throw new InvalidOrderStatusException("Only orders with the CREATING status can be completed.");

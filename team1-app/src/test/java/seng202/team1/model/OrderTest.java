@@ -189,6 +189,9 @@ class OrderTest {
     void testRefundOrder(){
         //makes sure an incomplete order cannot be refunded
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
+        testOrder.addItem(testItem);
+
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
         testOrder.completeOrder();
         testOrder.refundOrder();
