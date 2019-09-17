@@ -1,9 +1,6 @@
 package seng202.team1.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Recipe {
 
@@ -18,6 +15,10 @@ public class Recipe {
      * @param addableIngredients the set of food items that can be added to a recipe during an order
      */
     public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts, int amountCreated) {
+        this.amountCreated = amountCreated;
+        this.ingredients = ingredients;
+        this.addableIngredients = addableIngredients;
+        this.ingredientAmounts = ingredientAmounts;
 
     }
 
@@ -25,9 +26,7 @@ public class Recipe {
      * Gets the ingredient amounts used in the recipe and the ingredient amounts of the addable food items
      * @return the ingredient amounts used in the recipe
      */
-    public Map<String, Integer> getIngredientAmounts() {
-        return ingredientAmounts;
-    }
+    public Map<String, Integer> getIngredientAmounts() { return ingredientAmounts; }
 
     /**
      * Gets the amount of food items the recipe creates
@@ -41,16 +40,14 @@ public class Recipe {
      * Gets the set of ingredients in the recipe
      * @return set of food items in the recipe
      */
-    public Set<FoodItem> getIngredients(){
-        return null;
-    }
+    public Set<FoodItem> getIngredients(){ return ingredients; }
 
     /**
      * Gets the set of addable ingredients in the recipe
      * @return set of addable ingredients in the recipe
      */
     public Set<FoodItem> getAddableIngredients(){
-        return null;
+        return addableIngredients;
     }
 
     /**
@@ -58,6 +55,7 @@ public class Recipe {
      * @param ingredient food item from the set of addable ingredients
      */
     public void addIngredient(FoodItem ingredient){
+        ingredients.add(ingredient);
 
     }
 
@@ -74,7 +72,13 @@ public class Recipe {
      * @return YES if vegetarian, OPTIONAL if currently not vegetarian and can be made vegetarian, NO otherwise
      */
     public boolean getIsVegetarian() {
-        return false;
+        Iterator<FoodItem> itr = ingredients.iterator();
+        while (itr.hasNext()) {
+            if (itr.next().getIsVegetarian() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -82,7 +86,13 @@ public class Recipe {
      * @return YES if vegan, OPTIONAL if currently not vegan and can be made vegan, NO otherwise
      */
     public boolean getIsVegan() {
-        return false;
+        Iterator<FoodItem> itr = ingredients.iterator();
+        while (itr.hasNext()) {
+            if (itr.next().getIsVegan() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -90,7 +100,13 @@ public class Recipe {
      * @return YES if glutenFree, OPTIONAL if currently not glutenFree and can be made glutenFree, NO otherwise
      */
     public boolean getIsGlutenFree() {
-        return false;
+        Iterator<FoodItem> itr = ingredients.iterator();
+        while (itr.hasNext()) {
+            if (itr.next().getIsGlutenFree() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -98,7 +114,12 @@ public class Recipe {
      * @return type double of the number of calories
      */
     public double getCalories() {
-        return 0;
+        double totalCal = 0;
+        Iterator<FoodItem> itr = ingredients.iterator();
+        while (itr.hasNext()) {
+            totalCal += itr.next().getCaloriesPerUnit();
+        }
+        return totalCal;
     }
 
 
