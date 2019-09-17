@@ -4,14 +4,14 @@ import java.sql.*;
 import java.util.Date;
 
 public class JDBCStorage {
+
+    private String url = "jdbc:sqlite:test.db";
     private Connection connect = null;
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
-    public static void createNewDatabase() {
-
-        String url = "jdbc:sqlite:test.db";
+    public void createNewDatabase() {
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -26,7 +26,7 @@ public class JDBCStorage {
 
     public static void createNewTable() {
         // SQLite connection string
-        String url = "jdbc:sqlite:test.db";
+        String url = "jdbc:sqlite:rosemary.db";
 
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS warehouses (\n"
@@ -51,7 +51,7 @@ public class JDBCStorage {
      */
     private Connection connect() {
         // SQLite connection string
-        String url = "jdbc:sqlite:test.db";
+        String url = "jdbc:sqlite:egg.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -78,7 +78,7 @@ public class JDBCStorage {
     public void readDataBase() throws Exception {
         try {
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:egg.db");
 
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM warehouses");
@@ -94,7 +94,7 @@ public class JDBCStorage {
 
     public static void main(String[] args) {
         JDBCStorage storage = new JDBCStorage();
-        storage.createNewDatabase();
+        //storage.createNewDatabase();
         storage.createNewTable();
         storage.insert("tr", 3.33d);
         try {
