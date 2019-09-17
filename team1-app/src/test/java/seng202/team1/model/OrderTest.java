@@ -1,4 +1,4 @@
-package seng202.team1.data;
+package seng202.team1.model;
 
 import org.joda.money.BigMoney;
 import org.joda.money.Money;
@@ -83,6 +83,8 @@ class OrderTest {
 
     @Test
     void testAddItem() {
+        // TODO you should only be able to add items to CREATING orders
+
         //initializes a list to check against the order
         testList = new ArrayList<FoodItem>();
         testList.add(testItem);
@@ -106,6 +108,8 @@ class OrderTest {
 
     @Test
     void testRemoveItem(){
+        // TODO you should only be able to remove items from CREATING orders
+
         //initializes a list to check against the order
         testList.add(testItem);
         //adds an item
@@ -173,6 +177,12 @@ class OrderTest {
 
         //Makes sure a completed order cannot be cancelled
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
+    }
+
+    @Disabled
+    @Test
+    void testSubmitOrder(){
+        // TODO write tests here
     }
 
     @Test

@@ -7,8 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.util.InvalidOrderStatusException;
 
 import java.io.IOException;
 
@@ -18,19 +20,21 @@ public class CreateOrderDisplay extends VBox {
     private Label orderTotal;
 
     @FXML
-    private Button cancelOrder;
+    private Button cancelOrder, submitOrder;
 
     @FXML
     private VBox orderItems;
 
     private OrderController orderController;
     private Order model;
+    private OrderDAO orderStorage;
 
 
-    public CreateOrderDisplay(OrderController orderController, Order model) {
+    public CreateOrderDisplay(OrderController orderController, Order model) { // TODO add OrderDAO orderStorage as an arg
 
         this.orderController = orderController;
         this.model = model;
+        // this.orderStorage = orderStorage TODO
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createOrderDisplay.fxml"));
         loader.setRoot(this);
@@ -48,7 +52,13 @@ public class CreateOrderDisplay extends VBox {
         cancelOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                orderController.stopCreatingOrder();
+                closeCreateOrderPanel();
+            }
+        });
+        submitOrder.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                submitOrder();
             }
         });
     }
@@ -61,6 +71,20 @@ public class CreateOrderDisplay extends VBox {
     public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
         model.removeItem(item);
         orderItems.getChildren().remove(display);
+    }
+
+    public void submitOrder() {
+        try {
+            model.submitOrder();
+            // orderStorage.addOrder(model); TODO get this working
+        } catch (InvalidOrderStatusException e) {
+            // TODO handle this exception. for now it is fine to say we don't do anything with the order?
+        }
+        closeCreateOrderPanel();
+    }
+
+    public void closeCreateOrderPanel() {
+        orderController.stopCreatingOrder();
     }
 
 }

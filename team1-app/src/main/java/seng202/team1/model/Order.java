@@ -73,6 +73,26 @@ public class Order {
      * changes the status of the order to cancelled, (registers it in the database?)
      * Only CREATING orders can be cancelled.
      */
+    public void submitOrder() {
+        if (status == CREATING) {
+            if (foodItems.size() > 0) {
+                status = SUBMITTED;
+            } else {
+                throw new InvalidOrderStatusException("cannot submit an empty order");
+            }
+        }
+        else {
+            throw new InvalidOrderStatusException("Only orders with the CREATING status can be submitted.");
+        }
+    }
+
+    // TODO The code below could use a refactor, look at the submitOrder function. don't need so many
+    // TODO else ifs just for different messages
+
+    /**
+     * changes the status of the order to cancelled, (registers it in the database?)
+     * Only CREATING orders can be cancelled.
+     */
     public void cancelOrder() {
         //if status is still being processed the order can be cancelled
         if (status == CREATING) {
@@ -87,7 +107,6 @@ public class Order {
         else if(status == COMPLETED) {
             throw new InvalidOrderStatusException("Completed orders cannot be cancelled.");
         }
-
     }
 
     /**
