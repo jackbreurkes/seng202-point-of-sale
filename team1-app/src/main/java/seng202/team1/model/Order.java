@@ -111,11 +111,7 @@ public class Order {
      */
     public void refundOrder() {
         if (status == COMPLETED) {
-            if (foodItems.size() > 0) {
-                status = REFUNDED;
-            } else {
-                throw new InvalidOrderStatusException("cannot refund an empty order");
-            }
+            status = REFUNDED;
         } else {
             throw new InvalidOrderStatusException("Only orders with the COMPLETED status can be refunded.");
         }
