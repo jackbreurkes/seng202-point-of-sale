@@ -49,30 +49,46 @@ class RecipeTest {
     void testConstructor() {
         // The '->' separates the parameters(left-side) from the actual expression (right-side)
 
-        // Pass null pointer. Im not sure how to make a null int, so i just set it to 0.
-        assertThrows(NullPointerException.class, () ->{
+        // Pass null pointer.
+        assertThrows(NullPointerException.class, () -> {
             new Recipe(null, null, null, 0);
         });
+
         // Test if set of ingredients is empty
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Recipe(new HashSet<>(), new HashSet<>(), new HashMap<>(), 1);
+        });
+
+
         // Test if the amount of its product created is 0
         // Test ingredient amount does not have an entry for every ingredient
         // Test everything works
 
     }
 
+    @Disabled
     @Test
     void addIngredient() {
         // Pass null pointer
+        assertThrows(NullPointerException.class, () -> {
+            recipe.addIngredient(null);
+        });
+
         // Pass food item that is not addable
         // Pass a food item that is addable
         // Adding a food item that has been previously removed
         // Adding a food item that is already in the recipe
     }
 
+    @Disabled
     @Test
     void removeIngredient() {
         // Pass a null pointer
+        assertThrows(NullPointerException.class, () -> {
+            recipe.removeIngredient(null);
+        });
         // Remove a food item that is not within the recipe
+
         // Remove a food item that is within the recipe
         // Removing an item that has already been removed
         // Removing an item that has been added that wasn't in the original recipe
