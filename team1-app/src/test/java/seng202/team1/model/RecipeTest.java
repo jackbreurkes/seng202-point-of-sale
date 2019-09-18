@@ -45,7 +45,12 @@ class RecipeTest {
 
     @Test
     void testConstructor() {
-        // Pass null pointer
+        // The '->' separates the parameters(left-side) from the actual expression (right-side)
+
+        // Pass null pointer. Im not sure how to make a null int, so i just set it to 0.
+        assertThrows(NullPointerException.class, () ->{
+            new Recipe(null, null, null, 0);
+        });
         // Test if set of ingredients is empty
         // Test if the amount of its product created is 0
         // Test ingredient amount does not have an entry for every ingredient
