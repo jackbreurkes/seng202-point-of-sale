@@ -61,9 +61,13 @@ class FoodItemHandlerTest {
                 beefburg, cheeseburg, tofuburg, applesoda
         );
         List<FoodItem> items = new ArrayList<FoodItem>(handler.getFoodItems().values());
+
+
+
         // sorting lists is used for ease of reading if assertEquals(expectedItems, items) fails
         expectedItems.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
+
 
         assertEquals(expectedItems.size(), items.size());
         assertEquals(expectedItems, items);

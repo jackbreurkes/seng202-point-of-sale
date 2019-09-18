@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE fooditems SYSTEM "../../../../resources/dtd/fooditems.dtd">
+<fooditems>
+    <description>Food sold by our food truck - file 2</description>
+    <fooditem unit="count">
+        <code>BANANA</code>
+        <name>Banana</name>
+        <caloriesPerUnit>100</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="count">
+        <code>APPLEPIE</code>
+        <name>Apple Pie</name>
+        <caloriesPerUnit>200</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegetarian="yes">
+        <code>TOFUBURG</code>
+        <name>Tofu Burger</name>
+        <caloriesPerUnit>268.4</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>WATER</code>
+        <name>Glass of water</name>
+        <caloriesPerUnit>0</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>APPLESODA</code>
+        <name>Sparkling Apple</name>
+        <caloriesPerUnit>87</caloriesPerUnit>
+    </fooditem>
+
+</fooditems>
