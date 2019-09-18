@@ -22,7 +22,7 @@ class OrderDAOTest {
     @BeforeEach
     void setupStorage() {
         //TODO set this up
-        testOrder = new Order();
+        testOrder = new Order(1);
     }
 
     @Test
@@ -41,20 +41,19 @@ class OrderDAOTest {
 
     @Test
     void testGetOrderByCode() {
-        //TODO Need to setup a system for Order Codes.
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
 
-        //assertEquals(testOrder, orderStorage.getOrderByCode(testOrder.getCode()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
-        //cant get a null Order
+        //cant get an order with a negative ID
         assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.getOrderByCode(null);
+            orderStorage.getOrderByID(-1);
         });
 
-        //cant get an order that doesnt exist in the system (needs to be changed when codes are implemented.)
+        //cant get an order that doesnt exist in the system
         assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.getOrderByCode("ORDERCODE  :O");
+            orderStorage.getOrderByID(2);
         });
     }
 
@@ -69,7 +68,7 @@ class OrderDAOTest {
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
         //test for when order-code is implemented in the order class
-        //assertEquals(testOrder, orderStorage.getOrderByCode(testOrder.getCode()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
         // test adding an already added order
         assertThrows(InvalidDataCodeException.class, () -> {
@@ -84,46 +83,45 @@ class OrderDAOTest {
 
     @Test
     void testUpdateOrder() {
-        //TODO update the order using the provided order code? still gotta get order codes done
 
-        /*
         //adds an order to storage, then updates the order and calls updateOrder, then checks the order was correctly updated
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
 
         testOrder.addItem(testItem2);
         orderStorage.updateOrder(testOrder);
-        assertEquals(testOrder, orderStorage.getOrderByCode(testOrder.getCode()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
         //makes sure you cant update a null order
         assertThrows(NullPointerException.class, () -> {
             orderStorage.updateOrder(null);
         });
 
-         */
+
     }
 
     @Test
     void testRemoveOrder() {
-        /*
+
         //cant remove from an order that isnt in the system
         assertThrows(NullPointerException.class, () -> {
-            orderStorage.removeOrder(testOrder.getCode());
+            orderStorage.removeOrder(testOrder.getOrderID());
         });
         orderStorage.addOrder(testOrder);
 
-        //needs getCode to work
-        orderStorage.removeOrder(testOrder.getCode());
-        assertNull(orderStorage.getOrderByCode(testOrder.getCode()));z
-        //needs getCode to work
-        assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.removeOrder(testOrder.getCode());
-        });
-        */
+        //checks orders are correctly removed
+        orderStorage.removeOrder(testOrder.getOrderID());
+        assertNull(orderStorage.getOrderByID(testOrder.getOrderID()));
 
-        //cant remove from a null order
+        //cant remove an order that has already been removed
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.removeOrder(testOrder.getOrderID());
+        });
+
+
+        //cant remove an order with a negative ID number
         assertThrows(NullPointerException.class, () -> {
-            orderStorage.removeOrder(null);
+            orderStorage.removeOrder(-1);
         });
 
 

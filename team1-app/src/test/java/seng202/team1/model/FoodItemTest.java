@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static seng202.team1.util.UnitType.COUNT;
 
 class FoodItemTest {
 
@@ -20,36 +21,36 @@ class FoodItemTest {
 
     @BeforeEach
     void beforeEach() {
-        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        testItem = new FoodItem("TEST", "Test Item", COUNT);
     }
 
     @Test
     void testConstructor() {
         // how should we test abstract classes??
-        FoodItem item1 = new FoodItem("COD", "1", UnitType.COUNT);
+        FoodItem item1 = new FoodItem("COD", "1", COUNT);
         assertEquals("COD", item1.getCode());
         assertEquals("1", item1.getName());
 
 
-        FoodItem item2 = new FoodItem("THISIS10", "thisstring is twenty", UnitType.COUNT);
+        FoodItem item2 = new FoodItem("THISIS10", "thisstring is twenty", COUNT);
         assertEquals(item2.getName(), "thisstring is twenty");
 
         // code not enough chars
         assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("CC", "E", UnitType.COUNT);
+            new FoodItem("CC", "E", COUNT);
         });
 
         // code too many chars
         assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("elevenchars", "E", UnitType.COUNT);
+            new FoodItem("elevenchars", "E", COUNT);
         });
 
         // code not uppercase alphanumeric
         assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("code", "Test Name", UnitType.COUNT);
+            new FoodItem("code", "Test Name", COUNT);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("COD\u2202", "Test Name", UnitType.COUNT);
+            new FoodItem("COD\u2202", "Test Name", COUNT);
         });
 
         // ask about testing name for characters? some foreign places might use funky chars
@@ -58,7 +59,7 @@ class FoodItemTest {
         // should we be testing if setName is called vs name = "whatever" or is that overkill
 
         assertThrows(NullPointerException.class, () -> {
-            new FoodItem(null, "Test Name", UnitType.COUNT);
+            new FoodItem(null, "Test Name", COUNT);
         });
     }
 
@@ -68,7 +69,7 @@ class FoodItemTest {
         Set<FoodItem> addableIngredients = new HashSet<>();
         Map<String, Integer> ingredientAmounts = new HashMap<>();
 
-        FoodItem ingredient1 = new FoodItem("INGRED1", "test ingredient 1", UnitType.COUNT);
+        FoodItem ingredient1 = new FoodItem("INGRED1", "test ingredient 1", COUNT);
         ingredients.add(ingredient1);
         ingredientAmounts.put(ingredient1.getCode(), 1);
         Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
@@ -84,7 +85,7 @@ class FoodItemTest {
         testItem.setRecipe(testRecipe);
         assertEquals(testRecipe, testItem.getRecipe());
 
-        FoodItem ingredient2 = new FoodItem("INGRED2", "test ingredient 2", UnitType.COUNT);
+        FoodItem ingredient2 = new FoodItem("INGRED2", "test ingredient 2", COUNT);
         ingredients.add(ingredient2);
         ingredientAmounts.put(ingredient2.getCode(), 1);
         testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 2);
@@ -142,8 +143,8 @@ class FoodItemTest {
         testItem.setUnit(UnitType.ML);
         assertEquals(UnitType.ML, testItem.getUnit());
 
-        testItem.setUnit(UnitType.COUNT);
-        assertEquals(UnitType.COUNT, testItem.getUnit());
+        testItem.setUnit(COUNT);
+        assertEquals(COUNT, testItem.getUnit());
 
         assertThrows(NullPointerException.class, () -> {
             testItem.setUnit(null);
@@ -215,6 +216,35 @@ class FoodItemTest {
         assertThrows(IllegalArgumentException.class, () -> {
             testItem.setCost(BigMoney.parse("NZD -0.5"));
         });
+    }
+
+    @Test void testToString() {
+        assertEquals(testItem.toString(), ("FoodItem{" +
+                "code='" + testItem.getCode() + '\'' +
+                ", name='" + testItem.getName() + '\'' +
+                ", unit=" + testItem.getUnit() +
+                ", cost=" + testItem.getCost() +
+                ", isVegetarian=" + testItem.getIsVegetarian() +
+                ", isVegan=" + testItem.getIsVegan() +
+                ", isGlutenFree=" + testItem.getIsGlutenFree() +
+                ", caloriesPerUnit=" + testItem.getCaloriesPerUnit() +
+                ", recipe=" + testItem.getRecipe() +
+                '}'));
+
+    }
+
+    @Test
+    void testEquals() {
+        FoodItem item1 = new FoodItem("COD", "1", COUNT);
+        FoodItem item2 = new FoodItem("COD", "1", COUNT);
+        FoodItem item3 = new FoodItem("CAD", "2", COUNT);
+
+        //check two identical items are considered the same
+        assertTrue(item1.equals(item2));
+
+        //check two different items are not considered the same
+        assertFalse(item1.equals(item3));
+
     }
 
     // TODO test equals even though it's autogenerated? yeah just to check things still work

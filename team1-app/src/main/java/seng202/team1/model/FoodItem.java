@@ -8,6 +8,8 @@ import org.joda.money.Money;
 import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
+import java.util.Objects;
+
 
 /**
  * 
@@ -138,13 +140,15 @@ public class FoodItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FoodItem foodItem = (FoodItem) o;
-        return Double.compare(foodItem.caloriesPerUnit, caloriesPerUnit) == 0 &&
-                code.equals(foodItem.code) &&
-                name.equals(foodItem.name) &&
-                unit == foodItem.unit &&
-                isVegetarian == foodItem.isVegetarian &&
+        return isVegetarian == foodItem.isVegetarian &&
                 isVegan == foodItem.isVegan &&
-                isGlutenFree == foodItem.isGlutenFree;
+                isGlutenFree == foodItem.isGlutenFree &&
+                Double.compare(foodItem.caloriesPerUnit, caloriesPerUnit) == 0 &&
+                Objects.equals(code, foodItem.code) &&
+                Objects.equals(name, foodItem.name) &&
+                unit == foodItem.unit &&
+                Objects.equals(cost, foodItem.cost) &&
+                Objects.equals(recipe, foodItem.recipe);
     }
 
     @Override
@@ -153,10 +157,12 @@ public class FoodItem {
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", unit=" + unit +
+                ", cost=" + cost +
                 ", isVegetarian=" + isVegetarian +
                 ", isVegan=" + isVegan +
                 ", isGlutenFree=" + isGlutenFree +
                 ", caloriesPerUnit=" + caloriesPerUnit +
+                ", recipe=" + recipe +
                 '}';
     }
 }

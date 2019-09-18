@@ -28,7 +28,7 @@ class OrderTest {
 
     @BeforeEach
     void beforeEach() {
-        testOrder = new Order();
+        testOrder = new Order(1);
         testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
     }
@@ -41,10 +41,9 @@ class OrderTest {
         assertEquals(testOrder.getOrderContents(), testList);
     }
 
-    @Disabled
     @Test
     void testGetOrderCode() {
-        assertNotNull(testOrder.getOrderCode());
+        assertNotNull(testOrder.getOrderID());
     }
 
     @Test

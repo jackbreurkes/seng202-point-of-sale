@@ -18,7 +18,7 @@ import static seng202.team1.util.OrderStatus.*;
  */
 public class Order {
 
-    private String code;
+    private int ID;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = CREATING;
@@ -30,7 +30,8 @@ public class Order {
     /**
      * Default constructor
      */
-    public Order() {
+    public Order(int Identifier) {
+        this.ID = Identifier;
     }
 
     /**
@@ -86,8 +87,6 @@ public class Order {
         }
     }
 
-    // TODO The code below could use a refactor, look at the submitOrder function. don't need so many
-    // TODO else ifs just for different messages
 
     /**
      * changes the status of the order to cancelled, (registers it in the database?)
@@ -166,6 +165,8 @@ public class Order {
         // TODO do we want this type of rounding here?
     }
 
-    public String getOrderCode() { return code; }
+    public int getOrderID() { return ID; }
+
+
 }
 
