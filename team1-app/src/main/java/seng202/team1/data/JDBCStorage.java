@@ -2,13 +2,14 @@ package seng202.team1.data;
 
 import org.joda.money.BigMoney;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Order;
 import seng202.team1.util.UnitType;
 
 import java.sql.*;
 import java.util.Date;
 import java.util.Set;
 
-public class JDBCStorage implements FoodItemDAO {
+public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     private static String url = "jdbc:sqlite:rosemary.db";
     private static JDBCStorage instance;
@@ -271,4 +272,31 @@ public class JDBCStorage implements FoodItemDAO {
             System.out.println("error thrown:" + e);
         }
     }
+
+    @Override
+    public Set<Order> getAllOrders() {
+        return null;
+    }
+
+    @Override
+    public Order getOrderByID(int ID) {
+        return null;
+    }
+
+    @Override
+    public void addOrder(Order order) {
+
+    }
+
+    @Override
+    public void updateOrder(Order alteredOrder) {
+
+    }
+
+    @Override
+    public void removeOrder(int ID) {
+
+    }
+
+
 }
