@@ -115,18 +115,6 @@ public class FoodItemHandler {
             }
             caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
             food.setCaloriesPerUnit(caloriesPerUnit);
-//            salePrice = Double.parseDouble(node.getElementsByTagName("salePrice").item(0).getTextContent());
-
-            // FOR TESTING
-//            System.out.println("Code is: " + code);
-//            System.out.println("Unit is: " + unit);
-//            System.out.println("isVegetarian: " + isVegetarian);
-//            System.out.println("isVegan: " + isVegan);
-//            System.out.println("isGlutenFree: " + isGlutenFree);
-//            System.out.println("name: " + name);
-//            System.out.println("caloriesPerUnit: " + caloriesPerUnit);
-//            System.out.println();
-
             foodItems.put(code, food);
         }
         return foodItems;

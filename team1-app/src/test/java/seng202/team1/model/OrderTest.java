@@ -28,7 +28,7 @@ class OrderTest {
 
     @BeforeEach
     void beforeEach() {
-        testOrder = new Order();
+        testOrder = new Order(1);
         testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
     }
@@ -41,10 +41,9 @@ class OrderTest {
         assertEquals(testOrder.getOrderContents(), testList);
     }
 
-    @Disabled
     @Test
     void testGetOrderCode() {
-        assertNotNull(testOrder.getOrderCode());
+        assertNotNull(testOrder.getOrderID());
     }
 
     @Test
@@ -141,7 +140,7 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem2));
 
         //makes sure you can't  try remove a null item from an order
-        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
+        assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(null));
 
         //checks that only orders with  the CREATING status can have items removed from them
         testOrder.addItem(testItem);
@@ -199,6 +198,7 @@ class OrderTest {
 
     @Test
     void testSubmitOrder(){
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.submitOrder());
         testOrder.addItem(testItem);
         testOrder.submitOrder();
 

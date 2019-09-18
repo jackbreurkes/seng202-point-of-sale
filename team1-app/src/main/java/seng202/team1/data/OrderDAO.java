@@ -14,10 +14,10 @@ public interface OrderDAO {
 
     /**
      * gets a single Order from the system.
-     * @param code the Order's unique code
+     * @param ID the Order's unique code
      * @return the desired Order or null if not found
      */
-    Order getOrderByCode(String code);
+    Order getOrderByID(int ID);
 
     /**
      * adds an Order to storage. the order will be stored using its code attribute.
@@ -34,8 +34,8 @@ public interface OrderDAO {
 
     /**
      * remove an Order from storage.
-     * @param code the code of the Order to remove
+     * @param ID the code of the Order to remove
      */
-    void removeOrder(String code);
+    void removeOrder(int ID);
 
 }
