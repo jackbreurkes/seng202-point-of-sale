@@ -13,6 +13,10 @@ public class FoodItemDisplay extends FoodItem {
     private int stock;
     private Button button;
 
+    /**
+     * Creates display from fooditem
+     * @param itemCode
+     */
     public FoodItemDisplay(String itemCode) {
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
         setCode(itemCode);
