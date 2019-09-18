@@ -31,7 +31,7 @@ Cost /* cost of the FoodItem for customers */ VARCHAR(MAX) NOT NULL DEFAULT '0'
 
 CREATE TABLE Recipe
 (Id /* unique identifier for a Recipe */ INT NOT NULL IDENTITY,
- Product /* the Id of the FoodItem created by the Recipe */ INT NOT NULL REFERENCES FoodItem,
+ Product /* the Id of the FoodItem created by the Recipe */ INT NOT NULL REFERENCES FoodItem, /* TODO constraint, on del/update, use FOREIGN KEY words? */
  AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,
  PRIMARY KEY (Id, Product));
 
