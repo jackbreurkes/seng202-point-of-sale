@@ -20,9 +20,7 @@ public class ObservableFoodItems {
      * @param currentItems the set of foodItems to build the observable list from
      */
     public void buildFrom(Set<FoodItem> currentItems) {
-        if (!items.isEmpty()) {
-            items.removeAll();
-        }
+        items.retainAll();
         Iterator<FoodItem> itr = currentItems.iterator();
         while (itr.hasNext()) {
             items.add(new FoodItemDisplay(itr.next().getCode()));

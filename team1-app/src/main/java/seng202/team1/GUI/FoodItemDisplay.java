@@ -33,16 +33,32 @@ public class FoodItemDisplay extends FoodItem {
         button.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * stock "setter"
+     * @param currentStock
+     */
     public void setStock(int currentStock) {
         this.stock = currentStock;
     }
 
+    /**
+     * button "setter"
+     * @param button
+     */
     public void setButton(Button button) { this.button = button; }
 
+    /**
+     * stock "getter"
+     * @return
+     */
     public int getStock() {
         return this.stock;
     }
 
+    /**
+     * button "getter"
+     * @return
+     */
     public Button getButton() { return this.button; }
 
 }
