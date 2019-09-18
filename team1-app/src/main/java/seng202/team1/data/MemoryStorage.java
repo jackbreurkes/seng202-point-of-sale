@@ -35,14 +35,12 @@ public class MemoryStorage implements FoodItemDAO {
             instance = new MemoryStorage();
         }
         return instance;
-        // TODO move this into a parent class??
     }
 
     /**
      * I don't think we should ever ues this outside of testing? not sure?
      */
     public void resetInstance() {
-        // TODO get rid of this? we need it for testing but it seems bad?
         foodItems = new HashMap<String, FoodItem>();
         foodItemCounts = new HashMap<String, Integer>();
     }

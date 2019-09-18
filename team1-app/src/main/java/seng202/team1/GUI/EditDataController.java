@@ -25,11 +25,13 @@ public class EditDataController {
     private TableView foodItemTable;
 
     TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories, edit;
+    ObservableFoodItems items;
 
     /**
      * runs automatically when the window is created
      */
     public void initialize() {
+        items = new ObservableFoodItems();
         itemCode = new TableColumn("Code");
         itemName = new TableColumn("Name");
         unitType = new TableColumn("Unit");
@@ -49,22 +51,19 @@ public class EditDataController {
      */
     public void updateTable() {
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
+        items.buildFrom(itemStorage.getAllFoodItems());
 
-        ObservableList<FoodItem> items = FXCollections.observableArrayList(
-                itemStorage.getAllFoodItems()
-        );
+        itemCode.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("code"));
+        itemName.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("name"));
+        unitType.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("unit"));
+        stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("stock"));
+        isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isVegetarian"));
+        isVegan.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isVegan"));
+        isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isGlutenFree"));
+        calories.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("caloriesPerUnit"));
+        edit.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("button"));
 
-        itemCode.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("code"));
-        itemName.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("name"));
-        unitType.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
-        //stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("unit"));
-        isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegetarian"));
-        isVegan.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isVegan"));
-        isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("isGlutenFree"));
-        calories.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("caloriesPerUnit"));
-        edit.setCellValueFactory(new PropertyValueFactory<FoodItem, String>("button"));
-
-        foodItemTable.setItems(items);
+        foodItemTable.setItems(items.getList());
     }
 
 

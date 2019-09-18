@@ -32,9 +32,7 @@ public class Recipe {
      * Gets the amount of food items the recipe creates
      * @return type int of amount created
      */
-    public int getAmountCreated() {
-        return amountCreated;
-    }
+    public int getAmountCreated() { return amountCreated; }
 
     /**
      * Gets the set of ingredients in the recipe
@@ -46,9 +44,7 @@ public class Recipe {
      * Gets the set of addable ingredients in the recipe
      * @return set of addable ingredients in the recipe
      */
-    public Set<FoodItem> getAddableIngredients(){
-        return addableIngredients;
-    }
+    public Set<FoodItem> getAddableIngredients(){ return addableIngredients; }
 
     /**
      * Add an addable food item to the recipe during the order
@@ -56,7 +52,6 @@ public class Recipe {
      */
     public void addIngredient(FoodItem ingredient){
         ingredients.add(ingredient);
-
     }
 
     /**
@@ -64,6 +59,14 @@ public class Recipe {
      * @param code the code of the ingredient
      */
     public void removeIngredient(String code){
+        Iterator<FoodItem> itr = ingredients.iterator();
+        while (itr.hasNext()) {
+            FoodItem item = itr.next();
+            if (item.getCode() == code) {
+                ingredients.remove(item);
+                break;
+            }
+        }
 
     }
 
@@ -115,9 +118,15 @@ public class Recipe {
      */
     public double getCalories() {
         double totalCal = 0;
-        Iterator<FoodItem> itr = ingredients.iterator();
-        while (itr.hasNext()) {
-            totalCal += itr.next().getCaloriesPerUnit();
+
+        Iterator<FoodItem> ingreItr = ingredients.iterator();
+        while (ingreItr.hasNext()) {
+            totalCal += ingreItr.next().getCaloriesPerUnit();
+        }
+
+        Iterator<FoodItem> addItr = addableIngredients.iterator();
+        while (addItr.hasNext()) {
+            totalCal += addItr.next().getCaloriesPerUnit();
         }
         return totalCal;
     }
