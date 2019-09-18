@@ -140,7 +140,7 @@ class OrderTest {
         assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(testItem2));
 
         //makes sure you can't  try remove a null item from an order
-        assertThrows(IllegalArgumentException.class, () -> testOrder.addItem(null));
+        assertThrows(IllegalArgumentException.class, () -> testOrder.removeItem(null));
 
         //checks that only orders with  the CREATING status can have items removed from them
         testOrder.addItem(testItem);
@@ -198,6 +198,7 @@ class OrderTest {
 
     @Test
     void testSubmitOrder(){
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.submitOrder());
         testOrder.addItem(testItem);
         testOrder.submitOrder();
 
