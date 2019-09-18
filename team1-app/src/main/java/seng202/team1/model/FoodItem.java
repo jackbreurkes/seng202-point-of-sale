@@ -38,6 +38,9 @@ public class FoodItem {
         setUnit(unit);
     }
 
+    public FoodItem() {
+    }
+
     public String getCode() {
         return code;
     }
