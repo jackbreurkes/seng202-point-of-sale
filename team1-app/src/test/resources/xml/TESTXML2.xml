@@ -22,10 +22,5 @@
         <name>Glass of water</name>
         <caloriesPerUnit>0</caloriesPerUnit>
     </fooditem>
-    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
-        <code>APPLESODA</code>
-        <name>Sparkling Apple</name>
-        <caloriesPerUnit>87</caloriesPerUnit>
-    </fooditem>
 
 </fooditems>

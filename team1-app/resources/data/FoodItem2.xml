@@ -25,7 +25,7 @@
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>APPLESODA</code>
         <name>Sparkling Apple</name>
-        <caloriesPerUnit>87</caloriesPerUnit>
+        <caloriesPerUnit>10000</caloriesPerUnit>
     </fooditem>
 
 </fooditems>

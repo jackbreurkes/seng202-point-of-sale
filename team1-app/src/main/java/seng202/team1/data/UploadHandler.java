@@ -66,7 +66,7 @@ public class UploadHandler {
                 if (storageFoodItem == null) {
                     itemStorage.addFoodItem(foodItem, 1);
                 } else {
-                    itemStorage.updateFoodItem(storageFoodItem);
+                    itemStorage.updateFoodItem(foodItem);
                     itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
                 }
             }
