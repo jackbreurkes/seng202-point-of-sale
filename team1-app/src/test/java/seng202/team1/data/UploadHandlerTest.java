@@ -39,26 +39,34 @@ public class UploadHandlerTest {
                 beefburg, cheeseburg, tofuburg, applesoda
         );
         expectedItems.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
-
     }
 
 
     @Test
     void uploadFoodItemsToMemoryStorageTest() {
+        // Checks if food items are successfully uploaded to storage
+
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
+        ((MemoryStorage) itemStorage).resetInstance();
         UploadHandler.uploadFoodItems(source1);
         List<FoodItem> items = new ArrayList<FoodItem>(itemStorage.getAllFoodItems());
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
 
         assertEquals(items.size(), expectedItems.size());
         assertEquals(items, expectedItems);
-        // Checks if food items are successfully uploaded to storage
+    }
 
+    @Test
+    void uploadDuplicateFoodItemsInMemoryStorage() {
         // Checks if duplicates of food items are ignored
         // Tofu calories altered and stock updated
         // Two of the same food items in same xml
         // And attributes of food items are updated to match uploaded food item
         // And stock count is incremented
+
+        FoodItemDAO itemStorage = MemoryStorage.getInstance();
+        ((MemoryStorage) itemStorage).resetInstance();
+        UploadHandler.uploadFoodItems(source1);
 
         // Tofu FoodItem before attributes are altered
         FoodItem initialTofu = itemStorage.getFoodItemByCode("TOFUBURG");
@@ -77,29 +85,6 @@ public class UploadHandlerTest {
         assertNotEquals(initialTofu.getCaloriesPerUnit(), changedTofu.getCaloriesPerUnit());
         // initialTofu stock != changedTofuStock
         assertNotEquals(initialTofuStock, changedTofuStock);
-        
+
     }
-
-//
-//    @Test
-//    void uploadDuplicateFoodItemsInMemoryStorage() {
-//        // Checks if duplicates of food items are ignored
-//        // And attributes of food items are updated to match uploaded food item
-//        // And stock count is incremented
-//
-//
-//        FoodItemDAO itemStorage = MemoryStorage.getInstance();
-//        System.out.println(itemStorage.getAllFoodItems());
-//        UploadHandler.uploadFoodItems(source1);
-//
-//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
-//            System.out.println(foo);
-//        }
-//
-////        UploadHandler.uploadFoodItems(source2);
-////        System.out.println(itemStorage.getAllFoodItems());
-//
-//
-//    }
-
 }
