@@ -7,6 +7,7 @@ import seng202.team1.util.UnitType;
 
 import java.sql.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
@@ -101,37 +102,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
 
-//
-//    public void insert(String name, double capacity) {
-//        //String sql = "INSERT INTO warehouses(id,name,capacity) VALUES(?,?,?)";
-//
-//        try (Connection conn = this.connect();
-//             PreparedStatement pstmt = conn.prepareStatement(JDBCStorage.url)) {
-//            pstmt.setInt(1, 1);
-//            pstmt.setString(2, name);
-//            pstmt.setDouble(3, capacity);
-//            pstmt.executeUpdate();
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
-
-    public void readDataBase() throws Exception {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection(url);
-
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM FoodItem");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("name"));
-            }
-            conn.close();
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
     private FoodItem readFoodItem(ResultSet rs) {
         String code, name, cost, unitType, calPerUnit;
         boolean isVegetarian, isVegan, isGlutenFree;
@@ -183,7 +153,22 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public Set<FoodItem> getAllFoodItems() {
-        return null;
+        String sql = "SELECT * FROM FoodItem";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            Set<FoodItem> items = new HashSet<FoodItem>();
+            while (rs.next()) {
+                items.add(readFoodItem(rs));
+            }
+            return items;
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null; // TODO error handling?
+        }
     }
 
     @Override
@@ -199,7 +184,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             if (rs.next() == false) {
                 return null;
             } else {
-                System.out.println(readFoodItem(rs));
                 return readFoodItem(rs);
             }
 
@@ -218,19 +202,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
             pstmt.setString(3, item.getCost().toString());
-            String unitString;
-            switch (item.getUnit()) {
-                case GRAM:
-                    unitString = "g";
-                    break;
-                case ML:
-                    unitString = "m";
-                    break;
-                default:
-                    unitString = "c";
-                    break;
-            }
-            pstmt.setString(4, unitString);
+            pstmt.setString(4, item.getUnit().toString()); // TODO error handling
             pstmt.setInt(5, count);
             pstmt.setBoolean(6, item.getIsVegetarian());
             pstmt.setBoolean(7, item.getIsVegan());
@@ -244,29 +216,88 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void updateFoodItem(FoodItem alteredItem) {
+        String sql = "UPDATE FoodItem\n" +
+                "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
+                "WHERE Code=?";
 
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, alteredItem.getName());
+            pstmt.setString(2, alteredItem.getCost().toString());
+            pstmt.setString(3, alteredItem.getUnit().toString()); // TODO error handling
+            pstmt.setBoolean(4, alteredItem.getIsVegetarian());
+            pstmt.setBoolean(5, alteredItem.getIsVegan());
+            pstmt.setBoolean(6, alteredItem.getIsGlutenFree());
+            pstmt.setString(7, Double.toString(alteredItem.getCaloriesPerUnit()));
+            pstmt.setString(8, alteredItem.getCode());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public void removeFoodItem(String code) {
+        String sql = "DELETE FROM FoodItem\n" +
+                "WHERE Code=?";
 
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, code);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public void setFoodItemStock(String code, int count) {
+        String sql = "UPDATE FoodItem\n" +
+                "SET StockLevel=?\n" +
+                "WHERE Code=?";
 
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, count);
+            pstmt.setString(2, code);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public int getFoodItemStock(String code) {
-        return 0;
+        String sql = "SELECT StockLevel FROM FoodItem WHERE Code = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, code);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                return 0; // TODO throw an error
+            } else {
+                return readFoodItemStock(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return 0; // TODO error handling
+        }
     }
 
     public static void main(String[] args) {
         JDBCStorage storage = JDBCStorage.getInstance();
-        //storage.addFoodItem(new FoodItem("CRACKERS", "A Yummy Cracker", UnitType.COUNT), 5);
+        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
+        storage.setFoodItemStock("PIZZA", 20);
         try {
-            storage.getFoodItemByCode("PIZZA");
+            Set<FoodItem> items = storage.getAllFoodItems();
+            for (FoodItem item : items) {
+                System.out.println(item);
+                System.out.println(storage.getFoodItemStock(item.getCode()));
+            }
             storage.getFoodItemByCode("CRACKERS");
         } catch (Exception e) {
             System.out.println("error thrown:" + e);

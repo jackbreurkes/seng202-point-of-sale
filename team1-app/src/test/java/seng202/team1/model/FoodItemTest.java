@@ -149,6 +149,11 @@ class FoodItemTest {
         assertThrows(NullPointerException.class, () -> {
             testItem.setUnit(null);
         });
+
+        // TODO put this in a separate test file?
+        assertEquals("g", UnitType.GRAM.toString());
+        assertEquals("m", UnitType.ML.toString());
+        assertEquals("c", UnitType.COUNT.toString());
     }
 
     @Test
