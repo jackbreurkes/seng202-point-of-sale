@@ -24,7 +24,7 @@ public class EditDataController {
     @FXML
     private TableView foodItemTable;
 
-    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories, edit;
+    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
 
     /**
@@ -40,9 +40,8 @@ public class EditDataController {
         isVegan = new TableColumn("Vegan");
         isGlutenFree = new TableColumn("Gluten Free");
         calories = new TableColumn("kcal/unit");
-        edit = new TableColumn<>("Edit");
 
-        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories, edit);
+        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
     }
 
@@ -61,12 +60,30 @@ public class EditDataController {
         isVegan.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isVegan"));
         isGlutenFree.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isGlutenFree"));
         calories.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("caloriesPerUnit"));
-        edit.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("button"));
 
         foodItemTable.setItems(items.getList());
     }
 
+    /**
+     * deletes the selected item
+     */
+    public void deleteSelectedItem() {
+        return;
+    }
 
+    /**
+     * loads the values of selected item into the edit display ready to be edited
+     */
+    public void editSelectedItem() {
+        return;
+    }
+
+    /**
+     * confrims and saves changes made to item in the GUI
+     */
+    public void confirmChanges() {
+        return;
+    }
 
     /**
      * Changes scene back to import with table
