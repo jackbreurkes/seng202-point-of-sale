@@ -132,7 +132,15 @@ public class Recipe {
     }
 
 
-
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recipe recipe = (Recipe) o;
+        return amountCreated == recipe.amountCreated &&
+                Objects.equals(ingredientAmounts, recipe.ingredientAmounts) &&
+                Objects.equals(ingredients, recipe.ingredients) &&
+                Objects.equals(addableIngredients, recipe.addableIngredients);
+    }
 
 }
