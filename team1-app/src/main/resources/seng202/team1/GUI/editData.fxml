@@ -81,7 +81,7 @@
                <children>
                   <Label layoutX="26.0" layoutY="45.0" text="Option:" />
                   <CheckBox fx:id="vegetarianCheckBox" layoutX="90.0" layoutY="46.0" mnemonicParsing="false" text="Vegetarian" />
-                  <CheckBox fx:id="VeganCheckBox" layoutX="207.0" layoutY="45.0" mnemonicParsing="false" text="Vegan" />
+                  <CheckBox fx:id="veganCheckBox" layoutX="207.0" layoutY="45.0" mnemonicParsing="false" text="Vegan" />
                   <CheckBox fx:id="glutenFreeCheckBox" layoutX="299.0" layoutY="45.0" mnemonicParsing="false" text="GF" />
                </children>
             </AnchorPane>

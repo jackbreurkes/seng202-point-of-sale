@@ -7,11 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.joda.money.BigMoney;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
@@ -23,6 +23,30 @@ public class EditDataController {
 
     @FXML
     private TableView<FoodItemDisplay> foodItemTable;
+
+    @FXML
+    private Label codeLabel;
+
+    @FXML
+    private TextField newName;
+
+    @FXML
+    private TextField newCost;
+
+    @FXML
+    private TextField newCalories;
+
+    @FXML
+    private CheckBox vegetarianCheckBox;
+
+    @FXML
+    private CheckBox veganCheckBox;
+
+    @FXML
+    private CheckBox glutenFreeCheckBox;
+
+    @FXML
+    private Text statusText;
 
     TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
@@ -42,6 +66,8 @@ public class EditDataController {
         isVegan = new TableColumn("Vegan");
         isGlutenFree = new TableColumn("Gluten Free");
         calories = new TableColumn("kcal/unit");
+
+        selectedItem = null;
 
         foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
@@ -70,10 +96,10 @@ public class EditDataController {
      * deletes the selected item
      */
     public void deleteSelectedItem() {
-        selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
+        FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
 
-        itemStorage.removeFoodItem(selectedItem.getCode());
+        itemStorage.removeFoodItem(selectedItemD.getCode());
         updateTable();
     }
 
@@ -81,14 +107,37 @@ public class EditDataController {
      * loads the values of selected item into the edit display ready to be edited
      */
     public void editSelectedItem() {
-        return;
+        selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
+
+        codeLabel.setText(selectedItem.getCode());
+        newName.setText(selectedItem.getName());
+        newCost.setText(selectedItem.getCost().toString());
+        newCalories.setText(Double.toString(selectedItem.getCaloriesPerUnit()));
+        vegetarianCheckBox.setSelected(selectedItem.getIsVegetarian());
+        veganCheckBox.setSelected(selectedItem.getIsVegan());
+        glutenFreeCheckBox.setSelected(selectedItem.getIsGlutenFree());
     }
 
     /**
      * confrims and saves changes made to item in the GUI
      */
     public void confirmChanges() {
-        return;
+        if (selectedItem == null) {
+            statusText.setText("No item selected.");
+        } else {
+            FoodItemDAO itemStorage = MemoryStorage.getInstance();
+            FoodItem editedItem = itemStorage.getFoodItemByCode(selectedItem.getCode());
+            editedItem.setName(newName.getText());
+            editedItem.setCost(BigMoney.parse(newCost.getText()));
+            editedItem.setCaloriesPerUnit(Double.valueOf(newCalories.getText()));
+            editedItem.setIsVegetarian(vegetarianCheckBox.isSelected());
+            // for some reason the vegan checkbox doesnt work gets null pointer exception
+            // even though code is the same as the others
+            // editedItem.setIsVegan(veganCheckBox.isSelected());
+            editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
+
+            updateTable();
+        }
     }
 
     /**
