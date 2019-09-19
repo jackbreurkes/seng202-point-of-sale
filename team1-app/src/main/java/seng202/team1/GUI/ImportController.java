@@ -32,7 +32,7 @@ public class ImportController {
     @FXML
     private ComboBox dataTypeComboBox;
 
-    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
+    TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
 
     /**
@@ -42,13 +42,14 @@ public class ImportController {
         items = new ObservableFoodItems();
         itemCode = new TableColumn("Code");
         itemName = new TableColumn("Name");
+        itemCost = new TableColumn("Cost");
         unitType = new TableColumn("Unit");
         stockLevel = new TableColumn("Stock");
         isVegetarian = new TableColumn("Vegetarian");
         isVegan = new TableColumn("Vegan");
         isGlutenFree = new TableColumn("Gluten Free");
         calories = new TableColumn("kcal/unit");
-        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
+        foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
 
         dataTypeComboBox.getItems().addAll("Suppliers", "Food Items");
@@ -63,6 +64,7 @@ public class ImportController {
 
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("name"));
+        itemCost.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("cost"));
         unitType.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("unit"));
         stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("stock"));
         isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isVegetarian"));

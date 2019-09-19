@@ -48,7 +48,7 @@ public class EditDataController {
     @FXML
     private Text statusText;
 
-    TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
+    TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
 
     private FoodItemDisplay selectedItem;
@@ -60,6 +60,7 @@ public class EditDataController {
         items = new ObservableFoodItems();
         itemCode = new TableColumn("Code");
         itemName = new TableColumn("Name");
+        itemCost = new TableColumn("Cost");
         unitType = new TableColumn("Unit");
         stockLevel = new TableColumn("Stock");
         isVegetarian = new TableColumn("Vegetarian");
@@ -69,7 +70,7 @@ public class EditDataController {
 
         selectedItem = null;
 
-        foodItemTable.getColumns().addAll(itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
+        foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
     }
 
@@ -82,6 +83,7 @@ public class EditDataController {
 
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("name"));
+        itemCost.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("cost"));
         unitType.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("unit"));
         stockLevel.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("stock"));
         isVegetarian.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("isVegetarian"));
