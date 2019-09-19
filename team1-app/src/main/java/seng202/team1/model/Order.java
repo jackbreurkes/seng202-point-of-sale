@@ -20,8 +20,9 @@ public class Order {
 
     private int ID;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
-    private String orderNote;
+    private String orderNote; // TODO add getter and setter
     private OrderStatus status = CREATING;
+    // private (Time? figure out the right datatype) lastUpdated;
     // private Location location;
     // private Weather weather;
 
@@ -32,6 +33,15 @@ public class Order {
      */
     public Order(int Identifier) {
         this.ID = Identifier;
+    }
+
+
+    public String getOrderNote() {
+        return orderNote;
+    }
+
+    public void setOrderNote(String orderNote) {
+        this.orderNote = orderNote;
     }
 
     /**

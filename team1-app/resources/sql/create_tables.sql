@@ -1,14 +1,14 @@
 /*
-FoodItem (Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) primkey Code
+FoodItem (Id, Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) primkey Id
 TODO Menu()
-TODO Order()
+CustomerOrder(Id, Status, Note, LastUpdated, Location, Weather) primkey Id
 TODO Supplier()
 Recipe(Product, AmountCreated) primkey Product (foreign key of FoodItem)
 
 Sells(Supplier, FoodItem, Price) primkey (Supplier, FoodItem) (foreign keys)
 RecipeContains(Recipe, FoodItem, Amount) primkey (Recipe, FoodItem) (foreign keys)
 RecipeOptionallyContains(Recipe, FoodItem, Amount) primkey (Recipe, FoodItem) (foreign keys)
-TODO OrderContains(Order, FoodItem)
+OrderContains(CustomerOrder, FoodItem) primkey (CustomerOrder, FoodItem) (foreign keys)
 TODO MenuContains(Menu, FoodItem)
  */
 
@@ -18,7 +18,7 @@ CREATE TABLE FoodItem
     CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),
  Name /* the FoodItem's name */ VARCHAR(20) NOT NULL
     CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),
- UnitType /* unit type (count, ml or gram) */ CHAR(1)
+ UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL
     CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),
 Cost /* cost of the FoodItem for customers */ VARCHAR(MAX) NOT NULL DEFAULT '0'
     /* TODO check that Cost is correct format */,
@@ -36,10 +36,25 @@ CREATE TABLE Recipe
  PRIMARY KEY (Id, Product));
 
 CREATE TABLE RecipeContains
-(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe,
+(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe, /* TODO change to Recipe(Id)? */
  FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem, /* TODO cascade stuff if FoodItem deleted */
  Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,
  PRIMARY KEY (Recipe, FoodItem));
+
+
+CREATE TABLE IF NOT EXISTS CustomerOrder
+(Id /* unique identifier for an Order */ INTEGER PRIMARY KEY,
+ Status /* the status of the order (Creating='c', Submitted='s', Completed='d', Cancelled='x', Refunded='r') */ CHAR(1) NOT NULL
+    CONSTRAINT check_status CHECK (Status in ('c', 's', 'd', 'x', 'r')),
+ Note /* any notes added to the order */ VARCHAR(8000),
+ LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */
+ Location /* the location the order was processed if known */ VARCHAR(8000),
+ Weather /* the location the order was processed if known */ VARCHAR(8000));
+
+CREATE TABLE IF NOT EXISTS OrderContains
+(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,
+ FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,
+ PRIMARY KEY (CustomerOrder, FoodItem));
 
 
 /* TODO get this to run in our code so we don't copy-paste */

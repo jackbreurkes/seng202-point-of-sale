@@ -26,6 +26,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         createFoodItemTable();
         createRecipeTable();
         createRecipeContainsTable();
+        createOrderTable();
+        createOrderContainsTable();
     }
 
     /**
@@ -60,7 +62,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "    CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),\n" +
                 " Name /* the FoodItem's name */ VARCHAR(20) NOT NULL\n" +
                 "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
-                " UnitType /* unit type (count, ml or gram) */ CHAR(1)\n" +
+                " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
                 "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
                 "Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
                 "    /* TODO check that Cost is a numeric string */,\n" +
@@ -104,6 +106,42 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 " FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem,\n" +
                 " Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,\n" +
                 " PRIMARY KEY (Recipe, FoodItem));";
+
+        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void createOrderTable() {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS CustomerOrder\n" +
+                "(Id /* unique identifier for an Order */ INTEGER PRIMARY KEY,\n" +
+                " Status /* the status of the order (Creating='c', Submitted='s', Completed='d', Cancelled='x', Refunded='r') */ CHAR(1) NOT NULL\n" +
+                "    CONSTRAINT check_status CHECK (Status in ('c', 's', 'd', 'x', 'r')),\n" +
+                " Note /* any notes added to the order */ VARCHAR(8000),\n" +
+                " LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */\n" +
+                " Location /* the location the order was processed if known */ VARCHAR(8000),\n" +
+                " Weather /* the location the order was processed if known */ VARCHAR(8000));";
+
+        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void createOrderContainsTable() {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS OrderContains\n" +
+                "(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,\n" +
+                " FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,\n" +
+                " PRIMARY KEY (CustomerOrder, FoodItem));";
 
         try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
@@ -324,24 +362,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    public static void main(String[] args) {
-        JDBCStorage storage = JDBCStorage.getInstance();
-        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
-        storage.setFoodItemStock("PIZZA", 20);
-        try {
-            Set<FoodItem> items = storage.getAllFoodItems();
-            for (FoodItem item : items) {
-                System.out.println(item);
-                System.out.println(storage.getFoodItemStock(item.getCode()));
-            }
-            storage.getFoodItemByCode("CRACKERS");
-            storage.resetInstance();
-            System.out.println(storage.getFoodItemByCode("CRACKERS"));
-        } catch (Exception e) {
-            System.out.println("error thrown:" + e);
-        }
-    }
-
     @Override
     public Set<Order> getAllOrders() {
         return null;
@@ -354,7 +374,21 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void addOrder(Order order) {
+//        if (getFoodItemByCode(item.getCode()) != null) {
+//            throw new InvalidDataCodeException("FoodItem with code " + item.getCode() + " already exists in the database.");
+//        }
 
+        String sql = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, order.getOrderStatus().toString());
+            pstmt.setString(2, order.getOrderNote());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
@@ -365,6 +399,25 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     @Override
     public void removeOrder(int ID) {
 
+    }
+
+    public static void main(String[] args) {
+        JDBCStorage storage = JDBCStorage.getInstance();
+//        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
+//        storage.setFoodItemStock("PIZZA", 20);
+        try {
+            storage.addOrder(new Order(1));
+//            Set<FoodItem> items = storage.getAllFoodItems();
+//            for (FoodItem item : items) {
+//                System.out.println(item);
+//                System.out.println(storage.getFoodItemStock(item.getCode()));
+//            }
+//            storage.getFoodItemByCode("CRACKERS");
+//            storage.resetInstance();
+//            System.out.println(storage.getFoodItemByCode("CRACKERS"));
+        } catch (Exception e) {
+            System.out.println("error thrown:" + e);
+        }
     }
 
 
