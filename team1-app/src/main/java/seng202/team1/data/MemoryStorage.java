@@ -21,8 +21,6 @@ public class MemoryStorage implements FoodItemDAO {
     private MemoryStorage() {
         foodItems = new HashMap<String, FoodItem>();
         foodItemCounts = new HashMap<String, Integer>();
-
-
     }
 
     /**

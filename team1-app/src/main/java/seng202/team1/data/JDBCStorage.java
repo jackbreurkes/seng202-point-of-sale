@@ -3,6 +3,7 @@ package seng202.team1.data;
 import org.joda.money.BigMoney;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
 import java.sql.*;
@@ -37,6 +38,18 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             instance = new JDBCStorage();
         }
         return instance;
+    }
+
+    public void resetInstance() {
+        String sql = "DELETE FROM FoodItem; DELETE FROM Recipe; DELETE FROM RecipeContains";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void createFoodItemTable() {
@@ -195,6 +208,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void addFoodItem(FoodItem item, int count) {
+        if (getFoodItemByCode(item.getCode()) != null) {
+            throw new InvalidDataCodeException("FoodItem with code " + item.getCode() + " already exists in the database.");
+        }
+
         String sql = "INSERT INTO FoodItem(Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
@@ -216,6 +233,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void updateFoodItem(FoodItem alteredItem) {
+        if (getFoodItemByCode(alteredItem.getCode()) == null) {
+            throw new InvalidDataCodeException("item with given item's code does not exist in storage.");
+        }
+
         String sql = "UPDATE FoodItem\n" +
                 "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
                 "WHERE Code=?";
@@ -238,6 +259,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void removeFoodItem(String code) {
+        if (getFoodItemByCode(code) == null) {
+            throw new InvalidDataCodeException("no FoodItem with the given code exists in storage.");
+        }
+
         String sql = "DELETE FROM FoodItem\n" +
                 "WHERE Code=?";
 
@@ -252,6 +277,13 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void setFoodItemStock(String code, int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("count must be non-negative.");
+        }
+        if (getFoodItemByCode(code) == null) {
+            throw new InvalidDataCodeException("no FoodItem with given code exists in the database.");
+        }
+
         String sql = "UPDATE FoodItem\n" +
                 "SET StockLevel=?\n" +
                 "WHERE Code=?";
@@ -268,6 +300,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public int getFoodItemStock(String code) {
+        if (getFoodItemByCode(code) == null) {
+            throw new InvalidDataCodeException("no FoodItem with given code exists in the database.");
+        }
+
         String sql = "SELECT StockLevel FROM FoodItem WHERE Code = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
@@ -299,6 +335,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 System.out.println(storage.getFoodItemStock(item.getCode()));
             }
             storage.getFoodItemByCode("CRACKERS");
+            storage.resetInstance();
+            System.out.println(storage.getFoodItemByCode("CRACKERS"));
         } catch (Exception e) {
             System.out.println("error thrown:" + e);
         }
