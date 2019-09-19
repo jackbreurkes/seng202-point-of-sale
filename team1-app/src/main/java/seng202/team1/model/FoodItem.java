@@ -38,7 +38,7 @@ public class FoodItem {
         setUnit(unit);
     }
 
-    public FoodItem() {
+    public FoodItem() { // TODO remove this
     }
 
     public String getCode() {
