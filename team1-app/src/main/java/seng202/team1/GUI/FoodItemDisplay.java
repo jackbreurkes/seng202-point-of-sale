@@ -6,10 +6,13 @@ import org.joda.money.BigMoney;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Recipe;
+import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
-public class FoodItemDisplay extends FoodItem {
+public class FoodItemDisplay {
 
+    private FoodItem item;
     private int stock;
 
     /**
@@ -18,30 +21,46 @@ public class FoodItemDisplay extends FoodItem {
      */
     public FoodItemDisplay(String itemCode) {
         FoodItemDAO itemStorage = MemoryStorage.getInstance();
-        setCode(itemCode);
-        setName(itemStorage.getFoodItemByCode(itemCode).getName());
-        setUnit(itemStorage.getFoodItemByCode(itemCode).getUnit());
-        setCost(itemStorage.getFoodItemByCode(itemCode).getCost());
-        setIsVegetarian(itemStorage.getFoodItemByCode(itemCode).getIsVegetarian());
-        setIsVegan(itemStorage.getFoodItemByCode(itemCode).getIsVegan());
-        setIsGlutenFree(itemStorage.getFoodItemByCode(itemCode).getIsGlutenFree());
-        setCaloriesPerUnit(itemStorage.getFoodItemByCode(itemCode).getCaloriesPerUnit());
-        setRecipe(itemStorage.getFoodItemByCode(itemCode).getRecipe());
+        item = itemStorage.getFoodItemByCode(itemCode);
         setStock(itemStorage.getFoodItemStock(itemCode));
     }
 
-    /**
-     * stock "setter"
-     * @param currentStock
-     */
     public void setStock(int currentStock) {
         this.stock = currentStock;
     }
 
-    /**
-     * stock "getter"
-     * @return
-     */
+    public String getCode() {
+        return item.getCode();
+    }
+
+    public String getName() {
+        return item.getName();
+    }
+
+    public BigMoney getCost() {
+        return item.getCost();
+    }
+
+    public UnitType getUnit() {
+        return item.getUnit();
+    }
+
+    public double getCaloriesPerUnit() {
+        return item.getCaloriesPerUnit();
+    }
+
+    public boolean getIsVegetarian() {
+        return item.getIsVegetarian();
+    }
+
+    public boolean getIsVegan() {
+        return item.getIsVegan();
+    }
+
+    public boolean getIsGlutenFree() { return item.getIsGlutenFree(); }
+
+    public Recipe getRecipe() { return item.getRecipe(); }
+
     public int getStock() {
         return this.stock;
     }
