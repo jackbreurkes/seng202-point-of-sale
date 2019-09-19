@@ -155,6 +155,11 @@ public class FoodItem {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(code, name, unit, cost, isVegetarian, isVegan, isGlutenFree, caloriesPerUnit, recipe);
+    }
+
+    @Override
     public String toString() {
         return "FoodItem{" +
                 "code='" + code + '\'' +

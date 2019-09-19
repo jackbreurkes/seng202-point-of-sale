@@ -7,11 +7,13 @@ import seng202.team1.model.FoodItem;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JDBCStorageTest {
+class JDBCStorageFoodItemDAOTest {
 
     private FoodItemDAO foodStorage;
     private FoodItem testItem;
@@ -38,7 +40,6 @@ class JDBCStorageTest {
     }
 
     @Test
-    @Disabled
     void testGetAll() {
         // empty
         Set<FoodItem> items = foodStorage.getAllFoodItems();
@@ -48,10 +49,6 @@ class JDBCStorageTest {
         foodStorage.addFoodItem(testItem, 0);
         items = foodStorage.getAllFoodItems();
         assertEquals(1, items.size());
-        for (FoodItem item : items) {
-            System.out.println(item);
-            System.out.println(testItem);
-        }
         assertTrue(items.contains(testItem));
 
         // empty after removing
