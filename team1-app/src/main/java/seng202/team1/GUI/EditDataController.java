@@ -22,10 +22,12 @@ public class EditDataController {
 
 
     @FXML
-    private TableView foodItemTable;
+    private TableView<FoodItemDisplay> foodItemTable;
 
     TableColumn itemCode, itemName, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
+
+    private FoodItemDisplay selectedItem;
 
     /**
      * runs automatically when the window is created
@@ -68,7 +70,11 @@ public class EditDataController {
      * deletes the selected item
      */
     public void deleteSelectedItem() {
-        return;
+        selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
+        FoodItemDAO itemStorage = MemoryStorage.getInstance();
+
+        itemStorage.removeFoodItem(selectedItem.getCode());
+        updateTable();
     }
 
     /**
