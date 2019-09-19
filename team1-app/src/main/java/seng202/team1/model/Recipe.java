@@ -67,6 +67,7 @@ public class Recipe {
                 break;
             }
         }
+        // add removed item to addableIngredients so it can be readded
 
     }
 
