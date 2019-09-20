@@ -1,0 +1,17 @@
+<!ENTITY version "V0.01 (C) Rosemary">
+<!ELEMENT menu (name, description, (fooditem*))>
+<!ATTLIST menu
+    from CDATA #IMPLIED
+    to CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT fooditem (code)>
+<!ELEMENT code (#PCDATA)>
+
+-- <!ATTLIST name serves CDATA "1">
+<!ELEMENT item (name)>
+<!ATTLIST item
+    unit (ml|g|count) #REQUIRED
+    quantity CDATA #REQUIRED
+> --

@@ -1,0 +1,14 @@
+<!-- DTD for representing suppliers -->
+<!-- (C) Neville Churcher 2019 -->
+<!ENTITY version "V0.01 (C) Rosemary">
+<!ELEMENT suppliers (description, (supplier*))>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT supplier (id, name, address, phone, email?, url?)>
+<!ATTLIST supplier phoneType (work|mobile|home) #REQUIRED>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT phoneType (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
