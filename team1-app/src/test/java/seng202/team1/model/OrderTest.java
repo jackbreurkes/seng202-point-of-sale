@@ -28,7 +28,7 @@ class OrderTest {
 
     @BeforeEach
     void beforeEach() {
-        testOrder = new Order(1);
+        testOrder = new Order();
         testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
         testItem2 = new FoodItem("TESB", "Test Item 2", UnitType.COUNT);
     }

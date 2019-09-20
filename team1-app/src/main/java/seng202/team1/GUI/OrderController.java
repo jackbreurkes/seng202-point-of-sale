@@ -63,7 +63,7 @@ public class OrderController {
     private void showOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
         ordersInfo.getChildren().clear();
-        CreateOrderDisplay createOrderDisplay = new CreateOrderDisplay(this, new Order(1));
+        CreateOrderDisplay createOrderDisplay = new CreateOrderDisplay(this, new Order());
         ordersInfo.getChildren().add(createOrderDisplay);
 
         for (Node node : menuItems.getChildren()) {

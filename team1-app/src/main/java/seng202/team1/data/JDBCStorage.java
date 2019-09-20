@@ -32,6 +32,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         createRecipeContainsTable();
         createOrderTable();
         createOrderContainsTable();
+        createOrderedFoodItemTable();
 //        createAllTables();
     }
 
@@ -157,6 +158,33 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    private static void createOrderedFoodItemTable() {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS OrderedFoodItem\n" +
+                "(Id /* primary key ID */ INTEGER PRIMARY KEY,\n" +
+                " Code /* alphanumberic code of the FoodItem */ VARCHAR(10) NOT NULL\n" +
+                "    CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),\n" +
+                " Name /* the FoodItem's name */ VARCHAR(20) NOT NULL\n" +
+                "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
+                " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
+                "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
+                " Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
+                "    /* TODO check that Cost is correct format */,\n" +
+                " IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n" +
+                " IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n" +
+                " IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n" +
+                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n" +
+                "    /* TODO check that CalPerUnit is a numeric string */);";
+
+        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void createAllTables() {
         try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
@@ -244,9 +272,28 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 status = OrderStatus.COMPLETED;
                 break;
         }
-        Order result = new Order(id);
+        Order result = new Order();
+        result.setId(id);
         result.setOrderNote(orderNote);
         result.setStatus(status);
+
+        String sql = "SELECT *\n" +
+                "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
+                "WHERE CustomerOrder = ?";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, result.getOrderID());
+                ResultSet rs2 = pstmt.executeQuery();
+
+                while (rs2.next()) {
+                    result.addItem(readFoodItem(rs2));
+                }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
@@ -425,13 +472,13 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     @Override
-    public Order getOrderByID(int Id) {
+    public Order getOrderByID(int id) {
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, Id);
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next() == false) {
@@ -446,6 +493,40 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    private void addOrderedFoodItem(Order order, FoodItem item) {
+        String sql = "INSERT INTO OrderedFoodItem(Code, Name, Cost, UnitType, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?)";
+
+        int insertedId;
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, item.getCode());
+            pstmt.setString(2, item.getName());
+            pstmt.setString(3, item.getCost().toString());
+            pstmt.setString(4, item.getUnit().toString());
+            pstmt.setBoolean(5, item.getIsVegetarian());
+            pstmt.setBoolean(6, item.getIsVegan());
+            pstmt.setBoolean(7, item.getIsGlutenFree());
+            pstmt.setString(8, Double.toString(item.getCaloriesPerUnit()));
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            insertedId = rs.getInt(1);
+
+            String sql2 = "INSERT INTO OrderContains(CustomerOrder, FoodItem) VALUES (?,?)";
+
+            try (PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+                pstmt2.setInt(1, order.getOrderID());
+                pstmt2.setInt(2, insertedId);
+                pstmt2.executeUpdate();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     @Override
     public void addOrder(Order order) {
 //        if (getFoodItemByCode(item.getCode()) != null) {
@@ -456,19 +537,20 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         //String insertOrderItem = "INSERT INTO OrderContains(CustomerOrder, FoodItem)"
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
-             PreparedStatement pstmt = conn.prepareStatement(insertOrder)) {
+             PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, order.getOrderStatus().toString());
             pstmt.setString(2, order.getOrderNote());
 
-//            for (FoodItem item : order.getOrderContents()) {
-//
-//            }
-
             pstmt.executeUpdate();
+            order.setId(pstmt.getGeneratedKeys().getInt(1));
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+
+        for (FoodItem item : order.getOrderContents()) {
+            addOrderedFoodItem(order, item);
         }
     }
 
@@ -486,6 +568,17 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         JDBCStorage storage = JDBCStorage.getInstance();
 //        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
 //        storage.setFoodItemStock("PIZZA", 20);
+        Order testOrder = new Order();
+        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
+        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
+        storage.addOrder(testOrder);
+        int orderId = testOrder.getOrderID();
+        testOrder = null;
+        testOrder = storage.getOrderByID(orderId);
+        System.out.println(testOrder.getOrderContents().size());
+        for (FoodItem item : testOrder.getOrderContents()) {
+            System.out.println(item);
+        }
         try {
             //storage.addOrder(new Order(1));
 //            Set<FoodItem> items = storage.getAllFoodItems();

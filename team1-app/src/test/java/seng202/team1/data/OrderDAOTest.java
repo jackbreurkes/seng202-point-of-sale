@@ -22,7 +22,7 @@ class OrderDAOTest {
     @BeforeEach
     void setupStorage() {
         //TODO set this up
-        testOrder = new Order(1);
+        testOrder = new Order();
     }
 
     @Test

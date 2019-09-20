@@ -31,8 +31,12 @@ public class Order {
     /**
      * Default constructor
      */
-    public Order(int Identifier) {
-        this.ID = Identifier;
+//    public Order(int Identifier) {
+//        this.ID = Identifier;
+//    }
+
+    public void setId(int id) {
+        this.ID = id;
     }
 
 
