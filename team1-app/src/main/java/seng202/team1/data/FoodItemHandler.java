@@ -1,12 +1,13 @@
 package seng202.team1.data;
 
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.UnitType;
 
 import javax.xml.parsers.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,10 +48,27 @@ public class FoodItemHandler {
 
         try {
             builder = factory.newDocumentBuilder();
+            //builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditem.dtd")));
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
             System.exit(1); // TODO this seems a bit extreme???
         }
+
+        builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void error(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+            @Override
+            public void fatalError(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+
+            @Override
+            public void warning(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+        });
     }
 
 
@@ -64,9 +82,11 @@ public class FoodItemHandler {
         } catch (SAXException se) {
             System.err.println(se.getMessage());
             System.exit(1);
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+        } catch (MalformedURLException mue) {
+            System.err.println(mue);
             System.exit(1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -167,7 +187,8 @@ public class FoodItemHandler {
      * @param args
      */
     public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
+        FoodItemHandler fh = null;
+        fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         fh.parseInput();
         fh.getFoodItems();
         System.out.println(fh.getFoodItems().keySet());
