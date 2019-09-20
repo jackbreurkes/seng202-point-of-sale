@@ -59,7 +59,7 @@ public class UploadHandler {
             foodItemHandler.parseInput();
             foodItemsUploaded = foodItemHandler.getFoodItems();
 
-            FoodItemDAO itemStorage = MemoryStorage.getInstance();
+            FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
             for (FoodItem foodItem: foodItemsUploaded.values()) {
                 String code = foodItem.getCode();
                 FoodItem storageFoodItem = itemStorage.getFoodItemByCode(code);

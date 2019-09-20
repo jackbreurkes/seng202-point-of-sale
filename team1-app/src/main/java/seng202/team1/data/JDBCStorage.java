@@ -1,15 +1,19 @@
 package seng202.team1.data;
 
+import org.apache.ibatis.io.Resources;
 import org.joda.money.BigMoney;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
+import java.io.*;
+import java.nio.Buffer;
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
@@ -28,6 +32,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         createRecipeContainsTable();
         createOrderTable();
         createOrderContainsTable();
+//        createAllTables();
     }
 
     /**
@@ -152,8 +157,18 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    private static void createAllTables() {
-        // TODO use create_tables.sql
+    private void createAllTables() {
+        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+             Statement stmt = conn.createStatement()) {
+            ScriptRunner sr = new ScriptRunner(conn);
+            //Reader reader = new InputStreamReader(getClass().getResourceAsStream("/sql/create_tables.sql"));
+            //InputStream file = Class.getResourceAsStream("/dtd/fooditem.dtd");
+            //System.out.println(file.available() +  " pls");
+            //Reader reader = Resources.getResourceAsReader("com/mkyong/MyBatis/sql/create_tables.sql");
+            //sr.runScript(reader);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
@@ -194,6 +209,44 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsVegan(isVegan);
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
+        return result;
+    }
+
+    private Order readOrder(ResultSet rs) {
+        int id;
+        List<FoodItem> foodItems = new ArrayList<FoodItem>();
+        String orderNote, statusString;
+
+        try {
+            id = rs.getInt("Id");
+            orderNote = rs.getString("Note");
+            statusString = rs.getString("Status");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+        OrderStatus status;
+        switch (statusString) {
+            case "c":
+                status = OrderStatus.CREATING;
+                break;
+            case "s":
+                status = OrderStatus.SUBMITTED;
+                break;
+            case "x":
+                status = OrderStatus.CANCELLED;
+                break;
+            case "r":
+                status = OrderStatus.REFUNDED;
+                break;
+            default:
+                status = OrderStatus.COMPLETED;
+                break;
+        }
+        Order result = new Order(id);
+        result.setOrderNote(orderNote);
+        result.setStatus(status);
         return result;
     }
 
@@ -278,6 +331,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         if (getFoodItemByCode(alteredItem.getCode()) == null) {
             throw new InvalidDataCodeException("item with given item's code does not exist in storage.");
         }
+
+        System.out.println(alteredItem);
 
         String sql = "UPDATE FoodItem\n" +
                 "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
@@ -372,8 +427,25 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     @Override
-    public Order getOrderByID(int ID) {
-        return null;
+    public Order getOrderByID(int Id) {
+        String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, Id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                return null;
+            } else {
+                return readOrder(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null; // TODO error handling?
+        }
     }
 
     @Override
@@ -382,14 +454,21 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 //            throw new InvalidDataCodeException("FoodItem with code " + item.getCode() + " already exists in the database.");
 //        }
 
-        String sql = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
+        String insertOrder = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
+        //String insertOrderItem = "INSERT INTO OrderContains(CustomerOrder, FoodItem)"
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(insertOrder)) {
 
             pstmt.setString(1, order.getOrderStatus().toString());
             pstmt.setString(2, order.getOrderNote());
+
+//            for (FoodItem item : order.getOrderContents()) {
+//
+//            }
+
             pstmt.executeUpdate();
+
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -410,7 +489,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 //        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
 //        storage.setFoodItemStock("PIZZA", 20);
         try {
-            storage.addOrder(new Order(1));
+            //storage.addOrder(new Order(1));
 //            Set<FoodItem> items = storage.getAllFoodItems();
 //            for (FoodItem item : items) {
 //                System.out.println(item);

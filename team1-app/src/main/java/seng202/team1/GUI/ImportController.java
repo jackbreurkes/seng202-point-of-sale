@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.data.UploadHandler;
@@ -59,7 +60,7 @@ public class ImportController {
      * Update table with food item data
      */
     public void updateTable() {
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
+        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         items.buildFrom(itemStorage.getAllFoodItems());
 
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("code"));

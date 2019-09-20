@@ -144,9 +144,17 @@ public class Order {
     }
 
     /**
+     * sets the order status directly. used when loading an existing order from the database.
+     * @param status
+     */
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    /**
      * returns the contents of the order in list form
      */
-    public List getOrderContents() {
+    public List<FoodItem> getOrderContents() {
         return foodItems;
     }
 

@@ -3,6 +3,7 @@ package seng202.team1.GUI;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import org.joda.money.BigMoney;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
@@ -20,7 +21,7 @@ public class FoodItemDisplay {
      * @param itemCode
      */
     public FoodItemDisplay(String itemCode) {
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
+        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         item = itemStorage.getFoodItemByCode(itemCode);
         setStock(itemStorage.getFoodItemStock(itemCode));
     }

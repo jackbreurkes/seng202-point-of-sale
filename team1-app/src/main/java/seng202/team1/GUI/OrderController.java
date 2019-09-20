@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
@@ -32,7 +33,7 @@ public class OrderController {
     public void initialize() {
         Menu testMenu = new Menu();
         testMenu.setMenuName("Test menu");
-        for (FoodItem item : MemoryStorage.getInstance().getAllFoodItems()) {
+        for (FoodItem item : DAOFactory.getFoodItemDAO().getAllFoodItems()) {
             testMenu.addItem(item);
         }
         activeMenu = testMenu;

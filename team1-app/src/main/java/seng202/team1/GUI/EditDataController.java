@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.joda.money.BigMoney;
 import seng202.team1.data.FoodItemDAO;
-import seng202.team1.data.MemoryStorage;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
@@ -52,6 +52,7 @@ public class EditDataController {
     ObservableFoodItems items;
 
     private FoodItemDisplay selectedItem;
+    private FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
 
     /**
      * runs automatically when the window is created
@@ -78,8 +79,7 @@ public class EditDataController {
      * Updates table with foodItem data
      */
     public void updateTable() {
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
-        items.buildFrom(itemStorage.getAllFoodItems());
+        items.buildFrom(foodStorage.getAllFoodItems());
 
         itemCode.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("code"));
         itemName.setCellValueFactory(new PropertyValueFactory<FoodItemDisplay, String>("name"));
@@ -99,9 +99,7 @@ public class EditDataController {
      */
     public void deleteSelectedItem() {
         FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
-
-        itemStorage.removeFoodItem(selectedItemD.getCode());
+        foodStorage.removeFoodItem(selectedItemD.getCode());
         updateTable();
     }
 
@@ -121,14 +119,13 @@ public class EditDataController {
     }
 
     /**
-     * confrims and saves changes made to item in the GUI
+     * confirms and saves changes made to item in the GUI
      */
     public void confirmChanges() {
         if (selectedItem == null) {
             statusText.setText("No item selected.");
         } else {
-            FoodItemDAO itemStorage = MemoryStorage.getInstance();
-            FoodItem editedItem = itemStorage.getFoodItemByCode(selectedItem.getCode());
+            FoodItem editedItem = foodStorage.getFoodItemByCode(selectedItem.getCode());
             editedItem.setName(newName.getText());
             editedItem.setCost(BigMoney.parse(newCost.getText()));
             editedItem.setCaloriesPerUnit(Double.valueOf(newCalories.getText()));
@@ -137,7 +134,7 @@ public class EditDataController {
             // even though code is the same as the others
             // editedItem.setIsVegan(veganCheckBox.isSelected());
             editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
-
+            foodStorage.updateFoodItem(editedItem);
             updateTable();
         }
     }
