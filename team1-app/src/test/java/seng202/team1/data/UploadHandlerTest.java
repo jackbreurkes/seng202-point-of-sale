@@ -43,11 +43,11 @@ public class UploadHandlerTest {
 
 
     @Test
-    void uploadFoodItemsToMemoryStorageTest() {
+    void uploadFoodItemsToStorageTest() {
         // Checks if food items are successfully uploaded to storage
 
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
-        ((MemoryStorage) itemStorage).resetInstance();
+        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
+        DAOFactory.resetInstances();
         UploadHandler.uploadFoodItems(source1);
         List<FoodItem> items = new ArrayList<FoodItem>(itemStorage.getAllFoodItems());
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
@@ -57,15 +57,15 @@ public class UploadHandlerTest {
     }
 
     @Test
-    void uploadDuplicateFoodItemsInMemoryStorage() {
+    void uploadDuplicateFoodItemsInStorage() {
         // Checks if duplicates of food items are ignored
         // Tofu calories altered and stock updated
         // Two of the same food items in same xml
         // And attributes of food items are updated to match uploaded food item
         // And stock count is incremented
 
-        FoodItemDAO itemStorage = MemoryStorage.getInstance();
-        ((MemoryStorage) itemStorage).resetInstance();
+        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
+        DAOFactory.resetInstances();
         UploadHandler.uploadFoodItems(source1);
 
         // Tofu FoodItem before attributes are altered

@@ -11,6 +11,14 @@ public class DAOFactory {
     }
 
     /**
+     * resets any storage implementations
+     */
+    public static void resetInstances() {
+        MemoryStorage.getInstance().resetInstance();
+        JDBCStorage.getInstance().resetInstance();
+    }
+
+    /**
      * returns the OrderDAO implementation currently in use by the system.
      * @return an instance of a class implementing OrderDAO
      */

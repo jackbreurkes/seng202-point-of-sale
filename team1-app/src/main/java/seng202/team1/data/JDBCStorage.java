@@ -332,8 +332,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             throw new InvalidDataCodeException("item with given item's code does not exist in storage.");
         }
 
-        System.out.println(alteredItem);
-
         String sql = "UPDATE FoodItem\n" +
                 "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
                 "WHERE Code=?";
