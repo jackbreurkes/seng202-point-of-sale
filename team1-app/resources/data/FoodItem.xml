@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE fooditems SYSTEM "../dtd/fooditems.dtd">
+<!DOCTYPE fooditems SYSTEM "fooditems.dtd">
 <!--TODO make this an absolute reference by moving DTDs into the resources folder in main-->
 <fooditems>
     <description>Food sold by our food truck</description>

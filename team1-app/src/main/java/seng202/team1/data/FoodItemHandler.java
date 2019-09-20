@@ -48,7 +48,7 @@ public class FoodItemHandler {
 
         try {
             builder = factory.newDocumentBuilder();
-            //builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditem.dtd")));
+            builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditem.dtd")));
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
             System.exit(1); // TODO this seems a bit extreme???
@@ -83,7 +83,7 @@ public class FoodItemHandler {
             System.err.println(se.getMessage());
             System.exit(1);
         } catch (MalformedURLException mue) {
-            System.err.println(mue);
+            System.err.println("unhelpful error message:   " + mue);
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace();
