@@ -10,17 +10,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FoodItemDAOTest {
+abstract class FoodItemDAOTest {
 
-    private FoodItemDAO foodStorage;
-    private FoodItem testItem;
-
-    @BeforeEach
-    void setupStorage() {
-        foodStorage = MemoryStorage.getInstance(); // TODO make this more modular??
-        ((MemoryStorage) foodStorage).resetInstance(); // TODO this feels bad
-        testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
-    }
+    protected FoodItemDAO foodStorage;
+    private FoodItem testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
 
     @Test
     void testGetByCode() {
@@ -38,13 +31,21 @@ class FoodItemDAOTest {
 
     @Test
     void testGetAll() {
+        // empty
         Set<FoodItem> items = foodStorage.getAllFoodItems();
         assertEquals(0, items.size());
 
+        // single item
         foodStorage.addFoodItem(testItem, 0);
         items = foodStorage.getAllFoodItems();
         assertEquals(1, items.size());
         assertTrue(items.contains(testItem));
+
+        // empty after removing
+        foodStorage.removeFoodItem(testItem.getCode());
+        items = foodStorage.getAllFoodItems();
+        assertEquals(0, items.size());
+        assertFalse(items.contains(testItem));
     }
 
     @Test
@@ -87,9 +88,11 @@ class FoodItemDAOTest {
     void testRemove() {
         foodStorage.addFoodItem(testItem, 1000);
 
+        // removing an existing FoodItem
         foodStorage.removeFoodItem(testItem.getCode());
         assertNull(foodStorage.getFoodItemByCode(testItem.getCode()));
 
+        // removing a non-existent FoodItem
         assertThrows(InvalidDataCodeException.class, () -> {
             foodStorage.removeFoodItem(testItem.getCode());
         });

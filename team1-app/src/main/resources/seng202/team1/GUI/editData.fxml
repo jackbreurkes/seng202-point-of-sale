@@ -93,7 +93,7 @@
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../resources/images/almondMilk.jpg" />
+                  <Image url="@../../../images/almondMilk.jpg" />
                </image>
             </ImageView>
             <Button fx:id="editItemButton" layoutX="437.0" layoutY="288.0" mnemonicParsing="false" onAction="#editSelectedItem" text="edit item" />

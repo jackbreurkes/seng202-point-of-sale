@@ -20,7 +20,7 @@ public class Order {
 
     private int ID;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
-    private String orderNote; // TODO add getter and setter
+    private String orderNote;
     private OrderStatus status = CREATING;
     // private (Time? figure out the right datatype) lastUpdated;
     // private Location location;

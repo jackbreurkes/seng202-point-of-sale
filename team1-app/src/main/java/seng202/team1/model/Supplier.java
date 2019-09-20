@@ -1,5 +1,6 @@
 package seng202.team1.model;
 
+import org.joda.money.Money;
 import seng202.team1.util.PhoneType;
 
 import java.util.*;
@@ -46,6 +47,7 @@ public class Supplier implements FoodSource {
     private String url;
 
     private Set<FoodItem> itemsStocked;
+    private Map<String, Money> itemCosts;
 
     /**
      * Default constructor. Assigns id, name, address, phone, phoneType, email, and url values.
@@ -64,7 +66,7 @@ public class Supplier implements FoodSource {
     @Override
     /**
      * creates FoodItems using money.
-     * TODO we don't have a way of using money yet within the system.
+     * TODO figure out how the cost is associated with the creation of the item
      */
     public List<FoodItem> createFoodItems(String code, int amount) {
         return null;

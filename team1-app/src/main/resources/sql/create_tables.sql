@@ -36,7 +36,7 @@ CREATE TABLE Recipe
  PRIMARY KEY (Id, Product));
 
 CREATE TABLE RecipeContains
-(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe, /* TODO change to Recipe(Id)? */
+(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe(Id), /* TODO change to Recipe(Id)? */
  FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem, /* TODO cascade stuff if FoodItem deleted */
  Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,
  PRIMARY KEY (Recipe, FoodItem));

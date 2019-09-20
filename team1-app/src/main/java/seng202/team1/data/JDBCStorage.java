@@ -152,6 +152,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    private static void createAllTables() {
+        // TODO use create_tables.sql
+    }
+
 
     private FoodItem readFoodItem(ResultSet rs) {
         String code, name, cost, unitType, calPerUnit;

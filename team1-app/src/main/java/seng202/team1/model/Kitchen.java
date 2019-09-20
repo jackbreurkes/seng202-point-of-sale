@@ -22,7 +22,7 @@ public class Kitchen implements FoodSource {
     /**
      * tries to create the given amount of a FoodItem with the given code using its recipe.
      * throws a TODO create exception for if no recipe exists
-     * throws a TODO create exception for not enough ingredients
+     * throws a NotEnoughStockException if there is not enough stock
      * @param code the code of the FoodItem to create using its recipe
      * @param amount the amount of the given FoodItem to create
      * @return list of created food items, should all be the same item

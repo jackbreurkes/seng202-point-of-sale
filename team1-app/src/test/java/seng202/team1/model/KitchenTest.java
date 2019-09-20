@@ -23,7 +23,7 @@ class KitchenTest {
         MemoryStorage storage = MemoryStorage.getInstance();
         storage.resetInstance();
 //        kitchen = new Kitchen(storage, storage);
-        // TODO uncomment above when memory storage implements RecipeDAO
+        // TODO uncomment above when storage class implements RecipeDAO
     }
 
     @Test
