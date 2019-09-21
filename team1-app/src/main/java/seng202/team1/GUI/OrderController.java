@@ -31,7 +31,6 @@ public class OrderController {
     private Menu activeMenu;
     private OrderProgressDisplay orderProgressDisplay;
 
-
     public void initialize() {
         Menu testMenu = new Menu();
         testMenu.setMenuName("Test menu");

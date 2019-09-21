@@ -55,6 +55,8 @@ public class ImportController {
         updateTable();
 
         dataTypeComboBox.getItems().addAll("Suppliers", "Food Items");
+        dataTypeComboBox.setValue("Food Items");
+        dataTypeComboBox.setVisible(false); // hide this combobox from users for deliverable 2
     }
 
     /**

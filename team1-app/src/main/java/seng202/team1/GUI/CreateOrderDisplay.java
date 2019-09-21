@@ -24,6 +24,9 @@ public class CreateOrderDisplay extends VBox {
     private Button cancelOrder, submitOrder;
 
     @FXML
+    private Label statusText;
+
+    @FXML
     private VBox orderItems;
 
     private OrderController orderController;
@@ -79,7 +82,8 @@ public class CreateOrderDisplay extends VBox {
             model.submitOrder();
             orderStorage.addOrder(model);
         } catch (InvalidOrderStatusException e) {
-            // TODO handle this exception. for now it is fine to say we don't do anything with the order?
+            statusText.setText("Error submitting order: " + e.getMessage());
+            return;
         }
         closeCreateOrderPanel(model);
     }

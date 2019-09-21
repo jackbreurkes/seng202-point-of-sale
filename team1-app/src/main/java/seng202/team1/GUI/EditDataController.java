@@ -100,6 +100,7 @@ public class EditDataController {
     public void deleteSelectedItem() {
         FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
         foodStorage.removeFoodItem(selectedItemD.getCode());
+        selectedItem = null;
         updateTable();
     }
 
@@ -108,6 +109,11 @@ public class EditDataController {
      */
     public void editSelectedItem() {
         selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            statusText.setText("No item selected.");
+            return;
+        }
+        statusText.setText("editing " + selectedItem.getCode());
 
         codeLabel.setText(selectedItem.getCode());
         newName.setText(selectedItem.getName());
@@ -126,16 +132,22 @@ public class EditDataController {
             statusText.setText("No item selected.");
         } else {
             FoodItem editedItem = foodStorage.getFoodItemByCode(selectedItem.getCode());
-            editedItem.setName(newName.getText());
-            editedItem.setCost(BigMoney.parse(newCost.getText()));
-            editedItem.setCaloriesPerUnit(Double.valueOf(newCalories.getText()));
-            editedItem.setIsVegetarian(vegetarianCheckBox.isSelected());
-            // for some reason the vegan checkbox doesnt work gets null pointer exception
-            // even though code is the same as the others
-            // editedItem.setIsVegan(veganCheckBox.isSelected());
-            editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
+            try {
+                editedItem.setName(newName.getText());
+                editedItem.setCost(BigMoney.parse(newCost.getText()));
+                editedItem.setCaloriesPerUnit(Double.valueOf(newCalories.getText()));
+                editedItem.setIsVegetarian(vegetarianCheckBox.isSelected());
+                // for some reason the vegan checkbox doesnt work gets null pointer exception
+                // even though code is the same as the others
+                 editedItem.setIsVegan(veganCheckBox.isSelected());
+                editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
+            } catch (Exception e) {
+                statusText.setText("error setting values: " + e.getMessage());
+                return;
+            }
             foodStorage.updateFoodItem(editedItem);
             updateTable();
+            statusText.setText(editedItem.getCode() + " updated successfully.");
         }
     }
 

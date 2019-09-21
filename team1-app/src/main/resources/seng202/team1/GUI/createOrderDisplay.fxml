@@ -13,6 +13,11 @@
             <Font name="System Bold" size="23.0" />
          </font>
       </Label>
+      <Label fx:id="statusText">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
       <Button fx:id="cancelOrder" mnemonicParsing="false" text="Cancel order" />
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
