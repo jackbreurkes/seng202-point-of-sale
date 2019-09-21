@@ -28,10 +28,12 @@ public class Order {
     // private Location location;
     // private Weather weather;
 
+    // Should change this to getID to mantain consistency with setID but scared to do so
+    public int getOrderID() { return ID; }
+
     public void setId(int id) {
         this.ID = id;
     }
-
 
     public String getOrderNote() {
         return orderNote;
@@ -167,8 +169,6 @@ public class Order {
         return totalCost.toMoney(RoundingMode.HALF_UP);
         // TODO do we want this type of rounding here?
     }
-
-    public int getOrderID() { return ID; }
 
     @Override
     public boolean equals(Object o) {
