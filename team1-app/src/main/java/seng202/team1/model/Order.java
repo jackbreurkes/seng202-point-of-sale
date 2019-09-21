@@ -28,15 +28,6 @@ public class Order {
     // private Location location;
     // private Weather weather;
 
-
-
-    /**
-     * Default constructor
-     */
-//    public Order(int Identifier) {
-//        this.ID = Identifier;
-//    }
-
     public void setId(int id) {
         this.ID = id;
     }

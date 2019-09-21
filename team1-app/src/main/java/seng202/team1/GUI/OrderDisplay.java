@@ -19,7 +19,7 @@ public class OrderDisplay extends VBox {
     private Label orderId;
 
     @FXML
-    private Button completeOrder;
+    private Button orderActionButton;
 
     @FXML
     private VBox orderItems;
@@ -45,19 +45,35 @@ public class OrderDisplay extends VBox {
     }
 
     public void initialize() {
-        orderId.setText(Integer.toString(model.getOrderID()));
+        orderId.setText("Order " + Integer.toString(model.getOrderID()) + " - cost " + model.getCost().toString());
         OrderDisplay display = this;
 
-            for (FoodItem orderItem : model.getOrderContents()) {
-                orderItems.getChildren().add(new Label(orderItem.getName()));
-            }
+        for (FoodItem orderItem : model.getOrderContents()) {
+            orderItems.getChildren().add(new Label(orderItem.getName()));
+        }
 
-        completeOrder.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                orderProgressDisplay.completeOrder(model);
-            }
-        });
+        switch (model.getOrderStatus()) {
+            case SUBMITTED:
+                orderActionButton.setText("Complete");
+                orderActionButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        orderProgressDisplay.completeOrder(model);
+                    }
+                });
+                break;
+            case COMPLETED:
+                orderActionButton.setText("Refund");
+                orderActionButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        orderProgressDisplay.refundOrder(model);
+                    }
+                });
+                break;
+            default:
+                orderActionButton.setVisible(false);
+        }
 
     }
 

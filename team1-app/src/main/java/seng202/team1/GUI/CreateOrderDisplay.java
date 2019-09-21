@@ -24,7 +24,7 @@ public class CreateOrderDisplay extends VBox {
     private Button cancelOrder, submitOrder;
 
     @FXML
-    private Label statusText;
+    private Label orderTotalCost, statusText;
 
     @FXML
     private VBox orderItems;
@@ -69,11 +69,13 @@ public class CreateOrderDisplay extends VBox {
 
     public void addItemToOrder(FoodItem item) {
         model.addItem(item);
+        orderTotalCost.setText("Order Cost - " + model.getCost().toString());
         orderItems.getChildren().add(new OrderItemDisplay(this, item));
     }
 
     public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
         model.removeItem(item);
+        orderTotalCost.setText("Order Total - " + model.getCost().toString());
         orderItems.getChildren().remove(display);
     }
 

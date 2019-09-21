@@ -79,10 +79,20 @@ public class OrderProgressDisplay extends VBox {
         updateCompletedOrders();
     }
 
+    public void refundOrder(Order order) {
+        if (!completedOrders.contains(order)) {
+            throw new IllegalArgumentException("only completed orders can be refunded");
+        }
+        completedOrders.remove(order);
+        order.refundOrder();
+        orderStorage.updateOrder(order);
+        updateCompletedOrders();
+    }
+
     private void updateCompletedOrders() {
         completedOrdersVBox.getChildren().clear();
         for (Order displayOrder : completedOrders) {
-            completedOrdersVBox.getChildren().add(new Label(displayOrder.toString()));
+            completedOrdersVBox.getChildren().add(new OrderDisplay(this, displayOrder));
         }
     }
 
