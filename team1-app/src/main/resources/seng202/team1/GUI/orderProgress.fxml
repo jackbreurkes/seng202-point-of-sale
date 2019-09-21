@@ -22,10 +22,12 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <VBox fx:id="pendingOrdersVBox" prefHeight="200.0" prefWidth="100.0" />
       <Label text="Completed">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <VBox fx:id="completedOrdersVBox" prefHeight="200.0" prefWidth="100.0" />
    </children>
 </fx:root>

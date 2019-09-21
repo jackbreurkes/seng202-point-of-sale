@@ -106,7 +106,7 @@ class OrderTest {
 
         //only CREATING orders can have items added to them
         testOrder.addItem(testItem);
-        testOrder.completeOrder();
+        testOrder.submitOrder();
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.addItem(testItem));
     }
 
@@ -144,7 +144,7 @@ class OrderTest {
 
         //checks that only orders with  the CREATING status can have items removed from them
         testOrder.addItem(testItem);
-        testOrder.completeOrder();
+        testOrder.submitOrder();
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
     }
 
@@ -155,7 +155,9 @@ class OrderTest {
 
         testOrder.addItem(testItem);
         testOrder.addItem(testItem2);
+        testOrder.submitOrder();
         testOrder.cancelOrder();
+
         // checks the status of the order has correctly been set to cancelled
         assertEquals(testOrder.getOrderStatus(), CANCELLED);
 
@@ -179,6 +181,7 @@ class OrderTest {
 
         testOrder.addItem(testItem);
         testOrder.addItem(testItem2);
+        testOrder.submitOrder();
         testOrder.completeOrder();
         // checks the status of the order has correctly been set to completed
         assertEquals(testOrder.getOrderStatus(), COMPLETED);
@@ -214,8 +217,9 @@ class OrderTest {
         //checks a submitted order cannot have items removed from it
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.removeItem(testItem));
 
-        //Makes sure a submitted order cannot be cancelled
-        assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
+        //Makes sure a completed order cannot be submitted
+        testOrder.completeOrder();
+        assertThrows(InvalidOrderStatusException.class, () -> testOrder.submitOrder());
     }
 
     @Test
@@ -224,6 +228,7 @@ class OrderTest {
         testOrder.addItem(testItem);
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
+        testOrder.submitOrder();
         testOrder.completeOrder();
         testOrder.refundOrder();
 

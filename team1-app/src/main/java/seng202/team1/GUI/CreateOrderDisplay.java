@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
@@ -34,7 +35,7 @@ public class CreateOrderDisplay extends VBox {
 
         this.orderController = orderController;
         this.model = model;
-        // this.orderStorage = orderStorage TODO
+        this.orderStorage = DAOFactory.getOrderDAO();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createOrderDisplay.fxml"));
         loader.setRoot(this);
@@ -76,15 +77,19 @@ public class CreateOrderDisplay extends VBox {
     public void submitOrder() {
         try {
             model.submitOrder();
-            // orderStorage.addOrder(model); TODO get this working
+            orderStorage.addOrder(model);
         } catch (InvalidOrderStatusException e) {
             // TODO handle this exception. for now it is fine to say we don't do anything with the order?
         }
-        closeCreateOrderPanel();
+        closeCreateOrderPanel(model);
     }
 
     public void closeCreateOrderPanel() {
         orderController.stopCreatingOrder();
+    }
+
+    public void closeCreateOrderPanel(Order submittedOrder) {
+        orderController.submitOrderAndClose(submittedOrder);
     }
 
 }

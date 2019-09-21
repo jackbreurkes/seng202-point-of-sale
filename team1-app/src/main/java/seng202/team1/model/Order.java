@@ -110,14 +110,10 @@ public class Order {
      */
     public void cancelOrder() {
         //if status is still being processed the order can be cancelled
-        if (status == CREATING) {
-            if (foodItems.size() > 0) {
-                status = CANCELLED;
-            } else {
-                throw new InvalidOrderStatusException("cannot cancel an empty order");
-            }
+        if (status == SUBMITTED) {
+            status = CANCELLED;
         } else {
-            throw new InvalidOrderStatusException("Only orders with the CREATING status can be cancelled.");
+            throw new InvalidOrderStatusException("Only orders with the SUBMITTED status can be cancelled.");
         }
     }
 
@@ -138,14 +134,10 @@ public class Order {
      * only CREATING orders can be set to complete.
      */
     public void completeOrder() {
-        if (status == CREATING) {
-            if (foodItems.size() > 0) {
-                status = COMPLETED;
-            } else {
-                throw new InvalidOrderStatusException("cannot complete an empty order");
-            }
+        if (status == SUBMITTED) {
+            status = COMPLETED;
         } else {
-            throw new InvalidOrderStatusException("Only orders with the CREATING status can be completed.");
+            throw new InvalidOrderStatusException("Only orders with the SUBMITTED status can be completed.");
         }
     }
 

@@ -18,6 +18,8 @@ import seng202.team1.model.Order;
 import seng202.team1.util.UnitType;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class OrderController {
 
@@ -57,6 +59,11 @@ public class OrderController {
     }
 
     public void stopCreatingOrder() {
+        hideOrderCreationElements();
+    }
+
+    public void submitOrderAndClose(Order order) {
+        orderProgressDisplay.displaySubmittedOrder(order);
         hideOrderCreationElements();
     }
 

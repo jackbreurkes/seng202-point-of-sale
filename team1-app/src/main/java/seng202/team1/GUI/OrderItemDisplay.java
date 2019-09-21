@@ -48,12 +48,9 @@ public class OrderItemDisplay extends VBox {
         OrderItemDisplay display = this;
 
         if (model.getRecipe() != null) {
-            // TODO implement the below once Recipe class is implemented
-//            for (FoodItem ingredient : model.getRecipe().getIngredients()) {
-//                // do the stuff below
-//            }
-            FoodItem testIngredient = new FoodItem("TEST", "test ingredient", UnitType.COUNT);
-            ingredients.getChildren().add(new OrderIngredientDisplay(testIngredient));
+            for (FoodItem ingredient : model.getRecipe().getIngredients()) {
+                ingredients.getChildren().add(new OrderIngredientDisplay(ingredient));
+            }
         }
 
         removeItem.setOnAction(new EventHandler<ActionEvent>() {
