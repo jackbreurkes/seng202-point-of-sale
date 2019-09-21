@@ -23,7 +23,7 @@ public class DAOFactory {
      * @return an instance of a class implementing OrderDAO
      */
     public static OrderDAO getOrderDAO() {
-        return null;
+        return JDBCStorage.getInstance();
     }
 
 }

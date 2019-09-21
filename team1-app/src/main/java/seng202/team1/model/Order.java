@@ -18,10 +18,12 @@ import static seng202.team1.util.OrderStatus.*;
  */
 public class Order {
 
-    private int ID;
+    public static int DEFAULT_ID = -1; // id of orders not yet in storage
+
+    private int ID = DEFAULT_ID;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
-    private OrderStatus status = CREATING;
+    private OrderStatus status = OrderStatus.CREATING;
     // private (Time? figure out the right datatype) lastUpdated;
     // private Location location;
     // private Weather weather;
@@ -185,6 +187,30 @@ public class Order {
 
     public int getOrderID() { return ID; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return ID == order.ID &&
+                foodItems.equals(order.foodItems) &&
+                Objects.equals(orderNote, order.orderNote) &&
+                status == order.status;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID, foodItems, orderNote, status);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "ID=" + ID +
+                ", foodItems=" + foodItems +
+                ", orderNote='" + orderNote + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
 

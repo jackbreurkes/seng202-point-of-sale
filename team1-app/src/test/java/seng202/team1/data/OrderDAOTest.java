@@ -1,6 +1,6 @@
 package seng202.team1.data;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import seng202.team1.model.FoodItem;
@@ -11,17 +11,16 @@ import seng202.team1.util.UnitType;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-@Disabled
-class OrderDAOTest {
 
-    private OrderDAO orderStorage;
-    private Order testOrder;
+abstract class OrderDAOTest {
+
+    protected OrderDAO orderStorage;
+    private Order testOrder = new Order();
     private FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
     private FoodItem testItem2 = new FoodItem("TES2", "Another Test Item", UnitType.COUNT);
 
     @BeforeEach
-    void setupStorage() {
-        //TODO set this up
+    void resetTestOrder() {
         testOrder = new Order();
     }
 
@@ -31,7 +30,6 @@ class OrderDAOTest {
         Set<Order> items = orderStorage.getAllOrders();
         assertEquals(0, items.size());
 
-        //TODO Jack used MemoryStorage.getInstance here, maybe refactor this to use that.
         orderStorage.addOrder(testOrder);
         items = orderStorage.getAllOrders();
         assertEquals(1, items.size());
@@ -40,37 +38,36 @@ class OrderDAOTest {
     }
 
     @Test
-    void testGetOrderByCode() {
+    void testGetOrderById() {
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
 
+
         assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
-        //cant get an order with a negative ID
+        //cant get an order with the default ID
+        Order testOrder2 = new Order();
         assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.getOrderByID(-1);
+            orderStorage.getOrderByID(testOrder2.getOrderID());
         });
 
         //cant get an order that doesnt exist in the system
-        assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.getOrderByID(2);
-        });
+        assertNull(orderStorage.getOrderByID(testOrder.getOrderID() + 1));
     }
 
     @Test
     void TestAddOrder() {
 
         //cant add an empty order.
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             orderStorage.addOrder(testOrder);
         });
 
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
-        //test for when order-code is implemented in the order class
         assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
-        // test adding an already added order
+        // test adding an order with an id already existing
         assertThrows(InvalidDataCodeException.class, () -> {
             orderStorage.addOrder(testOrder);
         });
@@ -87,17 +84,24 @@ class OrderDAOTest {
         //adds an order to storage, then updates the order and calls updateOrder, then checks the order was correctly updated
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
+        int orderId = testOrder.getOrderID();
 
-        testOrder.addItem(testItem2);
+        testOrder.submitOrder();
         orderStorage.updateOrder(testOrder);
-        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
+        System.out.println(testOrder);
+        System.out.println(orderStorage.getOrderByID(orderId));
+        assertEquals(testOrder, orderStorage.getOrderByID(orderId));
 
         //makes sure you cant update a null order
         assertThrows(NullPointerException.class, () -> {
             orderStorage.updateOrder(null);
         });
 
-
+        // makes sure you can't update an order with a nonexisting Id
+        testOrder.setId(orderId + 1);
+        assertThrows(InvalidDataCodeException.class, () -> {
+            orderStorage.updateOrder(testOrder);
+        });
     }
 
     @Test

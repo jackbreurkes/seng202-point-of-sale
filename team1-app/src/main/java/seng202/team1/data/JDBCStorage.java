@@ -275,7 +275,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         Order result = new Order();
         result.setId(id);
         result.setOrderNote(orderNote);
-        result.setStatus(status);
 
         String sql = "SELECT *\n" +
                 "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
@@ -293,6 +292,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        result.setStatus(status);
 
         return result;
     }
@@ -473,6 +474,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public Order getOrderByID(int id) {
+        if (id == Order.DEFAULT_ID) {
+            throw new InvalidDataCodeException("given order has the default id " + Order.DEFAULT_ID + ". set a valid ID");
+        }
+
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
@@ -529,9 +534,17 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void addOrder(Order order) {
-//        if (getFoodItemByCode(item.getCode()) != null) {
-//            throw new InvalidDataCodeException("FoodItem with code " + item.getCode() + " already exists in the database.");
-//        }
+        if (order == null) {
+            throw new NullPointerException();
+        }
+
+        if (order.getOrderContents().size() == 0) {
+            throw new IllegalArgumentException("cannot add an empty order");
+        }
+
+        if (order.getOrderID() != Order.DEFAULT_ID) {
+            throw new InvalidDataCodeException("cannot add order with a non-default id. please use update");
+        }
 
         String insertOrder = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
         //String insertOrderItem = "INSERT INTO OrderContains(CustomerOrder, FoodItem)"
@@ -556,7 +569,22 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void updateOrder(Order alteredOrder) {
+        if (getOrderByID(alteredOrder.getOrderID()) == null) {
+            throw new InvalidDataCodeException("order with given order's code does not exist in the database.");
+        }
 
+        String sql = "UPDATE CustomerOrder\n" +
+                "SET Status=?\n" +
+                "WHERE Id=?";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, alteredOrder.getOrderStatus().toString());
+            pstmt.setInt(2, alteredOrder.getOrderID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
