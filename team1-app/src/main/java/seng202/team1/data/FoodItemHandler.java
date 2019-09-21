@@ -1,7 +1,9 @@
 package seng202.team1.data;
 
 import org.w3c.dom.*;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.UnitType;
 
@@ -37,7 +39,7 @@ public class FoodItemHandler {
     /**
      * Constructor for FoodItemHandler class.
      *
-     * @param filePath
+     * @param filePath the file path to the XML file to parse
      * @param validating
      */
     public FoodItemHandler(String filePath, boolean validating) {
@@ -47,10 +49,25 @@ public class FoodItemHandler {
 
         try {
             builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-            System.exit(1); // TODO this seems a bit extreme???
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace(); // the parser configuration is set in this method only, so this shouldn't be a problem
         }
+
+        builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void error(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+            @Override
+            public void fatalError(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+
+            @Override
+            public void warning(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+        });
     }
 
 
@@ -58,16 +75,8 @@ public class FoodItemHandler {
      * Uses DocumentBuilder builder to parse the input XML file
      * and generates a tree for processing.
      */
-    public void parseInput() {
-        try {
-            parsedDoc = builder.parse(source);
-        } catch (SAXException se) {
-            System.err.println(se.getMessage());
-            System.exit(1);
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-            System.exit(1);
-        }
+    public void parseInput() throws IOException, SAXException {
+        parsedDoc = builder.parse(source);
     }
 
     /**
@@ -167,16 +176,20 @@ public class FoodItemHandler {
      * @param args
      */
     public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
-        fh.parseInput();
-        fh.getFoodItems();
-        System.out.println(fh.getFoodItems().keySet());
-        System.out.println(fh.getFoodItems().values());
-        System.out.println("");
-
-        System.out.println("");
-        for (FoodItem foo: fh.getFoodItems().values()) {
-            System.out.println(foo.getName());
+            FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
+        try {
+            fh.parseInput();
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
         }
+        fh.getFoodItems();
+            System.out.println(fh.getFoodItems().keySet());
+            System.out.println(fh.getFoodItems().values());
+            System.out.println("");
+
+            System.out.println("");
+            for (FoodItem foo : fh.getFoodItems().values()) {
+                System.out.println(foo.getName());
+            }
     }
 }

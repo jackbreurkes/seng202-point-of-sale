@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
@@ -94,7 +95,15 @@ public class ImportController {
             }
             if (fileExtension.equals("xml")) {
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
-                    UploadHandler.uploadFoodItems(selectedFile.getPath());
+                    try {
+                        UploadHandler.uploadFoodItems(selectedFile.getPath());
+                    } catch (SAXException e) {
+                        statusText.setText("An error has occured while parsing: " + e.getMessage());
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        statusText.setText("An IO exception occured: " + e.getMessage());
+                        e.printStackTrace();
+                    }
                     updateTable();
                 } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
                     UploadHandler.uploadSuppliers(selectedFile.getPath());

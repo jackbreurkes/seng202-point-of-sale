@@ -15,6 +15,6 @@ public class SupplierHandlerTest {
     @Test
     void supplierHandlerTest(){
         FoodItemHandler handler = new FoodItemHandler("src/test/resources/xml/TESTXML1.xml", true);
-        handler.parseInput();
+        //handler.parseInput();
     }
 }

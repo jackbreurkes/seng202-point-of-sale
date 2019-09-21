@@ -43,7 +43,11 @@ class FoodItemHandlerTest {
 
     @Test
     void testParseTESTXML1() {
-        handler.parseInput();
+        try {
+            handler.parseInput();
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
 
         FoodItem beefburg = new FoodItem("BEEFBURG", "Hamburger", UnitType.GRAM);
         beefburg.setCaloriesPerUnit(295);

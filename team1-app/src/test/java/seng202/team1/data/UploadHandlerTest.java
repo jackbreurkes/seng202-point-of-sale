@@ -2,27 +2,25 @@ package seng202.team1.data;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 import seng202.team1.model.FoodItem;
 import seng202.team1.util.UnitType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UploadHandlerTest {
 
-    String source1;
-    String source2;
+    final String source1 = "src/test/resources/xml/TESTXML1.xml";
+    final String source2 = "src/test/resources/xml/TESTXML2.xml";
     List<FoodItem> expectedItems;
 
     @BeforeEach
     void beforeEach() {
-        source1 = "src/test/resources/xml/TESTXML1.xml";
-        source2 = "src/test/resources/xml/TESTXML2.xml";
-
         FoodItem beefburg = new FoodItem("BEEFBURG", "Hamburger", UnitType.GRAM);
         beefburg.setCaloriesPerUnit(295);
         FoodItem cheeseburg = new FoodItem("CHEESEBURG", "Cheeseburger", UnitType.GRAM);
@@ -48,7 +46,11 @@ public class UploadHandlerTest {
 
         FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
-        UploadHandler.uploadFoodItems(source1);
+        try {
+            UploadHandler.uploadFoodItems(source1);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
         List<FoodItem> items = new ArrayList<FoodItem>(itemStorage.getAllFoodItems());
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
 
@@ -66,14 +68,22 @@ public class UploadHandlerTest {
 
         FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
-        UploadHandler.uploadFoodItems(source1);
+        try {
+            UploadHandler.uploadFoodItems(source1);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
 
         // Tofu FoodItem before attributes are altered
         FoodItem initialTofu = itemStorage.getFoodItemByCode("TOFUBURG");
         // Tofu stock before second XML uploaded
         int initialTofuStock = itemStorage.getFoodItemStock("TOFUBURG");
         // Uploads second XML file with altered tofu calories
-        UploadHandler.uploadFoodItems(source2);
+        try {
+            UploadHandler.uploadFoodItems(source2);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
         // Updated Tofu FoodItem
         FoodItem changedTofu = itemStorage.getFoodItemByCode("TOFUBURG");
         // Updated Tofu stock

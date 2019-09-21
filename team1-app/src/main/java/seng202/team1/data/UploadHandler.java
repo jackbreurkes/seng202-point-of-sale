@@ -1,5 +1,6 @@
 package seng202.team1.data;
 
+import org.xml.sax.SAXException;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Supplier;
 
@@ -53,7 +54,7 @@ public class UploadHandler {
      * methods from FoodItemHandler to upload a food items XML file.
      * @param foodItemFile String
      */
-    public static void uploadFoodItems(String foodItemFile) {
+    public static void uploadFoodItems(String foodItemFile) throws IOException, SAXException {
         if (checkFileOK(foodItemFile)) {
             FoodItemHandler foodItemHandler = new FoodItemHandler(pathName, validating);
             foodItemHandler.parseInput();
@@ -90,7 +91,7 @@ public class UploadHandler {
     }
 
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, SAXException {
         UploadHandler u = new UploadHandler();
 
         u.uploadFoodItems("resources/data/FoodItem.xml");
