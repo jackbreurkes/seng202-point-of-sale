@@ -2,6 +2,7 @@ package seng202.team1.data;
 
 import org.w3c.dom.*;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import seng202.team1.model.FoodItem;
@@ -53,6 +54,7 @@ public class FoodItemHandler {
             e.printStackTrace(); // the parser configuration is set in this method only, so this shouldn't be a problem
         }
 
+        builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditems.dtd")));
         builder.setErrorHandler(new ErrorHandler() {
             @Override
             public void error(SAXParseException exception) throws SAXException {
