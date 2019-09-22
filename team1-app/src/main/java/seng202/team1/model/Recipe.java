@@ -11,8 +11,10 @@ public class Recipe {
 
     /**
      * Default constructor
-     * @param ingredients the set of food items
+     * @param ingredients the non-empty set of food items used in the recipe
      * @param addableIngredients the set of food items that can be added to a recipe during an order
+     * @param ingredientAmounts the amount of each ingredient to use in the recipe, and the amount of each addableIngredient to use if added
+     * @param amountCreated the amount of the product FoodItem that is created by the recipe. int greater than 0
      */
     public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts, int amountCreated) {
         this.amountCreated = amountCreated;
