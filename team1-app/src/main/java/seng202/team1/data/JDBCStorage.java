@@ -9,31 +9,16 @@ import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
-import java.io.*;
-import java.nio.Buffer;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     private static String url = "jdbc:sqlite:rosemary.db";
     private static JDBCStorage instance;
 
-    private Connection connect = null;
-    private Statement statement = null;
-    private PreparedStatement preparedStatement = null;
-    private ResultSet resultSet = null;
-
-
     private JDBCStorage() {
-        createFoodItemTable();
-        createRecipeTable();
-        createRecipeContainsTable();
-        createOrderTable();
-        createOrderContainsTable();
-        createOrderedFoodItemTable();
-//        createAllTables();
+        createAllTables();
     }
 
     /**
@@ -186,7 +171,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     private void createAllTables() {
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+        /*try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
             ScriptRunner sr = new ScriptRunner(conn);
             //Reader reader = new InputStreamReader(getClass().getResourceAsStream("/sql/create_tables.sql"));
@@ -196,7 +181,14 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             //sr.runScript(reader);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
+        }*/
+
+        createFoodItemTable();
+        createRecipeTable();
+        createRecipeContainsTable();
+        createOrderTable();
+        createOrderContainsTable();
+        createOrderedFoodItemTable();
     }
 
 

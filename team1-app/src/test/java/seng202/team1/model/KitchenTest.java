@@ -3,42 +3,41 @@ package seng202.team1.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import seng202.team1.data.DAOFactory;
+import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.MemoryStorage;
+import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.NotEnoughStockException;
 import seng202.team1.util.RecipeNotFoundException;
 import seng202.team1.util.UnitType;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled
 class KitchenTest {
 
+    FoodItemDAO storage;
     Kitchen kitchen;
 
     @BeforeEach
     void beforeEach() {
-        MemoryStorage storage = MemoryStorage.getInstance();
-        storage.resetInstance();
-//        kitchen = new Kitchen(storage, storage);
-        // TODO uncomment above when storage class implements RecipeDAO
+        storage = MemoryStorage.getInstance();
+        DAOFactory.resetInstances();
+        kitchen = new Kitchen(storage);
     }
 
     @Test
     void testConstructor() {
-
+        // null storage instance
         assertThrows(NullPointerException.class, () -> {
             new Kitchen(null);
         });
-
-        assertNotNull(new Kitchen(MemoryStorage.getInstance())); // TODO how to test this works??
     }
 
     @Test
     void testCreateFoodItemsArgErrors() {
-
         // code is null
         assertThrows(NullPointerException.class, () -> {
             kitchen.createFoodItems(null, 1);
@@ -54,15 +53,25 @@ class KitchenTest {
             kitchen.createFoodItems("12345", 0);
         });
 
-        // recipe doesn't exist enough stock in storage
-        assertThrows(RecipeNotFoundException.class, () -> {
+        // FoodItem doesn't exist
+        assertThrows(InvalidDataCodeException.class, () -> {
             kitchen.createFoodItems("12345", 1);
         });
 
+        // FoodItem exists but has no recipe
+        fail("not yet implemented");
+
         // recipe exists but not enough stock in storage
-        // TODO add FoodItem with a recipe to memory storage with a code TESTITEM
+        FoodItem testItem = new FoodItem("TESTITEM", "test food item", UnitType.COUNT);
+        FoodItem testIngredient = new FoodItem("ING1", "ingred", UnitType.COUNT);
+        Set<FoodItem> ingredients = new HashSet<>(Arrays.asList(testIngredient));
+        Map<String, Integer> ingredAmounts = new HashMap<>();
+        ingredAmounts.put(testIngredient.getCode(), 2);
+        testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 1));
+        storage.addFoodItem(testIngredient, 5);
+        storage.addFoodItem(testItem, 0);
         assertThrows(NotEnoughStockException.class, () -> {
-            kitchen.createFoodItems("TESTITEM", 10);
+            kitchen.createFoodItems(testItem.getCode(), 10);
         });
         // TODO reconsider how missing stock is handled, do we actually want to throw an error?
     }
