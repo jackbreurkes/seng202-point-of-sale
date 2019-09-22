@@ -1,5 +1,6 @@
 package seng202.team1.data;
 
+import org.joda.money.BigMoney;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -22,13 +23,17 @@ public class UploadHandlerTest {
     @BeforeEach
     void beforeEach() {
         FoodItem beefburg = new FoodItem("BEEFBURG", "Hamburger", UnitType.GRAM);
+        beefburg.setCost(BigMoney.parse("NZD 21.00"));
         beefburg.setCaloriesPerUnit(295);
         FoodItem cheeseburg = new FoodItem("CHEESEBURG", "Cheeseburger", UnitType.GRAM);
+        cheeseburg.setCost(BigMoney.parse("NZD 22.00"));
         cheeseburg.setCaloriesPerUnit(303);
         FoodItem tofuburg = new FoodItem("TOFUBURG", "Tofu Burger", UnitType.GRAM);
+        tofuburg.setCost(BigMoney.parse("NZD 50.00"));
         tofuburg.setCaloriesPerUnit(168.4);
         tofuburg.setIsVegetarian(true);
         FoodItem applesoda = new FoodItem("APPLESODA", "Sparkling Apple", UnitType.ML);
+        applesoda.setCost(BigMoney.parse("NZD 96.00"));
         applesoda.setCaloriesPerUnit(87);
         applesoda.setIsVegan(true);
         applesoda.setIsGlutenFree(true);
