@@ -1,5 +1,6 @@
 package seng202.team1.data;
 
+import org.joda.money.BigMoney;
 import org.w3c.dom.*;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -30,18 +31,20 @@ public class FoodItemHandler {
 
     private String code;
     private String name;
+    private BigMoney cost;
     private UnitType unit;
+    private double caloriesPerUnit;
+
     private boolean isVegetarian;
     private boolean isVegan;
     private boolean isGlutenFree;
-    private double caloriesPerUnit;
 
 
     /**
      * Constructor for FoodItemHandler class.
      *
      * @param filePath the file path to the XML file to parse
-     * @param validating
+     * @param validating boolean
      */
     public FoodItemHandler(String filePath, boolean validating) {
         source = filePath;
@@ -109,9 +112,14 @@ public class FoodItemHandler {
 
             code = node.getElementsByTagName("code").item(0).getTextContent();
             name = node.getElementsByTagName("name").item(0).getTextContent();
+            cost = BigMoney.parse(node.getElementsByTagName("cost").item(0).getTextContent());
             unit = units(node.getAttribute("unit"));
+            caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
+
 
             FoodItem food = new FoodItem(code, name, unit);
+            food.setCost(cost);
+            food.setCaloriesPerUnit(caloriesPerUnit);
             if (node.hasAttribute("isVegetarian")) {
                 isVegetarian = diet(node.getAttribute("isVegetarian"));
                 food.setIsVegetarian(isVegetarian);
@@ -124,28 +132,40 @@ public class FoodItemHandler {
                 isGlutenFree = diet(node.getAttribute("isGlutenFree"));
                 food.setIsGlutenFree(isGlutenFree);
             }
-            caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
-            food.setCaloriesPerUnit(caloriesPerUnit);
             foodItems.put(code, food);
         }
         return foodItems;
     }
 
+    /**
+     * Takes a String that corresponds to a unit, validates it,
+     * and returns a UnitType object of that unit.
+     * @param s String
+     * @return UnitType
+     */
     private UnitType units(String s) {
-        UnitType uni;
+        UnitType unit;
         switch (s) {
             case "g":
-                uni = UnitType.GRAM;
+                unit = UnitType.GRAM;
                 break;
             case "ml":
-                uni = UnitType.ML;
+                unit = UnitType.ML;
                 break;
             default:
-                uni = UnitType.COUNT;
+                unit = UnitType.COUNT;
         }
-        return uni;
+        return unit;
     }
 
+    /**
+     * Takes a string yes or no which indicates a food item's
+     * dietary logic. If a food item is of a particular valid
+     * dietary logic: isVegan, isVegetarian, or isGluten,
+     * returns True.
+     * @param s String
+     * @return boolean
+     */
     private boolean diet(String s) {
         boolean logic;
         switch (s) {
@@ -159,17 +179,21 @@ public class FoodItemHandler {
         return logic;
     }
 
-
+    /**
+     * Resets the variables of a FoodItem for use of
+     * next FoodItem parsing.
+     */
     private void reset() {
 //        recipeNotes = "";
 //        salePrice = 0;
         code = "";
         name = "";
+        cost = BigMoney.parse("NZD 0.00");
         unit = UnitType.COUNT;
+        caloriesPerUnit = 0;
         isVegetarian = false;
         isVegan = false;
         isGlutenFree = false;
-        caloriesPerUnit = 0;
     }
 
 
