@@ -167,4 +167,125 @@ public class OrderSteps {
 
 
 
+
+
+    @Given("an order is being created")
+    public void an_order_is_being_created() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @And("the order has not been confirmed")
+    public void the_order_has_not_been_confirmed() {
+        // Write code here that turns the phrase above into concrete actions
+       //  throw new cucumber.api.PendingException();
+    }
+
+    @When("the user cancels the order")
+    public void the_user_cancels_the_order() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Then("the order is removed from the list of orders")
+    public void the_order_is_removed_from_the_list_of_orders() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+
+
+
+
+
+
+    @Ignore
+    @Given("an order exists in the orders list")
+    public void an_order_exists_in_the_orders_list() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @And("the order has been confirmed")
+    public void the_order_has_been_confirmed() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @And("the order has not been completed")
+    public void the_order_has_not_been_completed() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @When("the system removes the order from the order list")
+    public void the_system_removes_the_order_from_the_order_list() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @Then("the user is prompted to select which items can be returned to stock")
+    public void the_user_is_prompted_to_select_which_items_can_be_returned_to_stock() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @And("the user is prompted to enter a refund amount")
+    public void the_user_is_prompted_to_enter_a_refund_amount() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @And("the system logs the cancellation of the order")
+    public void the_system_logs_the_cancellation_of_the_order() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+
+
+
+
+
+
+
+    @Ignore
+    @Given("an order is being cancelled")
+    public void an_order_is_being_cancelled() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @When("the user selects a food item to return to stock")
+    public void the_user_selects_a_food_item_to_return_to_stock() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @Then("the system updates the profit based on the cancellation reason")
+    public void the_system_updates_the_profit_based_on_the_cancellation_reason() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+    @Ignore
+    @Then("the system updates the ingredient stocks based on the cancellation reason")
+    public void the_system_updates_the_ingredient_stocks_based_on_the_cancellation_reason() {
+        // Write code here that turns the phrase above into concrete actions
+         throw new cucumber.api.PendingException();
+    }
+
+
+
+
+
+
 }
