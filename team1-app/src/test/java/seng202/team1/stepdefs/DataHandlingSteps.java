@@ -63,9 +63,6 @@ public class DataHandlingSteps {
         }
     }
 
-    // Might change this description to something else
-    // like data uploaded equal to test data?
-    // Not 100% sure what this test is meant to do.
     @Then("the system adds the new data to the current data")
     public void the_system_adds_the_new_data_to_the_current_data() {
         // Write code here that turns the phrase above into concrete actions
