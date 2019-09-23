@@ -129,6 +129,12 @@ public class DataHandlingSteps {
         //throw new cucumber.api.PendingException();
     }
 
+
+
+
+
+
+
     @Ignore
     @Given("the system is in data entry mode")
     public void the_system_is_in_data_entry_mode() {
@@ -149,6 +155,10 @@ public class DataHandlingSteps {
         // Write code here that turns the phrase above into concrete actions
         //throw new cucumber.api.PendingException();
     }
+
+
+
+
 
 
     @Ignore
@@ -180,6 +190,14 @@ public class DataHandlingSteps {
     }
 
 
+
+
+
+
+
+
+
+
     //This is done twice. Once in this test case and again in the following one. Refer to design doc acceptance tests section for more info
     @Ignore
     @Given("menu is not empty")
@@ -203,6 +221,13 @@ public class DataHandlingSteps {
     }
 
 
+
+
+
+
+
+
+
     @Ignore
     @Given("menu is not empty2")
     public void menu_is_not_empty2() {
@@ -224,6 +249,15 @@ public class DataHandlingSteps {
         // Write code here that turns the phrase above into concrete actions
         //throw new cucumber.api.PendingException();
     }
+
+
+
+
+
+
+
+
+
 
 
     @Ignore
@@ -253,6 +287,11 @@ public class DataHandlingSteps {
         // Write code here that turns the phrase above into concrete actions
         //throw new cucumber.api.PendingException();
     }
+
+
+
+
+    
 
 
     @Ignore
