@@ -33,6 +33,9 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return instance;
     }
 
+    /**
+     * deletes all items from all tables in the database instance. used for testing purposes.
+     */
     public void resetInstance() {
         String sql = "DELETE FROM FoodItem; DELETE FROM Recipe; DELETE FROM RecipeContains";
 
@@ -45,6 +48,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store FoodItems in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createFoodItemTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS FoodItem\n" +
@@ -55,14 +62,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
                 " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
                 "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
-                "Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
-                "    /* TODO check that Cost is a numeric string */,\n" +
+                "Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0',\n" +
                 " StockLevel /* the current amount of this item stored */ INTEGER NOT NULL DEFAULT 0,\n" +
                 " IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n" +
                 " IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n" +
                 " IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n" +
-                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n" +
-                "    /* TODO check that CalPerUnit is a numeric string */);";
+                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000));";
 
         try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
@@ -73,6 +78,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store Recipes in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createRecipeTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS Recipe\n" +
@@ -90,6 +99,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store the relationship between Recipes and FoodItems contained in it in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createRecipeContainsTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS RecipeContains\n" +
@@ -107,6 +120,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store Orders in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createOrderTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS CustomerOrder\n" +
@@ -114,7 +131,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 " Status /* the status of the order (Creating='c', Submitted='s', Completed='d', Cancelled='x', Refunded='r') */ CHAR(1) NOT NULL\n" +
                 "    CONSTRAINT check_status CHECK (Status in ('c', 's', 'd', 'x', 'r')),\n" +
                 " Note /* any notes added to the order */ VARCHAR(8000),\n" +
-                " LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */\n" +
+                " LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
                 " Location /* the location the order was processed if known */ VARCHAR(8000),\n" +
                 " Weather /* the location the order was processed if known */ VARCHAR(8000));";
 
@@ -127,6 +144,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store the relationship between Orders and FoodItems contained in it in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createOrderContainsTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS OrderContains\n" +
@@ -143,6 +164,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * create the table used to store instances of FoodItems ordered by customers in the database if it does not already exist.
+     * will create the database if an existing database is not found.
+     */
     private static void createOrderedFoodItemTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS OrderedFoodItem\n" +
@@ -153,13 +178,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
                 " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
                 "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
-                " Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
-                "    /* TODO check that Cost is correct format */,\n" +
+                " Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0',\n" +
                 " IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n" +
                 " IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n" +
                 " IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n" +
-                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n" +
-                "    /* TODO check that CalPerUnit is a numeric string */);";
+                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000));";
 
         try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
@@ -170,19 +193,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * creates all tables used in the database
+     */
     private void createAllTables() {
-        /*try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            ScriptRunner sr = new ScriptRunner(conn);
-            //Reader reader = new InputStreamReader(getClass().getResourceAsStream("/sql/create_tables.sql"));
-            //InputStream file = Class.getResourceAsStream("/dtd/fooditem.dtd");
-            //System.out.println(file.available() +  " pls");
-            //Reader reader = Resources.getResourceAsReader("com/mkyong/MyBatis/sql/create_tables.sql");
-            //sr.runScript(reader);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }*/
-
         createFoodItemTable();
         createRecipeTable();
         createRecipeContainsTable();
@@ -191,7 +205,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         createOrderedFoodItemTable();
     }
 
-
+    /**
+     * reads a single FoodItem from a ResultSet from the FoodItem table
+     * @param rs the ResultSet from FoodItem
+     * @return a single FoodItem with the properties stored in the database
+     */
     private FoodItem readFoodItem(ResultSet rs) {
         String code, name, cost, unitType, calPerUnit;
         boolean isVegetarian, isVegan, isGlutenFree;
@@ -224,14 +242,19 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 break;
         }
         FoodItem result = new FoodItem(code, name, unit);
-        result.setCost(BigMoney.parse(cost)); // TODO error handling, or add a DB column constraint
+        result.setCost(BigMoney.parse(cost));
         result.setIsVegetarian(isVegetarian);
         result.setIsVegan(isVegan);
         result.setIsGlutenFree(isGlutenFree);
-        result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
+        result.setCaloriesPerUnit(Double.parseDouble(calPerUnit));
         return result;
     }
 
+    /**
+     * reads a single Order from a ResultSet from the CustomerOrder table
+     * @param rs the ResultSet from CustomerOrder
+     * @return a single Order with the properties stored in the database
+     */
     private Order readOrder(ResultSet rs) {
         int id;
         List<FoodItem> foodItems = new ArrayList<FoodItem>();
@@ -290,12 +313,17 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return result;
     }
 
+    /**
+     * read the stock level of a FoodItem from the database given a ResultSet from the FoodItem table
+     * @param rs the ResultSet from FoodItem
+     * @return an integer stock count
+     */
     private int readFoodItemStock(ResultSet rs) {
         try {
             return rs.getInt("StockLevel");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return 0; // TODO error handling
+            return 0;
         }
     }
 
@@ -315,7 +343,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return null; // TODO error handling?
+            return null;
         }
     }
 
@@ -337,7 +365,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return null; // TODO error handling?
+            return null;
         }
     }
 
@@ -354,7 +382,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
             pstmt.setString(3, item.getCost().toString());
-            pstmt.setString(4, item.getUnit().toString()); // TODO error handling
+            pstmt.setString(4, item.getUnit().toString());
             pstmt.setInt(5, count);
             pstmt.setBoolean(6, item.getIsVegetarian());
             pstmt.setBoolean(7, item.getIsVegan());
@@ -380,7 +408,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredItem.getName());
             pstmt.setString(2, alteredItem.getCost().toString());
-            pstmt.setString(3, alteredItem.getUnit().toString()); // TODO error handling
+            pstmt.setString(3, alteredItem.getUnit().toString());
             pstmt.setBoolean(4, alteredItem.getIsVegetarian());
             pstmt.setBoolean(5, alteredItem.getIsVegan());
             pstmt.setBoolean(6, alteredItem.getIsGlutenFree());
@@ -448,14 +476,14 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next() == false) {
-                return 0; // TODO throw an error
+                return 0;
             } else {
                 return readFoodItemStock(rs);
             }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return 0; // TODO error handling
+            return 0;
         }
     }
 
@@ -486,7 +514,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return null; // TODO error handling?
+            return null;
         }
     }
 
@@ -582,36 +610,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     @Override
     public void removeOrder(int ID) {
 
-    }
-
-    public static void main(String[] args) {
-        JDBCStorage storage = JDBCStorage.getInstance();
-//        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
-//        storage.setFoodItemStock("PIZZA", 20);
-        Order testOrder = new Order();
-        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
-        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
-        storage.addOrder(testOrder);
-        int orderId = testOrder.getOrderID();
-        testOrder = null;
-        testOrder = storage.getOrderByID(orderId);
-        System.out.println(testOrder.getOrderContents().size());
-        for (FoodItem item : testOrder.getOrderContents()) {
-            System.out.println(item);
-        }
-        try {
-            //storage.addOrder(new Order(1));
-//            Set<FoodItem> items = storage.getAllFoodItems();
-//            for (FoodItem item : items) {
-//                System.out.println(item);
-//                System.out.println(storage.getFoodItemStock(item.getCode()));
-//            }
-//            storage.getFoodItemByCode("CRACKERS");
-//            storage.resetInstance();
-//            System.out.println(storage.getFoodItemByCode("CRACKERS"));
-        } catch (Exception e) {
-            System.out.println("error thrown:" + e);
-        }
     }
 
 

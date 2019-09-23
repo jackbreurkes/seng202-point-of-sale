@@ -55,6 +55,4 @@ public interface FoodItemDAO {
      */
     int getFoodItemStock(String code);
 
-    // TODO add methods for things related to Recipes of FoodItems
-
 }

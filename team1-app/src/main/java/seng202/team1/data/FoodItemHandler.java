@@ -24,11 +24,6 @@ public class FoodItemHandler {
     private String source;
     private Map<String, FoodItem> foodItems;
 
-//    private List<FoodItem> components;
-//    private Map<FoodItem, Integer> ingredientCounts;
-//    private String recipeNotes;
-//    private double salePrice;
-
     private String code;
     private String name;
     private BigMoney cost;

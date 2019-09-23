@@ -54,11 +54,18 @@ public class OrderProgressDisplay extends VBox {
         });
     }
 
+    /**
+     * add an order that has been submitted in the pending orders display
+     * @param order the submitted order to display
+     */
     public void displaySubmittedOrder(Order order) {
         submittedOrders.add(order);
         updateSubmittedOrders();
     }
 
+    /**
+     * update the list of submitted orders
+     */
     private void updateSubmittedOrders() {
         pendingOrdersVBox.getChildren().clear();
         for (Order displayOrder : submittedOrders) {
@@ -66,6 +73,10 @@ public class OrderProgressDisplay extends VBox {
         }
     }
 
+    /**
+     * complete an order and move it to the completed orders section
+     * @param order
+     */
     public void completeOrder(Order order) {
         if (!submittedOrders.contains(order)) {
             throw new IllegalArgumentException("only submitted orders can be completed");
@@ -79,6 +90,10 @@ public class OrderProgressDisplay extends VBox {
         updateCompletedOrders();
     }
 
+    /**
+     * mark an order as cancelled and remove it from the GUI
+     * @param order
+     */
     public void cancelOrder(Order order) {
         System.out.println("cancel");
         if (!submittedOrders.contains(order)) {
@@ -91,6 +106,10 @@ public class OrderProgressDisplay extends VBox {
         updateSubmittedOrders();
     }
 
+    /**
+     * mark an order as refunded and remove it from the GUI
+     * @param order
+     */
     public void refundOrder(Order order) {
         if (!completedOrders.contains(order)) {
             throw new IllegalArgumentException("only completed orders can be refunded");
@@ -101,6 +120,9 @@ public class OrderProgressDisplay extends VBox {
         updateCompletedOrders();
     }
 
+    /**
+     * update the list of completed orders
+     */
     private void updateCompletedOrders() {
         completedOrdersVBox.getChildren().clear();
         for (Order displayOrder : completedOrders) {

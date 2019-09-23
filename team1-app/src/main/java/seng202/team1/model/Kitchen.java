@@ -23,7 +23,6 @@ public class Kitchen implements FoodSource {
      * @param code the code of the FoodItem to create using its recipe
      * @param amount the amount of the given FoodItem to create
      * @return list of created food items, should all be the same item
-     * TODO figure out how to deal with recipes that return amounts > 1 since it may not divide 'amount' perfectly
      */
     public List<FoodItem> createFoodItems(String code, int amount) {
         return null;

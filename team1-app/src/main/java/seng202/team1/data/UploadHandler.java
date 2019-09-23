@@ -91,18 +91,4 @@ public class UploadHandler {
     }
 
 
-    public static void main(String args[]) throws IOException, SAXException {
-        UploadHandler u = new UploadHandler();
-
-        u.uploadFoodItems("resources/data/FoodItem.xml");
-        u.uploadFoodItems("resources/data/FoodItem.xml");
-        System.out.println(foodItemsUploaded.keySet());
-        System.out.println(foodItemsUploaded.values());
-        System.out.println("");
-        for (FoodItem foo: foodItemsUploaded.values()) {
-            System.out.println(foo.getName());
-        }
-    }
-
-
 }

@@ -46,6 +46,10 @@ public class MenuItemDisplay extends VBox {
         addToOrder.setVisible(false);
     }
 
+    /**
+     * links menu items to a create order display to allow them to be added to its order. also shows the add to order button
+     * @param createDisplay the CreateOrderDisplay to link the menu item to
+     */
     public void linkToCreateOrderDisplay(CreateOrderDisplay createDisplay) {
         addToOrder.setVisible(true);
         addToOrder.setOnAction(new EventHandler<ActionEvent>() {
@@ -56,6 +60,9 @@ public class MenuItemDisplay extends VBox {
         });
     }
 
+    /**
+     * unlink the menu item from a create order display and hide the add to order button.
+     */
     public void unlinkFromOrder() {
         addToOrder.setOnAction(null);
         addToOrder.setVisible(false);

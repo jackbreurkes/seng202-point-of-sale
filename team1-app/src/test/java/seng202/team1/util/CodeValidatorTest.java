@@ -10,12 +10,12 @@ class CodeValidatorTest {
     void testCheckCode() {
         // not enough characters
         assertThrows(IllegalArgumentException.class, () -> {
-            CodeValidator.checkCode("CC"); // TODO should this be dynamic based on MIN_CHARS?
+            CodeValidator.checkCode("CC");
         });
 
         // too many characters
         assertThrows(IllegalArgumentException.class, () -> {
-            CodeValidator.checkCode("ELEVENCHARS"); // TODO should this be dynamic based on MAX_CHARS?
+            CodeValidator.checkCode("ELEVENCHARS");
         });
 
         // not uppercase alphanumeric

@@ -73,7 +73,6 @@ class KitchenTest {
         assertThrows(NotEnoughStockException.class, () -> {
             kitchen.createFoodItems(testItem.getCode(), 10);
         });
-        // TODO reconsider how missing stock is handled, do we actually want to throw an error?
     }
 
     @Test
@@ -82,8 +81,6 @@ class KitchenTest {
         FoodItem foodItem = new FoodItem("TESTITEM2", "test item 2", UnitType.COUNT);
         Recipe recipe = new Recipe(null, null, null, 1);
         foodItem.setRecipe(recipe);
-        // TODO add foodItem to memory storage
-        // TODO add required ingredients to storage
         List<FoodItem> expectedItems = Arrays.asList(foodItem);
         assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 1));
 
@@ -91,16 +88,17 @@ class KitchenTest {
         List<FoodItem> expectedItems2 = Arrays.asList(foodItem, foodItem);
         assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 2));
 
-        // TODO test when amount parameter does not perfectly divide the FoodItem's recipe creation amount
         FoodItem gramFoodItem = new FoodItem("GRAMITEM", "item measured grams", UnitType.GRAM);
         Recipe recipeFor100 = new Recipe(null, null, null, 100);
-        // TODO add gramFoodItem to storage and ingredients
 
-        kitchen.createFoodItems("GRAMITEM", 100); // TODO test this
+        kitchen.createFoodItems("GRAMITEM", 100);
+        fail("not yet implemented");
 
-        kitchen.createFoodItems("GRAMITEM", 60); // TODO test this
+        kitchen.createFoodItems("GRAMITEM", 60);
+        fail("not yet implemented");
 
-        kitchen.createFoodItems("GRAMITEM", 120); // TODO test this
+        kitchen.createFoodItems("GRAMITEM", 120);
+        fail("not yet implemented");
 
     }
 }

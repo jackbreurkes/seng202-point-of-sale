@@ -34,7 +34,7 @@ public class CreateOrderDisplay extends VBox {
     private OrderDAO orderStorage;
 
 
-    public CreateOrderDisplay(OrderController orderController, Order model) { // TODO add OrderDAO orderStorage as an arg
+    public CreateOrderDisplay(OrderController orderController, Order model) {
 
         this.orderController = orderController;
         this.model = model;
@@ -67,18 +67,29 @@ public class CreateOrderDisplay extends VBox {
         });
     }
 
+    /**
+     * adds the given FoodItem to the order this component models
+     * @param item the FoodItem to add
+     */
     public void addItemToOrder(FoodItem item) {
         model.addItem(item);
         orderTotalCost.setText("Order Cost - " + model.getCost().toString());
         orderItems.getChildren().add(new OrderItemDisplay(this, item));
     }
 
+    /**
+     * removes the given FoodItem from the order this component models
+     * @param item the FoodItem to remove
+     */
     public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
         model.removeItem(item);
         orderTotalCost.setText("Order Total - " + model.getCost().toString());
         orderItems.getChildren().remove(display);
     }
 
+    /**
+     * submits the order and closes the create order display
+     */
     public void submitOrder() {
         try {
             model.submitOrder();
@@ -90,12 +101,19 @@ public class CreateOrderDisplay extends VBox {
         closeCreateOrderPanel(model);
     }
 
+    /**
+     * closes the create order panel
+     */
     public void closeCreateOrderPanel() {
         orderController.stopCreatingOrder();
     }
 
+    /**
+     * closes the create order panel while also passing an already submitted order to the order controller
+     * @param submittedOrder the submitted order to pass to the order controller
+     */
     public void closeCreateOrderPanel(Order submittedOrder) {
-        orderController.submitOrderAndClose(submittedOrder);
+        orderController.addSubmittedOrderAndClose(submittedOrder);
     }
 
 }

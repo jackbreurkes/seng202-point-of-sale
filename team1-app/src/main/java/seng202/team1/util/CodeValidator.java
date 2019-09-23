@@ -9,7 +9,6 @@ public class CodeValidator {
      * checks if a given String is a valid code that can be used as a storage key.
      * if it is valid, the String code is returned.
      * otherwise, an exception is thrown.
-     * TODO is the above the best way to handle this?
      * @param code the String to check the validity of
      * @return the
      */

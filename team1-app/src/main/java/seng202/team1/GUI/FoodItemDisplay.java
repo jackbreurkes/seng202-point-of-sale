@@ -11,6 +11,9 @@ import seng202.team1.model.Recipe;
 import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
+/**
+ * wrapper class for FoodItem to be used to display its information in tables alongside stock information
+ */
 public class FoodItemDisplay {
 
     private FoodItem item;

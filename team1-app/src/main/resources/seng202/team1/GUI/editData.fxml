@@ -91,11 +91,6 @@
       </GridPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../images/almondMilk.jpg" />
-               </image>
-            </ImageView>
             <Button fx:id="editItemButton" layoutX="437.0" layoutY="288.0" mnemonicParsing="false" onAction="#editSelectedItem" text="edit item" />
             <Button fx:id="deleteSelected" layoutX="324.0" layoutY="288.0" mnemonicParsing="false" onAction="#deleteSelectedItem" text="delete item" />
             <Text fx:id="statusText" layoutX="12.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" />

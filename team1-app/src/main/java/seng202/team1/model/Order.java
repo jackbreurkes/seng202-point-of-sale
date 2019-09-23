@@ -24,11 +24,7 @@ public class Order {
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = OrderStatus.CREATING;
-    // private (Time? figure out the right datatype) lastUpdated;
-    // private Location location;
-    // private Weather weather;
 
-    // Should change this to getID to mantain consistency with setID but scared to do so
     public int getOrderID() { return ID; }
 
     public void setId(int id) {
@@ -161,13 +157,11 @@ public class Order {
      * @return the total cost of the order
      */
     public Money getCost() {
-        // TODO add money stuff to tests
         BigMoney totalCost = BigMoney.parse("NZD 0.00");
         for (FoodItem item : foodItems) {
             totalCost = totalCost.plus(item.getCost());
         }
         return totalCost.toMoney(RoundingMode.HALF_UP);
-        // TODO do we want this type of rounding here?
     }
 
     @Override

@@ -25,7 +25,6 @@ public class OrderSteps {
     @Given("the user has an order to register")
     public void the_user_has_an_order_to_register() {
         order = new Order();
-        //throw new cucumber.api.PendingException();
     }
 
     @When("the user adds {string} to an order")
@@ -44,7 +43,6 @@ public class OrderSteps {
         assertThrows(InvalidOrderStatusException.class, () -> order.submitOrder());
         order.addItem(foodItem);
         order.submitOrder();
-        //throw new cucumber.api.PendingException();
     }
 
 

@@ -11,14 +11,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Hello from Euan
-// To everybody:
-// Just a heads up:
-// The starter kit's DTD dictates that Email and URL are optional.
-// But since that is not OUR DTD then the code below has not
-// made choices regarding assigning 'NULL' values to email and url.
-// Chur.
-
 /**
  * Processes an XML file containing suppliers using DOM.
  */
@@ -26,8 +18,6 @@ public class SupplierHandler {
     private DocumentBuilder builder = null;
     private Document parsedDoc = null;
     private String source;
-
-//    private PrintStream dest; //Ask Tutors what this is for
 
     private Map<String, Supplier> suppliers;
     private String id;
@@ -47,9 +37,6 @@ public class SupplierHandler {
      */
     public SupplierHandler(String pathName, boolean validating) {
         source = pathName;
-
-//        dest = System.out;
-//        this.dest = new PrintStream(dest);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
@@ -123,19 +110,9 @@ public class SupplierHandler {
                     phoneType = PhoneType.HOME;
                     break;
                 default:
-                    // error since phoneType is REQUIRED
-                    // ask about phoneType
+                    phoneType = PhoneType.UNKNOWN;
             }
 
-//            //FOR TESTING
-//            System.out.println("ID is: " + id);
-//            System.out.println("Name is: " + name);
-//            System.out.println("Address is: " + address);
-//            System.out.println("Phone: " + phone);
-//            System.out.println("Email: " + email);
-//            System.out.println("URL: " + url);
-//            System.out.println("PhoneType: " + phoneType);
-//            System.out.println();
             suppliers.put(id, new Supplier(id, name, address, phone, phoneType, email, url));
         }
         return suppliers;
@@ -154,13 +131,4 @@ public class SupplierHandler {
         url = "";
     }
 
-//    /**
-//     * Main function for testing.
-//     * @param args
-//     */
-//    public static void main(String args[]) {
-//        SupplierHandler sh = new SupplierHandler("resources/data/Supplier.xml", true);
-//        sh.parseInput();
-//        sh.getSuppliers().values();
-//    }
 }

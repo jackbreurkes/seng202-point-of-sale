@@ -62,7 +62,6 @@ class OrderTest {
         testItem2.setCost(testItem2Cost);
         testOrder.addItem(testItem2);
         assertEquals(testItemCost.plus(testItem2Cost).toMoney(), testOrder.getCost());
-        // TODO toMoney rounding mode? undecided as of yet. maybe custom?
 
         // after removing an item
         testOrder.removeItem(testItem);

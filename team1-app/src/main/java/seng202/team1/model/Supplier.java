@@ -66,7 +66,6 @@ public class Supplier implements FoodSource {
     @Override
     /**
      * creates FoodItems using money.
-     * TODO figure out how the cost is associated with the creation of the item
      */
     public List<FoodItem> createFoodItems(String code, int amount) {
         return null;

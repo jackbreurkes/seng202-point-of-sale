@@ -25,8 +25,6 @@ abstract class FoodItemDAOTest {
         assertNull(foodStorage.getFoodItemByCode("UNUSED CODE"));
 
         assertNull(foodStorage.getFoodItemByCode(null));
-
-        // TODO invalid codes
     }
 
     @Test
@@ -125,8 +123,6 @@ abstract class FoodItemDAOTest {
             foodStorage.setFoodItemStock(null, 100);
         });
     }
-
-    // TODO create tests for stuff to do with a FoodItem's recipe
 
 
 }

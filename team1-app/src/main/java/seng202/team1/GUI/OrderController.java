@@ -46,6 +46,10 @@ public class OrderController {
         populateMenuItemsDisplay(activeMenu);
     }
 
+    /**
+     * populate the TilePane with the FoodItems associated with a given Menu
+     * @param menu the Menu to show the items of
+     */
     private void populateMenuItemsDisplay(Menu menu) {
         for (FoodItem item : menu.getMenuItems()) {
             MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
@@ -53,19 +57,32 @@ public class OrderController {
         }
     }
 
+    /**
+     * sets up the window to allow users to create an order
+     */
     public void startCreatingOrder() {
         showOrderCreationElements();
     }
 
+    /**
+     * returns the window to the overview state
+     */
     public void stopCreatingOrder() {
         hideOrderCreationElements();
     }
 
-    public void submitOrderAndClose(Order order) {
+    /**
+     * adds a submitted order to the order display and returns the window to the overview state
+     * @param order
+     */
+    public void addSubmittedOrderAndClose(Order order) {
         orderProgressDisplay.displaySubmittedOrder(order);
-        hideOrderCreationElements();
+        stopCreatingOrder();
     }
 
+    /**
+     * shows the elements of the GUI related to the creation of orders
+     */
     private void showOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
         ordersInfo.getChildren().clear();
@@ -78,6 +95,9 @@ public class OrderController {
         }
     }
 
+    /**
+     * hides the elements of the GUI related to the creation of orders
+     */
     private void hideOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName());
         ordersInfo.getChildren().clear();
