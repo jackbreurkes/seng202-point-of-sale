@@ -33,8 +33,8 @@ public class DataHandlingSteps {
     List<FoodItem> expectedItems;
     FoodItemDAO itemStorage;
 
-    @Given("the user has a data {string} to upload")
-    public void the_user_has_a_data_file_to_upload(String source) {
+    @Given("the user has a data from directory {string} to upload")
+    public void the_user_has_a_data_from_directory_to_upload(String source) {
         this.source = source;
         //throw new cucumber.api.PendingException();
     }
@@ -58,7 +58,7 @@ public class DataHandlingSteps {
             UploadHandler.uploadFoodItems(source);
         } catch (IOException | SAXException e) {
             e.printStackTrace();
-            throw new cucumber.api.PendingException();
+            throw new cucumber.api.PendingException("Failed uploading " + testName);
         }
     }
 

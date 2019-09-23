@@ -56,7 +56,7 @@ abstract class OrderDAOTest {
     }
 
     @Test
-    void TestAddOrder() {
+    void testAddOrder() {
 
         //cant add an empty order.
         assertThrows(IllegalArgumentException.class, () -> {
