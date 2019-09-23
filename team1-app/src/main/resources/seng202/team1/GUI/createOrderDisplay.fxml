@@ -21,7 +21,7 @@
       <Button fx:id="cancelOrder" mnemonicParsing="false" text="Cancel order" />
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
-            <VBox fx:id="orderItems" prefHeight="200.0" prefWidth="100.0" />
+            <VBox fx:id="orderItems" prefHeight="300.0" prefWidth="100.0" />
          </content>
       </ScrollPane>
       <Button fx:id="submitOrder" mnemonicParsing="false" text="Submit order" />
