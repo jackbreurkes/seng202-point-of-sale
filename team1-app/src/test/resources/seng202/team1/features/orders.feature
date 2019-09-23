@@ -5,3 +5,24 @@ Feature: User manages orders within the app
     Given the user has an order to register
     When the user adds "Wonton Noodles" to an order
     Then the order is submitted
+
+  Scenario: User wants to see general information about all food items
+    Given the list of food items available
+    When the user views the list of food items
+    Then the list of food items is displayed
+    And general information about each food item is displayed
+
+  Scenario: Employee removes an ingredient from a food item for a customer
+    Given an order with at least one food item exists
+    When the employee removes an ingredient from the food item
+    Then the item in the order will no longer contain that ingredient and will be marked as modified
+
+  Scenario: Employee adds a note to an order
+    Given an incomplete order exists in the orders list
+    When the employee specifies details for the note
+    Then the note will be displayed alongside the order
+
+  Scenario: User adds ingredients to a food item’s recipe
+    Given a food item is selected
+    When the user selects the ingredients to add to the recipe
+    Then the recipe is updated to include those ingredients
