@@ -51,7 +51,7 @@ abstract class OrderDAOTest {
             orderStorage.getOrderByID(testOrder2.getOrderID());
         });
 
-        //cant get an order that doesnt exist in the system
+        //cant get an order that doesn't exist in the system
         assertNull(orderStorage.getOrderByID(testOrder.getOrderID() + 1));
     }
 

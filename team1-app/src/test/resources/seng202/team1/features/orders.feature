@@ -4,4 +4,4 @@ Feature: User manages orders within the app
   Scenario: User registers an order
     Given the user has an order to register
     When the user adds "Wonton Noodles" to an order
-    Then the order is added to the pending orders
+    Then the order is submitted
