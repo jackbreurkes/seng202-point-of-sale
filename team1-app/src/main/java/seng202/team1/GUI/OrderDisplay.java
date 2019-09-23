@@ -22,6 +22,9 @@ public class OrderDisplay extends VBox {
     private Button orderActionButton;
 
     @FXML
+    private Button secondaryActionButton;
+
+    @FXML
     private VBox orderItems;
 
     private OrderProgressDisplay orderProgressDisplay;
@@ -46,6 +49,7 @@ public class OrderDisplay extends VBox {
 
     public void initialize() {
         orderId.setText("Order " + Integer.toString(model.getOrderID()) + " - cost " + model.getCost().toString());
+        secondaryActionButton.setVisible(false);
         OrderDisplay display = this;
 
         for (FoodItem orderItem : model.getOrderContents()) {
@@ -59,6 +63,15 @@ public class OrderDisplay extends VBox {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         orderProgressDisplay.completeOrder(model);
+                    }
+                });
+
+                secondaryActionButton.setVisible(true);
+                secondaryActionButton.setText("x");
+                secondaryActionButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        orderProgressDisplay.cancelOrder(model);
                     }
                 });
                 break;

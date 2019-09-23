@@ -79,6 +79,18 @@ public class OrderProgressDisplay extends VBox {
         updateCompletedOrders();
     }
 
+    public void cancelOrder(Order order) {
+        System.out.println("cancel");
+        if (!submittedOrders.contains(order)) {
+            throw new IllegalArgumentException("only submitted orders can be cancelled");
+        }
+        submittedOrders.remove(order);
+        order.cancelOrder();
+        orderStorage.updateOrder(order);
+
+        updateSubmittedOrders();
+    }
+
     public void refundOrder(Order order) {
         if (!completedOrders.contains(order)) {
             throw new IllegalArgumentException("only completed orders can be refunded");
