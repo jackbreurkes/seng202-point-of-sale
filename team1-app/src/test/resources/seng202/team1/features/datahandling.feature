@@ -18,7 +18,7 @@ Feature: User handles data using the app
 
   Scenario: User manually enters a new ingredient/food item/supplier data
     Given the system is in data entry mode
-    When the user provides new or updated data in the correct fiend(s)
+    When the user provides new or updated data in the correct field(s)
     Then the system updates the data entry
 
   Scenario: User adds a new food item
@@ -33,7 +33,7 @@ Feature: User handles data using the app
     Then system removes food item from database
 
   Scenario: User modifies existing recipe
-    Given menu is not empty
+    Given menu is not empty2
     When user modifies recipe
     Then system updates recipe in database
 
@@ -44,44 +44,37 @@ Feature: User handles data using the app
     Then the system updates the value to match the user input
 
   Scenario: Compute number of servings that current stocks will allow to be made
-# (UC3)
     Given the current stock is recorded into the database
     When user requests remaining serves
     Then the application should compute how many servings can be made with the given amount of stock
 
   Scenario: User updates the quantities of ingredients used in a recipe
-# (UC9)
     Given a food item is in the database and is currently selected
     When the user changes the quantity value
     Then the recipe is updated to display the new quantity
 
   Scenario: User adds an existing food item to the current menu
-# (UC6)
     Given the selected food item(s) are not already in the menu
     When the user adds a food item to the menu
     Then the food item and its details should be displayed on the menu
 
   Scenario: user needs the lists of data sorted based on their properties
-# (UC12)
     Given the items exist in the database
     And the item has appropriate search/ordering values
     When the user specifies the attribute to sort by
     Then the database returns a sorted list of the relevant items
 
   Scenario: user needs to know when they are running low on ingredients
-# (UC4)
     Given the ingredients are registered in the database
     When the ingredients reach a certain low level
     Then the user is informed that the ingredient is running low
 
   Scenario: user wants to see how sales perform under certain conditions
-# (UC14)
     Given the tags and time frame are specified
     When sales are made during the time frame
     Then the sales data is saved with the property specified
 
   Scenario: The owner wants to see the sales data in an organised way
-# (UC13)
     Given the sales data is recorded
     When the application is asked to generate a sales report
     Then the sales data is displayed with visualised sales figures
