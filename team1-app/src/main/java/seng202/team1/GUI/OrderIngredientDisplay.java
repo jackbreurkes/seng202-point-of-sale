@@ -18,7 +18,7 @@ public class OrderIngredientDisplay extends HBox {
     private Label ingredientName;
 
     @FXML
-    private Button removeIngredient;
+    private Button ingredientAction;
 
     private FoodItem model;
 

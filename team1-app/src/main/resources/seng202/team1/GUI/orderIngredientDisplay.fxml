@@ -17,6 +17,6 @@
          </font>
       </Label>
       <Region prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-      <Button fx:id="removeIngredient" mnemonicParsing="false" text="remove" />
+      <Button fx:id="ingredientAction" mnemonicParsing="false" text="remove" />
    </children>
 </fx:root>
