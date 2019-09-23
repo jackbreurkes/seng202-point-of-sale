@@ -270,17 +270,26 @@ public class OrderSteps {
     }
 
     @Ignore
-    @Then("the system updates the profit based on the cancellation reason")
+    @Then("the system logs the cancellation of the order2")
+    public void the_system_logs_the_cancellation_of_the_order2() {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new cucumber.api.PendingException();
+    }
+
+
+    @Ignore
+    @And("the system updates the profit based on the cancellation reason")
     public void the_system_updates_the_profit_based_on_the_cancellation_reason() {
         // Write code here that turns the phrase above into concrete actions
         // throw new cucumber.api.PendingException();
     }
 
+
     @Ignore
     @Then("the system updates the ingredient stocks based on the cancellation reason")
     public void the_system_updates_the_ingredient_stocks_based_on_the_cancellation_reason() {
         // Write code here that turns the phrase above into concrete actions
-         throw new cucumber.api.PendingException();
+        // throw new cucumber.api.PendingException();
     }
 
 

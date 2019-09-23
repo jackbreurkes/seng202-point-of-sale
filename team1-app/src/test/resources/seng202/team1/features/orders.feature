@@ -46,6 +46,6 @@ Feature: User manages orders within the app
   Scenario: user selects an item in a cancelled order to return to stock
     Given an order is being cancelled
     When the user selects a food item to return to stock
-    Then the system logs the cancellation of the order
+    Then the system logs the cancellation of the order2
     And the system updates the profit based on the cancellation reason
     And the system updates the ingredient stocks based on the cancellation reason
