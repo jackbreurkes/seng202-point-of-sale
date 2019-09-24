@@ -74,6 +74,8 @@ public class FoodItemHandler {
     /**
      * Uses DocumentBuilder builder to parse the input XML file
      * and generates a tree for processing.
+     * @throws IOException if file handling error occurs
+     * @throws SAXException if XML parsing error occurs
      */
     public void parseInput() throws IOException, SAXException {
         parsedDoc = builder.parse(source);
@@ -91,8 +93,6 @@ public class FoodItemHandler {
     /**
      * Selects each "fooditem" element and constructs a FoodItem object
      * by assigning its values from the "fooditem" element.
-     *
-     * @return Map<String, FoodItem>
      */
     public Map<String, FoodItem> getFoodItems() {
         foodItems = new HashMap<String, FoodItem>();
@@ -179,8 +179,7 @@ public class FoodItemHandler {
      * next FoodItem parsing.
      */
     private void reset() {
-//        recipeNotes = "";
-//        salePrice = 0;
+
         code = "";
         name = "";
         cost = BigMoney.parse("NZD 0.00");
@@ -189,28 +188,5 @@ public class FoodItemHandler {
         isVegetarian = false;
         isVegan = false;
         isGlutenFree = false;
-    }
-
-
-    /**
-     * Main function for testing.
-     * @param args
-     */
-    public static void main(String args[]) {
-            FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
-        try {
-            fh.parseInput();
-        } catch (IOException | SAXException e) {
-            e.printStackTrace();
-        }
-        fh.getFoodItems();
-            System.out.println(fh.getFoodItems().keySet());
-            System.out.println(fh.getFoodItems().values());
-            System.out.println("");
-
-            System.out.println("");
-            for (FoodItem foo : fh.getFoodItems().values()) {
-                System.out.println(foo.getName());
-            }
     }
 }

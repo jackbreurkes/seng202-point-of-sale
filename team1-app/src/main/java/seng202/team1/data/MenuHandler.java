@@ -73,8 +73,6 @@ public class MenuHandler {
     /**
      * Selects each "menu" element and constructs a Supplier object
      * by assigning its values from the "menu" element.
-     *
-     * @return Map<String, Menu>
      */
     public Map<String, Menu> getMenu() {
         menus = new HashMap<String, Menu>();
@@ -99,7 +97,6 @@ public class MenuHandler {
             item = items.get(code);
             menu.addItem(item);
 
-            //this but needs to be edited
         }
 
         return menus;
@@ -110,6 +107,5 @@ public class MenuHandler {
      */
     private void reset() {
         name = "";
-        //item = null
     }
 }

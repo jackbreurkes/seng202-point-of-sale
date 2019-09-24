@@ -75,8 +75,6 @@ public class SupplierHandler {
     /**
      * Selects each "supplier" element and constructs a Supplier object
      * by assigning its values from the "supplier" element.
-     *
-     * @return Map<String, Supplier>
      */
     public Map<String, Supplier> getSuppliers() {
         suppliers = new HashMap<String, Supplier>();
