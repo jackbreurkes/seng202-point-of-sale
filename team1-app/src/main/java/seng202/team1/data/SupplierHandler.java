@@ -42,22 +42,18 @@ public class SupplierHandler {
     /**
      * Constructor for SupplierHandler class.
      *
-     * @param pathName
-     * @param validating
+     * @param filePath the file path to the XML file to parse
+     * @param validating a boolean to validate an XML
      */
-    public SupplierHandler(String pathName, boolean validating) {
-        source = pathName;
-
-//        dest = System.out;
-//        this.dest = new PrintStream(dest);
-
+    public SupplierHandler(String filePath, boolean validating) {
+        source = filePath;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
+
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException pce) {
-            System.err.println(pce);
-            System.exit(1);
+            pce.printStackTrace();
         }
     }
 
@@ -86,10 +82,11 @@ public class SupplierHandler {
     }
 
     /**
-     * Selects each "supplier" element and constructs a Supplier object
-     * by assigning its values from the "supplier" element.
-     *
-     * @return Map<String, Supplier>
+     * Selects each "supplier" XML element and constructs a Supplier object
+     * by assigning its values from the "supplier" XML element.
+     * Returns a dictionary, taking the Supplier's id as its key
+     * and the Supplier itself as its value.
+     * @return a Supplier dictionary
      */
     public Map<String, Supplier> getSuppliers() {
         suppliers = new HashMap<String, Supplier>();
@@ -99,6 +96,9 @@ public class SupplierHandler {
         Node aNode;
         NodeList kids;
         NamedNodeMap attributes;
+
+        // IF YOU CAN FUTURE EUAN MATCH THE BELOW TO THE FOOD ITEM STUFF
+        // CAUSE I GUESS THAT READS BETTER
 
         for (int i = 0; i < numNodes; i++) {
             reset();

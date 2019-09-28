@@ -27,10 +27,10 @@ public class MenuHandler {
     private Map<String, FoodItem> items;
 
     /**
-     * Constructor for the MenuHandler class.
+     * Constructor for MenuHandler class.
      *
-     * @param filePath
-     * @param validating
+     * @param filePath the file path to the XML file to parse
+     * @param validating a boolean to validate an XML
      */
     public MenuHandler(String filePath, boolean validating, Map<String, FoodItem> fooditems) {
         source = filePath;
@@ -71,10 +71,11 @@ public class MenuHandler {
     }
 
     /**
-     * Selects each "menu" element and constructs a Supplier object
+     * Selects each "menu" XML element and constructs a Menu object
      * by assigning its values from the "menu" element.
-     *
-     * @return Map<String, Menu>
+     * Returns a dictionary, taking the Menu's code as its key
+     * and the Menu itself as its value.
+     * @return a Supplier dictionary
      */
     public Map<String, Menu> getMenu() {
         menus = new HashMap<String, Menu>();

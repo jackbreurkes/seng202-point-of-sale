@@ -39,7 +39,7 @@ public class UploadHandler {
     /**
      * Static function that calls methods from all the necessary
      * methods from SupplierHandler to upload a suppliers XML file.
-     * @param supplierFile String
+     * @param supplierFile supplier XML file path
      */
     public static void uploadSuppliers(String supplierFile) {
         if (checkFileOK(supplierFile)) {
@@ -52,7 +52,7 @@ public class UploadHandler {
     /**
      * Static function that calls methods from all the necessary
      * methods from FoodItemHandler to upload a food items XML file.
-     * @param foodItemFile String
+     * @param foodItemFile food item xml file path
      */
     public static void uploadFoodItems(String foodItemFile) throws IOException, SAXException {
         if (checkFileOK(foodItemFile)) {
@@ -76,16 +76,16 @@ public class UploadHandler {
 
     /**
      * Helper function to check if pathName is valid.
-     * @param fName String
-     * @return boolean
+     * @param fName pathname to file
+     * @return boolean that indicates if file is valid
      */
     private static boolean checkFileOK(String fName) {
         try {
             pathName = (new File(fName)).toURI().toURL().toString();
         } catch (IOException ioe) {
-            System.err.println("Problem reading file: <" + fName + ">  Check for typos");
+            System.err.println("Problem reading file: <" + fName + ">  Check for typos please!");
             System.err.println(ioe);
-            System.exit(666); // ??
+            //System.exit(666); // ??
         }
         return true;
     }
