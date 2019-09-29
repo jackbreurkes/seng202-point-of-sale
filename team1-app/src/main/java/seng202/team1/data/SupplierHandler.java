@@ -127,16 +127,13 @@ public class SupplierHandler {
                     // ask about phoneType
             }
 
-//            //FOR TESTING
-//            System.out.println("ID is: " + id);
-//            System.out.println("Name is: " + name);
-//            System.out.println("Address is: " + address);
-//            System.out.println("Phone: " + phone);
-//            System.out.println("Email: " + email);
-//            System.out.println("URL: " + url);
-//            System.out.println("PhoneType: " + phoneType);
-//            System.out.println();
-            suppliers.put(id, new Supplier(id, name, address, phone, phoneType, email, url));
+            Supplier supplier = new Supplier(id, name);
+            supplier.setAddress(address);
+            supplier.setPhone(phone);
+            supplier.setPhoneType(phoneType);
+            supplier.setEmail(email);
+            supplier.setUrl(url);
+            suppliers.put(id, supplier);
         }
         return suppliers;
     }

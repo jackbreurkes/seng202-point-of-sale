@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import seng202.team1.model.Supplier;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.PhoneType;
+
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,8 +18,12 @@ class SupplierDAOTest {
     private Supplier testSupplier;
     @BeforeEach
     void setupStorage() {
-        testSupplier = new Supplier("s1",  "CountUp",  "12 High Street Christchurch",  "3451234", WORK, "dave@countup.co.nz", "countup.co.nz/high");
-
+        testSupplier = new Supplier("s1",  "CountUp");
+        testSupplier.setAddress("12 High Street Christchurch");
+        testSupplier.setPhone("3451234");
+        testSupplier.setPhoneType(WORK);
+        testSupplier.setEmail("dave@countup.co.nz");
+        testSupplier.setUrl("countup.co.nz/high");
     }
 
     @Test
@@ -71,12 +77,12 @@ class SupplierDAOTest {
     void testUpdateSupplier() {
         supplierStorage.addSupplier(testSupplier);
 
-        Supplier alteredSupplier = new Supplier("s1",  "COUNTBEYOND",  "14 High Street Christchurch",  "3451269", WORK, "dave2@countup.co.nz", "COUNTBEYOND.co.nz/high");
+        Supplier alteredSupplier = new Supplier(testSupplier.getId(),  "COUNTBEYOND");
         supplierStorage.updateSupplier(alteredSupplier);
         assertEquals(alteredSupplier, supplierStorage.getSupplierById(testSupplier.getId()));
 
         // the item's code does not exist within storage
-        Supplier nonExistantSupplier = new Supplier("s1",  "Mystery",  "Somewhere or other",  "0000000", WORK, "some@where.com", "jhusdfuifh.com");
+        Supplier nonExistantSupplier = new Supplier(testSupplier.getId(),  "Mystery");
         assertThrows(InvalidDataCodeException.class, () -> {
             supplierStorage.updateSupplier(nonExistantSupplier);
         });

@@ -45,8 +45,8 @@ public class Supplier implements FoodSource {
      * URL of a supplier. Attribute must be a String.
      */
     private String url;
-
     private Set<FoodItem> itemsStocked;
+
     private Map<String, Money> itemCosts;
 
     /**
