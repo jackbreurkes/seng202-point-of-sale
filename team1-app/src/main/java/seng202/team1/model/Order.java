@@ -44,8 +44,8 @@ public class Order {
     }
 
     /**
-     * @param item
      * adds a single instance of the specified item to the foodItems list
+     * @param item the FoodItem to add to the Order
      */
     public void addItem(FoodItem item) {
 
@@ -61,8 +61,8 @@ public class Order {
     }
 
     /**
-     * @param item
      * removes a single instance of the specified item from the foodItems list
+     * @param item the FoodItem already contained in the order to remove
      */
     public void removeItem(FoodItem item) {
         if (status == CREATING) {
@@ -136,14 +136,15 @@ public class Order {
 
     /**
      * sets the order status directly. used when loading an existing order from the database.
-     * @param status
+     * @param status the OrderStatus to set the order to
      */
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
     /**
-     * returns the contents of the order in list form
+     * returns the contents of the order in list form.
+     * @return a List of the FoodItems in the Order
      */
     public List<FoodItem> getOrderContents() {
         return foodItems;
@@ -151,6 +152,7 @@ public class Order {
 
     /**
      * returns the current status of the order
+     * @return the OrderStatus of the Order
      */
     public OrderStatus getOrderStatus() {
         return status;

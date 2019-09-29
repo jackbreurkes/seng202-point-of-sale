@@ -51,22 +51,21 @@ public class Supplier implements FoodSource {
 
     /**
      * Default constructor. Assigns id, name, address, phone, phoneType, email, and url values.
+     * @param id the Supplier's unique ID
+     * @param name the Supplier's name
      */
-    public Supplier(String id, String name, String address, String phone, PhoneType phoneType,
-                    String email, String url) {
+    public Supplier(String id, String name) {
         this.id = id;
         this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.phoneType = phoneType;
-        this.email = email;
-        this.url = url;
     }
 
     @Override
     /**
      * creates FoodItems using money.
      * TODO figure out how the cost is associated with the creation of the item
+     * @param code the code of the FoodItem to create
+     * @param amount the amount of the given FoodItem to create
+     * @return a List containing the desired amount of FoodItem
      */
     public List<FoodItem> createFoodItems(String code, int amount) {
         return null;

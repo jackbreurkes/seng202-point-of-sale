@@ -79,6 +79,7 @@ public class FoodItemHandler {
     /**
      * Uses DocumentBuilder builder to parse the input XML file
      * and generates a tree for processing.
+     * @throws SAXException if an XML parsing error occurs
      */
     public void parseInput() throws IOException, SAXException {
         parsedDoc = builder.parse(source);
@@ -200,10 +201,6 @@ public class FoodItemHandler {
     }
 
 
-    /**
-     * Main function for testing.
-     * @param args
-     */
     public static void main(String args[]) {
             FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         try {
