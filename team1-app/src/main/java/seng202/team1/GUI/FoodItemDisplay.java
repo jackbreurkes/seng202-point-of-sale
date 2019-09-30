@@ -26,6 +26,10 @@ public class FoodItemDisplay {
         setStock(itemStorage.getFoodItemStock(itemCode));
     }
 
+    public FoodItem getModelFoodItem() {
+        return this.item;
+    }
+
     public void setStock(int currentStock) {
         this.stock = currentStock;
     }

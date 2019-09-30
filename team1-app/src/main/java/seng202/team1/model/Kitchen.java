@@ -10,8 +10,7 @@ public class Kitchen implements FoodSource {
 
     /**
      * default constructor
-     *
-     * @param foodStorage
+     * @param foodStorage the FoodItemDAO to use when retrieving information about FoodItems
      */
     public Kitchen(FoodItemDAO foodStorage) {
         this.foodStorage = foodStorage;

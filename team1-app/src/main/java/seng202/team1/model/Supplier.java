@@ -45,28 +45,27 @@ public class Supplier implements FoodSource {
      * URL of a supplier. Attribute must be a String.
      */
     private String url;
-
     private Set<FoodItem> itemsStocked;
+
     private Map<String, Money> itemCosts;
 
     /**
      * Default constructor. Assigns id, name, address, phone, phoneType, email, and url values.
+     * @param id the Supplier's unique ID
+     * @param name the Supplier's name
      */
-    public Supplier(String id, String name, String address, String phone, PhoneType phoneType,
-                    String email, String url) {
+    public Supplier(String id, String name) {
         this.id = id;
         this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.phoneType = phoneType;
-        this.email = email;
-        this.url = url;
     }
 
     @Override
     /**
      * creates FoodItems using money.
      * TODO figure out how the cost is associated with the creation of the item
+     * @param code the code of the FoodItem to create
+     * @param amount the amount of the given FoodItem to create
+     * @return a List containing the desired amount of FoodItem
      */
     public List<FoodItem> createFoodItems(String code, int amount) {
         return null;
@@ -74,7 +73,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains supplier ID.
-     * @return String
+     * @return supplier's ID
      */
     public String getId() {
         return id;
@@ -82,7 +81,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier ID.
-     * @param id String
+     * @param id id to be set
      */
     public void setId(String id) {
         this.id = id;
@@ -90,7 +89,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains name of supplier.
-     * @return String
+     * @return supplier's name
      */
     public String getName() {
         return name;
@@ -98,7 +97,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets name of supplier.
-     * @param name String
+     * @param name name to be set
      */
     public void setName(String name) {
         this.name = name;
@@ -106,7 +105,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains supplier address.
-     * @return String
+     * @return supplier's address
      */
     public String getAddress() {
         return address;
@@ -114,7 +113,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier address.
-     * @param address String
+     * @param address address to be set
      */
     public void setAddress(String address) {
         this.address = address;
@@ -122,7 +121,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains supplier phone number.
-     * @return String
+     * @return supplier's phone number
      */
     public String getPhone() {
         return phone;
@@ -130,7 +129,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier phone number.
-     * @param phone String
+     * @param phone phone number to be set
      */
     public void setPhone(String phone) {
         this.phone = phone;
@@ -138,7 +137,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains supplier phone type.
-     * @return PhoneType
+     * @return supplier's PhoneType
      */
     public PhoneType getPhoneType() {
         return phoneType;
@@ -146,7 +145,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier phone type.
-     * @param phoneType PhoneType
+     * @param phoneType PhoneType to be set
      */
     public void setPhoneType(PhoneType phoneType) {
         this.phoneType = phoneType;
@@ -154,7 +153,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Obtains supplier email.
-     * @return String
+     * @return supplier's email
      */
     public String getEmail() {
         return email;
@@ -162,15 +161,15 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier email.
-     * @param email String
+     * @param email supplier's email to be set
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Obtains supplier url.
-     * @return String
+     * Obtains supplier URL.
+     * @return String supplier's URL
      */
     public String getUrl() {
         return url;
@@ -178,7 +177,7 @@ public class Supplier implements FoodSource {
 
     /**
      * Sets supplier url.
-     * @param url String
+     * @param url URL to be set
      */
     public void setUrl(String url) {
         this.url = url;

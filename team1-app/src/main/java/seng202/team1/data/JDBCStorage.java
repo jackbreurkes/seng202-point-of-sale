@@ -9,6 +9,8 @@ import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.*;
 import java.util.*;
 
@@ -174,11 +176,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         /*try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
              Statement stmt = conn.createStatement()) {
             ScriptRunner sr = new ScriptRunner(conn);
-            //Reader reader = new InputStreamReader(getClass().getResourceAsStream("/sql/create_tables.sql"));
+            Reader reader = new InputStreamReader(JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql"));
             //InputStream file = Class.getResourceAsStream("/dtd/fooditem.dtd");
             //System.out.println(file.available() +  " pls");
             //Reader reader = Resources.getResourceAsReader("com/mkyong/MyBatis/sql/create_tables.sql");
-            //sr.runScript(reader);
+            sr.runScript(reader);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }*/

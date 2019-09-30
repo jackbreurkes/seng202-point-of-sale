@@ -44,7 +44,7 @@ public class FoodItemHandler {
      * Constructor for FoodItemHandler class.
      *
      * @param filePath the file path to the XML file to parse
-     * @param validating boolean
+     * @param validating a boolean to validate an XML
      */
     public FoodItemHandler(String filePath, boolean validating) {
         source = filePath;
@@ -53,8 +53,8 @@ public class FoodItemHandler {
 
         try {
             builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace(); // the parser configuration is set in this method only, so this shouldn't be a problem
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace(); // the parser configuration is set in this method only, so this shouldn't be a problem
         }
 
         builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditems.dtd")));
@@ -79,6 +79,7 @@ public class FoodItemHandler {
     /**
      * Uses DocumentBuilder builder to parse the input XML file
      * and generates a tree for processing.
+     * @throws SAXException if an XML parsing error occurs
      */
     public void parseInput() throws IOException, SAXException {
         parsedDoc = builder.parse(source);
@@ -94,10 +95,11 @@ public class FoodItemHandler {
 
 
     /**
-     * Selects each "fooditem" element and constructs a FoodItem object
-     * by assigning its values from the "fooditem" element.
-     *
-     * @return Map<String, FoodItem>
+     * Selects each "fooditem" XML element and constructs a FoodItem object
+     * by assigning its values from the "fooditem" XML element.
+     * Returns a dictionary, taking the FoodItem's code as its key
+     * and the FoodItem itself as its value.
+     * @return a FoodItem dictionary
      */
     public Map<String, FoodItem> getFoodItems() {
         foodItems = new HashMap<String, FoodItem>();
@@ -137,11 +139,14 @@ public class FoodItemHandler {
         return foodItems;
     }
 
+
+    // Maybe thinking of having an UNKNOWN
+    // UnitType for passing invalid unit types
     /**
      * Takes a String that corresponds to a unit, validates it,
      * and returns a UnitType object of that unit.
-     * @param s String
-     * @return UnitType
+     * @param s a unit type in the form of a string
+     * @return a unit type of type UnitType
      */
     private UnitType units(String s) {
         UnitType unit;
@@ -161,10 +166,9 @@ public class FoodItemHandler {
     /**
      * Takes a string yes or no which indicates a food item's
      * dietary logic. If a food item is of a particular valid
-     * dietary logic: isVegan, isVegetarian, or isGluten,
-     * returns True.
-     * @param s String
-     * @return boolean
+     * dietary logic: isVegan, isVegetarian, or isGlutenFree, returns True.
+     * @param s a String "yes" or "no"
+     * @return a boolean that indicates a valid dietary logic
      */
     private boolean diet(String s) {
         boolean logic;
@@ -197,10 +201,6 @@ public class FoodItemHandler {
     }
 
 
-    /**
-     * Main function for testing.
-     * @param args
-     */
     public static void main(String args[]) {
             FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         try {
