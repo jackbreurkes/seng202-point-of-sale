@@ -233,7 +233,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
 
-
+        //result.setRecipe(getFoodItemRecipe(code));
 
         return result;
     }
@@ -263,8 +263,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         int id, amountCreated;
 
         try {
-            id = rs.getInt("id");
-            amountCreated = rs.getInt("amountcreated");
+            id = rs.getInt("Id");
+            amountCreated = rs.getInt("AmountCreated");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return null;
@@ -454,6 +454,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
+        if (item.getRecipe() != null) {
+            addRecipe(item);
+        }
     }
 
     @Override
@@ -479,6 +483,95 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+
+        if (alteredItem.getRecipe() == null) {
+            deleteRecipeWithProduct(alteredItem);
+        } else {
+            addRecipe(alteredItem);
+        }
+    }
+
+    /**
+     * adds the recipe of a given FoodItem to the database.
+     * @param item
+     */
+    private void addRecipe(FoodItem item) {
+        Recipe recipe = item.getRecipe();
+        if (recipe == null) {
+            throw new NullPointerException("the given FoodItem has no Recipe");
+        }
+
+        String sql = "INSERT INTO Recipe (Product, AmountCreated) VALUES (?, ?)";
+
+        int recipeId;
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, item.getCode());
+            pstmt.setInt(2, recipe.getAmountCreated());
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            recipeId = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        for (FoodItem ingredient : recipe.getIngredients()) {
+            if (getFoodItemByCode(ingredient.getCode()) == null) {
+                addFoodItem(ingredient, 0);
+            }
+            int amount = recipe.getIngredientAmounts().get(ingredient.getCode());
+            addRecipeContains(recipeId, ingredient, amount);
+        }
+    }
+
+    private int getFoodItemIdFromCode(String code) {
+        String sql = "SELECT Id FROM FoodItem WHERE Code = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, code);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                throw new InvalidDataCodeException("no entry with code " + code + " found");
+            } else {
+                return rs.getInt("Id");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
+        String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, recipeId);
+            pstmt.setInt(2, getFoodItemIdFromCode(ingredient.getCode()));
+            pstmt.setInt(3, amount);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * removes the Recipe with the given product from the database if it exists.
+     * @param product the FoodItem the Recipe produces
+     */
+    private void deleteRecipeWithProduct(FoodItem product) {
+        String sql2 = "DELETE FROM Recipe WHERE Product = ?";
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+            pstmt.setString(1, product.getCode());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
