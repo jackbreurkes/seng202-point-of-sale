@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS FoodItem
     /* TODO check that CalPerUnit is a numeric string */);
 
 -- CREATE TABLE Recipe
--- (Id /* unique identifier for a Recipe */ INT NOT NULL IDENTITY,
+-- (Id /* unique identifier for a Recipe */ INTEGER PRIMARY KEY,
 --  Product /* the Id of the FoodItem created by the Recipe */ INT NOT NULL REFERENCES FoodItem, /* TODO constraint, on del/update, use FOREIGN KEY words? */
 --  AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,
 --  PRIMARY KEY (Id, Product));

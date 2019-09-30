@@ -29,7 +29,6 @@ public class FoodItemWindowController {
     public FoodItemWindowController(FoodItem model) {
 
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
-        System.out.println(model);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("editDataWindow.fxml"));
         loader.setController(this);
@@ -47,6 +46,13 @@ public class FoodItemWindowController {
         stage.setTitle(model.getCode());
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void updateModelFromStorage() {
+        model = foodStorage.getFoodItemByCode(model.getCode());
+        if (model == null) {
+            throw new RuntimeException("model could not be found");
+        }
     }
 
     public void initialize() {

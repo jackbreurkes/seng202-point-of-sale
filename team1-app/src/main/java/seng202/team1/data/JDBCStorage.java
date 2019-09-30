@@ -4,6 +4,7 @@ import org.apache.ibatis.io.Resources;
 import org.joda.money.BigMoney;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
@@ -79,7 +80,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS Recipe\n" +
                 "(Id /* unique identifier for a Recipe */ INTEGER,\n" +
-                " Product /* the Id of the FoodItem created by the Recipe */ INT NOT NULL REFERENCES FoodItem,\n" +
+                " Product /* the Id of the FoodItem created by the Recipe */ INTEGER UNIQUE NOT NULL REFERENCES FoodItem,\n" +
                 " AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,\n" +
                 " PRIMARY KEY (Id, Product));";
 
@@ -231,7 +232,94 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsVegan(isVegan);
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
+
+
+
         return result;
+    }
+
+    private Recipe getFoodItemRecipe(String foodItemCode) {
+        String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, foodItemCode);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                return null;
+            } else {
+                return readRecipe(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null; // TODO error handling?
+        }
+    }
+
+    private Recipe readRecipe(ResultSet rs) {
+        int id, amountCreated;
+
+        try {
+            id = rs.getInt("id");
+            amountCreated = rs.getInt("amountcreated");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        Map<String, Integer> ingredientAmounts = new HashMap<>();
+
+        populateRecipeData(id, ingredients, addableIngredients, ingredientAmounts);
+        Recipe result = new Recipe(ingredients, addableIngredients, ingredientAmounts, amountCreated);
+        return result;
+    }
+
+    private void populateRecipeData(int recipeId, Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts) {
+        String sql = "SELECT * FROM RecipeContains WHERE Recipe = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, recipeId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int foodItemId = rs.getInt("FoodItem");
+                FoodItem item = getFoodItemByCode(getFoodItemCodeFromId(foodItemId));
+                ingredients.add(item);
+                int amount = rs.getInt("Amount");
+                ingredientAmounts.put(item.getCode(), amount);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getFoodItemCodeFromId(int id) {
+        String sql = "SELECT Code FROM FoodItem WHERE Id = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                return null;
+            } else {
+                return rs.getString("Code");
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
     private Order readOrder(ResultSet rs) {

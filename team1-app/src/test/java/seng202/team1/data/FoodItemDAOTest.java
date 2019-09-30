@@ -1,11 +1,14 @@
 package seng202.team1.data;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,7 +129,21 @@ abstract class FoodItemDAOTest {
         });
     }
 
-    // TODO create tests for stuff to do with a FoodItem's recipe
+    @Test
+    void testGetWithRecipe() {
+        FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        Map<String, Integer> ingredientAmounts = new HashMap<>();
+        ingredients.add(testIngredient);
+        ingredientAmounts.put(testIngredient.getCode(), 1);
+
+        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
+        testItem.setRecipe(testRecipe);
+        foodStorage.addFoodItem(testItem, 0);
+
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+    }
 
 
 }

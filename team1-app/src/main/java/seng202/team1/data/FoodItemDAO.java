@@ -2,6 +2,7 @@ package seng202.team1.data;
 
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.FoodSource;
+import seng202.team1.model.Recipe;
 
 import java.util.Set;
 
@@ -54,7 +55,5 @@ public interface FoodItemDAO {
      * @return the current stock level
      */
     int getFoodItemStock(String code);
-
-    // TODO add methods for things related to Recipes of FoodItems
 
 }

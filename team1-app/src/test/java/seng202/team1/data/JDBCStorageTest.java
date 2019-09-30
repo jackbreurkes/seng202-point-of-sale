@@ -21,6 +21,13 @@ class JDBCStorageFoodItemDAOTest extends FoodItemDAOTest {
         ((JDBCStorage) foodStorage).resetInstance();
     }
 
+    @Test
+    @Override
+    @Disabled
+    void testGetWithRecipe() {
+        fail(); // this block disables the test only for this subclass of the FoodItemDAOTest class
+    }
+
 }
 
 class JDBCStorageOrderDAOTest extends OrderDAOTest {
