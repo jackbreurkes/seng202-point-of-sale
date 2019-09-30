@@ -108,11 +108,13 @@ public class EditDataController {
      * loads the values of selected item into the edit display ready to be edited
      */
     public void editSelectedItem() {
+
         selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             statusText.setText("No item selected.");
             return;
         }
+        new FoodItemWindowController(selectedItem.getModelFoodItem());
         statusText.setText("editing " + selectedItem.getCode());
 
         codeLabel.setText(selectedItem.getCode());
