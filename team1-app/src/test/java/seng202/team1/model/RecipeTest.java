@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RecipeTest {
 
+    Set<FoodItem> testIngredients, testAddableIngredients;
+    Map<String, Integer> testIngredientAmounts;
     Recipe recipe;
 
     @BeforeEach
@@ -26,23 +28,23 @@ class RecipeTest {
         FoodItem lettuce = new FoodItem("4444", "lettuce", UnitType.COUNT);
         FoodItem glutenFreeBun = new FoodItem("5555", "glutenFreeBun", UnitType.COUNT);
 
-        Set<FoodItem> ingredients = new HashSet<>();
-        ingredients.add(bun);
-        ingredients.add(pattie);
-        ingredients.add(tofuPattie);
+        testIngredients = new HashSet<>();
+        testIngredients.add(bun);
+        testIngredients.add(pattie);
+        testIngredients.add(tofuPattie);
 
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        addableIngredients.add(lettuce);
-        addableIngredients.add(glutenFreeBun);
+        testAddableIngredients = new HashSet<>();
+        testAddableIngredients.add(lettuce);
+        testAddableIngredients.add(glutenFreeBun);
 
-        Map<String, Integer> ingredientAmount = new HashMap<>();
-        ingredientAmount.put(bun.getCode(), 1);
-        ingredientAmount.put(pattie.getCode(), 1);
-        ingredientAmount.put(tofuPattie.getCode(), 1);
-        ingredientAmount.put(lettuce.getCode(), 1);
-        ingredientAmount.put(glutenFreeBun.getCode(), 1);
+        testIngredientAmounts = new HashMap<>();
+        testIngredientAmounts.put(bun.getCode(), 1);
+        testIngredientAmounts.put(pattie.getCode(), 1);
+        testIngredientAmounts.put(tofuPattie.getCode(), 1);
+        testIngredientAmounts.put(lettuce.getCode(), 1);
+        testIngredientAmounts.put(glutenFreeBun.getCode(), 1);
 
-        recipe = new Recipe(ingredients, addableIngredients, ingredientAmount, 1);
+        recipe = new Recipe(testIngredients, testAddableIngredients, testIngredientAmounts, 1);
     }
 
     @Disabled
@@ -62,7 +64,7 @@ class RecipeTest {
 
         // Test if the amount of its product created is 0
         assertThrows(IllegalArgumentException.class, () -> {
-            new Recipe(new HashSet<>(), new HashSet<>(), new HashMap<>(), 0);
+            new Recipe(testIngredients, testAddableIngredients, testIngredientAmounts, 0);
         });
 
         // Test ingredient amount does not have an entry for every ingredient

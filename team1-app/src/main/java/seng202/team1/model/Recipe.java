@@ -17,11 +17,34 @@ public class Recipe {
      * @param amountCreated the amount of the product FoodItem that is created by the recipe. int greater than 0
      */
     public Recipe(Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts, int amountCreated) {
+        if (ingredients == null || addableIngredients == null || ingredientAmounts == null) {
+            throw new NullPointerException();
+        }
+
+        if (ingredients.size() == 0) {
+            throw new IllegalArgumentException("the set of ingredients should contain at least one FoodItem");
+        }
+
+        if (amountCreated == 0) {
+            throw new IllegalArgumentException("a recipe cannot create 0 of its product");
+        }
+
+        for (FoodItem ingredient : ingredients) {
+            if (!ingredientAmounts.containsKey(ingredient.getCode())) {
+                throw new IllegalArgumentException("ingredientAmounts does not contain an entry for " + ingredient.getCode());
+            }
+        }
+
+        for (FoodItem ingredient : addableIngredients) {
+            if (!ingredientAmounts.containsKey(ingredient.getCode())) {
+                throw new IllegalArgumentException("ingredientAmounts does not contain an entry for " + ingredient.getCode());
+            }
+        }
+
         this.amountCreated = amountCreated;
         this.ingredients = ingredients;
         this.addableIngredients = addableIngredients;
         this.ingredientAmounts = ingredientAmounts;
-
     }
 
     /**
