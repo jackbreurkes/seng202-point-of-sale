@@ -38,10 +38,18 @@ public class FoodItem {
         setUnit(unit);
     }
 
+    /**
+     * returns the code of the FoodItem
+     * @return uppercase alphanumberic code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getName() {
         return name;
     }
