@@ -114,7 +114,9 @@ public class EditDataController {
             statusText.setText("No item selected.");
             return;
         }
-        new FoodItemWindowController(selectedItem.getModelFoodItem());
+
+        //new FoodItemWindowController(selectedItem.getModelFoodItem());
+
         statusText.setText("editing " + selectedItem.getCode());
 
         codeLabel.setText(selectedItem.getCode());
