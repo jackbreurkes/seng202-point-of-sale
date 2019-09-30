@@ -37,14 +37,19 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     public void resetInstance() {
-        String sql = "DELETE FROM FoodItem; DELETE FROM Recipe; DELETE FROM RecipeContains";
+        String sql = "DELETE FROM FoodItem;\n" +
+                "DELETE FROM Recipe;\n" +
+                "DELETE FROM RecipeContains;\n" +
+                "DELETE FROM CustomerOrder;\n" +
+                "DELETE FROM OrderContains;\n" +
+                "DELETE FROM OrderedFoodItem;";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -244,7 +249,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, foodItemCode);
+            pstmt.setInt(1, getFoodItemIdFromCode(foodItemCode));
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next() == false) {
@@ -485,9 +490,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             System.err.println(e.getMessage());
         }
 
-        if (alteredItem.getRecipe() == null) {
-            deleteRecipeWithProduct(alteredItem);
-        } else {
+        deleteRecipeWithProduct(alteredItem);
+        if (alteredItem.getRecipe() != null) {
             addRecipe(alteredItem);
         }
     }
@@ -548,6 +552,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
         String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
+
+        // TODO why does this fail if the DB exists? shouldn't reset instance fix this?
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
