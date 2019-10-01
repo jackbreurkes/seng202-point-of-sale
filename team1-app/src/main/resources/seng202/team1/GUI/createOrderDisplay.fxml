@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -18,12 +19,18 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Button fx:id="cancelOrder" mnemonicParsing="false" text="Cancel order" />
+      <Button fx:id="cancelOrder" mnemonicParsing="false" text="Cancel order">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
             <VBox fx:id="orderItems" prefHeight="300.0" prefWidth="100.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="submitOrder" mnemonicParsing="false" text="Submit order" />
+      <Button fx:id="submitOrder" mnemonicParsing="false" text="Submit order">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
    </children>
 </fx:root>
