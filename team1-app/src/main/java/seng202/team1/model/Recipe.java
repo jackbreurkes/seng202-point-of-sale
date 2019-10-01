@@ -76,6 +76,9 @@ public class Recipe {
      * @param ingredient food item from the set of addable ingredients
      */
     public void addIngredient(FoodItem ingredient){
+        if (ingredient == null) {
+            throw new NullPointerException("the ingredients cannot be null.");
+        }
         ingredients.add(ingredient);
     }
 

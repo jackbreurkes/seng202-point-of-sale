@@ -117,19 +117,21 @@ class RecipeTest {
         // Pass a food item that is addable
         FoodItem niceBun2 = new FoodItem("6969", "niceBun", UnitType.COUNT);
         Set<FoodItem> ingredients2 = new HashSet<>();
+        ingredients2.add(niceBun2);
         Set<FoodItem> addableIngredients2 = new HashSet<>();
 
         Map<String, Integer> ingredientAmounts2 = new HashMap<String, Integer>();
         FoodItem tofuPatty2 = new FoodItem("2222", "tofu patty", UnitType.COUNT);
         ingredientAmounts2.put("6969", 1);
-        ingredientAmounts2.put("2222", 1);
+        ingredientAmounts2.put("2222", 0);
         addableIngredients2.add(tofuPatty2);
 
-        Recipe testRecipe2 = new Recipe(ingredients2, addableIngredients2, ingredientAmounts2, 0);
-        testRecipe2.addIngredient(niceBun2);
+        Recipe testRecipe2 = new Recipe(ingredients2, addableIngredients2, ingredientAmounts2, 1);
+        testRecipe2.addIngredient(tofuPatty2);
 
         Set<FoodItem> testSet = new HashSet<>();
         testSet.add(niceBun2);
+        testSet.add(tofuPatty2);
         assertEquals(testSet, testRecipe2.getIngredients());
 
         // Adding a food item that has been previously removed
@@ -140,7 +142,7 @@ class RecipeTest {
         Map<String, Integer> ingredientAmounts3 = new HashMap<String, Integer>();
         ingredientAmounts3.put("3939", 1);
 
-        Recipe testRecipe3 = new Recipe(ingredients3, new HashSet<>(), ingredientAmounts3, 0);
+        Recipe testRecipe3 = new Recipe(ingredients3, new HashSet<>(), ingredientAmounts3, 1);
         testRecipe3.removeIngredient("3939");
 
         testRecipe3.addIngredient(durian);
@@ -156,7 +158,7 @@ class RecipeTest {
         Map<String, Integer> ingredientAmounts4 = new HashMap<String, Integer>();
         ingredientAmounts4.put("9999", 1);
 
-        Recipe testRecipe4 = new Recipe(ingredients4, new HashSet<>(), ingredientAmounts4, 0);
+        Recipe testRecipe4 = new Recipe(ingredients4, new HashSet<>(), ingredientAmounts4, 1);
         testRecipe4.addIngredient(bread);
 
         Set<FoodItem> testSet4 = new HashSet<>();
