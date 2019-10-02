@@ -1,0 +1,188 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MemoryStorage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MemoryStorage (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MemoryStorage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (37/ 37)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>4</i>&nbsp;import seng202.team1.util.InvalidDataCodeException;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.*;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * 
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public class MemoryStorage implements FoodItemDAO {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    private static MemoryStorage instance;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private Map&lt;String, FoodItem&gt; foodItems;
+<i>16</i>&nbsp;    private Map&lt;String, Integer&gt; foodItemCounts; // maps code to a count
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * private constructor to enforce singleton pattern
+<i>20</i>&nbsp;     */
+<b class="fc"><i>21</i>&nbsp;    private MemoryStorage() {</b>
+<b class="fc"><i>22</i>&nbsp;        foodItems = new HashMap&lt;String, FoodItem&gt;();</b>
+<b class="fc"><i>23</i>&nbsp;        foodItemCounts = new HashMap&lt;String, Integer&gt;();</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * function used to get an instance of a InMemoryDAO object.
+<i>28</i>&nbsp;     *Implements the singleton pattern
+<i>29</i>&nbsp;     * @return an instance of InMemoryDAO
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public static MemoryStorage getInstance() {
+<b class="fc"><i>32</i>&nbsp;        if (instance == null) {</b>
+<b class="fc"><i>33</i>&nbsp;            instance = new MemoryStorage();</b>
+<i>34</i>&nbsp;        }
+<b class="fc"><i>35</i>&nbsp;        return instance;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * I don&#39;t think we should ever ues this outside of testing? not sure?
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public void resetInstance() {
+<b class="fc"><i>42</i>&nbsp;        foodItems = new HashMap&lt;String, FoodItem&gt;();</b>
+<b class="fc"><i>43</i>&nbsp;        foodItemCounts = new HashMap&lt;String, Integer&gt;();</b>
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public Set&lt;FoodItem&gt; getAllFoodItems() {
+<b class="fc"><i>48</i>&nbsp;        return new HashSet&lt;FoodItem&gt;(foodItems.values());</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    @Override
+<i>52</i>&nbsp;    public FoodItem getFoodItemByCode(String code) {
+<b class="fc"><i>53</i>&nbsp;        return foodItems.get(code);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    @Override
+<i>57</i>&nbsp;    public void addFoodItem(FoodItem item, int count) {
+<i>58</i>&nbsp;        // code is assumed to be valid, is that good practice? seems fine imo but should ask
+<b class="fc"><i>59</i>&nbsp;        if (item == null) {</b>
+<b class="fc"><i>60</i>&nbsp;            throw new NullPointerException();</b>
+<i>61</i>&nbsp;        }
+<b class="fc"><i>62</i>&nbsp;        if (foodItems.containsKey(item.getCode())) {</b>
+<b class="fc"><i>63</i>&nbsp;            throw new InvalidDataCodeException(&quot;FoodItem with given code is already in storage&quot;);</b>
+<i>64</i>&nbsp;        }
+<i>65</i>&nbsp;
+<b class="fc"><i>66</i>&nbsp;        foodItems.put(item.getCode(), item);</b>
+<b class="fc"><i>67</i>&nbsp;        foodItemCounts.put(item.getCode(), count);</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Override
+<i>71</i>&nbsp;    public void updateFoodItem(FoodItem alteredItem) {
+<b class="fc"><i>72</i>&nbsp;        if (alteredItem == null) {</b>
+<b class="fc"><i>73</i>&nbsp;            throw new NullPointerException();</b>
+<i>74</i>&nbsp;        }
+<b class="fc"><i>75</i>&nbsp;        String code = alteredItem.getCode();</b>
+<b class="fc"><i>76</i>&nbsp;        if (!foodItems.containsKey(code)) {</b>
+<b class="fc"><i>77</i>&nbsp;            throw new InvalidDataCodeException(&quot;no item exists with the given code, please use addFoodItem instead&quot;);</b>
+<i>78</i>&nbsp;        }
+<b class="fc"><i>79</i>&nbsp;        foodItems.put(code, alteredItem);</b>
+<b class="fc"><i>80</i>&nbsp;    }</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    @Override
+<i>83</i>&nbsp;    public void removeFoodItem(String code) {
+<b class="fc"><i>84</i>&nbsp;        if (foodItems.remove(code) == null) {</b>
+<b class="fc"><i>85</i>&nbsp;            throw new InvalidDataCodeException(&quot;no FoodItem found with corresponding code&quot;);</b>
+<i>86</i>&nbsp;        }
+<b class="fc"><i>87</i>&nbsp;        foodItemCounts.remove(code);</b>
+<b class="fc"><i>88</i>&nbsp;    }</b>
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    @Override
+<i>91</i>&nbsp;    public void setFoodItemStock(String code, int count) {
+<b class="fc"><i>92</i>&nbsp;        if (count &lt; 0) {</b>
+<b class="fc"><i>93</i>&nbsp;            throw new IllegalArgumentException(&quot;count must be non-negative.&quot;);</b>
+<i>94</i>&nbsp;        }
+<b class="fc"><i>95</i>&nbsp;        if (getFoodItemByCode(code) == null) {</b>
+<b class="fc"><i>96</i>&nbsp;            throw new InvalidDataCodeException(&quot;no FoodItem found with corresponding code&quot;);</b>
+<i>97</i>&nbsp;        }
+<b class="fc"><i>98</i>&nbsp;        foodItemCounts.put(code, count);</b>
+<b class="fc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    @Override
+<i>102</i>&nbsp;    public int getFoodItemStock(String code) {
+<b class="fc"><i>103</i>&nbsp;        return foodItemCounts.get(code);</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

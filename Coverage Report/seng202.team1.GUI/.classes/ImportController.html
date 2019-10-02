@@ -1,0 +1,227 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ImportController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.GUI</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ImportController (seng202.team1.GUI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ImportController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.GUI;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.collections.FXCollections;
+<i>4</i>&nbsp;import javafx.collections.ObservableList;
+<i>5</i>&nbsp;import javafx.fxml.FXML;
+<i>6</i>&nbsp;import javafx.fxml.FXMLLoader;
+<i>7</i>&nbsp;import javafx.scene.Node;
+<i>8</i>&nbsp;import javafx.scene.Parent;
+<i>9</i>&nbsp;import javafx.scene.Scene;
+<i>10</i>&nbsp;import javafx.scene.control.ComboBox;
+<i>11</i>&nbsp;import javafx.scene.control.TableColumn;
+<i>12</i>&nbsp;import javafx.scene.control.TableView;
+<i>13</i>&nbsp;import javafx.scene.control.cell.PropertyValueFactory;
+<i>14</i>&nbsp;import javafx.scene.text.Text;
+<i>15</i>&nbsp;import javafx.stage.FileChooser;
+<i>16</i>&nbsp;import javafx.stage.Stage;
+<i>17</i>&nbsp;import org.xml.sax.SAXException;
+<i>18</i>&nbsp;import seng202.team1.data.DAOFactory;
+<i>19</i>&nbsp;import seng202.team1.data.FoodItemDAO;
+<i>20</i>&nbsp;import seng202.team1.data.MemoryStorage;
+<i>21</i>&nbsp;import seng202.team1.data.UploadHandler;
+<i>22</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;import java.awt.event.ActionEvent;
+<i>25</i>&nbsp;import java.io.File;
+<i>26</i>&nbsp;import java.io.IOException;
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;public class ImportController {</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @FXML
+<i>31</i>&nbsp;    private Text statusText;
+<i>32</i>&nbsp;    @FXML
+<i>33</i>&nbsp;    private TableView foodItemTable;
+<i>34</i>&nbsp;    @FXML
+<i>35</i>&nbsp;    private ComboBox dataTypeComboBox;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
+<i>38</i>&nbsp;    ObservableFoodItems items;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * runs automatically when the window is created
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void initialize() {
+<b class="nc"><i>44</i>&nbsp;        items = new ObservableFoodItems();</b>
+<b class="nc"><i>45</i>&nbsp;        itemCode = new TableColumn(&quot;Code&quot;);</b>
+<b class="nc"><i>46</i>&nbsp;        itemName = new TableColumn(&quot;Name&quot;);</b>
+<b class="nc"><i>47</i>&nbsp;        itemCost = new TableColumn(&quot;Cost&quot;);</b>
+<b class="nc"><i>48</i>&nbsp;        unitType = new TableColumn(&quot;Unit&quot;);</b>
+<b class="nc"><i>49</i>&nbsp;        stockLevel = new TableColumn(&quot;Stock&quot;);</b>
+<b class="nc"><i>50</i>&nbsp;        isVegetarian = new TableColumn(&quot;Vegetarian&quot;);</b>
+<b class="nc"><i>51</i>&nbsp;        isVegan = new TableColumn(&quot;Vegan&quot;);</b>
+<b class="nc"><i>52</i>&nbsp;        isGlutenFree = new TableColumn(&quot;Gluten Free&quot;);</b>
+<b class="nc"><i>53</i>&nbsp;        calories = new TableColumn(&quot;kcal/unit&quot;);</b>
+<b class="nc"><i>54</i>&nbsp;        foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);</b>
+<b class="nc"><i>55</i>&nbsp;        updateTable();</b>
+<i>56</i>&nbsp;
+<b class="nc"><i>57</i>&nbsp;        dataTypeComboBox.getItems().addAll(&quot;Suppliers&quot;, &quot;Food Items&quot;);</b>
+<b class="nc"><i>58</i>&nbsp;        dataTypeComboBox.setValue(&quot;Food Items&quot;);</b>
+<b class="nc"><i>59</i>&nbsp;        dataTypeComboBox.setVisible(false); // hide this combobox from users for deliverable 2</b>
+<b class="nc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * Update table with food item data
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;    public void updateTable() {
+<b class="nc"><i>66</i>&nbsp;        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();</b>
+<b class="nc"><i>67</i>&nbsp;        items.buildFrom(itemStorage.getAllFoodItems());</b>
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        itemCode.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;code&quot;));</b>
+<b class="nc"><i>70</i>&nbsp;        itemName.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;name&quot;));</b>
+<b class="nc"><i>71</i>&nbsp;        itemCost.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;cost&quot;));</b>
+<b class="nc"><i>72</i>&nbsp;        unitType.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;unit&quot;));</b>
+<b class="nc"><i>73</i>&nbsp;        stockLevel.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;stock&quot;));</b>
+<b class="nc"><i>74</i>&nbsp;        isVegetarian.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;isVegetarian&quot;));</b>
+<b class="nc"><i>75</i>&nbsp;        isVegan.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;isVegan&quot;));</b>
+<b class="nc"><i>76</i>&nbsp;        isGlutenFree.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;isGlutenFree&quot;));</b>
+<b class="nc"><i>77</i>&nbsp;        calories.setCellValueFactory(new PropertyValueFactory&lt;FoodItemDisplay, String&gt;(&quot;caloriesPerUnit&quot;));</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        foodItemTable.setItems(items.getList());</b>
+<i>80</i>&nbsp;
+<b class="nc"><i>81</i>&nbsp;    }</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    /**
+<i>84</i>&nbsp;     * Opens file chooser and then imports file if a file of the correct type is selected
+<i>85</i>&nbsp;     * also runs error control on file type
+<i>86</i>&nbsp;     */
+<i>87</i>&nbsp;    public void importFile(javafx.event.ActionEvent event) throws IOException {
+<b class="nc"><i>88</i>&nbsp;        FileChooser fileChooser = new FileChooser();</b>
+<b class="nc"><i>89</i>&nbsp;        File selectedFile = fileChooser.showOpenDialog(null);</b>
+<i>90</i>&nbsp;
+<b class="nc"><i>91</i>&nbsp;        if (selectedFile != null) {</b>
+<b class="nc"><i>92</i>&nbsp;            String fileName = selectedFile.getName();</b>
+<b class="nc"><i>93</i>&nbsp;            String fileExtension = &quot;&quot;;</b>
+<b class="nc"><i>94</i>&nbsp;            int i = fileName.lastIndexOf(&#39;.&#39;);</b>
+<b class="nc"><i>95</i>&nbsp;            if (i &gt;= 0) {</b>
+<b class="nc"><i>96</i>&nbsp;                fileExtension = fileName.substring(i + 1);</b>
+<i>97</i>&nbsp;            }
+<b class="nc"><i>98</i>&nbsp;            if (fileExtension.equals(&quot;xml&quot;)) {</b>
+<b class="nc"><i>99</i>&nbsp;                if (dataTypeComboBox.getValue().toString().equals(&quot;Food Items&quot;)) {</b>
+<i>100</i>&nbsp;                    try {
+<b class="nc"><i>101</i>&nbsp;                        UploadHandler.uploadFoodItems(selectedFile.getPath());</b>
+<b class="nc"><i>102</i>&nbsp;                    } catch (SAXException e) {</b>
+<b class="nc"><i>103</i>&nbsp;                        statusText.setText(&quot;An error has occured while parsing: &quot; + e.getMessage());</b>
+<b class="nc"><i>104</i>&nbsp;                        e.printStackTrace();</b>
+<b class="nc"><i>105</i>&nbsp;                    } catch (IOException e) {</b>
+<b class="nc"><i>106</i>&nbsp;                        statusText.setText(&quot;An IO exception occured: &quot; + e.getMessage());</b>
+<b class="nc"><i>107</i>&nbsp;                        e.printStackTrace();</b>
+<b class="nc"><i>108</i>&nbsp;                    }</b>
+<b class="nc"><i>109</i>&nbsp;                    updateTable();</b>
+<b class="nc"><i>110</i>&nbsp;                } else if (dataTypeComboBox.getValue().toString().equals(&quot;Suppliers&quot;)) {</b>
+<b class="nc"><i>111</i>&nbsp;                    UploadHandler.uploadSuppliers(selectedFile.getPath());</b>
+<b class="nc"><i>112</i>&nbsp;                    updateTable();</b>
+<i>113</i>&nbsp;                } else {
+<b class="nc"><i>114</i>&nbsp;                    statusText.setText(&quot;No data type selected.&quot;);</b>
+<i>115</i>&nbsp;                }
+<i>116</i>&nbsp;            } else {
+<b class="nc"><i>117</i>&nbsp;                statusText.setText(&quot;Incorrect file type.&quot;);</b>
+<i>118</i>&nbsp;            }
+<b class="nc"><i>119</i>&nbsp;        } else {</b>
+<b class="nc"><i>120</i>&nbsp;            statusText.setText(&quot;No file selected.&quot;);</b>
+<i>121</i>&nbsp;        }
+<b class="nc"><i>122</i>&nbsp;    }</b>
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    /**
+<i>125</i>&nbsp;     * When this methods is called, it will change the scene to datatype controller view
+<i>126</i>&nbsp;     */
+<i>127</i>&nbsp;    public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
+<i>128</i>&nbsp;    {
+<b class="nc"><i>129</i>&nbsp;        SceneController sceneChanger = new SceneController();</b>
+<b class="nc"><i>130</i>&nbsp;        sceneChanger.changeScene(event, &quot;editData.fxml&quot;, &quot;ROSEMARY | Edit Data Screen&quot;);</b>
+<b class="nc"><i>131</i>&nbsp;    }</b>
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * When this methods is called, it will change the scene to datatype controller view
+<i>135</i>&nbsp;     */
+<i>136</i>&nbsp;    public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
+<i>137</i>&nbsp;    {
+<b class="nc"><i>138</i>&nbsp;        SceneController sceneChanger = new SceneController();</b>
+<b class="nc"><i>139</i>&nbsp;        sceneChanger.changeScene(event, &quot;order.fxml&quot;, &quot;ROSEMARY | Order Screen&quot;);</b>
+<b class="nc"><i>140</i>&nbsp;    }</b>
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SupplierHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SupplierHandler (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SupplierHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.w3c.dom.*;
+<i>4</i>&nbsp;import org.xml.sax.ErrorHandler;
+<i>5</i>&nbsp;import org.xml.sax.SAXException;
+<i>6</i>&nbsp;import seng202.team1.model.Supplier;
+<i>7</i>&nbsp;import seng202.team1.util.PhoneType;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import javax.xml.parsers.*;
+<i>10</i>&nbsp;import java.io.*;
+<i>11</i>&nbsp;import java.util.HashMap;
+<i>12</i>&nbsp;import java.util.Map;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;// Hello from Euan
+<i>15</i>&nbsp;// To everybody:
+<i>16</i>&nbsp;// Just a heads up:
+<i>17</i>&nbsp;// The starter kit&#39;s DTD dictates that Email and URL are optional.
+<i>18</i>&nbsp;// But since that is not OUR DTD then the code below has not
+<i>19</i>&nbsp;// made choices regarding assigning &#39;NULL&#39; values to email and url.
+<i>20</i>&nbsp;// Chur.
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;/**
+<i>23</i>&nbsp; * Processes an XML file containing suppliers using DOM.
+<i>24</i>&nbsp; */
+<i>25</i>&nbsp;public class SupplierHandler {
+<b class="nc"><i>26</i>&nbsp;    private DocumentBuilder builder = null;</b>
+<b class="nc"><i>27</i>&nbsp;    private Document parsedDoc = null;</b>
+<i>28</i>&nbsp;    private String source;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;//    private PrintStream dest; //Ask Tutors what this is for
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    private Map&lt;String, Supplier&gt; suppliers;
+<i>33</i>&nbsp;    private String id;
+<i>34</i>&nbsp;    private String name;
+<i>35</i>&nbsp;    private String address;
+<i>36</i>&nbsp;    private String phone;
+<i>37</i>&nbsp;    private PhoneType phoneType;
+<i>38</i>&nbsp;    private String email;
+<i>39</i>&nbsp;    private String url;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Constructor for SupplierHandler class.
+<i>44</i>&nbsp;     *
+<i>45</i>&nbsp;     * @param pathName
+<i>46</i>&nbsp;     * @param validating
+<i>47</i>&nbsp;     */
+<b class="nc"><i>48</i>&nbsp;    public SupplierHandler(String pathName, boolean validating) {</b>
+<b class="nc"><i>49</i>&nbsp;        source = pathName;</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;//        dest = System.out;
+<i>52</i>&nbsp;//        this.dest = new PrintStream(dest);
+<i>53</i>&nbsp;
+<b class="nc"><i>54</i>&nbsp;        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</b>
+<b class="nc"><i>55</i>&nbsp;        factory.setValidating(validating);</b>
+<i>56</i>&nbsp;        try {
+<b class="nc"><i>57</i>&nbsp;            builder = factory.newDocumentBuilder();</b>
+<b class="nc"><i>58</i>&nbsp;        } catch (ParserConfigurationException pce) {</b>
+<b class="nc"><i>59</i>&nbsp;            System.err.println(pce);</b>
+<b class="nc"><i>60</i>&nbsp;            System.exit(1);</b>
+<b class="nc"><i>61</i>&nbsp;        }</b>
+<b class="nc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * Uses DocumentBuilder builder to parse the input XML file
+<i>66</i>&nbsp;     * and generates a tree for processing.
+<i>67</i>&nbsp;     */
+<i>68</i>&nbsp;    public void parseInput() {
+<i>69</i>&nbsp;        try {
+<b class="nc"><i>70</i>&nbsp;            parsedDoc = builder.parse(source);</b>
+<b class="nc"><i>71</i>&nbsp;        } catch (SAXException se) {</b>
+<b class="nc"><i>72</i>&nbsp;            System.err.println(se.getMessage());</b>
+<b class="nc"><i>73</i>&nbsp;            System.exit(1);</b>
+<b class="nc"><i>74</i>&nbsp;        } catch (IOException ioe) {</b>
+<b class="nc"><i>75</i>&nbsp;            System.err.println(ioe.getMessage());</b>
+<b class="nc"><i>76</i>&nbsp;            System.exit(1);</b>
+<b class="nc"><i>77</i>&nbsp;        }</b>
+<b class="nc"><i>78</i>&nbsp;    }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * Obtains parsed document Document.
+<i>82</i>&nbsp;     * @return parsedDoc
+<i>83</i>&nbsp;     */
+<i>84</i>&nbsp;    public Document parsedDoc() {
+<b class="nc"><i>85</i>&nbsp;        return parsedDoc;</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * Selects each &quot;supplier&quot; element and constructs a Supplier object
+<i>90</i>&nbsp;     * by assigning its values from the &quot;supplier&quot; element.
+<i>91</i>&nbsp;     *
+<i>92</i>&nbsp;     * @return Map&lt;String, Supplier&gt;
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public Map&lt;String, Supplier&gt; getSuppliers() {
+<b class="nc"><i>95</i>&nbsp;        suppliers = new HashMap&lt;String, Supplier&gt;();</b>
+<b class="nc"><i>96</i>&nbsp;        NodeList nodeList = parsedDoc.getElementsByTagName(&quot;supplier&quot;);</b>
+<b class="nc"><i>97</i>&nbsp;        int numNodes = nodeList.getLength();</b>
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;        Node aNode;
+<i>100</i>&nbsp;        NodeList kids;
+<i>101</i>&nbsp;        NamedNodeMap attributes;
+<i>102</i>&nbsp;
+<b class="nc"><i>103</i>&nbsp;        for (int i = 0; i &lt; numNodes; i++) {</b>
+<b class="nc"><i>104</i>&nbsp;            reset();</b>
+<b class="nc"><i>105</i>&nbsp;            aNode = nodeList.item(i);</b>
+<b class="nc"><i>106</i>&nbsp;            kids = aNode.getChildNodes();</b>
+<b class="nc"><i>107</i>&nbsp;            attributes = aNode.getAttributes();</b>
+<b class="nc"><i>108</i>&nbsp;            id = kids.item(1).getTextContent();</b>
+<b class="nc"><i>109</i>&nbsp;            name = kids.item(3).getTextContent();</b>
+<b class="nc"><i>110</i>&nbsp;            address = kids.item(5).getTextContent();</b>
+<b class="nc"><i>111</i>&nbsp;            phone = kids.item(7).getTextContent();</b>
+<b class="nc"><i>112</i>&nbsp;            email = kids.item(9).getTextContent();</b>
+<b class="nc"><i>113</i>&nbsp;            url = kids.item(11).getTextContent();</b>
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;            switch (attributes.getNamedItem(&quot;phoneType&quot;).getNodeValue()) {</b>
+<i>116</i>&nbsp;                case &quot;mobile&quot;:
+<b class="nc"><i>117</i>&nbsp;                    phoneType = PhoneType.MOBILE;</b>
+<b class="nc"><i>118</i>&nbsp;                    break;</b>
+<i>119</i>&nbsp;                case &quot;work&quot;:
+<b class="nc"><i>120</i>&nbsp;                    phoneType = PhoneType.WORK;</b>
+<b class="nc"><i>121</i>&nbsp;                    break;</b>
+<i>122</i>&nbsp;                case &quot;home&quot;:
+<b class="nc"><i>123</i>&nbsp;                    phoneType = PhoneType.HOME;</b>
+<b class="nc"><i>124</i>&nbsp;                    break;</b>
+<i>125</i>&nbsp;                default:
+<i>126</i>&nbsp;                    // error since phoneType is REQUIRED
+<i>127</i>&nbsp;                    // ask about phoneType
+<i>128</i>&nbsp;            }
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;//            //FOR TESTING
+<i>131</i>&nbsp;//            System.out.println(&quot;ID is: &quot; + id);
+<i>132</i>&nbsp;//            System.out.println(&quot;Name is: &quot; + name);
+<i>133</i>&nbsp;//            System.out.println(&quot;Address is: &quot; + address);
+<i>134</i>&nbsp;//            System.out.println(&quot;Phone: &quot; + phone);
+<i>135</i>&nbsp;//            System.out.println(&quot;Email: &quot; + email);
+<i>136</i>&nbsp;//            System.out.println(&quot;URL: &quot; + url);
+<i>137</i>&nbsp;//            System.out.println(&quot;PhoneType: &quot; + phoneType);
+<i>138</i>&nbsp;//            System.out.println();
+<b class="nc"><i>139</i>&nbsp;            suppliers.put(id, new Supplier(id, name, address, phone, phoneType, email, url));</b>
+<i>140</i>&nbsp;        }
+<b class="nc"><i>141</i>&nbsp;        return suppliers;</b>
+<i>142</i>&nbsp;    }
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;    /**
+<i>145</i>&nbsp;     * Resets the Supplier fields before constructing next Supplier.
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public void reset() {
+<b class="nc"><i>148</i>&nbsp;        id = &quot;&quot;;</b>
+<b class="nc"><i>149</i>&nbsp;        name = &quot;&quot;;</b>
+<b class="nc"><i>150</i>&nbsp;        address = &quot;&quot;;</b>
+<b class="nc"><i>151</i>&nbsp;        phone = &quot;&quot;;</b>
+<b class="nc"><i>152</i>&nbsp;        phoneType = PhoneType.UNKNOWN;</b>
+<b class="nc"><i>153</i>&nbsp;        email = &quot;&quot;;</b>
+<b class="nc"><i>154</i>&nbsp;        url = &quot;&quot;;</b>
+<b class="nc"><i>155</i>&nbsp;    }</b>
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;//    /**
+<i>158</i>&nbsp;//     * Main function for testing.
+<i>159</i>&nbsp;//     * @param args
+<i>160</i>&nbsp;//     */
+<i>161</i>&nbsp;//    public static void main(String args[]) {
+<i>162</i>&nbsp;//        SupplierHandler sh = new SupplierHandler(&quot;resources/data/Supplier.xml&quot;, true);
+<i>163</i>&nbsp;//        sh.parseInput();
+<i>164</i>&nbsp;//        sh.getSuppliers().values();
+<i>165</i>&nbsp;//    }
+<i>166</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

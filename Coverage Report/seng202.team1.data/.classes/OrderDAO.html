@@ -1,0 +1,88 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OrderDAO</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OrderDAO (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OrderDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import seng202.team1.model.Order;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.Set;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public interface OrderDAO {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * returns all the Orders stored in the system.
+<i>11</i>&nbsp;     * @return a List of all Orders stored in the system
+<i>12</i>&nbsp;     */
+<i>13</i>&nbsp;    Set&lt;Order&gt; getAllOrders();
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * gets a single Order from the system.
+<i>17</i>&nbsp;     * @param ID the Order&#39;s unique code
+<i>18</i>&nbsp;     * @return the desired Order or null if not found
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    Order getOrderByID(int ID);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * adds an Order to storage. the order will be stored using its code attribute.
+<i>24</i>&nbsp;     * @param order the Order to store
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    void addOrder(Order order);
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * sets the properties of an Order to those of a new Order.
+<i>30</i>&nbsp;     * the new Order&#39;s code should be the same as the one that is being updated.
+<i>31</i>&nbsp;     * @param alteredOrder the Order to update in storage
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    void updateOrder(Order alteredOrder);
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * remove an Order from storage.
+<i>37</i>&nbsp;     * @param ID the code of the Order to remove
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    void removeOrder(int ID);
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

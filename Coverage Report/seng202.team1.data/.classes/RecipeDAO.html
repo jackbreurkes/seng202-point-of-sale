@@ -1,0 +1,89 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RecipeDAO</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RecipeDAO (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">RecipeDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import seng202.team1.model.Recipe;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.Set;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public interface RecipeDAO {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * returns all the Recipes stored in the system.
+<i>11</i>&nbsp;     * @return a List of all Recipes stored in the system
+<i>12</i>&nbsp;     */
+<i>13</i>&nbsp;    Set&lt;Recipe&gt; getAllRecipes();
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * gets a single Recipe from the system.
+<i>17</i>&nbsp;     * @param code the Recipe&#39;s unique code
+<i>18</i>&nbsp;     * @return the desired Recipe or null if not found
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    Recipe getRecipeById(String code);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * adds a Recipe to storage. the Recipe will be stored using its code attribute.
+<i>24</i>&nbsp;     * @param recipe the Recipe to store
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    void addRecipe(Recipe recipe);
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * sets the properties of a Recipe to those of a new Recipe.
+<i>30</i>&nbsp;     * the new Recipe&#39;s code should be the same as the one that is being changed.
+<i>31</i>&nbsp;     * @param code the code of the Recipe to edit
+<i>32</i>&nbsp;     * @param alteredRecipe the new Recipe whose information should replace the old Recipe&#39;s
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    void editRecipe(String code, Recipe alteredRecipe);
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * remove an Recipe from storage.
+<i>38</i>&nbsp;     * @param code the code of the Recipe to remove
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    void removeRecipe(String code);
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>
