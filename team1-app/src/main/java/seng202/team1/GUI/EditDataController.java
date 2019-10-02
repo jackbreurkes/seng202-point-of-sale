@@ -97,9 +97,19 @@ public class EditDataController {
 
     /**
      * deletes the selected item
+     *
      */
     public void deleteSelectedItem() {
 
+        FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
+
+        if (selectedItemD == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Error: No data selected");
+            alert.showAndWait();
+        } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(null);
@@ -107,13 +117,13 @@ public class EditDataController {
             Optional<ButtonType> action = alert.showAndWait();
 
             if(action.get() == ButtonType.OK) {
-                FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
+                //FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
                 foodStorage.removeFoodItem(selectedItemD.getCode());
                 selectedItem = null;
                 updateTable();
             }
 
-
+        }
 
     }
 
