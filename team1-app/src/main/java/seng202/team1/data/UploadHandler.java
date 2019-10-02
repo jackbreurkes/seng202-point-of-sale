@@ -70,6 +70,12 @@ public class UploadHandler {
 
                     // LETS USER choose between keeping old value or overwriting data
                     // Consult the GUI pros
+                    //like if user wants updated: update
+                    //else don't update?
+                    //but have to alter JDBC storage?
+                    // Update don't have to but prioritising
+                    // led to the decision of maybe not going forward with this.
+                    // Please review in future
 
                     itemStorage.updateFoodItem(foodItem);
                     itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
