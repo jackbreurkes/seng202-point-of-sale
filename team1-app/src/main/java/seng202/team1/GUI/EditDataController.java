@@ -49,6 +49,9 @@ public class EditDataController {
     @FXML
     private Text statusText;
 
+    @FXML
+    private Button deleteSelected;
+
     TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
 
