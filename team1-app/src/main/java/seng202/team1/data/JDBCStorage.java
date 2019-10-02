@@ -20,7 +20,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private static JDBCStorage instance;
 
     private JDBCStorage() {
-        createAllTables();
+        initializeDatabaseIfNotExists();
     }
 
     /**
@@ -52,15 +52,22 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    private void createAllTables() {
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+    private void initializeDatabaseIfNotExists() {
+        try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
-            InputStream stream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
-            String sql = new BufferedReader(new InputStreamReader(stream))
+
+            InputStream createTablesStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
+            String createTables = new BufferedReader(new InputStreamReader(createTablesStream))
                     .lines().collect(Collectors.joining("\n"));
-            stmt.executeUpdate(sql);
+
+            InputStream createTriggersStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
+            String createTriggers = new BufferedReader(new InputStreamReader(createTriggersStream))
+                    .lines().collect(Collectors.joining("\n"));
+
+            stmt.executeUpdate(createTables);
+            stmt.executeUpdate(createTriggers);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
