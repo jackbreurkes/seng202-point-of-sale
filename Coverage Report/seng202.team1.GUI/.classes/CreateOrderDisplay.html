@@ -1,0 +1,229 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CreateOrderDisplay</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.GUI</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CreateOrderDisplay (seng202.team1.GUI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CreateOrderDisplay</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CreateOrderDisplay$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CreateOrderDisplay$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 41)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.GUI;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.event.ActionEvent;
+<i>4</i>&nbsp;import javafx.event.EventHandler;
+<i>5</i>&nbsp;import javafx.fxml.FXML;
+<i>6</i>&nbsp;import javafx.fxml.FXMLLoader;
+<i>7</i>&nbsp;import javafx.scene.control.Button;
+<i>8</i>&nbsp;import javafx.scene.control.Label;
+<i>9</i>&nbsp;import javafx.scene.layout.VBox;
+<i>10</i>&nbsp;import seng202.team1.data.DAOFactory;
+<i>11</i>&nbsp;import seng202.team1.data.OrderDAO;
+<i>12</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>13</i>&nbsp;import seng202.team1.model.Order;
+<i>14</i>&nbsp;import seng202.team1.util.InvalidOrderStatusException;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import java.io.IOException;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class CreateOrderDisplay extends VBox {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    @FXML
+<i>21</i>&nbsp;    private Label orderTotal;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @FXML
+<i>24</i>&nbsp;    private Button cancelOrder, submitOrder;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @FXML
+<i>27</i>&nbsp;    private Label orderTotalCost, statusText;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @FXML
+<i>30</i>&nbsp;    private VBox orderItems;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    private OrderController orderController;
+<i>33</i>&nbsp;    private Order model;
+<i>34</i>&nbsp;    private OrderDAO orderStorage;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<b class="nc"><i>37</i>&nbsp;    public CreateOrderDisplay(OrderController orderController, Order model) { // TODO add OrderDAO orderStorage as an arg</b>
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;        this.orderController = orderController;</b>
+<b class="nc"><i>40</i>&nbsp;        this.model = model;</b>
+<b class="nc"><i>41</i>&nbsp;        this.orderStorage = DAOFactory.getOrderDAO();</b>
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;        FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;createOrderDisplay.fxml&quot;));</b>
+<b class="nc"><i>44</i>&nbsp;        loader.setRoot(this);</b>
+<b class="nc"><i>45</i>&nbsp;        loader.setController(this);</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;        try {
+<b class="nc"><i>48</i>&nbsp;            loader.load();</b>
+<b class="nc"><i>49</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>50</i>&nbsp;            throw new RuntimeException(e);</b>
+<b class="nc"><i>51</i>&nbsp;        }</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    public void initialize() {
+<b class="nc"><i>56</i>&nbsp;        cancelOrder.setOnAction(new EventHandler&lt;ActionEvent&gt;() {</b>
+<i>57</i>&nbsp;            @Override
+<i>58</i>&nbsp;            public void handle(ActionEvent actionEvent) {
+<b class="nc"><i>59</i>&nbsp;                closeCreateOrderPanel();</b>
+<b class="nc"><i>60</i>&nbsp;            }</b>
+<i>61</i>&nbsp;        });
+<b class="nc"><i>62</i>&nbsp;        submitOrder.setOnAction(new EventHandler&lt;ActionEvent&gt;() {</b>
+<i>63</i>&nbsp;            @Override
+<i>64</i>&nbsp;            public void handle(ActionEvent actionEvent) {
+<b class="nc"><i>65</i>&nbsp;                submitOrder();</b>
+<b class="nc"><i>66</i>&nbsp;            }</b>
+<i>67</i>&nbsp;        });
+<b class="nc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public void addItemToOrder(FoodItem item) {
+<b class="nc"><i>71</i>&nbsp;        model.addItem(item);</b>
+<b class="nc"><i>72</i>&nbsp;        orderTotalCost.setText(&quot;Order Cost - &quot; + model.getCost().toString());</b>
+<b class="nc"><i>73</i>&nbsp;        orderItems.getChildren().add(new OrderItemDisplay(this, item));</b>
+<b class="nc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
+<b class="nc"><i>77</i>&nbsp;        model.removeItem(item);</b>
+<b class="nc"><i>78</i>&nbsp;        orderTotalCost.setText(&quot;Order Total - &quot; + model.getCost().toString());</b>
+<b class="nc"><i>79</i>&nbsp;        orderItems.getChildren().remove(display);</b>
+<b class="nc"><i>80</i>&nbsp;    }</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    public void submitOrder() {
+<i>83</i>&nbsp;        try {
+<b class="nc"><i>84</i>&nbsp;            model.submitOrder();</b>
+<b class="nc"><i>85</i>&nbsp;            orderStorage.addOrder(model);</b>
+<b class="nc"><i>86</i>&nbsp;        } catch (InvalidOrderStatusException e) {</b>
+<b class="nc"><i>87</i>&nbsp;            statusText.setText(&quot;Error submitting order: &quot; + e.getMessage());</b>
+<b class="nc"><i>88</i>&nbsp;            return;</b>
+<b class="nc"><i>89</i>&nbsp;        }</b>
+<b class="nc"><i>90</i>&nbsp;        closeCreateOrderPanel(model);</b>
+<b class="nc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    public void closeCreateOrderPanel() {
+<b class="nc"><i>94</i>&nbsp;        orderController.stopCreatingOrder();</b>
+<b class="nc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    public void closeCreateOrderPanel(Order submittedOrder) {
+<b class="nc"><i>98</i>&nbsp;        orderController.submitOrderAndClose(submittedOrder);</b>
+<b class="nc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

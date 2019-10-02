@@ -17,6 +17,7 @@ import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class EditDataController {
 
@@ -98,10 +99,22 @@ public class EditDataController {
      * deletes the selected item
      */
     public void deleteSelectedItem() {
-        FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
-        foodStorage.removeFoodItem(selectedItemD.getCode());
-        selectedItem = null;
-        updateTable();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete data?");
+            Optional<ButtonType> action = alert.showAndWait();
+
+            if(action.get() == ButtonType.OK) {
+                FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
+                foodStorage.removeFoodItem(selectedItemD.getCode());
+                selectedItem = null;
+                updateTable();
+            }
+
+
+
     }
 
     /**

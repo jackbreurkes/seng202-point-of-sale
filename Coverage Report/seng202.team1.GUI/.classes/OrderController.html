@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OrderController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.GUI</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OrderController (seng202.team1.GUI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 47)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.GUI;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.fxml.FXML;
+<i>4</i>&nbsp;import javafx.fxml.FXMLLoader;
+<i>5</i>&nbsp;import javafx.scene.Node;
+<i>6</i>&nbsp;import javafx.scene.Parent;
+<i>7</i>&nbsp;import javafx.scene.Scene;
+<i>8</i>&nbsp;import javafx.scene.control.Button;
+<i>9</i>&nbsp;import javafx.scene.control.Label;
+<i>10</i>&nbsp;import javafx.scene.layout.TilePane;
+<i>11</i>&nbsp;import javafx.scene.layout.VBox;
+<i>12</i>&nbsp;import javafx.stage.Stage;
+<i>13</i>&nbsp;import seng202.team1.data.DAOFactory;
+<i>14</i>&nbsp;import seng202.team1.data.MemoryStorage;
+<i>15</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>16</i>&nbsp;import seng202.team1.model.Menu;
+<i>17</i>&nbsp;import seng202.team1.model.Order;
+<i>18</i>&nbsp;import seng202.team1.util.UnitType;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import java.io.IOException;
+<i>21</i>&nbsp;import java.util.HashSet;
+<i>22</i>&nbsp;import java.util.Set;
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;public class OrderController {</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @FXML private Label menuName;
+<i>27</i>&nbsp;    @FXML private TilePane menuItems;
+<i>28</i>&nbsp;    @FXML private VBox ordersInfo;
+<i>29</i>&nbsp;    @FXML private Button cancelOrderButton;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    private Menu activeMenu;
+<i>32</i>&nbsp;    private OrderProgressDisplay orderProgressDisplay;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public void initialize() {
+<b class="nc"><i>35</i>&nbsp;        Menu testMenu = new Menu();</b>
+<b class="nc"><i>36</i>&nbsp;        testMenu.setMenuName(&quot;Test menu&quot;);</b>
+<b class="nc"><i>37</i>&nbsp;        for (FoodItem item : DAOFactory.getFoodItemDAO().getAllFoodItems()) {</b>
+<b class="nc"><i>38</i>&nbsp;            testMenu.addItem(item);</b>
+<b class="nc"><i>39</i>&nbsp;        }</b>
+<b class="nc"><i>40</i>&nbsp;        activeMenu = testMenu;</b>
+<i>41</i>&nbsp;
+<b class="nc"><i>42</i>&nbsp;        orderProgressDisplay = new OrderProgressDisplay(this);</b>
+<b class="nc"><i>43</i>&nbsp;        ordersInfo.getChildren().add(orderProgressDisplay);</b>
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;        menuName.setText(activeMenu.getMenuName());</b>
+<b class="nc"><i>46</i>&nbsp;        populateMenuItemsDisplay(activeMenu);</b>
+<b class="nc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    private void populateMenuItemsDisplay(Menu menu) {
+<b class="nc"><i>50</i>&nbsp;        for (FoodItem item : menu.getMenuItems()) {</b>
+<b class="nc"><i>51</i>&nbsp;            MenuItemDisplay itemDisplay = new MenuItemDisplay(item);</b>
+<b class="nc"><i>52</i>&nbsp;            menuItems.getChildren().add(itemDisplay);</b>
+<b class="nc"><i>53</i>&nbsp;        }</b>
+<b class="nc"><i>54</i>&nbsp;    }</b>
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public void startCreatingOrder() {
+<b class="nc"><i>57</i>&nbsp;        showOrderCreationElements();</b>
+<b class="nc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    public void stopCreatingOrder() {
+<b class="nc"><i>61</i>&nbsp;        hideOrderCreationElements();</b>
+<b class="nc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    public void submitOrderAndClose(Order order) {
+<b class="nc"><i>65</i>&nbsp;        orderProgressDisplay.displaySubmittedOrder(order);</b>
+<b class="nc"><i>66</i>&nbsp;        hideOrderCreationElements();</b>
+<b class="nc"><i>67</i>&nbsp;    }</b>
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    private void showOrderCreationElements() {
+<b class="nc"><i>70</i>&nbsp;        menuName.setText(activeMenu.getMenuName() + &quot; \u2014 creating order&quot;);</b>
+<b class="nc"><i>71</i>&nbsp;        ordersInfo.getChildren().clear();</b>
+<b class="nc"><i>72</i>&nbsp;        CreateOrderDisplay createOrderDisplay = new CreateOrderDisplay(this, new Order());</b>
+<b class="nc"><i>73</i>&nbsp;        ordersInfo.getChildren().add(createOrderDisplay);</b>
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;        for (Node node : menuItems.getChildren()) {</b>
+<b class="nc"><i>76</i>&nbsp;            MenuItemDisplay display = (MenuItemDisplay)node;</b>
+<b class="nc"><i>77</i>&nbsp;            display.linkToCreateOrderDisplay(createOrderDisplay);</b>
+<b class="nc"><i>78</i>&nbsp;        }</b>
+<b class="nc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    private void hideOrderCreationElements() {
+<b class="nc"><i>82</i>&nbsp;        menuName.setText(activeMenu.getMenuName());</b>
+<b class="nc"><i>83</i>&nbsp;        ordersInfo.getChildren().clear();</b>
+<b class="nc"><i>84</i>&nbsp;        ordersInfo.getChildren().add(orderProgressDisplay);</b>
+<i>85</i>&nbsp;
+<b class="nc"><i>86</i>&nbsp;        for (Node node : menuItems.getChildren()) {</b>
+<b class="nc"><i>87</i>&nbsp;            MenuItemDisplay display = (MenuItemDisplay)node;</b>
+<b class="nc"><i>88</i>&nbsp;            display.unlinkFromOrder();</b>
+<b class="nc"><i>89</i>&nbsp;        }</b>
+<b class="nc"><i>90</i>&nbsp;    }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    /**
+<i>97</i>&nbsp;     * When this methods is called, it will change the scene to datatype controller view
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public void changeSceneToImport(javafx.event.ActionEvent event) throws IOException
+<i>100</i>&nbsp;    {
+<b class="nc"><i>101</i>&nbsp;        SceneController sceneChanger = new SceneController();</b>
+<b class="nc"><i>102</i>&nbsp;        sceneChanger.changeScene(event, &quot;import.fxml&quot;, &quot;ROSEMARY | Import Screen&quot;);</b>
+<b class="nc"><i>103</i>&nbsp;    }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    /**
+<i>106</i>&nbsp;     * When this methods is called, it will change the scene to datatype controller view
+<i>107</i>&nbsp;     */
+<i>108</i>&nbsp;    public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
+<i>109</i>&nbsp;    {
+<b class="nc"><i>110</i>&nbsp;        SceneController sceneChanger = new SceneController();</b>
+<b class="nc"><i>111</i>&nbsp;        sceneChanger.changeScene(event, &quot;editData.fxml&quot;, &quot;ROSEMARY | Edit Data Screen&quot;);</b>
+<b class="nc"><i>112</i>&nbsp;    }</b>
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

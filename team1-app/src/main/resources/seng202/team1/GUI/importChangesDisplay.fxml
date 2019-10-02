@@ -2,48 +2,67 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="599.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="562.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="190.0" minHeight="0.0" prefHeight="67.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="484.0" minHeight="10.0" prefHeight="148.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="372.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="372.0" minHeight="10.0" prefHeight="164.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="602.0" text="Review Changes">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="14.0" prefHeight="60.0" prefWidth="417.0" text="Review Changes">
          <font>
-            <Font name="Loma" size="30.0" />
+            <Font name="AnjaliOldLipi" size="30.0" />
          </font>
       </Label>
-      <Pane prefHeight="147.0" prefWidth="657.0" GridPane.rowIndex="1">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" prefHeight="41.0" prefWidth="572.0" text="Price of Apple has been altered">
-               <font>
-                  <Font name="Loma Bold" size="17.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="42.0" prefHeight="32.0" prefWidth="286.0" text="Old Value: $21">
-               <font>
-                  <Font name="Loma Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="298.0" layoutY="42.0" prefHeight="32.0" prefWidth="286.0" text="New Value: $21">
-               <font>
-                  <Font name="Loma Bold" size="13.0" />
-               </font>
-            </Label>
-            <Button layoutX="95.0" layoutY="79.0" mnemonicParsing="false" text="Ignore Changes" />
-            <Button layoutX="379.0" layoutY="79.0" mnemonicParsing="false" text="Accept Changes" />
-         </children>
-      </Pane>
+      <ScrollPane layoutY="85.0" prefHeight="425.0" prefWidth="426.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="408.0" prefWidth="426.0">
+               <children>
+                  <Pane prefHeight="126.0" prefWidth="426.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" prefHeight="41.0" prefWidth="388.0" text="Price of Apple has been altered">
+                           <font>
+                              <Font name="Loma Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="Old Value: $21">
+                           <font>
+                              <Font name="Loma Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="207.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="New Value: $21">
+                           <font>
+                              <Font name="Loma Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="51.0" layoutY="79.0" mnemonicParsing="false" text="Ignore Changes" />
+                        <Button layoutX="242.0" layoutY="79.0" mnemonicParsing="false" text="Accept Changes" />
+                     </children>
+                  </Pane>
+                  <Pane layoutY="126.0" prefHeight="126.0" prefWidth="426.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" prefHeight="41.0" prefWidth="388.0" text="Price of Apple has been altered">
+                           <font>
+                              <Font name="Loma Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="Old Value: $21">
+                           <font>
+                              <Font name="Loma Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="207.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="New Value: $21">
+                           <font>
+                              <Font name="Loma Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="51.0" layoutY="79.0" mnemonicParsing="false" text="Ignore Changes" />
+                        <Button layoutX="242.0" layoutY="79.0" mnemonicParsing="false" text="Accept Changes" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
-</GridPane>
+</Pane>

@@ -1,0 +1,701 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: JDBCStorage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: JDBCStorage (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JDBCStorage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89.3%
+  </span>
+  <span class="absValue">
+    (25/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.5%
+  </span>
+  <span class="absValue">
+    (260/ 315)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.apache.ibatis.io.Resources;
+<i>4</i>&nbsp;import org.joda.money.BigMoney;
+<i>5</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>6</i>&nbsp;import seng202.team1.model.Order;
+<i>7</i>&nbsp;import seng202.team1.util.InvalidDataCodeException;
+<i>8</i>&nbsp;import seng202.team1.util.OrderStatus;
+<i>9</i>&nbsp;import seng202.team1.util.UnitType;
+<i>10</i>&nbsp;import org.apache.ibatis.jdbc.ScriptRunner;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.sql.*;
+<i>13</i>&nbsp;import java.util.*;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class JDBCStorage implements FoodItemDAO, OrderDAO {
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    private static String url = &quot;jdbc:sqlite:rosemary.db&quot;;</b>
+<i>18</i>&nbsp;    private static JDBCStorage instance;
+<i>19</i>&nbsp;
+<b class="fc"><i>20</i>&nbsp;    private JDBCStorage() {</b>
+<b class="fc"><i>21</i>&nbsp;        createAllTables();</b>
+<b class="fc"><i>22</i>&nbsp;    }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * function used to get an instance of a InMemoryDAO object.
+<i>26</i>&nbsp;     *Implements the singleton pattern
+<i>27</i>&nbsp;     * @return an instance of InMemoryDAO
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    public static JDBCStorage getInstance() {
+<b class="fc"><i>30</i>&nbsp;        if (instance == null) {</b>
+<b class="fc"><i>31</i>&nbsp;            instance = new JDBCStorage();</b>
+<i>32</i>&nbsp;        }
+<b class="fc"><i>33</i>&nbsp;        return instance;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public void resetInstance() {
+<b class="fc"><i>37</i>&nbsp;        String sql = &quot;DELETE FROM FoodItem; DELETE FROM Recipe; DELETE FROM RecipeContains&quot;;</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url);</b>
+<b class="fc"><i>40</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>41</i>&nbsp;            // create a new table
+<b class="fc"><i>42</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>43</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>44</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>45</i>&nbsp;        }</b>
+<b class="fc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    private static void createFoodItemTable() {
+<i>49</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>50</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS FoodItem\n&quot; +</b>
+<i>51</i>&nbsp;                &quot;(Id /* primary key ID. added because varchar prim key isn&#39;t good? */ INTEGER PRIMARY KEY,\n&quot; +
+<i>52</i>&nbsp;                &quot; Code /* alphanumberic code of the FoodItem */ VARCHAR(10) UNIQUE NOT NULL\n&quot; +
+<i>53</i>&nbsp;                &quot;    CONSTRAINT code_min_size CHECK (LENGTH(Code) &gt;= 3),\n&quot; +
+<i>54</i>&nbsp;                &quot; Name /* the FoodItem&#39;s name */ VARCHAR(20) NOT NULL\n&quot; +
+<i>55</i>&nbsp;                &quot;    CONSTRAINT name_min_size CHECK (LENGTH(Name) &gt;= 3),\n&quot; +
+<i>56</i>&nbsp;                &quot; UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n&quot; +
+<i>57</i>&nbsp;                &quot;    CONSTRAINT check_unit CHECK (UnitType in (&#39;c&#39;, &#39;m&#39;, &#39;g&#39;)),\n&quot; +
+<i>58</i>&nbsp;                &quot;Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT &#39;0&#39;\n&quot; +
+<i>59</i>&nbsp;                &quot;    /* TODO check that Cost is a numeric string */,\n&quot; +
+<i>60</i>&nbsp;                &quot; StockLevel /* the current amount of this item stored */ INTEGER NOT NULL DEFAULT 0,\n&quot; +
+<i>61</i>&nbsp;                &quot; IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>62</i>&nbsp;                &quot; IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>63</i>&nbsp;                &quot; IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>64</i>&nbsp;                &quot; CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n&quot; +
+<i>65</i>&nbsp;                &quot;    /* TODO check that CalPerUnit is a numeric string */);&quot;;
+<i>66</i>&nbsp;
+<b class="fc"><i>67</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>68</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>69</i>&nbsp;            // create a new table
+<b class="fc"><i>70</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>71</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>72</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>73</i>&nbsp;        }</b>
+<b class="fc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    private static void createRecipeTable() {
+<i>77</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>78</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS Recipe\n&quot; +</b>
+<i>79</i>&nbsp;                &quot;(Id /* unique identifier for a Recipe */ INTEGER,\n&quot; +
+<i>80</i>&nbsp;                &quot; Product /* the Id of the FoodItem created by the Recipe */ INT NOT NULL REFERENCES FoodItem,\n&quot; +
+<i>81</i>&nbsp;                &quot; AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,\n&quot; +
+<i>82</i>&nbsp;                &quot; PRIMARY KEY (Id, Product));&quot;;
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>85</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>86</i>&nbsp;            // create a new table
+<b class="fc"><i>87</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>88</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>89</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>90</i>&nbsp;        }</b>
+<b class="fc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    private static void createRecipeContainsTable() {
+<i>94</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>95</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS RecipeContains\n&quot; +</b>
+<i>96</i>&nbsp;                &quot;(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe,\n&quot; +
+<i>97</i>&nbsp;                &quot; FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem,\n&quot; +
+<i>98</i>&nbsp;                &quot; Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,\n&quot; +
+<i>99</i>&nbsp;                &quot; PRIMARY KEY (Recipe, FoodItem));&quot;;
+<i>100</i>&nbsp;
+<b class="fc"><i>101</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>102</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>103</i>&nbsp;            // create a new table
+<b class="fc"><i>104</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>105</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>106</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>107</i>&nbsp;        }</b>
+<b class="fc"><i>108</i>&nbsp;    }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    private static void createOrderTable() {
+<i>111</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>112</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS CustomerOrder\n&quot; +</b>
+<i>113</i>&nbsp;                &quot;(Id /* unique identifier for an Order */ INTEGER PRIMARY KEY,\n&quot; +
+<i>114</i>&nbsp;                &quot; Status /* the status of the order (Creating=&#39;c&#39;, Submitted=&#39;s&#39;, Completed=&#39;d&#39;, Cancelled=&#39;x&#39;, Refunded=&#39;r&#39;) */ CHAR(1) NOT NULL\n&quot; +
+<i>115</i>&nbsp;                &quot;    CONSTRAINT check_status CHECK (Status in (&#39;c&#39;, &#39;s&#39;, &#39;d&#39;, &#39;x&#39;, &#39;r&#39;)),\n&quot; +
+<i>116</i>&nbsp;                &quot; Note /* any notes added to the order */ VARCHAR(8000),\n&quot; +
+<i>117</i>&nbsp;                &quot; LastUpdated /* the time the order&#39;s status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */\n&quot; +
+<i>118</i>&nbsp;                &quot; Location /* the location the order was processed if known */ VARCHAR(8000),\n&quot; +
+<i>119</i>&nbsp;                &quot; Weather /* the location the order was processed if known */ VARCHAR(8000));&quot;;
+<i>120</i>&nbsp;
+<b class="fc"><i>121</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>122</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>123</i>&nbsp;            // create a new table
+<b class="fc"><i>124</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>125</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>126</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>127</i>&nbsp;        }</b>
+<b class="fc"><i>128</i>&nbsp;    }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;    private static void createOrderContainsTable() {
+<i>131</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>132</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS OrderContains\n&quot; +</b>
+<i>133</i>&nbsp;                &quot;(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,\n&quot; +
+<i>134</i>&nbsp;                &quot; FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,\n&quot; +
+<i>135</i>&nbsp;                &quot; PRIMARY KEY (CustomerOrder, FoodItem));&quot;;
+<i>136</i>&nbsp;
+<b class="fc"><i>137</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>138</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>139</i>&nbsp;            // create a new table
+<b class="fc"><i>140</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>141</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>142</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>143</i>&nbsp;        }</b>
+<b class="fc"><i>144</i>&nbsp;    }</b>
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;    private static void createOrderedFoodItemTable() {
+<i>147</i>&nbsp;        // SQL statement for creating a new table
+<b class="fc"><i>148</i>&nbsp;        String sql = &quot;CREATE TABLE IF NOT EXISTS OrderedFoodItem\n&quot; +</b>
+<i>149</i>&nbsp;                &quot;(Id /* primary key ID */ INTEGER PRIMARY KEY,\n&quot; +
+<i>150</i>&nbsp;                &quot; Code /* alphanumberic code of the FoodItem */ VARCHAR(10) NOT NULL\n&quot; +
+<i>151</i>&nbsp;                &quot;    CONSTRAINT code_min_size CHECK (LENGTH(Code) &gt;= 3),\n&quot; +
+<i>152</i>&nbsp;                &quot; Name /* the FoodItem&#39;s name */ VARCHAR(20) NOT NULL\n&quot; +
+<i>153</i>&nbsp;                &quot;    CONSTRAINT name_min_size CHECK (LENGTH(Name) &gt;= 3),\n&quot; +
+<i>154</i>&nbsp;                &quot; UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n&quot; +
+<i>155</i>&nbsp;                &quot;    CONSTRAINT check_unit CHECK (UnitType in (&#39;c&#39;, &#39;m&#39;, &#39;g&#39;)),\n&quot; +
+<i>156</i>&nbsp;                &quot; Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT &#39;0&#39;\n&quot; +
+<i>157</i>&nbsp;                &quot;    /* TODO check that Cost is correct format */,\n&quot; +
+<i>158</i>&nbsp;                &quot; IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>159</i>&nbsp;                &quot; IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>160</i>&nbsp;                &quot; IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n&quot; +
+<i>161</i>&nbsp;                &quot; CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n&quot; +
+<i>162</i>&nbsp;                &quot;    /* TODO check that CalPerUnit is a numeric string */);&quot;;
+<i>163</i>&nbsp;
+<b class="fc"><i>164</i>&nbsp;        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist</b>
+<b class="fc"><i>165</i>&nbsp;             Statement stmt = conn.createStatement()) {</b>
+<i>166</i>&nbsp;            // create a new table
+<b class="fc"><i>167</i>&nbsp;            stmt.execute(sql);</b>
+<b class="fc"><i>168</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>169</i>&nbsp;            System.out.println(e.getMessage());</b>
+<b class="fc"><i>170</i>&nbsp;        }</b>
+<b class="fc"><i>171</i>&nbsp;    }</b>
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;    private void createAllTables() {
+<i>174</i>&nbsp;        /*try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn&#39;t exist
+<i>175</i>&nbsp;             Statement stmt = conn.createStatement()) {
+<i>176</i>&nbsp;            ScriptRunner sr = new ScriptRunner(conn);
+<i>177</i>&nbsp;            //Reader reader = new InputStreamReader(getClass().getResourceAsStream(&quot;/sql/create_tables.sql&quot;));
+<i>178</i>&nbsp;            //InputStream file = Class.getResourceAsStream(&quot;/dtd/fooditem.dtd&quot;);
+<i>179</i>&nbsp;            //System.out.println(file.available() +  &quot; pls&quot;);
+<i>180</i>&nbsp;            //Reader reader = Resources.getResourceAsReader(&quot;com/mkyong/MyBatis/sql/create_tables.sql&quot;);
+<i>181</i>&nbsp;            //sr.runScript(reader);
+<i>182</i>&nbsp;        } catch (SQLException e) {
+<i>183</i>&nbsp;            System.out.println(e.getMessage());
+<i>184</i>&nbsp;        }*/
+<i>185</i>&nbsp;
+<b class="fc"><i>186</i>&nbsp;        createFoodItemTable();</b>
+<b class="fc"><i>187</i>&nbsp;        createRecipeTable();</b>
+<b class="fc"><i>188</i>&nbsp;        createRecipeContainsTable();</b>
+<b class="fc"><i>189</i>&nbsp;        createOrderTable();</b>
+<b class="fc"><i>190</i>&nbsp;        createOrderContainsTable();</b>
+<b class="fc"><i>191</i>&nbsp;        createOrderedFoodItemTable();</b>
+<b class="fc"><i>192</i>&nbsp;    }</b>
+<i>193</i>&nbsp;
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;    private FoodItem readFoodItem(ResultSet rs) {
+<i>196</i>&nbsp;        String code, name, cost, unitType, calPerUnit;
+<i>197</i>&nbsp;        boolean isVegetarian, isVegan, isGlutenFree;
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;        try {
+<b class="fc"><i>200</i>&nbsp;            code = rs.getString(&quot;Code&quot;);</b>
+<b class="fc"><i>201</i>&nbsp;            name = rs.getString(&quot;Name&quot;);</b>
+<b class="fc"><i>202</i>&nbsp;            unitType = rs.getString(&quot;UnitType&quot;);</b>
+<b class="fc"><i>203</i>&nbsp;            cost = rs.getString(&quot;Cost&quot;);</b>
+<b class="fc"><i>204</i>&nbsp;            isVegetarian = rs.getBoolean(&quot;IsVegetarian&quot;);</b>
+<b class="fc"><i>205</i>&nbsp;            isVegan = rs.getBoolean(&quot;IsVegan&quot;);</b>
+<b class="fc"><i>206</i>&nbsp;            isGlutenFree = rs.getBoolean(&quot;IsGlutenFree&quot;);</b>
+<b class="fc"><i>207</i>&nbsp;            calPerUnit = rs.getString(&quot;CalPerUnit&quot;);</b>
+<i>208</i>&nbsp;
+<b class="nc"><i>209</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>210</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>211</i>&nbsp;            return null;</b>
+<b class="fc"><i>212</i>&nbsp;        }</b>
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;        UnitType unit;
+<b class="fc"><i>215</i>&nbsp;        switch (unitType) {</b>
+<i>216</i>&nbsp;            case &quot;g&quot;:
+<b class="fc"><i>217</i>&nbsp;                unit = UnitType.GRAM;</b>
+<b class="fc"><i>218</i>&nbsp;                break;</b>
+<i>219</i>&nbsp;            case &quot;m&quot;:
+<b class="fc"><i>220</i>&nbsp;                unit = UnitType.ML;</b>
+<b class="fc"><i>221</i>&nbsp;                break;</b>
+<i>222</i>&nbsp;            default:
+<b class="fc"><i>223</i>&nbsp;                unit = UnitType.COUNT;</b>
+<i>224</i>&nbsp;                break;
+<i>225</i>&nbsp;        }
+<b class="fc"><i>226</i>&nbsp;        FoodItem result = new FoodItem(code, name, unit);</b>
+<b class="fc"><i>227</i>&nbsp;        result.setCost(BigMoney.parse(cost)); // TODO error handling, or add a DB column constraint</b>
+<b class="fc"><i>228</i>&nbsp;        result.setIsVegetarian(isVegetarian);</b>
+<b class="fc"><i>229</i>&nbsp;        result.setIsVegan(isVegan);</b>
+<b class="fc"><i>230</i>&nbsp;        result.setIsGlutenFree(isGlutenFree);</b>
+<b class="fc"><i>231</i>&nbsp;        result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint</b>
+<b class="fc"><i>232</i>&nbsp;        return result;</b>
+<i>233</i>&nbsp;    }
+<i>234</i>&nbsp;
+<i>235</i>&nbsp;    private Order readOrder(ResultSet rs) {
+<i>236</i>&nbsp;        int id;
+<b class="fc"><i>237</i>&nbsp;        List&lt;FoodItem&gt; foodItems = new ArrayList&lt;FoodItem&gt;();</b>
+<i>238</i>&nbsp;        String orderNote, statusString;
+<i>239</i>&nbsp;
+<i>240</i>&nbsp;        try {
+<b class="fc"><i>241</i>&nbsp;            id = rs.getInt(&quot;Id&quot;);</b>
+<b class="fc"><i>242</i>&nbsp;            orderNote = rs.getString(&quot;Note&quot;);</b>
+<b class="fc"><i>243</i>&nbsp;            statusString = rs.getString(&quot;Status&quot;);</b>
+<b class="nc"><i>244</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>245</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>246</i>&nbsp;            return null;</b>
+<b class="fc"><i>247</i>&nbsp;        }</b>
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;        OrderStatus status;
+<b class="fc"><i>250</i>&nbsp;        switch (statusString) {</b>
+<i>251</i>&nbsp;            case &quot;c&quot;:
+<b class="fc"><i>252</i>&nbsp;                status = OrderStatus.CREATING;</b>
+<b class="fc"><i>253</i>&nbsp;                break;</b>
+<i>254</i>&nbsp;            case &quot;s&quot;:
+<b class="fc"><i>255</i>&nbsp;                status = OrderStatus.SUBMITTED;</b>
+<b class="fc"><i>256</i>&nbsp;                break;</b>
+<i>257</i>&nbsp;            case &quot;x&quot;:
+<b class="nc"><i>258</i>&nbsp;                status = OrderStatus.CANCELLED;</b>
+<b class="nc"><i>259</i>&nbsp;                break;</b>
+<i>260</i>&nbsp;            case &quot;r&quot;:
+<b class="nc"><i>261</i>&nbsp;                status = OrderStatus.REFUNDED;</b>
+<b class="nc"><i>262</i>&nbsp;                break;</b>
+<i>263</i>&nbsp;            default:
+<b class="nc"><i>264</i>&nbsp;                status = OrderStatus.COMPLETED;</b>
+<i>265</i>&nbsp;                break;
+<i>266</i>&nbsp;        }
+<b class="fc"><i>267</i>&nbsp;        Order result = new Order();</b>
+<b class="fc"><i>268</i>&nbsp;        result.setId(id);</b>
+<b class="fc"><i>269</i>&nbsp;        result.setOrderNote(orderNote);</b>
+<i>270</i>&nbsp;
+<b class="fc"><i>271</i>&nbsp;        String sql = &quot;SELECT *\n&quot; +</b>
+<i>272</i>&nbsp;                &quot;FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n&quot; +
+<i>273</i>&nbsp;                &quot;WHERE CustomerOrder = ?&quot;;
+<i>274</i>&nbsp;
+<b class="fc"><i>275</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>276</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>277</i>&nbsp;                pstmt.setInt(1, result.getOrderID());</b>
+<b class="fc"><i>278</i>&nbsp;                ResultSet rs2 = pstmt.executeQuery();</b>
+<i>279</i>&nbsp;
+<b class="fc"><i>280</i>&nbsp;                while (rs2.next()) {</b>
+<b class="fc"><i>281</i>&nbsp;                    result.addItem(readFoodItem(rs2));</b>
+<i>282</i>&nbsp;                }
+<i>283</i>&nbsp;
+<b class="fc"><i>284</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>285</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i>286</i>&nbsp;        }</b>
+<i>287</i>&nbsp;
+<b class="fc"><i>288</i>&nbsp;        result.setStatus(status);</b>
+<i>289</i>&nbsp;
+<b class="fc"><i>290</i>&nbsp;        return result;</b>
+<i>291</i>&nbsp;    }
+<i>292</i>&nbsp;
+<i>293</i>&nbsp;    private int readFoodItemStock(ResultSet rs) {
+<i>294</i>&nbsp;        try {
+<b class="fc"><i>295</i>&nbsp;            return rs.getInt(&quot;StockLevel&quot;);</b>
+<b class="nc"><i>296</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>297</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>298</i>&nbsp;            return 0; // TODO error handling</b>
+<i>299</i>&nbsp;        }
+<i>300</i>&nbsp;    }
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;    @Override
+<i>303</i>&nbsp;    public Set&lt;FoodItem&gt; getAllFoodItems() {
+<b class="fc"><i>304</i>&nbsp;        String sql = &quot;SELECT * FROM FoodItem&quot;;</b>
+<i>305</i>&nbsp;
+<b class="fc"><i>306</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>307</i>&nbsp;             Statement stmt = conn.createStatement();</b>
+<b class="fc"><i>308</i>&nbsp;             ResultSet rs = stmt.executeQuery(sql)) {</b>
+<i>309</i>&nbsp;
+<b class="fc"><i>310</i>&nbsp;            Set&lt;FoodItem&gt; items = new HashSet&lt;FoodItem&gt;();</b>
+<b class="fc"><i>311</i>&nbsp;            while (rs.next()) {</b>
+<b class="fc"><i>312</i>&nbsp;                items.add(readFoodItem(rs));</b>
+<i>313</i>&nbsp;            }
+<b class="fc"><i>314</i>&nbsp;            return items;</b>
+<i>315</i>&nbsp;
+<b class="fc"><i>316</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>317</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>318</i>&nbsp;            return null; // TODO error handling?</b>
+<i>319</i>&nbsp;        }
+<i>320</i>&nbsp;    }
+<i>321</i>&nbsp;
+<i>322</i>&nbsp;    @Override
+<i>323</i>&nbsp;    public FoodItem getFoodItemByCode(String code) {
+<b class="fc"><i>324</i>&nbsp;        String sql = &quot;SELECT * FROM FoodItem WHERE Code = ? LIMIT 1&quot;;</b>
+<i>325</i>&nbsp;
+<b class="fc"><i>326</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>327</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<i>328</i>&nbsp;
+<b class="fc"><i>329</i>&nbsp;            pstmt.setString(1, code);</b>
+<b class="fc"><i>330</i>&nbsp;            ResultSet rs = pstmt.executeQuery();</b>
+<i>331</i>&nbsp;
+<b class="fc"><i>332</i>&nbsp;            if (rs.next() == false) {</b>
+<b class="fc"><i>333</i>&nbsp;                return null;</b>
+<i>334</i>&nbsp;            } else {
+<b class="fc"><i>335</i>&nbsp;                return readFoodItem(rs);</b>
+<i>336</i>&nbsp;            }
+<i>337</i>&nbsp;
+<b class="fc"><i>338</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>339</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>340</i>&nbsp;            return null; // TODO error handling?</b>
+<i>341</i>&nbsp;        }
+<i>342</i>&nbsp;    }
+<i>343</i>&nbsp;
+<i>344</i>&nbsp;    @Override
+<i>345</i>&nbsp;    public void addFoodItem(FoodItem item, int count) {
+<b class="fc"><i>346</i>&nbsp;        if (getFoodItemByCode(item.getCode()) != null) {</b>
+<b class="fc"><i>347</i>&nbsp;            throw new InvalidDataCodeException(&quot;FoodItem with code &quot; + item.getCode() + &quot; already exists in the database.&quot;);</b>
+<i>348</i>&nbsp;        }
+<i>349</i>&nbsp;
+<b class="fc"><i>350</i>&nbsp;        String sql = &quot;INSERT INTO FoodItem(Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?,?)&quot;;</b>
+<i>351</i>&nbsp;
+<b class="fc"><i>352</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>353</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>354</i>&nbsp;            pstmt.setString(1, item.getCode());</b>
+<b class="fc"><i>355</i>&nbsp;            pstmt.setString(2, item.getName());</b>
+<b class="fc"><i>356</i>&nbsp;            pstmt.setString(3, item.getCost().toString());</b>
+<b class="fc"><i>357</i>&nbsp;            pstmt.setString(4, item.getUnit().toString()); // TODO error handling</b>
+<b class="fc"><i>358</i>&nbsp;            pstmt.setInt(5, count);</b>
+<b class="fc"><i>359</i>&nbsp;            pstmt.setBoolean(6, item.getIsVegetarian());</b>
+<b class="fc"><i>360</i>&nbsp;            pstmt.setBoolean(7, item.getIsVegan());</b>
+<b class="fc"><i>361</i>&nbsp;            pstmt.setBoolean(8, item.getIsGlutenFree());</b>
+<b class="fc"><i>362</i>&nbsp;            pstmt.setString(9, Double.toString(item.getCaloriesPerUnit()));</b>
+<b class="fc"><i>363</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>364</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>365</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>366</i>&nbsp;        }</b>
+<b class="fc"><i>367</i>&nbsp;    }</b>
+<i>368</i>&nbsp;
+<i>369</i>&nbsp;    @Override
+<i>370</i>&nbsp;    public void updateFoodItem(FoodItem alteredItem) {
+<b class="fc"><i>371</i>&nbsp;        if (getFoodItemByCode(alteredItem.getCode()) == null) {</b>
+<b class="fc"><i>372</i>&nbsp;            throw new InvalidDataCodeException(&quot;item with given item&#39;s code does not exist in storage.&quot;);</b>
+<i>373</i>&nbsp;        }
+<i>374</i>&nbsp;
+<b class="fc"><i>375</i>&nbsp;        String sql = &quot;UPDATE FoodItem\n&quot; +</b>
+<i>376</i>&nbsp;                &quot;SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n&quot; +
+<i>377</i>&nbsp;                &quot;WHERE Code=?&quot;;
+<i>378</i>&nbsp;
+<b class="fc"><i>379</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>380</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>381</i>&nbsp;            pstmt.setString(1, alteredItem.getName());</b>
+<b class="fc"><i>382</i>&nbsp;            pstmt.setString(2, alteredItem.getCost().toString());</b>
+<b class="fc"><i>383</i>&nbsp;            pstmt.setString(3, alteredItem.getUnit().toString()); // TODO error handling</b>
+<b class="fc"><i>384</i>&nbsp;            pstmt.setBoolean(4, alteredItem.getIsVegetarian());</b>
+<b class="fc"><i>385</i>&nbsp;            pstmt.setBoolean(5, alteredItem.getIsVegan());</b>
+<b class="fc"><i>386</i>&nbsp;            pstmt.setBoolean(6, alteredItem.getIsGlutenFree());</b>
+<b class="fc"><i>387</i>&nbsp;            pstmt.setString(7, Double.toString(alteredItem.getCaloriesPerUnit()));</b>
+<b class="fc"><i>388</i>&nbsp;            pstmt.setString(8, alteredItem.getCode());</b>
+<b class="fc"><i>389</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>390</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>391</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>392</i>&nbsp;        }</b>
+<b class="fc"><i>393</i>&nbsp;    }</b>
+<i>394</i>&nbsp;
+<i>395</i>&nbsp;    @Override
+<i>396</i>&nbsp;    public void removeFoodItem(String code) {
+<b class="fc"><i>397</i>&nbsp;        if (getFoodItemByCode(code) == null) {</b>
+<b class="fc"><i>398</i>&nbsp;            throw new InvalidDataCodeException(&quot;no FoodItem with the given code exists in storage.&quot;);</b>
+<i>399</i>&nbsp;        }
+<i>400</i>&nbsp;
+<b class="fc"><i>401</i>&nbsp;        String sql = &quot;DELETE FROM FoodItem\n&quot; +</b>
+<i>402</i>&nbsp;                &quot;WHERE Code=?&quot;;
+<i>403</i>&nbsp;
+<b class="fc"><i>404</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>405</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>406</i>&nbsp;            pstmt.setString(1, code);</b>
+<b class="fc"><i>407</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>408</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>409</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>410</i>&nbsp;        }</b>
+<b class="fc"><i>411</i>&nbsp;    }</b>
+<i>412</i>&nbsp;
+<i>413</i>&nbsp;    @Override
+<i>414</i>&nbsp;    public void setFoodItemStock(String code, int count) {
+<b class="fc"><i>415</i>&nbsp;        if (count &lt; 0) {</b>
+<b class="fc"><i>416</i>&nbsp;            throw new IllegalArgumentException(&quot;count must be non-negative.&quot;);</b>
+<i>417</i>&nbsp;        }
+<b class="fc"><i>418</i>&nbsp;        if (getFoodItemByCode(code) == null) {</b>
+<b class="fc"><i>419</i>&nbsp;            throw new InvalidDataCodeException(&quot;no FoodItem with given code exists in the database.&quot;);</b>
+<i>420</i>&nbsp;        }
+<i>421</i>&nbsp;
+<b class="fc"><i>422</i>&nbsp;        String sql = &quot;UPDATE FoodItem\n&quot; +</b>
+<i>423</i>&nbsp;                &quot;SET StockLevel=?\n&quot; +
+<i>424</i>&nbsp;                &quot;WHERE Code=?&quot;;
+<i>425</i>&nbsp;
+<b class="fc"><i>426</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>427</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>428</i>&nbsp;            pstmt.setInt(1, count);</b>
+<b class="fc"><i>429</i>&nbsp;            pstmt.setString(2, code);</b>
+<b class="fc"><i>430</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>431</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>432</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>433</i>&nbsp;        }</b>
+<b class="fc"><i>434</i>&nbsp;    }</b>
+<i>435</i>&nbsp;
+<i>436</i>&nbsp;    @Override
+<i>437</i>&nbsp;    public int getFoodItemStock(String code) {
+<b class="fc"><i>438</i>&nbsp;        if (getFoodItemByCode(code) == null) {</b>
+<b class="nc"><i>439</i>&nbsp;            throw new InvalidDataCodeException(&quot;no FoodItem with given code exists in the database.&quot;);</b>
+<i>440</i>&nbsp;        }
+<i>441</i>&nbsp;
+<b class="fc"><i>442</i>&nbsp;        String sql = &quot;SELECT StockLevel FROM FoodItem WHERE Code = ? LIMIT 1&quot;;</b>
+<i>443</i>&nbsp;
+<b class="fc"><i>444</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>445</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<i>446</i>&nbsp;
+<b class="fc"><i>447</i>&nbsp;            pstmt.setString(1, code);</b>
+<b class="fc"><i>448</i>&nbsp;            ResultSet rs = pstmt.executeQuery();</b>
+<i>449</i>&nbsp;
+<b class="fc"><i>450</i>&nbsp;            if (rs.next() == false) {</b>
+<b class="nc"><i>451</i>&nbsp;                return 0; // TODO throw an error</b>
+<i>452</i>&nbsp;            } else {
+<b class="fc"><i>453</i>&nbsp;                return readFoodItemStock(rs);</b>
+<i>454</i>&nbsp;            }
+<i>455</i>&nbsp;
+<b class="fc"><i>456</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>457</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>458</i>&nbsp;            return 0; // TODO error handling</b>
+<i>459</i>&nbsp;        }
+<i>460</i>&nbsp;    }
+<i>461</i>&nbsp;
+<i>462</i>&nbsp;    @Override
+<i>463</i>&nbsp;    public Set&lt;Order&gt; getAllOrders() {
+<b class="nc"><i>464</i>&nbsp;        return null;</b>
+<i>465</i>&nbsp;    }
+<i>466</i>&nbsp;
+<i>467</i>&nbsp;    @Override
+<i>468</i>&nbsp;    public Order getOrderByID(int id) {
+<b class="fc"><i>469</i>&nbsp;        if (id == Order.DEFAULT_ID) {</b>
+<b class="fc"><i>470</i>&nbsp;            throw new InvalidDataCodeException(&quot;given order has the default id &quot; + Order.DEFAULT_ID + &quot;. set a valid ID&quot;);</b>
+<i>471</i>&nbsp;        }
+<i>472</i>&nbsp;
+<b class="fc"><i>473</i>&nbsp;        String sql = &quot;SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1&quot;;</b>
+<i>474</i>&nbsp;
+<b class="fc"><i>475</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>476</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<i>477</i>&nbsp;
+<b class="fc"><i>478</i>&nbsp;            pstmt.setInt(1, id);</b>
+<b class="fc"><i>479</i>&nbsp;            ResultSet rs = pstmt.executeQuery();</b>
+<i>480</i>&nbsp;
+<b class="fc"><i>481</i>&nbsp;            if (rs.next() == false) {</b>
+<b class="fc"><i>482</i>&nbsp;                return null;</b>
+<i>483</i>&nbsp;            } else {
+<b class="fc"><i>484</i>&nbsp;                return readOrder(rs);</b>
+<i>485</i>&nbsp;            }
+<i>486</i>&nbsp;
+<b class="fc"><i>487</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>488</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="nc"><i>489</i>&nbsp;            return null; // TODO error handling?</b>
+<i>490</i>&nbsp;        }
+<i>491</i>&nbsp;    }
+<i>492</i>&nbsp;
+<i>493</i>&nbsp;    private void addOrderedFoodItem(Order order, FoodItem item) {
+<b class="fc"><i>494</i>&nbsp;        String sql = &quot;INSERT INTO OrderedFoodItem(Code, Name, Cost, UnitType, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?)&quot;;</b>
+<i>495</i>&nbsp;
+<i>496</i>&nbsp;        int insertedId;
+<i>497</i>&nbsp;
+<b class="fc"><i>498</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>499</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</b>
+<b class="fc"><i>500</i>&nbsp;            pstmt.setString(1, item.getCode());</b>
+<b class="fc"><i>501</i>&nbsp;            pstmt.setString(2, item.getName());</b>
+<b class="fc"><i>502</i>&nbsp;            pstmt.setString(3, item.getCost().toString());</b>
+<b class="fc"><i>503</i>&nbsp;            pstmt.setString(4, item.getUnit().toString());</b>
+<b class="fc"><i>504</i>&nbsp;            pstmt.setBoolean(5, item.getIsVegetarian());</b>
+<b class="fc"><i>505</i>&nbsp;            pstmt.setBoolean(6, item.getIsVegan());</b>
+<b class="fc"><i>506</i>&nbsp;            pstmt.setBoolean(7, item.getIsGlutenFree());</b>
+<b class="fc"><i>507</i>&nbsp;            pstmt.setString(8, Double.toString(item.getCaloriesPerUnit()));</b>
+<b class="fc"><i>508</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>509</i>&nbsp;            ResultSet rs = pstmt.getGeneratedKeys();</b>
+<b class="fc"><i>510</i>&nbsp;            insertedId = rs.getInt(1);</b>
+<i>511</i>&nbsp;
+<b class="fc"><i>512</i>&nbsp;            String sql2 = &quot;INSERT INTO OrderContains(CustomerOrder, FoodItem) VALUES (?,?)&quot;;</b>
+<i>513</i>&nbsp;
+<b class="fc"><i>514</i>&nbsp;            try (PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {</b>
+<b class="fc"><i>515</i>&nbsp;                pstmt2.setInt(1, order.getOrderID());</b>
+<b class="fc"><i>516</i>&nbsp;                pstmt2.setInt(2, insertedId);</b>
+<b class="fc"><i>517</i>&nbsp;                pstmt2.executeUpdate();</b>
+<b class="fc"><i>518</i>&nbsp;            } catch (SQLException e) {</b>
+<b class="nc"><i>519</i>&nbsp;                System.err.println(e.getMessage());</b>
+<b class="fc"><i>520</i>&nbsp;            }</b>
+<i>521</i>&nbsp;
+<b class="fc"><i>522</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>523</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>524</i>&nbsp;        }</b>
+<b class="fc"><i>525</i>&nbsp;    }</b>
+<i>526</i>&nbsp;
+<i>527</i>&nbsp;    @Override
+<i>528</i>&nbsp;    public void addOrder(Order order) {
+<b class="fc"><i>529</i>&nbsp;        if (order == null) {</b>
+<b class="fc"><i>530</i>&nbsp;            throw new NullPointerException();</b>
+<i>531</i>&nbsp;        }
+<i>532</i>&nbsp;
+<b class="fc"><i>533</i>&nbsp;        if (order.getOrderContents().size() == 0) {</b>
+<b class="fc"><i>534</i>&nbsp;            throw new IllegalArgumentException(&quot;cannot add an empty order&quot;);</b>
+<i>535</i>&nbsp;        }
+<i>536</i>&nbsp;
+<b class="fc"><i>537</i>&nbsp;        if (order.getOrderID() != Order.DEFAULT_ID) {</b>
+<b class="fc"><i>538</i>&nbsp;            throw new InvalidDataCodeException(&quot;cannot add order with a non-default id. please use update&quot;);</b>
+<i>539</i>&nbsp;        }
+<i>540</i>&nbsp;
+<b class="fc"><i>541</i>&nbsp;        String insertOrder = &quot;INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)&quot;;</b>
+<i>542</i>&nbsp;        //String insertOrderItem = &quot;INSERT INTO OrderContains(CustomerOrder, FoodItem)&quot;
+<i>543</i>&nbsp;
+<b class="fc"><i>544</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>545</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {</b>
+<i>546</i>&nbsp;
+<b class="fc"><i>547</i>&nbsp;            pstmt.setString(1, order.getOrderStatus().toString());</b>
+<b class="fc"><i>548</i>&nbsp;            pstmt.setString(2, order.getOrderNote());</b>
+<i>549</i>&nbsp;
+<b class="fc"><i>550</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>551</i>&nbsp;            order.setId(pstmt.getGeneratedKeys().getInt(1));</b>
+<i>552</i>&nbsp;
+<b class="fc"><i>553</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>554</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>555</i>&nbsp;        }</b>
+<i>556</i>&nbsp;
+<b class="fc"><i>557</i>&nbsp;        for (FoodItem item : order.getOrderContents()) {</b>
+<b class="fc"><i>558</i>&nbsp;            addOrderedFoodItem(order, item);</b>
+<b class="fc"><i>559</i>&nbsp;        }</b>
+<b class="fc"><i>560</i>&nbsp;    }</b>
+<i>561</i>&nbsp;
+<i>562</i>&nbsp;    @Override
+<i>563</i>&nbsp;    public void updateOrder(Order alteredOrder) {
+<b class="fc"><i>564</i>&nbsp;        if (getOrderByID(alteredOrder.getOrderID()) == null) {</b>
+<b class="fc"><i>565</i>&nbsp;            throw new InvalidDataCodeException(&quot;order with given order&#39;s code does not exist in the database.&quot;);</b>
+<i>566</i>&nbsp;        }
+<i>567</i>&nbsp;
+<b class="fc"><i>568</i>&nbsp;        String sql = &quot;UPDATE CustomerOrder\n&quot; +</b>
+<i>569</i>&nbsp;                &quot;SET Status=?\n&quot; +
+<i>570</i>&nbsp;                &quot;WHERE Id=?&quot;;
+<i>571</i>&nbsp;
+<b class="fc"><i>572</i>&nbsp;        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);</b>
+<b class="fc"><i>573</i>&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>574</i>&nbsp;            pstmt.setString(1, alteredOrder.getOrderStatus().toString());</b>
+<b class="fc"><i>575</i>&nbsp;            pstmt.setInt(2, alteredOrder.getOrderID());</b>
+<b class="fc"><i>576</i>&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc"><i>577</i>&nbsp;        } catch (SQLException e) {</b>
+<b class="nc"><i>578</i>&nbsp;            System.err.println(e.getMessage());</b>
+<b class="fc"><i>579</i>&nbsp;        }</b>
+<b class="fc"><i>580</i>&nbsp;    }</b>
+<i>581</i>&nbsp;
+<i>582</i>&nbsp;    @Override
+<i>583</i>&nbsp;    public void removeOrder(int ID) {
+<i>584</i>&nbsp;
+<b class="nc"><i>585</i>&nbsp;    }</b>
+<i>586</i>&nbsp;
+<i>587</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>588</i>&nbsp;        JDBCStorage storage = JDBCStorage.getInstance();</b>
+<i>589</i>&nbsp;//        storage.updateFoodItem(new FoodItem(&quot;CRACKERS&quot;, &quot;A Mouldy Cracker&quot;, UnitType.COUNT));
+<i>590</i>&nbsp;//        storage.setFoodItemStock(&quot;PIZZA&quot;, 20);
+<b class="nc"><i>591</i>&nbsp;        Order testOrder = new Order();</b>
+<b class="nc"><i>592</i>&nbsp;        testOrder.addItem(new FoodItem(&quot;OOHYEA&quot;, &quot;test item&quot;, UnitType.COUNT));</b>
+<b class="nc"><i>593</i>&nbsp;        testOrder.addItem(new FoodItem(&quot;OOHYEA&quot;, &quot;test item&quot;, UnitType.COUNT));</b>
+<b class="nc"><i>594</i>&nbsp;        storage.addOrder(testOrder);</b>
+<b class="nc"><i>595</i>&nbsp;        int orderId = testOrder.getOrderID();</b>
+<b class="nc"><i>596</i>&nbsp;        testOrder = null;</b>
+<b class="nc"><i>597</i>&nbsp;        testOrder = storage.getOrderByID(orderId);</b>
+<b class="nc"><i>598</i>&nbsp;        System.out.println(testOrder.getOrderContents().size());</b>
+<b class="nc"><i>599</i>&nbsp;        for (FoodItem item : testOrder.getOrderContents()) {</b>
+<b class="nc"><i>600</i>&nbsp;            System.out.println(item);</b>
+<b class="nc"><i>601</i>&nbsp;        }</b>
+<i>602</i>&nbsp;        try {
+<i>603</i>&nbsp;            //storage.addOrder(new Order(1));
+<i>604</i>&nbsp;//            Set&lt;FoodItem&gt; items = storage.getAllFoodItems();
+<i>605</i>&nbsp;//            for (FoodItem item : items) {
+<i>606</i>&nbsp;//                System.out.println(item);
+<i>607</i>&nbsp;//                System.out.println(storage.getFoodItemStock(item.getCode()));
+<i>608</i>&nbsp;//            }
+<i>609</i>&nbsp;//            storage.getFoodItemByCode(&quot;CRACKERS&quot;);
+<i>610</i>&nbsp;//            storage.resetInstance();
+<i>611</i>&nbsp;//            System.out.println(storage.getFoodItemByCode(&quot;CRACKERS&quot;));
+<i>612</i>&nbsp;        } catch (Exception e) {
+<i>613</i>&nbsp;            System.out.println(&quot;error thrown:&quot; + e);
+<i>614</i>&nbsp;        }
+<b class="nc"><i>615</i>&nbsp;    }</b>
+<i>616</i>&nbsp;
+<i>617</i>&nbsp;
+<i>618</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

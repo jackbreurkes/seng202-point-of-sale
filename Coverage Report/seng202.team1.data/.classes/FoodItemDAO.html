@@ -1,0 +1,107 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FoodItemDAO</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.data</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FoodItemDAO (seng202.team1.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">FoodItemDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.data;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import seng202.team1.model.FoodItem;
+<i>4</i>&nbsp;import seng202.team1.model.FoodSource;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.Set;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public interface FoodItemDAO {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    /**
+<i>11</i>&nbsp;     * returns all the FoodItems stored in the system.
+<i>12</i>&nbsp;     * @return a List of all FoodItems stored in the system
+<i>13</i>&nbsp;     */
+<i>14</i>&nbsp;    Set&lt;FoodItem&gt; getAllFoodItems();
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * gets a single FoodItem stored in the system.
+<i>18</i>&nbsp;     * @param code the FoodItem&#39;s unique code
+<i>19</i>&nbsp;     * @return the desired FoodItem or null if not found
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    FoodItem getFoodItemByCode(String code);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * adds a FoodItem to storage. the item will be stored using its code attribute.
+<i>25</i>&nbsp;     * the item&#39;s code should be
+<i>26</i>&nbsp;     * @param item the FoodItem to store
+<i>27</i>&nbsp;     * @param count the amount to store initially
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    void addFoodItem(FoodItem item, int count);
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * sets the properties of a FoodItem to those of a new FoodItem.
+<i>33</i>&nbsp;     * the new item&#39;s code should be the same as the one that is being updated.
+<i>34</i>&nbsp;     * @param alteredItem the FoodItem to update in storage
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    void updateFoodItem(FoodItem alteredItem);
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * remove a FoodItem from storage entirely.
+<i>40</i>&nbsp;     * @param code the code of the FoodItem to remove
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    void removeFoodItem(String code);
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * set the current stock level of a FoodItem within the system.
+<i>46</i>&nbsp;     * @param code the FoodItem&#39;s unique code
+<i>47</i>&nbsp;     * @param count the stock count of the item
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    void setFoodItemStock(String code, int count);
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * get the current stock level of a FoodItem within the system.
+<i>53</i>&nbsp;     * @param code the FoodItem&#39;s unique code
+<i>54</i>&nbsp;     * @return the current stock level
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    int getFoodItemStock(String code);
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    // TODO add methods for things related to Recipes of FoodItems
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>

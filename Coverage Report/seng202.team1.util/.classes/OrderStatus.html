@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OrderStatus</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">seng202.team1.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OrderStatus (seng202.team1.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderStatus</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package seng202.team1.util;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * enum to represent the status of an order.
+<i>7</i>&nbsp; */
+<b class="fc"><i>8</i>&nbsp;public enum OrderStatus {</b>
+<b class="fc"><i>9</i>&nbsp;    CREATING(&quot;c&quot;),</b>
+<b class="fc"><i>10</i>&nbsp;    SUBMITTED(&quot;s&quot;),</b>
+<b class="fc"><i>11</i>&nbsp;    COMPLETED(&quot;d&quot;),</b>
+<b class="fc"><i>12</i>&nbsp;    CANCELLED(&quot;x&quot;),</b>
+<b class="fc"><i>13</i>&nbsp;    REFUNDED(&quot;r&quot;);</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private String string;
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    OrderStatus(String string) {</b>
+<b class="fc"><i>18</i>&nbsp;        this.string = string;</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @Override
+<i>22</i>&nbsp;    public String toString() {
+<b class="fc"><i>23</i>&nbsp;        return string;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-09-24 13:07</div>
+</div>
+</body>
+</html>
