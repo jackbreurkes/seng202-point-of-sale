@@ -85,7 +85,15 @@ public class Recipe {
         if (ingredient == null) {
             throw new NullPointerException("the ingredients cannot be null.");
         }
-        ingredients.add(ingredient);
+        Iterator<FoodItem> itr = addableIngredients.iterator();
+        while (itr.hasNext()) {
+            if (itr.next() == ingredient) {
+                ingredients.add(ingredient);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("the ingredient does not exist in the addableIngredients");
     }
 
     /**
