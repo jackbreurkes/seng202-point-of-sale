@@ -26,4 +26,65 @@
         <cost>NZD 96.00</cost>
         <caloriesPerUnit>87</caloriesPerUnit>
     </fooditem>
+    <fooditem unit="g" isVegan="yes" isGlutenFree="no">
+        <code>BEANBURG</code>
+        <name>Spicy Bean Burger</name>
+        <cost>NZD 17.00</cost>
+        <caloriesPerUnit>444</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="no" isGlutenFree="no">
+        <code>HAWAIIP</code>
+        <name>Hawaiian Pizza</name>
+        <cost>NZD 22.50</cost>
+        <caloriesPerUnit>700</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>BLKCOFFEE</code>
+        <name>Black Coffee</name>
+        <cost>NZD 5.50</cost>
+        <caloriesPerUnit>125</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>CAPPUCHINO</code>
+        <name>cappuccino</name>
+        <cost>NZD 6.10</cost>
+        <caloriesPerUnit>155</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="no" isGlutenFree="yes">
+        <code>MEAT</code>
+        <name>Meat</name>
+        <cost>NZD 19.90</cost>
+        <caloriesPerUnit>666</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
+        <code>BWNRICE</code>
+        <name>Brown Rice</name>
+        <cost>NZD 6.90</cost>
+        <caloriesPerUnit>128</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
+        <code>PBCOBBLE</code>
+        <name>Peach n Blackberry C</name>
+        <cost>NZD 14.90</cost>
+        <caloriesPerUnit>684</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
+        <code>HTSALAD</code>
+        <name>Hand Tossed Salad</name>
+        <cost>NZD 13.90</cost>
+        <caloriesPerUnit>614</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="g" isVegan="no" isGlutenFree="yes">
+        <code>RCHICK</code>
+        <name>Rotisserie Chicken</name>
+        <cost>NZD 11.99</cost>
+        <caloriesPerUnit>1000</caloriesPerUnit>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>ALMMILK</code>
+        <name>Almond Milk</name>
+        <cost>NZD 7.89</cost>
+        <caloriesPerUnit>1234</caloriesPerUnit>
+    </fooditem>
+
 </fooditems>

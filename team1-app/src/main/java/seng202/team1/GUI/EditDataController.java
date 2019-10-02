@@ -117,7 +117,7 @@ public class EditDataController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(null);
-            alert.setContentText("Click OK to confirm data deletion?");
+            alert.setContentText("Click OK to confirm data deletion");
             Optional<ButtonType> action = alert.showAndWait();
 
             if(action.get() == ButtonType.OK) {
