@@ -246,7 +246,9 @@ public class DataHandlingSteps {
 
 
 
-    //This is done twice. Once in this test case and again in the following one. Refer to design doc acceptance tests section for more info
+    // This @give test is done twice. Once in this test case and again in the following one below.
+    // Intellij doesn't like duplicate code so I just renamed the one below.
+    // Refer to design doc acceptance tests section for more info
     @Ignore
     @Given("menu is not empty")
     public void menu_is_not_empty() {
@@ -339,7 +341,7 @@ public class DataHandlingSteps {
 
 
 
-    
+
 
 
     @Ignore

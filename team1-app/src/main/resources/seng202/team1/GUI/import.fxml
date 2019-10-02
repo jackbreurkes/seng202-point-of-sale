@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.ImportController">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.ImportController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -21,7 +21,7 @@
   <rowConstraints>
       <RowConstraints maxHeight="590.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="590.0" minHeight="10.0" prefHeight="315.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="363.0" minHeight="10.0" prefHeight="337.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="363.0" minHeight="10.0" percentHeight="40.0" prefHeight="337.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -35,13 +35,16 @@
                </cursor></ComboBox>
              <Button fx:id="importButton" alignment="CENTER" layoutX="271.0" layoutY="14.0" mnemonicParsing="false" onAction="#importFile" text="import from file">
                <font>
-                  <Font size="18.0" />
+                  <Font size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Text fx:id="statusText" layoutX="13.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" />
+            <Text fx:id="statusText" layoutX="13.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
          </children>
       </AnchorPane>
       <TableView fx:id="foodItemTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
@@ -52,11 +55,11 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </TableView>
-      <HBox prefHeight="33.0" prefWidth="615.0">
+      <HBox prefHeight="33.0" prefWidth="615.0" GridPane.halignment="LEFT" GridPane.valignment="TOP">
          <children>
             <Button mnemonicParsing="false" onAction="#changeSceneToOrder" text="Order Screen">
                <font>
-                  <Font size="15.0" />
+                  <Font size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -64,12 +67,12 @@
             </Button>
             <Button disable="true" mnemonicParsing="false" text="Import Data Screen">
                <font>
-                  <Font size="15.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
             <Button mnemonicParsing="false" onAction="#changeSceneToEditData" text="Edit Data Screen">
                <font>
-                  <Font size="15.0" />
+                  <Font size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />

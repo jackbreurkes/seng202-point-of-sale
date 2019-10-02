@@ -1,6 +1,5 @@
 package seng202.team1.data;
 
-import org.apache.ibatis.io.Resources;
 import org.joda.money.BigMoney;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
@@ -8,20 +7,20 @@ import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
-import org.apache.ibatis.jdbc.ScriptRunner;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
+
 
     private static String url = "jdbc:sqlite:rosemary.db";
     private static JDBCStorage instance;
 
     private JDBCStorage() {
-        createAllTables();
+        initializeDatabaseIfNotExists();
     }
 
     /**
@@ -53,150 +52,23 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    private static void createFoodItemTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS FoodItem\n" +
-                "(Id /* primary key ID. added because varchar prim key isn't good? */ INTEGER PRIMARY KEY,\n" +
-                " Code /* alphanumberic code of the FoodItem */ VARCHAR(10) UNIQUE NOT NULL\n" +
-                "    CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),\n" +
-                " Name /* the FoodItem's name */ VARCHAR(20) NOT NULL\n" +
-                "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
-                " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
-                "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
-                "Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
-                "    /* TODO check that Cost is a numeric string */,\n" +
-                " StockLevel /* the current amount of this item stored */ INTEGER NOT NULL DEFAULT 0,\n" +
-                " IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n" +
-                " IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n" +
-                " IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n" +
-                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n" +
-                "    /* TODO check that CalPerUnit is a numeric string */);";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
+    private void initializeDatabaseIfNotExists() {
+        try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
+
+            InputStream createTablesStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
+            String createTables = new BufferedReader(new InputStreamReader(createTablesStream))
+                    .lines().collect(Collectors.joining("\n"));
+
+            InputStream createTriggersStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
+            String createTriggers = new BufferedReader(new InputStreamReader(createTriggersStream))
+                    .lines().collect(Collectors.joining("\n"));
+
+            stmt.executeUpdate(createTables);
+            stmt.executeUpdate(createTriggers);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    private static void createRecipeTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS Recipe\n" +
-                "(Id /* unique identifier for a Recipe */ INTEGER,\n" +
-                " Product /* the Id of the FoodItem created by the Recipe */ INTEGER UNIQUE NOT NULL REFERENCES FoodItem,\n" +
-                " AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,\n" +
-                " PRIMARY KEY (Id, Product));";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private static void createRecipeContainsTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS RecipeContains\n" +
-                "(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe,\n" +
-                " FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem,\n" +
-                " Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,\n" +
-                " PRIMARY KEY (Recipe, FoodItem));";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private static void createOrderTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS CustomerOrder\n" +
-                "(Id /* unique identifier for an Order */ INTEGER PRIMARY KEY,\n" +
-                " Status /* the status of the order (Creating='c', Submitted='s', Completed='d', Cancelled='x', Refunded='r') */ CHAR(1) NOT NULL\n" +
-                "    CONSTRAINT check_status CHECK (Status in ('c', 's', 'd', 'x', 'r')),\n" +
-                " Note /* any notes added to the order */ VARCHAR(8000),\n" +
-                " LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */\n" +
-                " Location /* the location the order was processed if known */ VARCHAR(8000),\n" +
-                " Weather /* the location the order was processed if known */ VARCHAR(8000));";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private static void createOrderContainsTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS OrderContains\n" +
-                "(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,\n" +
-                " FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,\n" +
-                " PRIMARY KEY (CustomerOrder, FoodItem));";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private static void createOrderedFoodItemTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS OrderedFoodItem\n" +
-                "(Id /* primary key ID */ INTEGER PRIMARY KEY,\n" +
-                " Code /* alphanumberic code of the FoodItem */ VARCHAR(10) NOT NULL\n" +
-                "    CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),\n" +
-                " Name /* the FoodItem's name */ VARCHAR(20) NOT NULL\n" +
-                "    CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),\n" +
-                " UnitType /* unit type (count, ml or gram) */ CHAR(1) NOT NULL\n" +
-                "    CONSTRAINT check_unit CHECK (UnitType in ('c', 'm', 'g')),\n" +
-                " Cost /* cost of the FoodItem for customers */ VARCHAR(8000) NOT NULL DEFAULT '0'\n" +
-                "    /* TODO check that Cost is correct format */,\n" +
-                " IsVegetarian /* whether the item is vegetarian */ BIT NOT NULL DEFAULT 0,\n" +
-                " IsVegan /* whether the item is vegan */ BIT NOT NULL DEFAULT 0,\n" +
-                " IsGlutenFree /* whether the item is gluten free */ BIT NOT NULL DEFAULT 0,\n" +
-                " CalPerUnit /* number of calories per single unit */ VARCHAR(8000)\n" +
-                "    /* TODO check that CalPerUnit is a numeric string */);";
-
-        try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void createAllTables() {
-        /*try (Connection conn = DriverManager.getConnection(url); // will create DB if doesn't exist
-             Statement stmt = conn.createStatement()) {
-            ScriptRunner sr = new ScriptRunner(conn);
-            Reader reader = new InputStreamReader(JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql"));
-            //InputStream file = Class.getResourceAsStream("/dtd/fooditem.dtd");
-            //System.out.println(file.available() +  " pls");
-            //Reader reader = Resources.getResourceAsReader("com/mkyong/MyBatis/sql/create_tables.sql");
-            sr.runScript(reader);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }*/
-
-        createFoodItemTable();
-        createRecipeTable();
-        createRecipeContainsTable();
-        createOrderTable();
-        createOrderContainsTable();
-        createOrderedFoodItemTable();
     }
 
 

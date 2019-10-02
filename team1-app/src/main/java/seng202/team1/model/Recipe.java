@@ -41,6 +41,12 @@ public class Recipe {
             }
         }
 
+        for (Map.Entry<String,Integer> amount : ingredientAmounts.entrySet()) {
+            if (amount.getValue() == 0) {
+                throw new IllegalArgumentException("the amount of the ingredient " + amount.getKey() + " cannot be 0.");
+            }
+        }
+
         this.amountCreated = amountCreated;
         this.ingredients = ingredients;
         this.addableIngredients = addableIngredients;
@@ -79,7 +85,15 @@ public class Recipe {
         if (ingredient == null) {
             throw new NullPointerException("the ingredients cannot be null.");
         }
-        ingredients.add(ingredient);
+        Iterator<FoodItem> itr = addableIngredients.iterator();
+        while (itr.hasNext()) {
+            if (itr.next() == ingredient) {
+                ingredients.add(ingredient);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("the ingredient does not exist in the addableIngredients");
     }
 
     /**
@@ -87,15 +101,21 @@ public class Recipe {
      * @param code the code of the ingredient
      */
     public void removeIngredient(String code){
+        if (code == null) {
+            throw new NullPointerException("the code cannot be null.");
+        }
+
         Iterator<FoodItem> itr = ingredients.iterator();
         while (itr.hasNext()) {
             FoodItem item = itr.next();
             if (item.getCode() == code) {
                 ingredients.remove(item);
-                break;
+                addableIngredients.add(item);
+                return;
             }
         }
-        // add removed item to addableIngredients so it can be readded
+
+        throw new IllegalArgumentException("cannot remove ingredient that is not in the ingredient set.");
 
     }
 
@@ -153,10 +173,6 @@ public class Recipe {
             totalCal += ingreItr.next().getCaloriesPerUnit();
         }
 
-        Iterator<FoodItem> addItr = addableIngredients.iterator();
-        while (addItr.hasNext()) {
-            totalCal += addItr.next().getCaloriesPerUnit();
-        }
         return totalCal;
     }
 

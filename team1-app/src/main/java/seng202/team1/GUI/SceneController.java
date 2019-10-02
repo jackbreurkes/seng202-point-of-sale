@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,15 +20,18 @@ public class SceneController {
      * @throws IOException
      */
     public void changeScene(javafx.event.ActionEvent event, String fxmlFile, String title) throws IOException {
-        Parent editDataParent = FXMLLoader.load(getClass().getResource(fxmlFile));
-        Scene editDataScene = new Scene(editDataParent);
+        Parent newParent = FXMLLoader.load(getClass().getResource(fxmlFile));
+        Scene newScene = new Scene(newParent);
+        newScene.getStylesheets().add("stylesheets/default.css");
 
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         //This line sets the screen title
         window.setTitle(title);
 
-        window.setScene(editDataScene);
+        window.setScene(newScene);
+        window.setFullScreenExitHint("");
+        window.setFullScreen(true);
         window.show();
     }
 }

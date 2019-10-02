@@ -1,0 +1,16 @@
+.root {
+    -fx-font-size: 20px;
+}
+
+.button {
+    -fx-font-size: 20px;
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #000000;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+#deleteSelected {
+    -fx-background-color: #FF4B4B;
+}

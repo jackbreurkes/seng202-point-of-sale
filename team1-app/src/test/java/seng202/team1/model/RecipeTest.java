@@ -88,10 +88,28 @@ class RecipeTest {
         });
 
         // ingredient amounts contains a 0 for an item
-        fail("not yet implemented");
+        Set<FoodItem> ingredients3 = new HashSet<>();
+        ingredients3.add(new FoodItem("2468", "borga", UnitType.COUNT));
+
+        Set<FoodItem> addableIngredients3 = new HashSet<>();
+
+        Map<String, Integer> ingredientAmounts3 = new HashMap<String, Integer>();
+        ingredientAmounts3.put("2468", 0);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Recipe(ingredients3, addableIngredients3, ingredientAmounts3, 1);
+        });
 
         // ingredient amounts contains a 0 for an addable item
-        fail("not yet implemented");
+        ingredientAmounts3.remove("2348");
+        ingredientAmounts3.put("2468", 1);
+
+        addableIngredients3.add(new FoodItem("9865", "iPhone", UnitType.COUNT));
+        ingredientAmounts3.put("9865", 0);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Recipe(ingredients3, addableIngredients3, ingredientAmounts3, 1);
+        });
     }
 
     @Disabled
@@ -110,7 +128,7 @@ class RecipeTest {
         Map<String, Integer> ingredientAmounts1 = new HashMap<String, Integer>();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            Recipe testRecipe1 = new Recipe(ingredients1, addableIngredients1, ingredientAmounts1, 0);
+            Recipe testRecipe1 = new Recipe(ingredients1, addableIngredients1, ingredientAmounts1, 1);
             testRecipe1.addIngredient(niceBun1);
         });
 
@@ -123,7 +141,7 @@ class RecipeTest {
         Map<String, Integer> ingredientAmounts2 = new HashMap<String, Integer>();
         FoodItem tofuPatty2 = new FoodItem("2222", "tofu patty", UnitType.COUNT);
         ingredientAmounts2.put("6969", 1);
-        ingredientAmounts2.put("2222", 0);
+        ingredientAmounts2.put("2222", 1);
         addableIngredients2.add(tofuPatty2);
 
         Recipe testRecipe2 = new Recipe(ingredients2, addableIngredients2, ingredientAmounts2, 1);
@@ -147,7 +165,7 @@ class RecipeTest {
 
         testRecipe3.addIngredient(durian);
         Set<FoodItem> testSet2 = new HashSet<>();
-        testSet.add(durian);
+        testSet2.add(durian);
         assertEquals(testSet2, testRecipe3.getIngredients());
 
         // Adding a food item that is already in the recipe
@@ -155,11 +173,16 @@ class RecipeTest {
         Set<FoodItem> ingredients4 = new HashSet<>();
         ingredients4.add(bread);
 
+        Set<FoodItem> addableIngredients4 = new HashSet<>();
+
         Map<String, Integer> ingredientAmounts4 = new HashMap<String, Integer>();
         ingredientAmounts4.put("9999", 1);
 
-        Recipe testRecipe4 = new Recipe(ingredients4, new HashSet<>(), ingredientAmounts4, 1);
-        testRecipe4.addIngredient(bread);
+        Recipe testRecipe4 = new Recipe(ingredients4, addableIngredients4, ingredientAmounts4, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testRecipe4.addIngredient(bread);
+        });
 
         Set<FoodItem> testSet4 = new HashSet<>();
         testSet4.add(bread);
@@ -187,7 +210,7 @@ class RecipeTest {
         Map<String, Integer> ingredientAmounts1 = new HashMap<String, Integer>();
         ingredientAmounts1.put("4444", 1);
 
-        Recipe testRecipe1 = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 0);
+        Recipe testRecipe1 = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 1);
         testRecipe1.removeIngredient("4444");
 
         Set<FoodItem> testSet1 = new HashSet<>();
@@ -210,9 +233,9 @@ class RecipeTest {
 
         Map<String, Integer> ingredientAmounts2 = new HashMap<String, Integer>();
         ingredientAmounts2.put("1234", 1);
-        ingredientAmounts2.put("1123", 0);
+        ingredientAmounts2.put("1123", 1);
 
-        Recipe testRecipe2 = new Recipe(ingredients2, addableIngredients2, ingredientAmounts2, 0);
+        Recipe testRecipe2 = new Recipe(ingredients2, addableIngredients2, ingredientAmounts2, 1);
         testRecipe2.addIngredient(cheese);
         testRecipe2.removeIngredient("1123");
 
@@ -223,42 +246,128 @@ class RecipeTest {
     @Disabled
     void getIsVegetarian() {
         // unaltered recipe that is vegetarian by default
-        fail("not yet implemented");
+        FoodItem bread = new FoodItem("4567", "bread", UnitType.COUNT);
+        bread.setIsVegetarian(true);
+
+        Set<FoodItem> ingredients1 = new HashSet<>();
+        ingredients1.add(bread);
+
+        Map<String, Integer> ingredientAmounts1 = new HashMap<String, Integer>();
+        ingredientAmounts1.put("4567", 10);
+
+        Recipe breadSandwich = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 1);
+
+        assertEquals(true, breadSandwich.getIsVegetarian());
 
         // unaltered recipe that is not vegetarian by default
-        fail("not yet implemented");
+        FoodItem ham = new FoodItem("7777", "ham", UnitType.COUNT);
+        ingredients1.add(ham);
+
+        ingredientAmounts1.put("7777", 1);
+
+        Recipe hamSandwich = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 1);
+
+        assertEquals(false, hamSandwich.getIsVegetarian());
 
         // Adding a non vegetarian food item to a currently vegetarian recipe
-        fail("not yet implemented");
+        Set<FoodItem> ingredients2 = new HashSet<>();
+        ingredients2.add(bread);
+
+        Set<FoodItem> addableIngredients2 = new HashSet<>();
+        addableIngredients2.add(ham);
+
+        Recipe sandwich = new Recipe(ingredients2, addableIngredients2, ingredientAmounts1, 1);
+
+        assertEquals(true, sandwich.getIsVegetarian());
+
+        sandwich.addIngredient(ham);
+
+        assertEquals(false, sandwich.getIsVegetarian());
 
         // removing the only non-vegetarian item from a recipe
-        fail("not yet implemented");
+        sandwich.removeIngredient("7777");
+
+        assertEquals(true, sandwich.getIsVegetarian());
     }
 
     @Test
     @Disabled
     void getIsVegan() {
         // default values
-        fail("not yet implemented");
+        FoodItem veganBread = new FoodItem("4568", "vegan bread", UnitType.COUNT);
+        veganBread.setIsVegan(true);
+
+        Set<FoodItem> ingredients1 = new HashSet<>();
+        ingredients1.add(veganBread);
+
+        Map<String, Integer> ingredientAmounts1 = new HashMap<String, Integer>();
+        ingredientAmounts1.put("4568", 1);
+
+        Recipe veganBreadSandwich = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 1);
+
+        assertEquals(true, veganBreadSandwich.getIsVegan());
+
+        assertEquals(true, veganBreadSandwich.getIsVegetarian());
 
         // Adding a non-vegan food item to a currently vegan recipe
-        fail("not yet implemented");
+        FoodItem normalBread = new FoodItem("2222", "normal bread", UnitType.COUNT);
+
+        Set<FoodItem> addableIngredients1 = new HashSet<>();
+        addableIngredients1.add(normalBread);
+
+        ingredientAmounts1.put("2222", 1);
+
+        Recipe normalSandwich = new Recipe(ingredients1, addableIngredients1, ingredientAmounts1, 1);
+
+        assertEquals(true, normalSandwich.getIsVegan());
+
+        normalSandwich.addIngredient(normalBread);
+
+        assertEquals(false, normalSandwich.getIsVegan());
 
         // removing the only non-vegan item from a recipe
-        fail("not yet implemented");
+        normalSandwich.removeIngredient("2222");
+
+        assertEquals(true, normalSandwich.getIsVegan());
     }
 
     @Test
     @Disabled
     void getIsGlutenFree() {
         // default values
-        fail("not yet implemented");
+        FoodItem GFBread = new FoodItem("6666", "gluten free bread", UnitType.COUNT);
+        GFBread.setIsGlutenFree(true);
 
-        // Adding a non-vegan food item to a currently vegan recipe
-        fail("not yet implemented");
+        Set<FoodItem> ingredients1 = new HashSet<>();
+        ingredients1.add(GFBread);
 
-        // removing the only non-vegan item from a recipe
-        fail("not yet implemented");
+        Map<String, Integer> ingredientAmounts1 = new HashMap<String, Integer>();
+        ingredientAmounts1.put("6666", 1);
+
+        Recipe GFBreadSandwich = new Recipe(ingredients1, new HashSet<>(), ingredientAmounts1, 1);
+
+        assertEquals(true, GFBreadSandwich.getIsGlutenFree());
+
+        // Adding a non-GF food item to a currently GF recipe
+        FoodItem normalBread = new FoodItem("2222", "normal bread", UnitType.COUNT);
+
+        Set<FoodItem> addableIngredients1 = new HashSet<>();
+        addableIngredients1.add(normalBread);
+
+        ingredientAmounts1.put("2222", 1);
+
+        Recipe normalSandwich = new Recipe(ingredients1, addableIngredients1, ingredientAmounts1, 1);
+
+        assertEquals(true, normalSandwich.getIsGlutenFree());
+
+        normalSandwich.addIngredient(normalBread);
+
+        assertEquals(false, normalSandwich.getIsGlutenFree());
+
+        // removing the only non-GF item from a recipe
+        normalSandwich.removeIngredient("2222");
+
+        assertEquals(true, normalSandwich.getIsGlutenFree());
     }
 
     @Test
@@ -280,10 +389,10 @@ class RecipeTest {
 
         Map<String, Integer> ingredientAmounts = new HashMap<String, Integer>();
         ingredientAmounts.put(bread.getCode(), 1);
-        ingredientAmounts.put(banana.getCode(), 2);
-        ingredientAmounts.put(apple.getCode(), 3);
+        ingredientAmounts.put(banana.getCode(), 1);
+        ingredientAmounts.put(apple.getCode(), 1);
 
-        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 0);
+        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
         assertEquals(101, testRecipe.getCalories());
 
         // Correct after adding an addable ingredient

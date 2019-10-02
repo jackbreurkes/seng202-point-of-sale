@@ -17,6 +17,7 @@ import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class EditDataController {
 
@@ -47,6 +48,9 @@ public class EditDataController {
 
     @FXML
     private Text statusText;
+
+    @FXML
+    private Button deleteSelected;
 
     TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
@@ -95,13 +99,36 @@ public class EditDataController {
     }
 
     /**
-     * deletes the selected item
+     * Deletes the selected item
+     * If null pointer to the selectedItem then it throws an information box
+     * Else a confirmation alert to confirm changes.
      */
     public void deleteSelectedItem() {
+
         FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
-        foodStorage.removeFoodItem(selectedItemD.getCode());
-        selectedItem = null;
-        updateTable();
+
+        if (selectedItemD == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Error: No data selected");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Click OK to confirm data deletion");
+            Optional<ButtonType> action = alert.showAndWait();
+
+            if(action.get() == ButtonType.OK) {
+                //FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
+                foodStorage.removeFoodItem(selectedItemD.getCode());
+                selectedItem = null;
+                updateTable();
+            }
+
+        }
+
     }
 
     /**

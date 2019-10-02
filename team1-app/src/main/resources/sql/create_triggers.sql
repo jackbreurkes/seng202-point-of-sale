@@ -1,0 +1,9 @@
+CREATE TRIGGER IF NOT EXISTS update_order_time
+AFTER UPDATE ON CustomerOrder
+FOR EACH ROW
+WHEN OLD.Status != NEW.Status
+BEGIN
+  UPDATE CustomerOrder
+  SET LastUpdated = CURRENT_TIMESTAMP
+  WHERE Id = OLD.Id;
+END;
