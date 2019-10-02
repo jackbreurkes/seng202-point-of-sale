@@ -67,6 +67,10 @@ public class UploadHandler {
                 if (storageFoodItem == null) {
                     itemStorage.addFoodItem(foodItem, 1);
                 } else {
+
+                    // LETS USER choose between keeping old value or overwriting data
+                    // Consult the GUI pros
+
                     itemStorage.updateFoodItem(foodItem);
                     itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
                 }
