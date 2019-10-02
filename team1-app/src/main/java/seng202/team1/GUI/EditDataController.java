@@ -96,8 +96,9 @@ public class EditDataController {
     }
 
     /**
-     * deletes the selected item
-     *
+     * Deletes the selected item
+     * If null pointer to the selectedItem then it throws an information box
+     * Else a confirmation alert to confirm changes.
      */
     public void deleteSelectedItem() {
 
@@ -113,7 +114,7 @@ public class EditDataController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete data?");
+            alert.setContentText("Click OK to confirm data deletion?");
             Optional<ButtonType> action = alert.showAndWait();
 
             if(action.get() == ButtonType.OK) {
