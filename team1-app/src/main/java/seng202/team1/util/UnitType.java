@@ -5,8 +5,8 @@ package seng202.team1.util;
  */
 public enum UnitType {
     GRAM("g"),
-    ML("ml"),
-    COUNT("count");
+    ML("m"),
+    COUNT("c");
 
     private String string;
 
