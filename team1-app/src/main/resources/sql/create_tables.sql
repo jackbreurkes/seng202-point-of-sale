@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS CustomerOrder
  Status /* the status of the order (Creating='c', Submitted='s', Completed='d', Cancelled='x', Refunded='r') */ CHAR(1) NOT NULL
     CONSTRAINT check_status CHECK (Status in ('c', 's', 'd', 'x', 'r')),
  Note /* any notes added to the order */ VARCHAR(8000),
- LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, /* TODO update with trigger */
+ LastUpdated /* the time the order's status was last updated in unix time */ DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  Location /* the location the order was processed if known */ VARCHAR(8000),
  Weather /* the location the order was processed if known */ VARCHAR(8000));
 
