@@ -1,5 +1,6 @@
 package seng202.team1.data;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
@@ -16,7 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class FoodItemDAOTest {
 
     protected FoodItemDAO foodStorage;
-    private FoodItem testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
+    protected FoodItem testItem;
+
+    @BeforeEach
+    void testtest() {
+        testItem  = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
+    }
 
     @Test
     void testGetByCode() {
@@ -142,7 +148,7 @@ abstract class FoodItemDAOTest {
         testItem.setRecipe(testRecipe);
         foodStorage.addFoodItem(testItem, 0);
 
-        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+        assertEquals(testRecipe, foodStorage.getFoodItemByCode(testItem.getCode()).getRecipe());
     }
 
 

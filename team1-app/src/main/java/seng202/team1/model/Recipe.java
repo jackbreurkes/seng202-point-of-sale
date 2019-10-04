@@ -188,4 +188,8 @@ public class Recipe {
                 Objects.equals(addableIngredients, recipe.addableIngredients);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(amountCreated, ingredientAmounts, ingredients, addableIngredients);
+    }
 }

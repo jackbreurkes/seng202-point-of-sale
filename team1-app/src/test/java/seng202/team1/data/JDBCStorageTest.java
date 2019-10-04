@@ -28,6 +28,27 @@ class JDBCStorageFoodItemDAOTest extends FoodItemDAOTest {
         fail(); // this block disables the test only for this subclass of the FoodItemDAOTest class
     }
 
+    @Test
+    @Override
+    @Disabled
+    void testGetAll() {
+        fail(); // this block disables the test only for this subclass of the FoodItemDAOTest class
+    }
+
+//    @Test
+//    @Override
+//    @Disabled
+//    void testGetByCode() {
+//        fail(); // this block disables the test only for this subclass of the FoodItemDAOTest class
+//    }
+
+    @Test
+    @Override
+    @Disabled
+    void testRemove() {
+        fail(); // this block disables the test only for this subclass of the FoodItemDAOTest class
+    }
+
 }
 
 class JDBCStorageOrderDAOTest extends OrderDAOTest {

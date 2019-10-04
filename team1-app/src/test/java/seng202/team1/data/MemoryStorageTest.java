@@ -3,6 +3,8 @@ package seng202.team1.data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import seng202.team1.model.FoodItem;
+import seng202.team1.util.UnitType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

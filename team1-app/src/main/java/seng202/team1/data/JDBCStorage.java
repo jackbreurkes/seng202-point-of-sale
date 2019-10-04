@@ -35,13 +35,15 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return instance;
     }
 
-    public void resetInstance() {
+    public void resetInstance() { // TODO this isn't working properly??
         String sql = "DELETE FROM FoodItem;\n" +
                 "DELETE FROM Recipe;\n" +
                 "DELETE FROM RecipeContains;\n" +
                 "DELETE FROM CustomerOrder;\n" +
                 "DELETE FROM OrderContains;\n" +
-                "DELETE FROM OrderedFoodItem;";
+                "DELETE FROM OrderedFoodItem;\n" +
+                "DELETE FROM FoodItem;\n" +
+                "DELETE FROM Recipe;";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
@@ -87,7 +89,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             calPerUnit = rs.getString("CalPerUnit");
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
 
@@ -110,7 +112,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
 
-        //result.setRecipe(getFoodItemRecipe(code));
+        result.setRecipe(getFoodItemRecipe(code));
 
         return result;
     }
@@ -121,7 +123,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, getFoodItemIdFromCode(foodItemCode));
+            pstmt.setString(1, foodItemCode);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next() == false) {
@@ -131,7 +133,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null; // TODO error handling?
         }
     }
@@ -143,9 +145,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             id = rs.getInt("Id");
             amountCreated = rs.getInt("AmountCreated");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
+
 
         Set<FoodItem> ingredients = new HashSet<>();
         Set<FoodItem> addableIngredients = new HashSet<>();
@@ -157,7 +160,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     private void populateRecipeData(int recipeId, Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts) {
-        String sql = "SELECT * FROM RecipeContains WHERE Recipe = ? LIMIT 1";
+        String sql = "SELECT * FROM RecipeContains WHERE Recipe = ?";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -194,7 +197,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -359,7 +362,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(8, alteredItem.getCode());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         deleteRecipeWithProduct(alteredItem);
@@ -467,7 +470,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(1, code);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -490,7 +493,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(2, code);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -647,32 +650,23 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     public static void main(String[] args) {
         JDBCStorage storage = JDBCStorage.getInstance();
-//        storage.updateFoodItem(new FoodItem("CRACKERS", "A Mouldy Cracker", UnitType.COUNT));
-//        storage.setFoodItemStock("PIZZA", 20);
-        Order testOrder = new Order();
-        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
-        testOrder.addItem(new FoodItem("OOHYEA", "test item", UnitType.COUNT));
-        storage.addOrder(testOrder);
-        int orderId = testOrder.getOrderID();
-        testOrder = null;
-        testOrder = storage.getOrderByID(orderId);
-        System.out.println(testOrder.getOrderContents().size());
-        for (FoodItem item : testOrder.getOrderContents()) {
-            System.out.println(item);
-        }
-        try {
-            //storage.addOrder(new Order(1));
-//            Set<FoodItem> items = storage.getAllFoodItems();
-//            for (FoodItem item : items) {
-//                System.out.println(item);
-//                System.out.println(storage.getFoodItemStock(item.getCode()));
-//            }
-//            storage.getFoodItemByCode("CRACKERS");
-//            storage.resetInstance();
-//            System.out.println(storage.getFoodItemByCode("CRACKERS"));
-        } catch (Exception e) {
-            System.out.println("error thrown:" + e);
-        }
+        storage.resetInstance();
+
+        FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        Map<String, Integer> ingredientAmounts = new HashMap<>();
+        ingredients.add(testIngredient);
+        ingredientAmounts.put(testIngredient.getCode(), 2);
+
+        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
+        FoodItem testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
+        testItem.setRecipe(testRecipe);
+        storage.addFoodItem(testItem, 0);
+
+        FoodItem result = storage.getFoodItemByCode(testItem.getCode());
+        System.out.println(result.getRecipe().getIngredients());
+        System.out.println(result.getRecipe().getIngredientAmounts());
     }
 
 

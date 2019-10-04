@@ -17,10 +17,9 @@ CREATE TABLE IF NOT EXISTS FoodItem
 
 
 CREATE TABLE IF NOT EXISTS Recipe
-(Id /* unique identifier for a Recipe */ INTEGER,
+(Id /* unique identifier for a Recipe */ INTEGER PRIMARY KEY,
  Product /* the Id of the FoodItem created by the Recipe */ INTEGER UNIQUE NOT NULL REFERENCES FoodItem,
- AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL,
- PRIMARY KEY (Id, Product));
+ AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL);
 
 
 CREATE TABLE IF NOT EXISTS RecipeContains
