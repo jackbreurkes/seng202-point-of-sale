@@ -25,9 +25,10 @@ import static org.junit.Assert.assertEquals;
 
 public class DataHandlingSteps {
 
-        FoodItemDAO itemStorage;
-        FoodItem foodItem;
-        BigMoney foodItemCost;
+    static String MONEY_COUNTRY_CODE_PREFIX = "NZD ";
+    FoodItemDAO itemStorage;
+    FoodItem foodItem;
+    BigMoney foodItemCost;
 
 
     @Given("XML file from {string} is uploaded")
@@ -59,8 +60,7 @@ public class DataHandlingSteps {
         if (foodItem == null) {
             throw new cucumber.api.PendingException(foodItemCode + " has not been added to the database");
         } else {
-            String moneyNZD = "NZD ";
-            foodItemCost = BigMoney.parse(moneyNZD.concat(Integer.toString(count * foodItem.getCost().getAmountMajorInt())));
+            foodItemCost = foodItem.getCost().multipliedBy(count);
         }
 //        if (!valid) {
 //            throw new cucumber.api.PendingException(valid + " has not been added to the database");
@@ -71,9 +71,8 @@ public class DataHandlingSteps {
 
     @Then("the total cost is ${int}")
     public void the_total_cost_is_$(Integer intCost) {
-        String expectedMoneyNZD = "NZD ";
-        BigMoney expectedCostNZD = BigMoney.parse(expectedMoneyNZD.concat(Integer.toString(intCost)));
-        assertEquals(foodItemCost, expectedCostNZD);
+        BigMoney expectedCostNZD = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + Float.toString(intCost));
+        assertEquals(0, foodItemCost.compareTo(expectedCostNZD));
     }
 
 
