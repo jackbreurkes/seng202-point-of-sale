@@ -534,10 +534,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public Order getOrderByID(int id) {
-        if (id == Order.DEFAULT_ID) {
-            throw new InvalidDataCodeException("given order has the default id " + Order.DEFAULT_ID + ". set a valid ID");
-        }
-
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
@@ -553,7 +549,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null; // TODO error handling?
         }
     }
@@ -602,8 +598,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             throw new IllegalArgumentException("cannot add an empty order");
         }
 
-        if (order.getOrderID() != Order.DEFAULT_ID) {
-            throw new InvalidDataCodeException("cannot add order with a non-default id. please use update");
+        if (getOrderByID(order.getOrderID()) != null) {
+            throw new InvalidDataCodeException("order with the given order's id already exists. please use update.");
         }
 
         String insertOrder = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
@@ -625,6 +621,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         for (FoodItem item : order.getOrderContents()) {
             addOrderedFoodItem(order, item);
         }
+    }
+
+    @Override
+    public Set<Order> getAllSubmittedOrders() {
+        return null;
     }
 
     @Override
@@ -651,11 +652,5 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public void removeOrder(int ID) {
 
     }
-
-    public static void main(String[] args) {
-        JDBCStorage storage = JDBCStorage.getInstance();
-        storage.resetInstance();
-    }
-
 
 }

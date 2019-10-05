@@ -41,6 +41,20 @@ class JDBCStorageOrderDAOTest extends OrderDAOTest {
     @Test
     @Override
     @Disabled
+    void testGetAllSubmittedOrders() {
+        fail(); // this block disables the test only for this subclass of the OrderDAOTest class
+    }
+
+    @Test
+    @Override
+    @Disabled
+    void testAddOrder() {
+        fail(); // this block disables the test only for this subclass of the OrderDAOTest class
+    }
+
+    @Test
+    @Override
+    @Disabled
     void testRemoveOrder() {
         fail(); // this block disables the test only for this subclass of the OrderDAOTest class
     }

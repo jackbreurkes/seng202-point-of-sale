@@ -6,8 +6,12 @@ import org.junit.jupiter.api.Disabled;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +38,47 @@ abstract class OrderDAOTest {
         items = orderStorage.getAllOrders();
         assertEquals(1, items.size());
         assertTrue(items.contains(testOrder));
+    }
 
+    @Test
+    void testGetAllSubmittedOrders() {
+        Set<Order> expectedResult = new HashSet<Order>();
+
+        // no orders in database
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+
+        // single submitted order
+        Order testOrder1 = new Order();
+        testOrder1.setId(1);
+        testOrder1.setStatus(OrderStatus.SUBMITTED);
+        orderStorage.addOrder(testOrder1);
+        expectedResult.add(testOrder1);
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+
+        // two submitted orders
+        Order testOrder2 = new Order();
+        testOrder2.setId(2);
+        testOrder2.setStatus(OrderStatus.SUBMITTED);
+        orderStorage.addOrder(testOrder2);
+        expectedResult.add(testOrder2);
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+
+        // un-submitted orders in storage
+        Order testOrder3 = new Order();
+        testOrder3.setId(3);
+        testOrder3.setStatus(OrderStatus.COMPLETED);
+        orderStorage.addOrder(testOrder3);
+        Order testOrder4 = new Order();
+        testOrder4.setId(4);
+        testOrder4.setStatus(OrderStatus.REFUNDED);
+        orderStorage.addOrder(testOrder4);
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+
+        // existing submitted order marked as completed
+        expectedResult.remove(testOrder1);
+        testOrder1.cancelOrder();
+        orderStorage.updateOrder(testOrder1);
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
     }
 
     @Test
@@ -42,14 +86,7 @@ abstract class OrderDAOTest {
         testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
 
-
         assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
-
-        //cant get an order with the default ID
-        Order testOrder2 = new Order();
-        assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.getOrderByID(testOrder2.getOrderID());
-        });
 
         //cant get an order that doesn't exist in the system
         assertNull(orderStorage.getOrderByID(testOrder.getOrderID() + 1));
@@ -57,7 +94,6 @@ abstract class OrderDAOTest {
 
     @Test
     void testAddOrder() {
-
         //cant add an empty order.
         assertThrows(IllegalArgumentException.class, () -> {
             orderStorage.addOrder(testOrder);
@@ -75,6 +111,14 @@ abstract class OrderDAOTest {
         // test adding null
         assertThrows(NullPointerException.class, () -> {
             orderStorage.addOrder(null);
+        });
+
+        Order creatingOrder = new Order();
+        creatingOrder.addItem(testItem);
+        creatingOrder.setStatus(OrderStatus.CREATING);
+        // test adding a creating order
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderStorage.addOrder(creatingOrder);
         });
     }
 

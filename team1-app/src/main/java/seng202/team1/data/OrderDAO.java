@@ -8,9 +8,15 @@ public interface OrderDAO {
 
     /**
      * returns all the Orders stored in the system.
-     * @return a List of all Orders stored in the system
+     * @return a Set of all Orders stored in the system
      */
     Set<Order> getAllOrders();
+
+    /**
+     * returns all the Orders stored in the system with the SUBMITTED OrderStatus.
+     * @return a Set of all submitted orders
+     */
+    Set<Order> getAllSubmittedOrders();
 
     /**
      * gets a single Order from the system.
