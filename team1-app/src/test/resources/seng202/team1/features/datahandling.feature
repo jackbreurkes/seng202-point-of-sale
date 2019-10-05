@@ -37,6 +37,11 @@ Feature: User handles data using the app
     And adds food item to database
     Then the food item "PAELLA" should be successfully added to the database storage
 
+  Scenario: User deletes food item from database storage
+    Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
+    When user deletes food item with the code "CHEESEBURG"
+    Then "CHEESEBURG" should be successfully removed from the database storage
+
 
 
 

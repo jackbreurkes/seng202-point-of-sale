@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DataHandlingSteps {
 
@@ -169,6 +170,23 @@ public class DataHandlingSteps {
         }
     }
 
+    @When("user deletes food item with the code {string}")
+    public void user_deletes_food_item_with_the_code(String toBeDeletedCode) {
+        try {
+            itemStorage.removeFoodItem(toBeDeletedCode);
+        } catch (InvalidDataCodeException idce) {
+            throw new cucumber.api.PendingException(idce.getMessage());
+        }
+    }
+
+    @Then("{string} should be successfully removed from the database storage")
+    public void should_be_successfully_removed_from_the_database_storage(String expectedDeletedCode) {
+        try {
+            assertNull(itemStorage.getFoodItemByCode(expectedDeletedCode));
+        } catch (AssertionError ae) {
+            throw new cucumber.api.PendingException(expectedDeletedCode + " has not been deleted from the database");
+        }
+    }
 
 
 
