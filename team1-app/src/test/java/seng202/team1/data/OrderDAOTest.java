@@ -19,13 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class OrderDAOTest {
 
     protected OrderDAO orderStorage;
-    private Order testOrder = new Order();
-    private FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
-    private FoodItem testItem2 = new FoodItem("TES2", "Another Test Item", UnitType.COUNT);
+    private Order testOrder;
+    private FoodItem testItem;
+    private FoodItem testItem2;
 
     @BeforeEach
-    void resetTestOrder() {
+    void resetTestValues() {
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        testItem2 = new FoodItem("TES2", "Another Test Item", UnitType.COUNT);
         testOrder = new Order();
+        testOrder.addItem(testItem);
+        testOrder.addItem(testItem2);
+        testOrder.submitOrder();
     }
 
     @Test
@@ -50,7 +55,8 @@ abstract class OrderDAOTest {
         // single submitted order
         Order testOrder1 = new Order();
         testOrder1.setId(1);
-        testOrder1.setStatus(OrderStatus.SUBMITTED);
+        testOrder1.addItem(testItem);
+        testOrder1.submitOrder();
         orderStorage.addOrder(testOrder1);
         expectedResult.add(testOrder1);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
@@ -58,7 +64,8 @@ abstract class OrderDAOTest {
         // two submitted orders
         Order testOrder2 = new Order();
         testOrder2.setId(2);
-        testOrder2.setStatus(OrderStatus.SUBMITTED);
+        testOrder2.addItem(testItem);
+        testOrder2.submitOrder();
         orderStorage.addOrder(testOrder2);
         expectedResult.add(testOrder2);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
@@ -66,10 +73,13 @@ abstract class OrderDAOTest {
         // un-submitted orders in storage
         Order testOrder3 = new Order();
         testOrder3.setId(3);
-        testOrder3.setStatus(OrderStatus.COMPLETED);
+        testOrder3.addItem(testItem);
+        testOrder3.submitOrder();
+        testOrder3.completeOrder();
         orderStorage.addOrder(testOrder3);
         Order testOrder4 = new Order();
         testOrder4.setId(4);
+        testOrder4.addItem(testItem);
         testOrder4.setStatus(OrderStatus.REFUNDED);
         orderStorage.addOrder(testOrder4);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
@@ -83,7 +93,6 @@ abstract class OrderDAOTest {
 
     @Test
     void testGetOrderById() {
-        testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
 
         assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
@@ -94,12 +103,11 @@ abstract class OrderDAOTest {
 
     @Test
     void testAddOrder() {
-        //cant add an empty order.
+        //cant add a CREATING order.
         assertThrows(IllegalArgumentException.class, () -> {
-            orderStorage.addOrder(testOrder);
+            orderStorage.addOrder(new Order());
         });
 
-        testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
         assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
 
@@ -126,14 +134,11 @@ abstract class OrderDAOTest {
     void testUpdateOrder() {
 
         //adds an order to storage, then updates the order and calls updateOrder, then checks the order was correctly updated
-        testOrder.addItem(testItem);
         orderStorage.addOrder(testOrder);
         int orderId = testOrder.getOrderID();
 
-        testOrder.submitOrder();
+        testOrder.cancelOrder();
         orderStorage.updateOrder(testOrder);
-        System.out.println(testOrder);
-        System.out.println(orderStorage.getOrderByID(orderId));
         assertEquals(testOrder, orderStorage.getOrderByID(orderId));
 
         //makes sure you cant update a null order
@@ -141,11 +146,18 @@ abstract class OrderDAOTest {
             orderStorage.updateOrder(null);
         });
 
-        // makes sure you can't update an order with a nonexisting Id
+        // can't update an order to the CREATING status
+        testOrder.setStatus(OrderStatus.CREATING);
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderStorage.updateOrder(testOrder);
+        });
+
+        // makes sure you can't update an order with a non-existing id
         testOrder.setId(orderId + 1);
         assertThrows(InvalidDataCodeException.class, () -> {
             orderStorage.updateOrder(testOrder);
         });
+
     }
 
     @Test

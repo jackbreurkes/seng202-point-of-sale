@@ -580,11 +580,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 pstmt2.setInt(2, insertedId);
                 pstmt2.executeUpdate();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -596,6 +596,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         if (order.getOrderContents().size() == 0) {
             throw new IllegalArgumentException("cannot add an empty order");
+        }
+
+        if (order.getOrderStatus() == OrderStatus.CREATING) {
+            throw new IllegalArgumentException("creating orders should not be stored in the database, please submit it first.");
         }
 
         if (getOrderByID(order.getOrderID()) != null) {
@@ -615,7 +619,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             order.setId(pstmt.getGeneratedKeys().getInt(1));
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         for (FoodItem item : order.getOrderContents()) {
@@ -625,13 +629,32 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public Set<Order> getAllSubmittedOrders() {
-        return null;
+        String sql = "SELECT * FROM CustomerOrder WHERE status = 's'";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            Set<Order> submittedOrders = new HashSet<Order>();
+            while (rs.next()) {
+                submittedOrders.add(readOrder(rs));
+            }
+            return submittedOrders;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void updateOrder(Order alteredOrder) {
         if (getOrderByID(alteredOrder.getOrderID()) == null) {
             throw new InvalidDataCodeException("order with given order's code does not exist in the database.");
+        }
+
+        if (alteredOrder.getOrderStatus() == OrderStatus.CREATING) {
+            throw new IllegalArgumentException("creating orders should not be stored in the database.");
         }
 
         String sql = "UPDATE CustomerOrder\n" +
