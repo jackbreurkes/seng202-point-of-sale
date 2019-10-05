@@ -6,13 +6,15 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
 import org.joda.money.BigMoney;
+
+import java.math.RoundingMode;
 import org.junit.Ignore;
-import org.junit.jupiter.api.Assertions;
 import org.xml.sax.SAXException;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.UploadHandler;
 import seng202.team1.model.FoodItem;
+import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.UnitType;
 
 import java.io.IOException;
@@ -29,6 +31,9 @@ public class DataHandlingSteps {
     FoodItemDAO itemStorage;
     FoodItem foodItem;
     BigMoney foodItemCost;
+    BigMoney updatedCost;
+    BigMoney discountedCost;
+    BigMoney expectedCostNZD;
 
 
     @Given("XML file from {string} is uploaded")
@@ -47,33 +52,114 @@ public class DataHandlingSteps {
     }
 
     @When("user wants to know the total cost of {int} {string}")
-    public void user_wants_to_know_the_total_cost_of(int count, String foodItemCode) {
-//        boolean valid = false;
-//        for (FoodItem foodItemStorage: itemStorage.getAllFoodItems()) {
-//            if (foodItemStorage.getCode() == foodItemCode) {
-//                valid = true;
-//                foodItem = foodItemStorage;
-//                break;
-//            }
-//        }
-        foodItem = itemStorage.getFoodItemByCode(foodItemCode);
+    public void user_wants_to_know_the_total_cost_of(int expectedCount, String expectedCode) {
+        foodItem = itemStorage.getFoodItemByCode(expectedCode);
         if (foodItem == null) {
-            throw new cucumber.api.PendingException(foodItemCode + " has not been added to the database");
+            throw new cucumber.api.PendingException(expectedCode + " has not been added to the database");
         } else {
-            foodItemCost = foodItem.getCost().multipliedBy(count);
+            foodItemCost = foodItem.getCost().multipliedBy(expectedCount);
         }
-//        if (!valid) {
-//            throw new cucumber.api.PendingException(valid + " has not been added to the database");
-//        } else {
-//            expectedCost.multipliedBy(count);
-//        }
     }
 
-    @Then("the total cost is ${int}")
-    public void the_total_cost_is_$(Integer intCost) {
-        BigMoney expectedCostNZD = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + Float.toString(intCost));
+    @Then("the total cost is ${double}")
+    public void the_total_cost_is_$(Double expectedCost) {
+        expectedCostNZD = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + expectedCost);
         assertEquals(0, foodItemCost.compareTo(expectedCostNZD));
     }
+
+    @When("user wants to update cost of a single {string} to ${double}")
+    public void user_wants_to_update_cost_of_a_single_to(String expectedCode, Double expectedUpdatedCost) {
+        foodItem = itemStorage.getFoodItemByCode(expectedCode);
+        if (foodItem == null) {
+            throw new cucumber.api.PendingException(expectedCode + " has not been added to the database");
+        } else {
+            updatedCost = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + expectedUpdatedCost);
+            foodItem.setCost(updatedCost);
+        }
+    }
+
+    @Then("cost is successfully updated to ${double}")
+    public void cost_is_successfully_updated_to_$(Double expectedUpdatedCost) {
+        expectedCostNZD = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + expectedUpdatedCost);
+        assertEquals(0, updatedCost.compareTo(expectedCostNZD));
+    }
+
+    @When("user wants to discount cost of a single {string} by {int}%")
+    public void user_wants_to_discount_cost_of_a_single_by(String expectedCode, Integer percentage) {
+        foodItem = itemStorage.getFoodItemByCode(expectedCode);
+        if (foodItem == null) {
+            throw new cucumber.api.PendingException(expectedCode + " has not been added to the database");
+        } else {
+            BigMoney discount = foodItem.getCost().multipliedBy(percentage).dividedBy(100, RoundingMode.FLOOR);
+            discountedCost = foodItem.getCost().minus(discount);
+            foodItem.setCost(discountedCost);
+        }
+    }
+
+    @Then("cost should be ${double}")
+    public void cost_should_be_$(Double expectedDiscountedCost) {
+        expectedCostNZD = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + expectedDiscountedCost);
+        assertEquals(0, discountedCost.compareTo(expectedCostNZD));
+    }
+
+
+    @When("user creates a new dish {string} with the code {string} and the unit {string}")
+    public void user_adds_a_new_dish_with_the_code_and_the_unit(String name, String code, String unitString) {
+        UnitType unitType = UnitType.GRAM;
+        switch(unitString) {
+            case "g":
+                unitType = UnitType.GRAM;
+                break;
+            case "ml":
+                unitType = UnitType.ML;
+                break;
+            case "c":
+                unitType = UnitType.COUNT;
+                break;
+            default:
+                throw new cucumber.api.PendingException(unitString + " does not correspond to a valid unit type");
+        }
+        try {
+            foodItem = new FoodItem(code, name, unitType);
+        } catch (IllegalArgumentException iae) {
+            throw new cucumber.api.PendingException(iae.getMessage());
+        }
+    }
+
+    @And("sets the food item's price to ${double}")
+    public void sets_the_food_item_s_price_to_$(Double cost) {
+        foodItemCost = BigMoney.parse(MONEY_COUNTRY_CODE_PREFIX + cost);
+        foodItem.setCost(foodItemCost);
+    }
+
+    @And("adds food item to database")
+    public void adds_food_item_to_database() {
+        try {
+            itemStorage.addFoodItem(foodItem, 1);
+        } catch (InvalidDataCodeException idce) {
+            throw new cucumber.api.PendingException(idce.getMessage());
+        }
+    }
+
+    @Then("the food item {string} should be successfully added to the database storage")
+    public void the_food_item_should_be_successfully_added_to_the_database_storage(String addedFoodCode) {
+        assertEquals(foodItem, itemStorage.getFoodItemByCode(addedFoodCode));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //    String source;

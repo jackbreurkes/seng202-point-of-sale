@@ -6,9 +6,44 @@ Feature: User handles data using the app
     When user wants to know the total cost of <count> "TOFUBURG"
     Then the total cost is $<total>
     Examples:
-      | count | total |
-      | 1     |  50   |
-      | 2     |  100  |
+      | count |  total   |
+      | 1     |  50.0    |
+      | 2     |  100.0   |
+
+  Scenario: Updating cost of tofu burger
+    Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
+    When user wants to update cost of a single "TOFUBURG" to $18.50
+    Then cost is successfully updated to $18.50
+
+  Scenario: Updating cost of hamburger
+    Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
+    When user wants to update cost of a single "BEEFBURG" to $20.50
+    Then cost is successfully updated to $20.50
+
+  Scenario Outline: Discounting cost of tofu burger
+    Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
+    When user wants to discount cost of a single "TOFUBURG" by <percentage>%
+    Then cost should be $<total>
+    Examples:
+      | percentage |  total   |
+      | 10         |  45.0    |
+      | 25         |  37.5    |
+      | 50         |  25.0    |
+
+  Scenario: A paella is added to the database storage
+    Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
+    When user creates a new dish "Paella" with the code "PAELLA" and the unit "c"
+    And sets the food item's price to $20.0
+    And adds food item to database
+    Then the food item "PAELLA" should be successfully added to the database storage
+
+
+
+
+
+
+
+
 
 
 #  Scenario: User uploads data from file
