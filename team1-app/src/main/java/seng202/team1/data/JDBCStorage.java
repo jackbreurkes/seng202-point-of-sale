@@ -35,23 +35,27 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return instance;
     }
 
-    public void resetInstance() { // TODO this isn't working properly??
-        String sql = "DELETE FROM FoodItem;\n" +
-                "DELETE FROM Recipe;\n" +
-                "DELETE FROM RecipeContains;\n" +
-                "DELETE FROM CustomerOrder;\n" +
-                "DELETE FROM OrderContains;\n" +
-                "DELETE FROM OrderedFoodItem;\n" +
-                "DELETE FROM FoodItem;\n" +
-                "DELETE FROM Recipe;";
+    public void resetInstance() {
+        String[] dropStatements = {
+                "DROP TABLE IF EXISTS OrderContains;",
+                "DROP TABLE IF EXISTS RecipeContains;",
+                "DROP TABLE IF EXISTS CustomerOrder;",
+                "DROP TABLE IF EXISTS Recipe;",
+                "DROP TABLE IF EXISTS OrderedFoodItem;",
+                "DROP TABLE IF EXISTS FoodItem;"
+        };
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for (String sql : dropStatements) {
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement()) {
+                // create a new table
+                stmt.execute(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        initializeDatabaseIfNotExists();
     }
 
     private void initializeDatabaseIfNotExists() {
@@ -651,22 +655,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public static void main(String[] args) {
         JDBCStorage storage = JDBCStorage.getInstance();
         storage.resetInstance();
-
-        FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
-        Set<FoodItem> ingredients = new HashSet<>();
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        Map<String, Integer> ingredientAmounts = new HashMap<>();
-        ingredients.add(testIngredient);
-        ingredientAmounts.put(testIngredient.getCode(), 2);
-
-        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
-        FoodItem testItem = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
-        testItem.setRecipe(testRecipe);
-        storage.addFoodItem(testItem, 0);
-
-        FoodItem result = storage.getFoodItemByCode(testItem.getCode());
-        System.out.println(result.getRecipe().getIngredients());
-        System.out.println(result.getRecipe().getIngredientAmounts());
     }
 
 
