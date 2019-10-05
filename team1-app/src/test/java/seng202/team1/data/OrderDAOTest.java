@@ -80,7 +80,9 @@ abstract class OrderDAOTest {
         Order testOrder4 = new Order();
         testOrder4.setId(4);
         testOrder4.addItem(testItem);
-        testOrder4.setStatus(OrderStatus.REFUNDED);
+        testOrder4.submitOrder();
+        testOrder4.completeOrder();
+        testOrder4.refundOrder();
         orderStorage.addOrder(testOrder4);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
 
@@ -121,10 +123,9 @@ abstract class OrderDAOTest {
             orderStorage.addOrder(null);
         });
 
+        // test adding a creating order
         Order creatingOrder = new Order();
         creatingOrder.addItem(testItem);
-        creatingOrder.setStatus(OrderStatus.CREATING);
-        // test adding a creating order
         assertThrows(IllegalArgumentException.class, () -> {
             orderStorage.addOrder(creatingOrder);
         });
@@ -147,9 +148,11 @@ abstract class OrderDAOTest {
         });
 
         // can't update an order to the CREATING status
-        testOrder.setStatus(OrderStatus.CREATING);
+        Order creatingTestOrder = new Order();
+        creatingTestOrder.addItem(testItem);
+        creatingTestOrder.setId(testOrder.getOrderID());
         assertThrows(IllegalArgumentException.class, () -> {
-            orderStorage.updateOrder(testOrder);
+            orderStorage.updateOrder(creatingTestOrder);
         });
 
         // makes sure you can't update an order with a non-existing id

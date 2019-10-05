@@ -216,28 +216,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             orderNote = rs.getString("Note");
             statusString = rs.getString("Status");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
 
-        OrderStatus status;
-        switch (statusString) {
-            case "c":
-                status = OrderStatus.CREATING;
-                break;
-            case "s":
-                status = OrderStatus.SUBMITTED;
-                break;
-            case "x":
-                status = OrderStatus.CANCELLED;
-                break;
-            case "r":
-                status = OrderStatus.REFUNDED;
-                break;
-            default:
-                status = OrderStatus.COMPLETED;
-                break;
-        }
         Order result = new Order();
         result.setId(id);
         result.setOrderNote(orderNote);
@@ -248,27 +230,54 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, result.getOrderID());
-                ResultSet rs2 = pstmt.executeQuery();
+            pstmt.setInt(1, result.getOrderID());
+            ResultSet rs2 = pstmt.executeQuery();
 
-                while (rs2.next()) {
-                    result.addItem(readFoodItem(rs2));
-                }
-
+            while (rs2.next()) {
+                result.addItem(readFoodItem(rs2));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        result.setStatus(status);
-
+        OrderStatus status = OrderStatus.getValueFromString(statusString);
+        setOrderStatus(result, status);
         return result;
+    }
+
+    /**
+     * sets the status of an Order using the correct sequence of status modifications.
+     * this has not been placed in Order since it only works for orders with the CREATING status.
+     * @param order the Order to set the status of
+     * @param status the desired OrderStatus
+     */
+    private void setOrderStatus(Order order, OrderStatus status) {
+        switch (status) {
+            case SUBMITTED:
+                order.submitOrder();
+                break;
+            case CANCELLED:
+                order.submitOrder();
+                order.cancelOrder();
+                break;
+            case COMPLETED:
+                order.submitOrder();
+                order.completeOrder();
+                break;
+            case REFUNDED:
+                order.submitOrder();
+                order.completeOrder();
+                order.refundOrder();
+            default:
+                break;
+        }
     }
 
     private int readFoodItemStock(ResultSet rs) {
         try {
             return rs.getInt("StockLevel");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return 0; // TODO error handling
         }
     }
@@ -310,7 +319,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null; // TODO error handling?
         }
     }
@@ -336,7 +345,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setString(9, Double.toString(item.getCaloriesPerUnit()));
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         if (item.getRecipe() != null) {
@@ -667,7 +676,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             pstmt.setInt(2, alteredOrder.getOrderID());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
