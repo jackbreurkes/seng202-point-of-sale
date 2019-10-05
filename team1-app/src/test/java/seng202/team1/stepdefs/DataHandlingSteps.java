@@ -276,74 +276,74 @@ public class DataHandlingSteps {
 //        Assertions.assertEquals(items, expectedItems);
 //
 //    }
-
-
-    @Ignore
-    @And("prompts the user to decide what to keep for each duplicate entry")
-    public void prompts_the_user_to_decide_what_to_keep_for_each_duplicate_entry() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-
-
-
-
-
-
-    @Ignore
-    @Given("the system is in data entry mode")
-    public void the_system_is_in_data_entry_mode() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @When("the user provides new or updated data in the correct field\\(s)")
-    public void the_user_provides_new_or_updated_data_in_the_correct_field_s() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("the system updates the data entry")
-    public void the_system_updates_the_data_entry() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-
-
-
-
-
-    @Ignore
-    @Given("the system is in the food item entry state")
-    public void the_system_is_in_the_food_item_entry_state() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @When("user adds a new food item")
-    public void user_adds_a_new_food_item() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("system adds new food item to database")
-    public void system_adds_new_food_item_to_database() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("system displays the new food item")
-    public void system_displays_the_new_food_item() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
+//
+//
+//    @Ignore
+//    @And("prompts the user to decide what to keep for each duplicate entry")
+//    public void prompts_the_user_to_decide_what_to_keep_for_each_duplicate_entry() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//
+//
+//
+//
+//
+//
+//    @Ignore
+//    @Given("the system is in data entry mode")
+//    public void the_system_is_in_data_entry_mode() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//    @Ignore
+//    @When("the user provides new or updated data in the correct field\\(s)")
+//    public void the_user_provides_new_or_updated_data_in_the_correct_field_s() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//    @Ignore
+//    @Then("the system updates the data entry")
+//    public void the_system_updates_the_data_entry() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//
+//
+//
+//
+//
+//    @Ignore
+//    @Given("the system is in the food item entry state")
+//    public void the_system_is_in_the_food_item_entry_state() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//    @Ignore
+//    @When("user adds a new food item")
+//    public void user_adds_a_new_food_item() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//    @Ignore
+//    @Then("system adds new food item to database")
+//    public void system_adds_new_food_item_to_database() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
+//
+//    @Ignore
+//    @Then("system displays the new food item")
+//    public void system_displays_the_new_food_item() {
+//        // Write code here that turns the phrase above into concrete actions
+//        //throw new cucumber.api.PendingException();
+//    }
 
 
 
