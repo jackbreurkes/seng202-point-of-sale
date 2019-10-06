@@ -47,7 +47,6 @@ class RecipeTest {
         recipe = new Recipe(testIngredients, testAddableIngredients, testIngredientAmounts, 1);
     }
 
-    @Disabled
     @Test
     void testConstructor() {
         // The '->' separates the parameters(left-side) from the actual expression (right-side)
@@ -110,9 +109,14 @@ class RecipeTest {
         assertThrows(IllegalArgumentException.class, () -> {
             new Recipe(ingredients3, addableIngredients3, ingredientAmounts3, 1);
         });
+
+        // ingredients contains an item that is also in addableIngredients
+        testIngredients.add(testAddableIngredients.iterator().next());
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Recipe(testIngredients, testAddableIngredients, testIngredientAmounts, 1);
+        });
     }
 
-    @Disabled
     @Test
     void addIngredient() {
         // Pass null pointer
@@ -189,7 +193,6 @@ class RecipeTest {
         assertEquals(testSet4, testRecipe4.getIngredients());
     }
 
-    @Disabled
     @Test
     void removeIngredient() {
         // Pass a null pointer
@@ -243,7 +246,6 @@ class RecipeTest {
     }
 
     @Test
-    @Disabled
     void getIsVegetarian() {
         // unaltered recipe that is vegetarian by default
         FoodItem bread = new FoodItem("4567", "bread", UnitType.COUNT);
@@ -291,7 +293,6 @@ class RecipeTest {
     }
 
     @Test
-    @Disabled
     void getIsVegan() {
         // default values
         FoodItem veganBread = new FoodItem("4568", "vegan bread", UnitType.COUNT);
@@ -332,7 +333,6 @@ class RecipeTest {
     }
 
     @Test
-    @Disabled
     void getIsGlutenFree() {
         // default values
         FoodItem GFBread = new FoodItem("6666", "gluten free bread", UnitType.COUNT);
@@ -371,7 +371,6 @@ class RecipeTest {
     }
 
     @Test
-    @Disabled
     void testCalories() {
         // Test correct initial number of calories
         Set<FoodItem> ingredients = new HashSet<>();

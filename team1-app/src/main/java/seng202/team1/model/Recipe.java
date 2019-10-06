@@ -5,9 +5,9 @@ import java.util.*;
 public class Recipe {
 
     private int amountCreated;
-    private Map<String, Integer> ingredientAmounts = new HashMap<>();
-    private Set<FoodItem> ingredients = new HashSet<>();
-    private Set<FoodItem> addableIngredients = new HashSet<>();
+    private final Map<String, Integer> ingredientAmounts;
+    private final Set<FoodItem> ingredients;
+    private final Set<FoodItem> addableIngredients;
 
     /**
      * Default constructor
@@ -29,13 +29,9 @@ public class Recipe {
             throw new IllegalArgumentException("a recipe cannot create 0 of its product");
         }
 
-        for (FoodItem ingredient : ingredients) {
-            if (!ingredientAmounts.containsKey(ingredient.getCode())) {
-                throw new IllegalArgumentException("ingredientAmounts does not contain an entry for " + ingredient.getCode());
-            }
-        }
-
-        for (FoodItem ingredient : addableIngredients) {
+        Set<FoodItem> union = new HashSet<FoodItem>(ingredients);
+        union.addAll(addableIngredients);
+        for (FoodItem ingredient : union) {
             if (!ingredientAmounts.containsKey(ingredient.getCode())) {
                 throw new IllegalArgumentException("ingredientAmounts does not contain an entry for " + ingredient.getCode());
             }
@@ -45,6 +41,12 @@ public class Recipe {
             if (amount.getValue() == 0) {
                 throw new IllegalArgumentException("the amount of the ingredient " + amount.getKey() + " cannot be 0.");
             }
+        }
+
+        Set<FoodItem> intersection = new HashSet<FoodItem>(ingredients);
+        intersection.retainAll(addableIngredients);
+        if (intersection.size() != 0) {
+            throw new IllegalArgumentException("a FoodItem cannot be contained in both ingredients and addableIngredients.");
         }
 
         this.amountCreated = amountCreated;
