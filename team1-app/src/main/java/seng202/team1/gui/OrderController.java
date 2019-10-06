@@ -1,25 +1,17 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import seng202.team1.data.DAOFactory;
-import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
 import seng202.team1.model.Order;
-import seng202.team1.util.UnitType;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class OrderController {
 

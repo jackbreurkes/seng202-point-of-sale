@@ -1,27 +1,17 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
-import seng202.team1.data.MemoryStorage;
 import seng202.team1.data.UploadHandler;
-import seng202.team1.model.FoodItem;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 

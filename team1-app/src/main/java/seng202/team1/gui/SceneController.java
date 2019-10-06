@@ -1,10 +1,9 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class SceneController {
 
         window.setScene(newScene);
         window.setFullScreenExitHint("");
-        window.setFullScreen(true);
+        //window.setFullScreen(true);
         window.show();
     }
 }

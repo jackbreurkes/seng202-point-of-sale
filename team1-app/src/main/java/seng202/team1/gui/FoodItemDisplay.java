@@ -1,14 +1,10 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import org.joda.money.BigMoney;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
-import seng202.team1.data.MemoryStorage;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
-import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
 public class FoodItemDisplay {

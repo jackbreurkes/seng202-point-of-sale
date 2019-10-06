@@ -1,4 +1,4 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

@@ -1,13 +1,10 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
-import seng202.team1.util.UnitType;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package seng202.team1;
 
-import seng202.team1.GUI.SampleApplication;
+import seng202.team1.gui.SampleApplication;
 
 /**
  * Hello world!

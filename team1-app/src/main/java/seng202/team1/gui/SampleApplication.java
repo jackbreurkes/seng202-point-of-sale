@@ -1,4 +1,4 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +24,7 @@ public class SampleApplication extends Application {
         Scene start = new Scene(root);
         start.getStylesheets().add("stylesheets/default.css");
         primaryStage.setScene(start);
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 

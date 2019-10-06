@@ -1,4 +1,4 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,13 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import seng202.team1.model.FoodItem;
-import seng202.team1.model.Order;
 
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MenuItemDisplay extends VBox {

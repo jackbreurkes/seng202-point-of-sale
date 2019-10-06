@@ -1,16 +1,10 @@
-package seng202.team1.GUI;
+package seng202.team1.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.joda.money.BigMoney;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.DAOFactory;
@@ -52,6 +46,10 @@ public class EditDataController {
     @FXML
     private Button deleteSelected;
 
+    @FXML private VBox rightPanelBox;
+
+    @FXML private RecipeView recipeView;
+
     TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
 
@@ -77,6 +75,19 @@ public class EditDataController {
 
         foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
+
+        recipeView.setParent(this);
+    }
+
+    /**
+     * returns the currently selected FoodItemDisplay's model FoodItem.
+     * @return the FoodItem that the currently selected FoodItemDisplay is modelling
+     */
+    protected FoodItem getSelectionAsFoodItem() {
+        if (foodItemTable.getSelectionModel().getSelectedItem() == null) {
+            return null;
+        }
+        return foodItemTable.getSelectionModel().getSelectedItem().getModelFoodItem();
     }
 
     /**
@@ -142,7 +153,7 @@ public class EditDataController {
             return;
         }
 
-        //new FoodItemWindowController(selectedItem.getModelFoodItem());
+        recipeView.updateModel(selectedItem.getRecipe());
 
         statusText.setText("editing " + selectedItem.getCode());
 
@@ -153,6 +164,10 @@ public class EditDataController {
         vegetarianCheckBox.setSelected(selectedItem.getIsVegetarian());
         veganCheckBox.setSelected(selectedItem.getIsVegan());
         glutenFreeCheckBox.setSelected(selectedItem.getIsGlutenFree());
+    }
+
+    public void editSelectedItemRecipe() {
+        System.out.println("edit recipe");
     }
 
     /**

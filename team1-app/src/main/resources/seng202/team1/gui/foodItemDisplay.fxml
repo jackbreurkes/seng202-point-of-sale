@@ -25,7 +25,7 @@
    </children>
 </fx:root>
 
-<!--<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.GUI.MenuItemDisplay">-->
+<!--<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.MenuItemDisplay">-->
 <!--<children>-->
 <!--   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">-->
 <!--      <image>-->
