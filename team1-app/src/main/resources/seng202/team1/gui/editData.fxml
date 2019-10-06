@@ -177,9 +177,9 @@
                </font>
             </Text>
             <RecipeView fx:id="recipeView"></RecipeView>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="BOTTOM_RIGHT" spacing="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="deleteSelected" mnemonicParsing="false" onAction="#deleteSelectedItem" text="delete item">
+                  <Button fx:id="deleteSelected" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#deleteSelectedItem" text="delete">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -187,7 +187,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="editItemButton" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#editSelectedItem" text="edit item">
+                  <Button fx:id="editItemButton" alignment="CENTER" minWidth="80.0" mnemonicParsing="false" onAction="#editSelectedItem" text="edit">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -196,6 +196,12 @@
                      </font>
                   </Button>
                </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </HBox>
          </children>
       </VBox>
