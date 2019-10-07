@@ -38,6 +38,12 @@ public class RecipeView extends VBox {
     }
 
     public void initialize() {
+        resetView();
+        ingredientsVBox.getChildren().add(new Label("no item selected."));
+    }
+
+    public void resetView() {
+        editRecipe.setText("edit recipe");
         editRecipe.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -53,7 +59,6 @@ public class RecipeView extends VBox {
         });
 
         resetIngredientList();
-        ingredientsVBox.getChildren().add(new Label("no item selected."));
     }
 
     public void setParent(EditDataController parent) {
@@ -62,7 +67,7 @@ public class RecipeView extends VBox {
 
     public void updateModel(Recipe modelRecipe) {
 
-        resetIngredientList();
+        resetView();
         addSelected.setVisible(false);
         model = new RecipeBuilder();
         model.loadExistingRecipeData(modelRecipe);
@@ -97,7 +102,7 @@ public class RecipeView extends VBox {
     private void saveChanges() {
         Recipe newRecipe = model.generateRecipe(1);
         parent.updateSelectedItemRecipe(newRecipe);
-
+        updateModel(newRecipe);
     }
 
     public void addSelectedItemInParent() {

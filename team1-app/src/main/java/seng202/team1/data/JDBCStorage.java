@@ -159,8 +159,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         Map<String, Integer> ingredientAmounts = new HashMap<>();
 
         populateRecipeData(id, ingredients, addableIngredients, ingredientAmounts);
-        Recipe result = new Recipe(ingredients, addableIngredients, ingredientAmounts, amountCreated);
-        return result;
+        try {
+            Recipe result = new Recipe(ingredients, addableIngredients, ingredientAmounts, amountCreated);
+            return result;
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     private void populateRecipeData(int recipeId, Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts) {

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import java.util.HashMap;
@@ -18,10 +19,19 @@ abstract class FoodItemDAOTest {
 
     protected FoodItemDAO foodStorage;
     protected FoodItem testItem;
+    protected Recipe testRecipe;
 
     @BeforeEach
     void testtest() {
         testItem  = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
+
+        FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        Map<String, Integer> ingredientAmounts = new HashMap<>();
+        ingredients.add(testIngredient);
+        ingredientAmounts.put(testIngredient.getCode(), 1);
+        testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
     }
 
     @Test
@@ -75,7 +85,7 @@ abstract class FoodItemDAOTest {
     }
 
     @Test
-    void testEdit() {
+    void testUpdate() {
         foodStorage.addFoodItem(testItem, 1000);
 
         FoodItem alteredItem = new FoodItem("ITEM1", "Canola Oil", UnitType.GRAM);
@@ -137,18 +147,34 @@ abstract class FoodItemDAOTest {
 
     @Test
     void testGetWithRecipe() {
-        FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
-        Set<FoodItem> ingredients = new HashSet<>();
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        Map<String, Integer> ingredientAmounts = new HashMap<>();
-        ingredients.add(testIngredient);
-        ingredientAmounts.put(testIngredient.getCode(), 1);
-
-        Recipe testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
         testItem.setRecipe(testRecipe);
         foodStorage.addFoodItem(testItem, 0);
 
         assertEquals(testRecipe, foodStorage.getFoodItemByCode(testItem.getCode()).getRecipe());
+    }
+
+    @Test
+    void testUpdateWithRecipe() {
+        foodStorage.addFoodItem(testItem, 1000);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+
+        // adding a recipe
+        testItem.setRecipe(testRecipe);
+        foodStorage.updateFoodItem(testItem);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+
+        // changing the recipe
+        RecipeBuilder recipeBuilder = new RecipeBuilder();
+        recipeBuilder.loadExistingRecipeData(testRecipe);
+        recipeBuilder.addIngredient(new FoodItem("INGR2", "test ingredient 2", UnitType.COUNT), 3);
+        testItem.setRecipe(recipeBuilder.generateRecipe(5));
+        foodStorage.updateFoodItem(testItem);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+
+        // removing the recipe
+        testItem.setRecipe(null);
+        foodStorage.updateFoodItem(testItem);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
     }
 
 

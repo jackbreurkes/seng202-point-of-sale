@@ -200,8 +200,6 @@ public class EditDataController {
             return;
         }
 
-        if (selectedItem.getModelFoodItem().getRecipe().equals(recipe))
-
         selectedItem.getModelFoodItem().setRecipe(recipe);
         foodStorage.updateFoodItem(selectedItem.getModelFoodItem());
     }
