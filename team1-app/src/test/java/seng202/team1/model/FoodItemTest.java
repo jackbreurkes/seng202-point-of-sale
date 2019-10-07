@@ -97,6 +97,15 @@ class FoodItemTest {
         // removing the existing recipe
         testItem.setRecipe(null);
         assertNull(testItem.getRecipe());
+
+        // setting a recipe that contains this FoodItem
+        ingredients.add(testItem);
+        ingredientAmounts.put(testItem.getCode(), 1);
+        assertThrows(IllegalArgumentException.class, () -> {
+            testItem.setRecipe(
+                    new Recipe(ingredients, addableIngredients, ingredientAmounts, 1)
+            );
+        });
     }
 
     @Test

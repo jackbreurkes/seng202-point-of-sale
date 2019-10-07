@@ -9,6 +9,7 @@ import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -198,9 +199,17 @@ public class FoodItem {
 
     /**
      * sets the food item's recipe. overwrites the existing recipe if one is already set.
+     * the recipe cannot contain the FoodItem itself.
      * @param recipe the Recipe to associate with the FoodItem
      */
     public void setRecipe(Recipe recipe) {
+        if (recipe != null) {
+            Set<FoodItem> union = recipe.getIngredients();
+            union.addAll(recipe.getAddableIngredients());
+            if (union.contains(this)) {
+                throw new IllegalArgumentException("a FoodItem's Recipe cannot contain itself.");
+            }
+        }
         this.recipe = recipe;
     }
 
