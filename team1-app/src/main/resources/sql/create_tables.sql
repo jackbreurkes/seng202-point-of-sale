@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS CustomerOrder
 
 
 CREATE TABLE IF NOT EXISTS OrderContains
-(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,
- FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,
+(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder(Id),
+ FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem(Id),
  PRIMARY KEY (CustomerOrder, FoodItem));
 
 
