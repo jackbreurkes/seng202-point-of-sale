@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
+import seng202.team1.util.RecipeBuilder;
 
 import java.io.IOException;
 
@@ -22,7 +23,7 @@ public class RecipeView extends VBox {
     @FXML private Label addItemErrorMsg;
 
     private EditDataController parent;
-    private Recipe model;
+    private RecipeBuilder model;
 
     public RecipeView() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("recipeDisplay.fxml"));
@@ -59,11 +60,12 @@ public class RecipeView extends VBox {
         this.parent = parent;
     }
 
-    public void updateModel(Recipe model) {
+    public void updateModel(Recipe modelRecipe) {
 
         resetIngredientList();
         addSelected.setVisible(false);
-        this.model = model;
+        model = new RecipeBuilder();
+        model.loadExistingRecipeData(modelRecipe);
 
         if (model == null) {
             ingredientsVBox.getChildren().add(new Label("no recipe for this item."));
@@ -83,6 +85,19 @@ public class RecipeView extends VBox {
 
     public void editRecipe() {
         addSelected.setVisible(true);
+        editRecipe.setText("save recipe");
+        editRecipe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                saveChanges();
+            }
+        });
+    }
+
+    private void saveChanges() {
+        Recipe newRecipe = model.generateRecipe(1);
+        parent.updateSelectedItemRecipe(newRecipe);
+
     }
 
     public void addSelectedItemInParent() {
@@ -90,8 +105,8 @@ public class RecipeView extends VBox {
         if (candidate == null) {
             addItemErrorMsg.setText("no item selected.");
         } else {
-//            model.addIngredient(candidate);
-//            model.getIngredientAmounts().put(candidate.getCode(), 1);
+            model.addIngredient(candidate, 1);
+            refreshIngredientList();
         }
     }
 

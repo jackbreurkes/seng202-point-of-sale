@@ -2,12 +2,8 @@ package seng202.team1.util;
 
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * class used to create Recipe objects with the desired data.
@@ -19,11 +15,16 @@ public class RecipeBuilder {
     private Set<FoodItem> addableIngredients = new HashSet<>();
 
     /**
-     * populates the builder data using an existing recipe.
+     * adds data from an existing recipe to the builder.
      * if items already exist in one of the ingredient sets, the loaded ingredient is ignored.
+     * if the passed recipe is null, no changes are made.
      * @param recipe the Recipe who's data should be extracted into this builder
      */
     public void loadExistingRecipeData(Recipe recipe) {
+
+        if (recipe == null) {
+            return;
+        }
 
         for (FoodItem ingredient : recipe.getIngredients()) {
             int amount = recipe.getIngredientAmounts().get(ingredient.getCode());
@@ -84,7 +85,7 @@ public class RecipeBuilder {
      * @param ingredient the FoodItem to remove from the ingredients Set
      */
     public void removeIngredient(FoodItem ingredient) {
-        throw new NotImplementedException();
+        throw new RuntimeException("method not yet implemented");
     }
 
     /**
@@ -92,7 +93,7 @@ public class RecipeBuilder {
      * @param ingredient the FoodItem to remove from the addableIngredients Set
      */
     public void removeAddableIngredient(FoodItem ingredient) {
-        throw new NotImplementedException();
+        throw new RuntimeException("method not yet implemented");
     }
 
     /**
@@ -101,7 +102,7 @@ public class RecipeBuilder {
      * @param amount the new amount to use
      */
     public void updateIngredientAmount(FoodItem ingredient, int amount) {
-        throw new NotImplementedException();
+        throw new RuntimeException("method not yet implemented");
     }
 
     /**
@@ -110,7 +111,36 @@ public class RecipeBuilder {
      * @return a new Recipe instance with the desired ingredient information
      */
     public Recipe generateRecipe(int amount) {
-        return new Recipe(ingredients, addableIngredients, ingredientAmounts, amount);
+        try {
+            return new Recipe(ingredients, addableIngredients, ingredientAmounts, amount);
+        } catch (Exception ignored) {
+            return null; // TODO best way to handle this?
+        }
+    }
+
+    /**
+     * returns a read only version of the builder's ingredient set.
+     * @return an unmodifiable set generated from the ingredients set
+     * TODO how to clearly mark these as returning read only??
+     */
+    public Set<FoodItem> getIngredients() {
+        return Collections.unmodifiableSet(ingredients);
+    }
+
+    /**
+     * returns a read only version of the builder's addable ingredient set.
+     * @return an unmodifiable set generated from the addable ingredients set
+     */
+    public Set<FoodItem> getAddableIngredients() {
+        return Collections.unmodifiableSet(addableIngredients);
+    }
+
+    /**
+     * returns a read only version of the builder's ingredient amounts map.
+     * @return an unmodifiable Map generated from the ingredients amounts map
+     */
+    public Map<String, Integer> getIngredientAmounts() {
+        return Collections.unmodifiableMap(ingredientAmounts);
     }
 
 }

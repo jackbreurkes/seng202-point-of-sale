@@ -9,6 +9,7 @@ import org.joda.money.BigMoney;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Recipe;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -166,10 +167,6 @@ public class EditDataController {
         glutenFreeCheckBox.setSelected(selectedItem.getIsGlutenFree());
     }
 
-    public void editSelectedItemRecipe() {
-        System.out.println("edit recipe");
-    }
-
     /**
      * confirms and saves changes made to item in the GUI
      */
@@ -195,6 +192,18 @@ public class EditDataController {
             updateTable();
             statusText.setText(editedItem.getCode() + " updated successfully.");
         }
+    }
+
+    public void updateSelectedItemRecipe(Recipe recipe) {
+        if (selectedItem == null) {
+            statusText.setText("No item selected.");
+            return;
+        }
+
+        if (selectedItem.getModelFoodItem().getRecipe().equals(recipe))
+
+        selectedItem.getModelFoodItem().setRecipe(recipe);
+        foodStorage.updateFoodItem(selectedItem.getModelFoodItem());
     }
 
     /**
