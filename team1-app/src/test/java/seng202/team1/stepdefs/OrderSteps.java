@@ -13,6 +13,9 @@ import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.UnitType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,6 +24,7 @@ public class OrderSteps {
     private Order order;
     private FoodItem foodItem;
     protected OrderDAO orderStorage;
+    private List<FoodItem> testList = new ArrayList<FoodItem>();
 
     @Given("the user has an order to register")
     public void the_user_has_an_order_to_register() {
@@ -52,6 +56,43 @@ public class OrderSteps {
 
 
 
+    @Given("the order has an item")
+    public void the_order_has_an_item() {
+
+        order = new Order();
+        foodItem = new FoodItem("WONTON", "Wonton Noodles", UnitType.COUNT);
+        //initializes a list to check against the order
+        testList.add(foodItem);
+        //adds an item
+        order.addItem(foodItem);
+        //Assertions.assertEquals(order.getOrderContents(), testList);
+        //throw new cucumber.api.PendingException();
+    }
+
+
+    @When("the user deletes an item")
+    public void the_user_deletes_an_item() {
+        order.removeItem(foodItem);
+        testList.remove(foodItem);
+        //throw new cucumber.api.PendingException();
+    }
+
+
+    @Then("the item is no longer in the order")
+    public void the_item_is_no_longer_in_the_order() {
+        Assertions.assertEquals(order.getOrderContents(), testList);
+        //throw new cucumber.api.PendingException();
+    }
+
+
+
+
+
+
+
+
+
+    //This test case is stupid cause it test GUI.
     @Ignore
     @Given("the list of food items available")
     public void the_list_of_food_items_available() {
@@ -86,6 +127,7 @@ public class OrderSteps {
 
 
 
+    // Recipe class isn't written yet so idk how to do this
     @Ignore
     @Given("an order with at least one food item exists")
     public void an_order_with_at_least_one_food_item_exists() {

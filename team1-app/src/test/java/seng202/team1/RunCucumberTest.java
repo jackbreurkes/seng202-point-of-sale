@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/seng202/team1/features/datahandling.feature",
-        //features = "src/test/resources/seng202/team1/features",
+        //features = "src/test/resources/seng202/team1/features/datahandling.feature",
+        features = "src/test/resources/seng202/team1/features",
 
         glue = "seng202.team1.stepdefs",
         plugin = {"pretty"})

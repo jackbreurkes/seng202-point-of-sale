@@ -6,6 +6,11 @@ Feature: User manages orders within the app
     When the user adds "Wonton Noodles" to an order
     Then the order is submitted
 
+  Scenario: User removes an item from the order
+    Given the order has an item
+    When the user deletes an item
+    Then the item is no longer in the order
+
   Scenario: User wants to see general information about all food items
     Given the list of food items available
     When the user views the list of food items
