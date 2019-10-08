@@ -82,17 +82,17 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <GridPane prefHeight="431.0" prefWidth="399.0">
+            <GridPane prefHeight="431.0" prefWidth="300.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.3333282470703" minWidth="10.0" percentWidth="21.0" prefWidth="147.3333" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.16668701171875" minWidth="10.0" percentWidth="27.0" prefWidth="193.1666717529297" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints percentHeight="9.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="269.0" minHeight="89.71466064453125" percentHeight="19.0" prefHeight="97.2353515625" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="253.28533935546875" minHeight="111.0" percentHeight="23.0" prefHeight="245.7646484375" vgrow="SOMETIMES" />
-                  <RowConstraints percentHeight="13.0" vgrow="SOMETIMES" />
-                  <RowConstraints percentHeight="13.0" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Cost:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -142,7 +142,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <AnchorPane prefHeight="50.0" prefWidth="563.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                  <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="2">
                      <children>
                         <Label layoutX="27.0" layoutY="84.0" text="Option:">
                            <font>
