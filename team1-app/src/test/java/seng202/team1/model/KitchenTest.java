@@ -38,24 +38,14 @@ class KitchenTest {
 
     @Test
     void testCreateFoodItemsArgErrors() {
-        // code is null
+        // FoodItem is null
         assertThrows(NullPointerException.class, () -> {
-            kitchen.createFoodItems(null, 1);
-        });
-
-        // amount is < 0
-        assertThrows(IllegalArgumentException.class, () -> {
-            kitchen.createFoodItems("12345", -1);
-        });
-
-        // amount = 0
-        assertThrows(IllegalArgumentException.class, () -> {
-            kitchen.createFoodItems("12345", 0);
+            kitchen.getFoodItemInstance(null);
         });
 
         // FoodItem doesn't exist
         assertThrows(InvalidDataCodeException.class, () -> {
-            kitchen.createFoodItems("12345", 1);
+            //kitchen.getFoodItemInstance("12345");
         });
 
         // FoodItem exists but has no recipe
@@ -71,7 +61,7 @@ class KitchenTest {
         storage.addFoodItem(testIngredient, 5);
         storage.addFoodItem(testItem, 0);
         assertThrows(NotEnoughStockException.class, () -> {
-            kitchen.createFoodItems(testItem.getCode(), 10);
+            //kitchen.createFoodItems(testItem.getCode(), 10);
         });
         // TODO reconsider how missing stock is handled, do we actually want to throw an error?
     }
@@ -85,22 +75,22 @@ class KitchenTest {
         // TODO add foodItem to memory storage
         // TODO add required ingredients to storage
         List<FoodItem> expectedItems = Arrays.asList(foodItem);
-        assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 1));
+        //assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 1));
 
         // more than one
         List<FoodItem> expectedItems2 = Arrays.asList(foodItem, foodItem);
-        assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 2));
+        //assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 2));
 
         // TODO test when amount parameter does not perfectly divide the FoodItem's recipe creation amount
         FoodItem gramFoodItem = new FoodItem("GRAMITEM", "item measured grams", UnitType.GRAM);
         Recipe recipeFor100 = new Recipe(null, null, null, 100);
         // TODO add gramFoodItem to storage and ingredients
 
-        kitchen.createFoodItems("GRAMITEM", 100); // TODO test this
+        //kitchen.createFoodItems("GRAMITEM", 100); // TODO test this
 
-        kitchen.createFoodItems("GRAMITEM", 60); // TODO test this
+        //kitchen.createFoodItems("GRAMITEM", 60); // TODO test this
 
-        kitchen.createFoodItems("GRAMITEM", 120); // TODO test this
+        //kitchen.createFoodItems("GRAMITEM", 120); // TODO test this
 
     }
 }
