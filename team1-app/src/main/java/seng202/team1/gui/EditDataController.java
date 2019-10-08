@@ -74,6 +74,16 @@ public class EditDataController {
 
         selectedItem = null;
 
+        foodItemTable.setRowFactory(tv -> {
+            TableRow<FoodItemDisplay> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    editSelectedItem();
+                }
+            });
+            return row;
+        });
+
         foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
 
