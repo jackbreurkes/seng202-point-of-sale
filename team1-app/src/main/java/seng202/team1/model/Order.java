@@ -6,6 +6,7 @@ import org.joda.money.Money;
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
 import seng202.team1.model.FoodItem;
+import java.sql.Timestamp;
 
 
 import java.math.RoundingMode;
@@ -24,7 +25,7 @@ public class Order {
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = OrderStatus.CREATING;
-    // private (Time? figure out the right datatype) lastUpdated;
+    private Timestamp lastUpdated;
     // private Location location;
     // private Weather weather;
 
@@ -59,6 +60,8 @@ public class Order {
             throw new InvalidOrderStatusException("Only orders that are still in the creation process can have items added to them");
         }
     }
+
+    public Date getLastUpdated() { return lastUpdated; }
 
     /**
      * removes a single instance of the specified item from the foodItems list

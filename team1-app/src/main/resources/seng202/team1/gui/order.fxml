@@ -50,6 +50,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button mnemonicParsing="false" onAction="#changeSceneToAnalysis" text="Analysis">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Button>
          </children>
          <padding>
             <Insets bottom="10.0" left="0" right="10.0" top="0" />

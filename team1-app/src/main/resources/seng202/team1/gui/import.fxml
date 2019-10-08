@@ -78,6 +78,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button mnemonicParsing="false" onAction="#changeSceneToAnalysis" text="Analysis">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Button>
          </children>
       </HBox>
    </children>

@@ -228,4 +228,13 @@ public class EditDataController {
         sceneChanger.changeScene(event, "order.fxml", "ROSEMARY | Order Screen");
     }
 
+    /**
+     * When this methods is called, it will change the scene to datatype controller view
+     */
+    public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
+    {
+        SceneController sceneChanger = new SceneController();
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
+    }
+
 }
