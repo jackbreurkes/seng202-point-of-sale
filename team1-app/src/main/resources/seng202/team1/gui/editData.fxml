@@ -200,14 +200,6 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="editItemButton" alignment="CENTER" minWidth="80.0" mnemonicParsing="false" onAction="#editSelectedItem" text="edit">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
                </children>
                <GridPane.margin>
                   <Insets />
