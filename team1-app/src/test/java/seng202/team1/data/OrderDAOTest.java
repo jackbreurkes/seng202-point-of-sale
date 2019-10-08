@@ -16,12 +16,24 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * class containing the tests for any implementation of the OrderDAO interface.
+ * this is abstract because orderStorage should be set to an instance of the concrete class under test.
+ * concrete class tests can extend this test method to get access to all of its tests.
+ */
 abstract class OrderDAOTest {
 
     protected OrderDAO orderStorage;
     private Order testOrder;
     private FoodItem testItem;
     private FoodItem testItem2;
+
+
+    private void assertEqualsExceptTimestamp(Order o1, Order o2) {
+        o1.setLastUpdated(null);
+        o2.setLastUpdated(null);
+        assertEquals(o1, o2);
+    }
 
     @BeforeEach
     void resetTestValues() {
@@ -36,13 +48,15 @@ abstract class OrderDAOTest {
     @Test
     void testGetAllOrders() {
         //test an empty set of orders has size 0
+        Set<Order> expectedOrders = new HashSet<>();
         Set<Order> items = orderStorage.getAllOrders();
-        assertEquals(0, items.size());
+        assertEquals(expectedOrders, items);
 
         // test getting when order is in the database
         orderStorage.addOrder(testOrder);
+        expectedOrders.add(testOrder);
         items = orderStorage.getAllOrders();
-        assertEquals(1, items.size());
+        assertEquals(expectedOrders, items);
         assertTrue(items.contains(testOrder));
     }
 

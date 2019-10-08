@@ -9,6 +9,7 @@ import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.OrderStatus;
+import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import java.math.RoundingMode;
@@ -247,6 +248,16 @@ class OrderTest {
         //Makes sure an order cannot be refunded twice
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.refundOrder());
 
+    }
+
+    @Test
+    void testEquals() {
+        // trivial check
+        assertEquals(testOrder, testOrder);
+
+        Order order1 = new Order();
+        Order order2 = new Order();
+        assertEquals(order1, order2);
     }
 
 

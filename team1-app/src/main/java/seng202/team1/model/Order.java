@@ -25,7 +25,7 @@ public class Order {
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderNote;
     private OrderStatus status = OrderStatus.CREATING;
-    private Timestamp lastUpdated;
+    private Date lastUpdated;
     // private Location location;
     // private Weather weather;
 
@@ -42,6 +42,10 @@ public class Order {
 
     public void setOrderNote(String orderNote) {
         this.orderNote = orderNote;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     /**
@@ -168,6 +172,10 @@ public class Order {
     }
 
     @Override
+    /**
+     * since timestamps are managed on a database level it cannot be guaranteed that two otherwise equal
+     * orders will have the same timestamp. therefore, timestamp is not considered when checking for equality.
+     */
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

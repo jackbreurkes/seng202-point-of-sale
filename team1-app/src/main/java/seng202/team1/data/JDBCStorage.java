@@ -10,7 +10,11 @@ import seng202.team1.util.UnitType;
 
 import java.io.*;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
@@ -163,20 +167,31 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private Order readOrder(ResultSet rs) {
         int id;
         List<FoodItem> foodItems = new ArrayList<FoodItem>();
-        String orderNote, statusString;
+        String orderNote, statusString, lastUpdatedString;
+        Date lastUpdated = null;
 
         try {
             id = rs.getInt("Id");
             orderNote = rs.getString("Note");
             statusString = rs.getString("Status");
+            lastUpdatedString = rs.getString("LastUpdated");
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            lastUpdated = dateFormat.parse(lastUpdatedString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Order result = new Order();
         result.setId(id);
         result.setOrderNote(orderNote);
+        result.setLastUpdated(lastUpdated);
+
 
         String sql = "SELECT *\n" +
                 "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
