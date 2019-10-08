@@ -155,6 +155,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * reads the next row in a ResultSet and returns an Order corresponding to the information derived from that row.
+     * @param rs the ResultSet to read from, rs should contain at least one row after the cursor
+     * @return an Order corresponding to the next row in the ResultSet
+     */
     private Order readOrder(ResultSet rs) {
         int id;
         List<FoodItem> foodItems = new ArrayList<FoodItem>();

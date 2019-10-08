@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS OrderContains
 
 CREATE TABLE IF NOT EXISTS OrderedFoodItem
 (Id /* primary key ID */ INTEGER PRIMARY KEY,
- Code /* alphanumberic code of the FoodItem */ VARCHAR(10) NOT NULL
+ Code /* alphanumeric code of the FoodItem */ VARCHAR(10) NOT NULL
     CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),
  Name /* the FoodItem's name */ VARCHAR(20) NOT NULL
     CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),
