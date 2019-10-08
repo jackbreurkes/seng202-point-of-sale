@@ -15,11 +15,11 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 class KitchenTest {
 
     FoodItemDAO storage;
     Kitchen kitchen;
+
 
     @BeforeEach
     void beforeEach() {
@@ -37,41 +37,55 @@ class KitchenTest {
     }
 
     @Test
-    void testCreateFoodItemsArgErrors() {
+    void testGetFoodItemInstance() {
         // FoodItem is null
         assertThrows(NullPointerException.class, () -> {
             kitchen.getFoodItemInstance(null);
         });
 
-        // FoodItem doesn't exist
-        assertThrows(InvalidDataCodeException.class, () -> {
-            //kitchen.getFoodItemInstance("12345");
-        });
-
         // FoodItem exists but has no recipe
-        fail("not yet implemented");
+        FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
 
-        // recipe exists but not enough stock in storage
-        FoodItem testItem = new FoodItem("TESTITEM", "test food item", UnitType.COUNT);
+
+        //FoodItem is out of stock
         FoodItem testIngredient = new FoodItem("ING1", "ingred", UnitType.COUNT);
         Set<FoodItem> ingredients = new HashSet<>(Arrays.asList(testIngredient));
         Map<String, Integer> ingredAmounts = new HashMap<>();
         ingredAmounts.put(testIngredient.getCode(), 2);
-        testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 1));
-        storage.addFoodItem(testIngredient, 5);
+        testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 3));
+        storage.addFoodItem(testIngredient, 6);
         storage.addFoodItem(testItem, 0);
-        assertThrows(NotEnoughStockException.class, () -> {
-            //kitchen.createFoodItems(testItem.getCode(), 10);
-        });
-        // TODO reconsider how missing stock is handled, do we actually want to throw an error?
+
+
+
+        //make sure the correct value is returned
+        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
+        //check the correct amount of ingredients are removed from the database
+        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
+        //check the correct amount of fooditems are created
+        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 2);
+
+        //check that after getting a fooditem that is in stock, the stock correctly decrements by one
+        kitchen.getFoodItemInstance(testItem);
+        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 1);
+        //check that the stock of an ingredient for a fooditem is not changed when the fooditem is in stock (doesn't need to be made)
+        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
+
+
+
     }
 
+
+
+    @Disabled
     @Test
-    void testCreateFoodItemsAmounts() {
+    void testAddAmountToFoodStorage() {
         // recipe exists enough stock in storage
         FoodItem foodItem = new FoodItem("TESTITEM2", "test item 2", UnitType.COUNT);
         Recipe recipe = new Recipe(null, null, null, 1);
         foodItem.setRecipe(recipe);
+
         // TODO add foodItem to memory storage
         // TODO add required ingredients to storage
         List<FoodItem> expectedItems = Arrays.asList(foodItem);
