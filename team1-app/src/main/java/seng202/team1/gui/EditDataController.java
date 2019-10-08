@@ -156,9 +156,9 @@ public class EditDataController {
 
         recipeView.updateModel(selectedItem.getRecipe());
 
-        statusText.setText("editing " + selectedItem.getCode());
+        statusText.setText("");
 
-        codeLabel.setText(selectedItem.getCode());
+        codeLabel.setText("EDITING: " + selectedItem.getCode());
         newName.setText(selectedItem.getName());
         newCost.setText(selectedItem.getCost().toString());
         newCalories.setText(Double.toString(selectedItem.getCaloriesPerUnit()));
@@ -200,7 +200,11 @@ public class EditDataController {
             return;
         }
 
-        selectedItem.getModelFoodItem().setRecipe(recipe);
+        try {
+            selectedItem.getModelFoodItem().setRecipe(recipe);
+        } catch (IllegalArgumentException e) {
+            statusText.setText("an item's recipe cannot contain itself.");
+        }
         foodStorage.updateFoodItem(selectedItem.getModelFoodItem());
     }
 

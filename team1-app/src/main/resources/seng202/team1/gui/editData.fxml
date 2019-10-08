@@ -18,7 +18,6 @@
 
 <?import seng202.team1.gui.RecipeView?>
 
-
 <GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.EditDataController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" />
@@ -71,120 +70,126 @@
             </Button>
          </children>
       </HBox>
-      <GridPane GridPane.rowIndex="1">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.3333282470703" minWidth="10.0" percentWidth="21.0" prefWidth="147.3333" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.16668701171875" minWidth="10.0" percentWidth="27.0" prefWidth="193.1666717529297" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.66665649414062" minWidth="10.0" percentWidth="24.0" prefWidth="167.33331298828125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.83331298828125" minWidth="10.0" percentWidth="28.0" prefWidth="184.83331298828125" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="269.0" minHeight="147.66668701171875" percentHeight="30.0" prefHeight="147.66668701171875" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="232.33331298828125" minHeight="111.0" percentHeight="25.0" prefHeight="232.33331298828125" vgrow="SOMETIMES" />
-            <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox GridPane.rowIndex="1">
          <children>
-            <Label text="Cost:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Label fx:id="codeLabel" text="EDITING: Unselected">
                <font>
-                  <Font size="20.0" />
-               </font></Label>
-            <TextField fx:id="newName" alignment="CENTER_RIGHT" promptText="Input new name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <font>
-                  <Font size="20.0" />
-               </font></TextField>
-            <Label fx:id="codeLabel" text="Unselected" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-            <Label text="Code:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-            <Label text="Name:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-            <Label text="\$" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
-            <TextField fx:id="newCost" alignment="CENTER_RIGHT" promptText="Input new cost" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <font>
-                  <Font size="20.0" />
-               </font></TextField>
-            <Label text="Calories/Unit:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets left="25.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="20.0" />
+                  <Font size="50.0" />
                </font>
             </Label>
-            <TextField fx:id="newCalories" alignment="CENTER_RIGHT" promptText="Input new calories" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <font>
-                  <Font size="20.0" />
-               </font></TextField>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
-               <children>
-                  <Label layoutX="27.0" layoutY="84.0" text="Option:">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <CheckBox fx:id="vegetarianCheckBox" layoutX="132.0" layoutY="83.0" mnemonicParsing="false" text="Vegetarian">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="20.0" />
-                     </font></CheckBox>
-                  <CheckBox fx:id="veganCheckBox" layoutX="334.0" layoutY="82.0" mnemonicParsing="false" text="Vegan">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="20.0" />
-                     </font></CheckBox>
-                  <CheckBox fx:id="glutenFreeCheckBox" layoutX="539.0" layoutY="83.0" mnemonicParsing="false" text="GF">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="20.0" />
-                     </font></CheckBox>
-               </children>
-            </AnchorPane>
-            <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <font>
-                  <Font size="20.0" />
-               </font></Button>
-            <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-               <font>
-                  <Font size="20.0" />
-               </font></Text>
-         </children>
-      </GridPane>
-      <VBox alignment="BOTTOM_RIGHT" fx:id="rightPanelBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <children>
             <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Text>
-            <RecipeView fx:id="recipeView"></RecipeView>
+            <GridPane prefHeight="431.0" prefWidth="399.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.3333282470703" minWidth="10.0" percentWidth="21.0" prefWidth="147.3333" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.16668701171875" minWidth="10.0" percentWidth="27.0" prefWidth="193.1666717529297" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints percentHeight="9.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="269.0" minHeight="89.71466064453125" percentHeight="19.0" prefHeight="97.2353515625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="253.28533935546875" minHeight="111.0" percentHeight="23.0" prefHeight="245.7646484375" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="13.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="13.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Cost:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="newName" alignment="CENTER_RIGHT" promptText="Input new name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label text="Name:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="\$" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="newCost" alignment="CENTER_RIGHT" promptText="Input new cost" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label text="Calories/Unit:" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="newCalories" alignment="CENTER_RIGHT" promptText="Input new calories" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <AnchorPane prefHeight="50.0" prefWidth="563.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                     <children>
+                        <Label layoutX="27.0" layoutY="84.0" text="Option:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="vegetarianCheckBox" layoutX="132.0" layoutY="83.0" mnemonicParsing="false" text="Vegetarian">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="veganCheckBox" layoutX="334.0" layoutY="82.0" mnemonicParsing="false" text="Vegan">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="glutenFreeCheckBox" layoutX="539.0" layoutY="83.0" mnemonicParsing="false" text="GF">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+      <VBox fx:id="rightPanelBox" alignment="BOTTOM_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <RecipeView fx:id="recipeView" />
             <HBox alignment="BOTTOM_RIGHT" spacing="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="deleteSelected" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#deleteSelectedItem" text="delete">
