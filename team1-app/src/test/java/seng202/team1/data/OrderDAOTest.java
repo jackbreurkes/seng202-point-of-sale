@@ -39,6 +39,7 @@ abstract class OrderDAOTest {
         Set<Order> items = orderStorage.getAllOrders();
         assertEquals(0, items.size());
 
+        // test getting when order is in the database
         orderStorage.addOrder(testOrder);
         items = orderStorage.getAllOrders();
         assertEquals(1, items.size());
