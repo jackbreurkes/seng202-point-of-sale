@@ -29,6 +29,7 @@ class KitchenTest {
     }
 
     @Test
+    @Disabled
     void testConstructor() {
         // null storage instance
         assertThrows(NullPointerException.class, () -> {
