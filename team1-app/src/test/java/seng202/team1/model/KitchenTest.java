@@ -74,7 +74,7 @@ class KitchenTest {
         assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
 
 
-        FoodItem testItem2 = new FoodItem("TEST", "Test Item 2", UnitType.COUNT);
+        FoodItem testItem2 = new FoodItem("TEST2", "Test Item 2", UnitType.COUNT);
         Set<FoodItem> ingredients2 = new HashSet<>(Arrays.asList(testItem));
         Map<String, Integer> ingredAmounts2 = new HashMap<>();
         ingredAmounts2.put(testItem.getCode(), 2);
@@ -86,11 +86,11 @@ class KitchenTest {
         //test return value
         assertSame(kitchen.getFoodItemInstance(testItem2), testItem2);
         //test item stock updates correctly
-        //assertTrue(storage.getFoodItemStock(testItem2.getCode()) == 1);
+        assertEquals(storage.getFoodItemStock(testItem2.getCode()), 1);
         //test fooditem in recipe updates correctly
-        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 4);
+        assertEquals(storage.getFoodItemStock(testItem.getCode()), 2);
         //test recursive removal of ingredient
-        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 2);
+        assertEquals(storage.getFoodItemStock(testIngredient.getCode()), 2);
 
 
         //test fooditems in the database that do not match the fooditem being updated
