@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Kitchen;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidOrderStatusException;
 
@@ -32,6 +33,7 @@ public class CreateOrderDisplay extends VBox {
     private OrderController orderController;
     private Order model;
     private OrderDAO orderStorage;
+    private Kitchen kitchen;
 
 
     public CreateOrderDisplay(OrderController orderController, Order model) { // TODO add OrderDAO orderStorage as an arg
@@ -39,6 +41,7 @@ public class CreateOrderDisplay extends VBox {
         this.orderController = orderController;
         this.model = model;
         this.orderStorage = DAOFactory.getOrderDAO();
+        this.kitchen = new Kitchen(DAOFactory.getFoodItemDAO());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createOrderDisplay.fxml"));
         loader.setRoot(this);
@@ -82,6 +85,9 @@ public class CreateOrderDisplay extends VBox {
     public void submitOrder() {
         try {
             model.submitOrder();
+            for (FoodItem orderedItem : model.getOrderContents()) {
+                //kitchen.getFoodItemInstance(orderedItem); // create the items for the customer TODO uncomment when Kitchen is fully tested
+            }
             orderStorage.addOrder(model);
         } catch (InvalidOrderStatusException e) {
             statusText.setText("Error submitting order: " + e.getMessage());
