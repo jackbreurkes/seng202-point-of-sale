@@ -53,6 +53,14 @@ abstract class OrderDAOTest {
     }
 
     @Test
+    void testGetDoesNotAllowModification() {
+        orderStorage.addOrder(testOrder);
+        Order testOrderFromStorage = orderStorage.getOrderByID(testOrder.getOrderID());
+        testOrderFromStorage.submitOrder();
+        assertNotEquals(testOrderFromStorage, orderStorage.getOrderByID(testOrder.getOrderID()));
+    }
+
+    @Test
     void testGetAllOrders() {
         //test an empty set of orders has size 0
         Set<Order> expectedOrders = new HashSet<>();
