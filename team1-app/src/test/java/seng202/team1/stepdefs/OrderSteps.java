@@ -12,6 +12,7 @@ import seng202.team1.model.Order;
 import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.InvalidOrderStatusException;
+import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
 import java.util.*;
@@ -90,7 +91,8 @@ public class OrderSteps {
 
 
 
-    @Ignore
+
+
     @Given("an order with at least one food item exists")
     public void an_order_with_at_least_one_food_item_exists() {
         order = new Order();
@@ -102,7 +104,6 @@ public class OrderSteps {
         //throw new cucumber.api.PendingException();
     }
 
-    @Ignore
     @When("the employee removes an ingredient from the food item")
     public void the_employee_removes_an_ingredient_from_the_food_item() {
 
@@ -120,7 +121,6 @@ public class OrderSteps {
         // throw new cucumber.api.PendingException();
     }
 
-    @Ignore
     @Then("the item in the order will no longer contain that ingredient")
     public void the_item_in_the_order_will_no_longer_contain_that_ingredient() {
         Assertions.assertEquals(order.getOrderContents(), testList);
@@ -134,24 +134,39 @@ public class OrderSteps {
 
 
 
-    @Ignore
-    @Given("a food item is selected")
-    public void a_food_item_is_selected() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
+    @Given("an order has at least one food item")
+    public void an_order_has_at_least_one_food_item() {
+        order = new Order();
+        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
+        //adds an item
+        order.addItem(foodItem);
+        //initializes a list to check against the order
+        testList.add(foodItem);
+        //throw new cucumber.api.PendingException();
     }
 
-    @Ignore
     @When("the user selects the ingredients to add to the recipe")
     public void the_user_selects_the_ingredients_to_add_to_the_recipe() {
-        // Write code here that turns the phrase above into concrete actions
+        FoodItem foodItem2 = new FoodItem("SALT", "Salt", UnitType.GRAM);
+        FoodItem foodItem3 = new FoodItem("TAPWATER", "Tap Water", UnitType.ML);
+
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        ingredients.add(foodItem3);
+        addableIngredients.add(foodItem2);
+        Map<String, Integer> ingredientAmounts = new HashMap<String, Integer>();
+        ingredientAmounts.put("SALT", 1);
+        ingredientAmounts.put("TAPWATER", 1);
+
+        foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
+        foodItem.getRecipe().addIngredient(foodItem2);
         // throw new cucumber.api.PendingException();
+
     }
 
-    @Ignore
     @Then("the recipe is updated to include those ingredients")
     public void the_recipe_is_updated_to_include_those_ingredients() {
-        // Write code here that turns the phrase above into concrete actions
+        Assertions.assertEquals(order.getOrderContents(), testList);
         // throw new cucumber.api.PendingException();
     }
 
@@ -165,79 +180,35 @@ public class OrderSteps {
     @Given("an order is being created")
     public void an_order_is_being_created() {
         // Write code here that turns the phrase above into concrete actions
+
+        //By default it is creating
+        order = new Order();
+        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
+        //adds an item
+        order.addItem(foodItem);
         // throw new cucumber.api.PendingException();
+
+        //initializes a list to check against the order
+        testList.add(foodItem);
     }
 
     @And("the order has not been confirmed")
     public void the_order_has_not_been_confirmed() {
         // Write code here that turns the phrase above into concrete actions
+       order.submitOrder();
+       assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
        //  throw new cucumber.api.PendingException();
     }
 
     @When("the user cancels the order")
     public void the_user_cancels_the_order() {
-        // Write code here that turns the phrase above into concrete actions
+        order.cancelOrder();
         // throw new cucumber.api.PendingException();
     }
 
     @Then("the order is removed from the list of orders")
     public void the_order_is_removed_from_the_list_of_orders() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-
-
-
-
-
-
-    @Ignore
-    @Given("an order exists in the orders list")
-    public void an_order_exists_in_the_orders_list() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @And("the order has been confirmed")
-    public void the_order_has_been_confirmed() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @And("the order has not been completed")
-    public void the_order_has_not_been_completed() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @When("the system removes the order from the order list")
-    public void the_system_removes_the_order_from_the_order_list() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("the user is prompted to select which items can be returned to stock")
-    public void the_user_is_prompted_to_select_which_items_can_be_returned_to_stock() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @And("the user is prompted to enter a refund amount")
-    public void the_user_is_prompted_to_enter_a_refund_amount() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @And("the system logs the cancellation of the order")
-    public void the_system_logs_the_cancellation_of_the_order() {
-        // Write code here that turns the phrase above into concrete actions
+        Assertions.assertEquals(order.getOrderContents(), testList);
         // throw new cucumber.api.PendingException();
     }
 
@@ -248,41 +219,38 @@ public class OrderSteps {
 
 
 
-    @Ignore
-    @Given("an order is being cancelled")
-    public void an_order_is_being_cancelled() {
-        // Write code here that turns the phrase above into concrete actions
+    @Given("the order has been created")
+    public void the_order_has_been_created() {
+        //By default it is creating
+        order = new Order();
+        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
+        //adds an item
+        order.addItem(foodItem);
         // throw new cucumber.api.PendingException();
+
+        //initializes a list to check against the order
+        testList.add(foodItem);
+        //throw new cucumber.api.PendingException();
     }
 
-    @Ignore
-    @When("the user selects a food item to return to stock")
-    public void the_user_selects_a_food_item_to_return_to_stock() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
+    @Given("the order has been submitted")
+    public void the_order_has_been_submitted() {
+        order.submitOrder();
+        assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
+        //throw new cucumber.api.PendingException();
     }
 
-    @Ignore
-    @Then("the system logs the cancellation of the order2")
-    public void the_system_logs_the_cancellation_of_the_order2() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
+    @Given("the order has been completed")
+    public void the_order_has_been_completed() {
+        order.completeOrder();
+        assertEquals(order.getOrderStatus(), OrderStatus.COMPLETED);
+        //throw new cucumber.api.PendingException();
     }
 
-
-    @Ignore
-    @And("the system updates the profit based on the cancellation reason")
-    public void the_system_updates_the_profit_based_on_the_cancellation_reason() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-
-    @Ignore
-    @Then("the system updates the ingredient stocks based on the cancellation reason")
-    public void the_system_updates_the_ingredient_stocks_based_on_the_cancellation_reason() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
+    @When("the customer asks for a refund, the order is refunded")
+    public void the_customer_asks_for_a_refund_the_order_is_refunded() {
+        order.refundOrder();
+        //throw new cucumber.api.PendingException();
     }
 
 
