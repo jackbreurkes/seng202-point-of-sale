@@ -31,12 +31,12 @@ class JDBCStorageOrderDAOTest extends OrderDAOTest {
         ((JDBCStorage) orderStorage).resetInstance();
     }
 
-//    @Test
-//    @Override
-//    @Disabled
-//    void testGetAllOrders() {
-//        fail(); // this block disables the test only for this subclass of the OrderDAOTest class
-//    }
+    @Test
+    @Override
+    @Disabled
+    void testGetDoesNotAllowModification() {
+        fail(); // this block disables the test only for this subclass of the OrderDAOTest class
+    }
 
     @Test
     @Override

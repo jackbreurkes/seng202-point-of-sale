@@ -6,8 +6,9 @@ import seng202.team1.util.InvalidDataCodeException;
 import java.util.*;
 
 /**
- * 
+ * @deprecated because it returns a mutable version of the object as it appears in storage
  */
+@Deprecated
 public class MemoryStorage implements FoodItemDAO {
 
     private static MemoryStorage instance;
@@ -48,7 +49,7 @@ public class MemoryStorage implements FoodItemDAO {
 
     @Override
     public FoodItem getFoodItemByCode(String code) {
-        return foodItems.get(code);
+        return foodItems.get(code);//.getShallowCopy();
     }
 
     @Override
