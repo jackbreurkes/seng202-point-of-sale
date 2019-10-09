@@ -7,24 +7,28 @@
         <name>Banana</name>
         <cost>NZD 1.00</cost>
         <caloriesPerUnit>100</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="count">
         <code>APPLEPIE</code>
         <name>Apple Pie</name>
         <cost>NZD 21.00</cost>
         <caloriesPerUnit>200</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegetarian="yes">
         <code>TOFUBURG</code>
         <name>Tofu Burger</name>
         <cost>NZD 50.00</cost>
         <caloriesPerUnit>268.4</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>WATER</code>
         <name>Glass of water</name>
         <cost>NZD 200.00</cost>
         <caloriesPerUnit>0</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
 
 </fooditems>

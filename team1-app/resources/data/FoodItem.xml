@@ -7,84 +7,163 @@
         <name>Hamburger</name>
         <cost>NZD 21.00</cost>
         <caloriesPerUnit>295</caloriesPerUnit>
+        <recipe>
+            <ingredient unit="count">
+                <code>BEEF</code>
+                <name>Beef</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>250</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>BUN</code>
+                <name>Bun</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>210</caloriesPerUnit>
+                <amount>2</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>LETTUCE</code>
+                <name>Lettuce</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>15</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <addableIngredient unit="count">
+                <code>EGG</code>
+                <name>Egg</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>155</caloriesPerUnit>
+                <amount>1</amount>
+            </addableIngredient>
+        </recipe>
     </fooditem>
     <fooditem unit="g">
         <code>CHEESEBURG</code>
         <name>Cheeseburger</name>
         <cost>NZD 22.00</cost>
         <caloriesPerUnit>303</caloriesPerUnit>
+        <recipe>
+            <ingredient unit="count">
+                <code>BEEF</code>
+                <name>Beef</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>250</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>BUN</code>
+                <name>Bun</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>210</caloriesPerUnit>
+                <amount>2</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>LETTUCE</code>
+                <name>Lettuce</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>15</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>CHEESE</code>
+                <name>Cheese</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>100</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <addableIngredient unit="count">
+                <code>EGG</code>
+                <name>Egg</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>155</caloriesPerUnit>
+                <amount>1</amount>
+            </addableIngredient>
+        </recipe>
     </fooditem>
     <fooditem unit="g" isVegetarian="yes">
         <code>TOFUBURG</code>
         <name>Tofu Burger</name>
         <cost>NZD 50.00</cost>
         <caloriesPerUnit>168.4</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>APPLESODA</code>
         <name>Sparkling Apple</name>
         <cost>NZD 96.00</cost>
         <caloriesPerUnit>87</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="yes" isGlutenFree="no">
         <code>BEANBURG</code>
         <name>Spicy Bean Burger</name>
         <cost>NZD 17.00</cost>
         <caloriesPerUnit>444</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="no" isGlutenFree="no">
         <code>HAWAIIP</code>
         <name>Hawaiian Pizza</name>
         <cost>NZD 22.50</cost>
         <caloriesPerUnit>700</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>BLKCOFFEE</code>
         <name>Black Coffee</name>
         <cost>NZD 5.50</cost>
         <caloriesPerUnit>125</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>CAPPUCHINO</code>
         <name>cappuccino</name>
         <cost>NZD 6.10</cost>
         <caloriesPerUnit>155</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="no" isGlutenFree="yes">
         <code>MEAT</code>
         <name>Meat</name>
         <cost>NZD 19.90</cost>
         <caloriesPerUnit>666</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
         <code>BWNRICE</code>
         <name>Brown Rice</name>
         <cost>NZD 6.90</cost>
         <caloriesPerUnit>128</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
         <code>PBCOBBLE</code>
         <name>Peach n Blackberry C</name>
         <cost>NZD 14.90</cost>
         <caloriesPerUnit>684</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="yes" isGlutenFree="yes">
         <code>HTSALAD</code>
         <name>Hand Tossed Salad</name>
         <cost>NZD 13.90</cost>
         <caloriesPerUnit>614</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegan="no" isGlutenFree="yes">
         <code>RCHICK</code>
         <name>Rotisserie Chicken</name>
         <cost>NZD 11.99</cost>
         <caloriesPerUnit>1000</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>ALMMILK</code>
         <name>Almond Milk</name>
         <cost>NZD 7.89</cost>
         <caloriesPerUnit>1234</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
 
 </fooditems>

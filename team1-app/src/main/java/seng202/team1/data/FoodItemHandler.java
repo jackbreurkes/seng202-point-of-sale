@@ -7,12 +7,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Recipe;
 import seng202.team1.util.UnitType;
 
 import javax.xml.parsers.*;
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Processes FoodItem using DOM
@@ -34,10 +37,25 @@ public class FoodItemHandler {
     private BigMoney cost;
     private UnitType unit;
     private double caloriesPerUnit;
-
     private boolean isVegetarian;
     private boolean isVegan;
     private boolean isGlutenFree;
+
+    private Set<FoodItem> ingredients;
+    private Set<FoodItem> addableIngredients;
+    private Map<String, Integer> ingredientAmounts;
+
+    private String ingredientCode;
+    private String ingredientName;
+    private BigMoney ingredientCost;
+    private UnitType ingredientUnit;
+    private double ingredientCaloriesPerUnit;
+    private int ingredientAmount;
+
+    // REMOVE DIETARY CONSTRAINTS BC ALREADY know from FOODITEM ITS
+    private boolean ingredientVegetarian;
+    private boolean ingredientVegan;
+    private boolean ingredientGlutenFree;
 
 
     /**
@@ -114,34 +132,82 @@ public class FoodItemHandler {
 
             code = node.getElementsByTagName("code").item(0).getTextContent();
             name = node.getElementsByTagName("name").item(0).getTextContent();
-            cost = BigMoney.parse(node.getElementsByTagName("cost").item(0).getTextContent());
             unit = units(node.getAttribute("unit"));
+            cost = BigMoney.parse(node.getElementsByTagName("cost").item(0).getTextContent());
             caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
 
 
-            FoodItem food = new FoodItem(code, name, unit);
-            food.setCost(cost);
-            food.setCaloriesPerUnit(caloriesPerUnit);
+            NodeList recipePlaceholder = node.getElementsByTagName("recipe");
+            Element recipeNode = (Element) recipePlaceholder.item(0);
+
+            ingredients = new HashSet<FoodItem>();
+            addableIngredients = new HashSet<FoodItem>();
+            ingredientAmounts = new HashMap<>();
+
+            NodeList ingredientNodeList = recipeNode.getElementsByTagName("ingredient");
+            parseIngredients(ingredientNodeList, 0);
+
+            NodeList addableIngredientPlaceholder = recipeNode.getElementsByTagName("addableIngredient");
+            parseIngredients(addableIngredientPlaceholder, 1);
+
+            FoodItem foodItem = new FoodItem(code, name, unit);
+            foodItem.setCost(cost);
+            foodItem.setCaloriesPerUnit(caloriesPerUnit);
             if (node.hasAttribute("isVegetarian")) {
                 isVegetarian = diet(node.getAttribute("isVegetarian"));
-                food.setIsVegetarian(isVegetarian);
+                foodItem.setIsVegetarian(isVegetarian);
             }
             if (node.hasAttribute("isVegan")) {
                 isVegan = diet(node.getAttribute("isVegan"));
-                food.setIsVegan(isVegan);
+                foodItem.setIsVegan(isVegan);
             }
             if (node.hasAttribute("isGlutenFree")) {
                 isGlutenFree = diet(node.getAttribute("isGlutenFree"));
-                food.setIsGlutenFree(isGlutenFree);
+                foodItem.setIsGlutenFree(isGlutenFree);
             }
-            foodItems.put(code, food);
+
+            // If 0, then recipe = null
+            if (ingredients.size() != 0) {
+                Recipe recipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
+                foodItem.setRecipe(recipe);
+            }
+            foodItems.put(code, foodItem);
         }
         return foodItems;
     }
 
+    /**
+     * Takes a NodeList consisting of either ingredients or addable ingredients,
+     * alongside a 'check' that indicates ingredients or addable ingredients,
+     * and adds appropriate food items to the aforementioned ingredients lists.
+     * @param ingredientNodeList NodeList for Ingredients
+     * @param check A checker -- 0 for ingredients and 1 for addable ingredients
+     */
+    void parseIngredients(NodeList ingredientNodeList, int check) {
+        int ingredientLengthNodes = ingredientNodeList.getLength();
+        Element ingredientNode;
+        FoodItem ingredientFoodItem;
 
-    // Maybe thinking of having an UNKNOWN
-    // UnitType for passing invalid unit types
+        for (int l = 0; l < ingredientLengthNodes; l++) {
+            ingredientNode = (Element) ingredientNodeList.item(l);
+            ingredientCode = ingredientNode.getElementsByTagName("code").item(0).getTextContent();
+            ingredientName = ingredientNode.getElementsByTagName("name").item(0).getTextContent();
+            unit = units(ingredientNode.getAttribute("unit"));
+            ingredientCost = BigMoney.parse(ingredientNode.getElementsByTagName("cost").item(0).getTextContent());
+            ingredientCaloriesPerUnit = Double.parseDouble(ingredientNode.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
+            ingredientAmount = Integer.parseInt(ingredientNode.getElementsByTagName("amount").item(0).getTextContent());
+            ingredientFoodItem = new FoodItem(ingredientCode, ingredientName, unit);
+            ingredientFoodItem.setCost(ingredientCost);
+            ingredientFoodItem.setCaloriesPerUnit(ingredientCaloriesPerUnit);
+            if (check == 0) {
+                ingredients.add(ingredientFoodItem);
+            } else {
+                addableIngredients.add(ingredientFoodItem);
+            }
+            ingredientAmounts.put(ingredientCode, ingredientAmount);
+        }
+    }
+
     /**
      * Takes a String that corresponds to a unit, validates it,
      * and returns a UnitType object of that unit.
@@ -188,12 +254,10 @@ public class FoodItemHandler {
      * next FoodItem parsing.
      */
     private void reset() {
-//        recipeNotes = "";
-//        salePrice = 0;
         code = "";
         name = "";
-        cost = BigMoney.parse("NZD 0.00");
         unit = UnitType.COUNT;
+        cost = BigMoney.parse("NZD 0.00");
         caloriesPerUnit = 0;
         isVegetarian = false;
         isVegan = false;
@@ -202,20 +266,15 @@ public class FoodItemHandler {
 
 
     public static void main(String args[]) {
-            FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
+        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
         try {
             fh.parseInput();
         } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
-        fh.getFoodItems();
-            System.out.println(fh.getFoodItems().keySet());
-            System.out.println(fh.getFoodItems().values());
-            System.out.println("");
 
-            System.out.println("");
-            for (FoodItem foo : fh.getFoodItems().values()) {
-                System.out.println(foo.getName());
-            }
+        for (FoodItem foo : fh.getFoodItems().values()) {
+            System.out.println(foo);
+        }
     }
 }

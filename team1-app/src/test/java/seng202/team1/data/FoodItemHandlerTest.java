@@ -70,7 +70,6 @@ class FoodItemHandlerTest {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document parsedDocument = builder.parse(source);
         assertEquals(handler.parsedDoc().toString(), parsedDocument.toString());
-
     }
 
 

@@ -7,23 +7,27 @@
         <name>Hamburger</name>
         <cost>NZD 21.00</cost>
         <caloriesPerUnit>295</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g">
         <code>CHEESEBURG</code>
         <name>Cheeseburger</name>
         <cost>NZD 22.00</cost>
         <caloriesPerUnit>303</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="g" isVegetarian="yes">
         <code>TOFUBURG</code>
         <name>Tofu Burger</name>
         <cost>NZD 50.00</cost>
         <caloriesPerUnit>168.4</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
     <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
         <code>APPLESODA</code>
         <name>Sparkling Apple</name>
         <cost>NZD 96.00</cost>
         <caloriesPerUnit>87</caloriesPerUnit>
+        <recipe></recipe>
     </fooditem>
 </fooditems>

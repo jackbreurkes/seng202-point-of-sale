@@ -8,6 +8,7 @@ import org.joda.money.Money;
 import seng202.team1.util.CodeValidator;
 import seng202.team1.util.UnitType;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -204,7 +205,7 @@ public class FoodItem {
      */
     public void setRecipe(Recipe recipe) {
         if (recipe != null) {
-            Set<FoodItem> union = recipe.getIngredients();
+            Set<FoodItem> union = new HashSet<>(recipe.getIngredients());
             union.addAll(recipe.getAddableIngredients());
             if (union.contains(this)) {
                 throw new IllegalArgumentException("a FoodItem's Recipe cannot contain itself.");
