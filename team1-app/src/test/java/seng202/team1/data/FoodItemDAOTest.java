@@ -42,6 +42,14 @@ abstract class FoodItemDAOTest {
     }
 
     @Test
+    void testGetDoesNotAllowModification() {
+        foodStorage.addFoodItem(testItem, 1);
+        FoodItem testFoodItemFromStorage = foodStorage.getFoodItemByCode(testItem.getCode());
+        testFoodItemFromStorage.setUnit(UnitType.ML);
+        assertNotEquals(testFoodItemFromStorage, foodStorage.getFoodItemByCode(testItem.getCode()));
+    }
+
+    @Test
     void testGetByCode() {
         assertNull(foodStorage.getFoodItemByCode(testItem.getCode()));
 
