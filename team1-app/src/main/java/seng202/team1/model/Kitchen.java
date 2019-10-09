@@ -2,14 +2,12 @@ package seng202.team1.model;
 
 import seng202.team1.data.FoodItemDAO;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Kitchen {
 
     private FoodItemDAO foodStorage;
+    private Map<String, Integer> totalAmountRequired = new HashMap<>();
 
     /**
      * default constructor
@@ -46,15 +44,26 @@ public class Kitchen {
     private FoodItem makeFoodItemFromRecipe(FoodItem foodItem) {
         Recipe recipe = foodItem.getRecipe();
         Set<FoodItem> ingredients = recipe.getIngredients();
+
+        Integer totalAlreadyRequired = totalAmountRequired.get(foodItem.getCode());
+        if (totalAlreadyRequired != null && totalAlreadyRequired > 0) {
+            System.out.println("cycle detected " + foodItem.getCode());
+        }
+
+        recipe.getIngredientAmounts().forEach((code, amount) -> {
+            totalAmountRequired.merge(code, amount, (amountRecipe, amountKitchen) -> amountRecipe + amountKitchen);
+        });
+
         Map<String, Integer> ingredientAmounts = recipe.getIngredientAmounts();
 
         int amountToCreate = recipe.getAmountCreated();
         for (FoodItem ingredient : ingredients) {
-            int amount = ingredientAmounts.get(ingredient.getCode());
+            String code = ingredient.getCode();
+            int amount = ingredientAmounts.get(code);
             while (amount > 0) {
                 getFoodItemInstance(ingredient);
                 amount -= 1;
-                if (ingredient.getCode().equals("ING9")) System.out.println(foodStorage.getFoodItemStock("ING9"));
+                totalAmountRequired.put(code, totalAmountRequired.get(code) - 1);
             }
         }
         addAmountToFoodStorage(foodItem, amountToCreate - 1);

@@ -16,6 +16,8 @@ class KitchenTest {
 
     FoodItemDAO storage;
     Kitchen kitchen;
+    FoodItem testItem, testIngredient;
+    Recipe testRecipe;
 
 
     @BeforeEach
@@ -23,6 +25,14 @@ class KitchenTest {
         storage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         kitchen = new Kitchen(storage);
+
+        testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        testIngredient = new FoodItem("ING1", "ingred", UnitType.COUNT);
+        RecipeBuilder recipeBuilder = new RecipeBuilder();
+        recipeBuilder.addIngredient(testIngredient, 2);
+        testRecipe = recipeBuilder.generateRecipe(3);
+        testItem.setRecipe(testRecipe);
+        storage.addFoodItem(testItem, 0);
     }
 
     @Disabled
@@ -35,40 +45,19 @@ class KitchenTest {
     }
 
     @Test
+    @Disabled
     void testGetFoodItemInstance() {
-        // FoodItem is null
-        assertThrows(NullPointerException.class, () -> {
-            kitchen.getFoodItemInstance(null);
-        });
-
-        // FoodItem exists but has no recipe
-        FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
-        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
-
-
         //FoodItem is out of stock
         FoodItem testIngredient = new FoodItem("ING1", "ingred", UnitType.COUNT);
         Set<FoodItem> ingredients = new HashSet<>(Arrays.asList(testIngredient));
         Map<String, Integer> ingredAmounts = new HashMap<>();
         ingredAmounts.put(testIngredient.getCode(), 2);
         testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 3));
-        storage.addFoodItem(testIngredient, 6);
-        storage.addFoodItem(testItem, 0);
+        storage.setFoodItemStock(testIngredient.getCode(), 6);
 
-
-
-        //make sure the correct value is returned
-        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
-        //check the correct amount of ingredients are removed from the database
-        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
-        //check the correct amount of fooditems are created
-        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 2);
 
         //check that after getting a fooditem that is in stock, the stock correctly decrements by one
         kitchen.getFoodItemInstance(testItem);
-        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 1);
-        //check that the stock of an ingredient for a fooditem is not changed when the fooditem is in stock (doesn't need to be made)
-        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
 
 
         FoodItem testItem2 = new FoodItem("TEST2", "Test Item 2", UnitType.COUNT);
@@ -111,9 +100,78 @@ class KitchenTest {
         //test stock update for item in local version of foodItem
 
         assertEquals(storage.getFoodItemStock(testIngredient2.getCode()), 3);
-
-
     }
+
+    @Test
+    void testGetNull() {
+        // FoodItem is null
+        assertThrows(NullPointerException.class, () -> {
+            kitchen.getFoodItemInstance(null);
+        });
+    }
+
+    @Test
+    void testFoodItemWithNoRecipeInStorage() {
+        // FoodItem exists but has no recipe
+        testItem.setRecipe(null);
+        storage.updateFoodItem(testItem);
+        storage.setFoodItemStock(testItem.getCode(), 1);
+        FoodItem instance = kitchen.getFoodItemInstance(testItem);
+
+        assertEquals(testItem, instance);
+        assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
+    }
+
+    @Test
+    void testItemInStorageSameRecipeOutOfStock() {
+        //FoodItem is out of stock
+        testItem.setRecipe(testRecipe);
+        storage.setFoodItemStock(testIngredient.getCode(), 6);
+
+        //make sure the correct value is returned
+        FoodItem instance = kitchen.getFoodItemInstance(testItem);
+        assertEquals(testItem, instance);
+        //check the correct amount of ingredients are removed from the database
+        assertEquals(4, storage.getFoodItemStock(testIngredient.getCode()));
+        //check the correct amount of food items are created
+        assertEquals(2, storage.getFoodItemStock(testItem.getCode()));
+    }
+
+    @Test
+    void testItemInStorageSameRecipeHasStock() {
+        testItem.setRecipe(testRecipe);
+        storage.setFoodItemStock(testIngredient.getCode(), 6);
+        storage.setFoodItemStock(testItem.getCode(), 1);
+        kitchen.getFoodItemInstance(testItem); // shouldn't use the recipe as we have the item in the database
+
+        assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
+        assertEquals(6, storage.getFoodItemStock(testIngredient.getCode()));
+    }
+
+    @Test
+    void testRecipeWithIngredientNotInStockThatHasRecipe() {
+        FoodItem testIngredientIngredient = new FoodItem("ING2", "test ingr's ingr", UnitType.COUNT);
+        RecipeBuilder builder = new RecipeBuilder();
+        builder.addIngredient(testIngredientIngredient, 1);
+        Recipe testIngredientRecipe = builder.generateRecipe(10);
+        testIngredient.setRecipe(testIngredientRecipe);
+        storage.updateFoodItem(testIngredient);
+        storage.setFoodItemStock(testIngredient.getCode(), 0);
+        storage.setFoodItemStock(testIngredientIngredient.getCode(), 0);
+        storage.setFoodItemStock(testIngredientIngredient.getCode(), 1);
+        kitchen.getFoodItemInstance(testItem);
+
+        assertEquals(testRecipe.getAmountCreated() - 1, storage.getFoodItemStock(testItem.getCode()));
+        int amountOfTestIngredientNeeded = testRecipe.getIngredientAmounts().get(testIngredient.getCode());
+        assertEquals(testIngredientRecipe.getAmountCreated() - amountOfTestIngredientNeeded, storage.getFoodItemStock(testIngredient.getCode()));
+        // TODO check testIngredientIngredient amount is correct
+    }
+
+    @Test
+    void testSomeIngredientsInStockNotEnough() {
+        // TODO test when not enough of testIngredient but there is still some
+    }
+
 
     @Test
     @Disabled
