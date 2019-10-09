@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.JDBCStorage;
-import seng202.team1.util.InvalidDataCodeException;
-import seng202.team1.util.NotEnoughStockException;
-import seng202.team1.util.RecipeNotFoundException;
-import seng202.team1.util.UnitType;
+import seng202.team1.util.*;
 
 import java.util.*;
 
@@ -23,7 +20,7 @@ class KitchenTest {
 
     @BeforeEach
     void beforeEach() {
-        storage = JDBCStorage.getInstance();
+        storage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         kitchen = new Kitchen(storage);
     }
@@ -116,6 +113,24 @@ class KitchenTest {
         assertEquals(storage.getFoodItemStock(testIngredient2.getCode()), 3);
 
 
+    }
+
+    @Test
+    @Disabled
+    void testCyclicRecipeDependencies() {
+        FoodItem a = new FoodItem("ITEMA", "item A", UnitType.COUNT);
+        FoodItem b = new FoodItem("ITEMB", "item B", UnitType.COUNT);
+
+        RecipeBuilder builderA = new RecipeBuilder();
+        builderA.addIngredient(b, 1);
+        a.setRecipe(builderA.generateRecipe(1));
+
+        RecipeBuilder builderB = new RecipeBuilder();
+        builderB.addIngredient(a, 1);
+        b.setRecipe(builderB.generateRecipe(1));
+
+        FoodItem aInstance = kitchen.getFoodItemInstance(a); // should not throw a StackOverflowError
+        assertEquals(a, aInstance);
     }
 
 }
