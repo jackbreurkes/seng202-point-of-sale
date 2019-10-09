@@ -1,22 +1,27 @@
 package seng202.team1.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
+import seng202.team1.data.JDBCStorage;
+import seng202.team1.model.Order;
 
-import java.sql.Timestamp;
+
 
 import java.io.IOException;
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class AnalysisController {
 
     @FXML private ComboBox xComboBox;
     @FXML private ComboBox yComboBox;
     @FXML private VBox graphVbox;
+
 
     public void initialize() {
         xComboBox.getItems().addAll("Date", "Time", "Day");
@@ -27,29 +32,71 @@ public class AnalysisController {
 
     public void plotGraph() {
 
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Date");
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel(String.valueOf(xComboBox.getValue()));
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Number of orders");
+        yAxis.setLabel(String.valueOf(yComboBox.getValue()));
 
-        LineChart lineChart = new LineChart(xAxis, yAxis);
+        LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis,yAxis);
 
         XYChart.Series dataSeries = new XYChart.Series();
-        dataSeries.setName("Test");
+        dataSeries.setName(String.valueOf(yComboBox.getValue()) + " against " + String.valueOf(xComboBox.getValue()));
 
-        dataSeries.getData().add(new XYChart.Data( 1, 567));
-        dataSeries.getData().add(new XYChart.Data( 5, 612));
-        dataSeries.getData().add(new XYChart.Data(10, 800));
-        dataSeries.getData().add(new XYChart.Data(20, 780));
-        dataSeries.getData().add(new XYChart.Data(40, 810));
-        dataSeries.getData().add(new XYChart.Data(80, 850));
+        addDataToSeries(dataSeries, String.valueOf(xComboBox.getValue()), String.valueOf(yComboBox.getValue()));
 
         lineChart.getData().add(dataSeries);
 
+        graphVbox.getChildren().removeAll(graphVbox.getChildren());
         graphVbox.getChildren().add(lineChart);
 
     }
+
+    public void addDataToSeries(XYChart.Series dataSeries, String xValue, String yValue) {
+        JDBCStorage memory = JDBCStorage.getInstance();
+        Set<Order> allOrders = memory.getAllOrders();
+        ArrayList<Date> counted = new ArrayList<>();
+
+        Iterator<Order> iterator1 = allOrders.iterator();
+        int count = 0;
+
+        while (iterator1.hasNext()) {
+            Order order1 = iterator1.next();
+            Date date1 = order1.getLastUpdated();
+            date1 = dateOnly(date1);
+            if (!counted.contains(date1)) {
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setTime(date1);
+                count = 0;
+                Iterator<Order> iterator2 = allOrders.iterator();
+                while (iterator2.hasNext()) {
+                    Order order2 = iterator2.next();
+                    Date date2 = order2.getLastUpdated();
+                    date2 = dateOnly(date2);
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(date2);
+                    boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+                    if (sameDay) {
+                        count++;
+                    }
+                }
+                String calendarString = "" + cal1.get(Calendar.DAY_OF_MONTH) + "/" + cal1.get(Calendar.MONTH) + "/"
+                        + cal1.get(Calendar.YEAR);
+                dataSeries.getData().add(new XYChart.Data<String,Number>(calendarString, count));
+                counted.add(date1);
+            }
+        }
+    }
+
+    public Date dateOnly(Date old) {
+        long millisInDay = 60 * 60 * 24 * 1000;
+        long currentTime = old.getTime();
+        long dateOnly = (currentTime / millisInDay) * millisInDay + millisInDay;
+        Date result = new Date(dateOnly);
+        return result;
+    }
+
 
     /**
      * When this methods is called, it will change the scene to datatype controller view

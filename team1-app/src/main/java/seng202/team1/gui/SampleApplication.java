@@ -24,7 +24,7 @@ public class SampleApplication extends Application {
         Scene start = new Scene(root);
         start.getStylesheets().add("stylesheets/default.css");
         primaryStage.setScene(start);
-        //primaryStage.setFullScreen(true);
+        //primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

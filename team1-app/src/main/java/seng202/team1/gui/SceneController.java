@@ -30,7 +30,7 @@ public class SceneController {
 
         window.setScene(newScene);
         window.setFullScreenExitHint("");
-        //window.setFullScreen(true);
+        //window.setMaximized(true);
         window.show();
     }
 }
