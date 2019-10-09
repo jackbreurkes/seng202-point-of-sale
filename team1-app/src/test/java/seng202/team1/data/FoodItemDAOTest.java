@@ -35,6 +35,13 @@ abstract class FoodItemDAOTest {
     }
 
     @Test
+    void testReturnsSeparateInstance() {
+        foodStorage.addFoodItem(testItem, 1);
+        assertEquals(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+        assertNotSame(testItem, foodStorage.getFoodItemByCode(testItem.getCode()));
+    }
+
+    @Test
     void testGetByCode() {
         assertNull(foodStorage.getFoodItemByCode(testItem.getCode()));
 

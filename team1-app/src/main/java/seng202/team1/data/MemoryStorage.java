@@ -35,9 +35,7 @@ public class MemoryStorage implements FoodItemDAO {
         return instance;
     }
 
-    /**
-     * I don't think we should ever ues this outside of testing? not sure?
-     */
+
     public void resetInstance() {
         foodItems = new HashMap<String, FoodItem>();
         foodItemCounts = new HashMap<String, Integer>();
