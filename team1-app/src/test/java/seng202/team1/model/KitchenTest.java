@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
+import seng202.team1.data.JDBCStorage;
 import seng202.team1.data.MemoryStorage;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.NotEnoughStockException;
@@ -23,13 +24,13 @@ class KitchenTest {
 
     @BeforeEach
     void beforeEach() {
-        storage = MemoryStorage.getInstance();
+        storage = JDBCStorage.getInstance();
         DAOFactory.resetInstances();
         kitchen = new Kitchen(storage);
     }
 
-    @Test
     @Disabled
+    @Test
     void testConstructor() {
         // null storage instance
         assertThrows(NullPointerException.class, () -> {
@@ -93,7 +94,29 @@ class KitchenTest {
         assertEquals(storage.getFoodItemStock(testIngredient.getCode()), 2);
 
 
-        //test fooditems in the database that do not match the fooditem being updated
+        //test fooditems in the database that do not match the recipe of the fooditem being updated
+
+        FoodItem testIngredient2 = new FoodItem("ING9", "ingredi", UnitType.COUNT);
+        storage.addFoodItem(testIngredient2, 5);
+        Set<FoodItem> ingredients3 = new HashSet<>(Arrays.asList(testIngredient2));
+        Map<String, Integer> ingredAmounts3 = new HashMap<>();
+        ingredAmounts3.put(testIngredient2.getCode(), 2);
+
+
+        testItem2.setRecipe(new Recipe(ingredients3, new HashSet<>(), ingredAmounts3, 2));
+        //test return value
+//        kitchen.getFoodItemInstance(testItem2);
+        assertEquals(kitchen.getFoodItemInstance(testItem2), testItem2);
+        //System.out.println(storage.getFoodItemStock("ING9"));
+
+
+        //test stock update for item in stored version of foodItem
+        assertEquals(storage.getFoodItemStock(testItem.getCode()), 2);
+        //test stock update for item in local version of foodItem
+
+        assertEquals(storage.getFoodItemStock(testIngredient2.getCode()), 3);
+
+
     }
 
 }

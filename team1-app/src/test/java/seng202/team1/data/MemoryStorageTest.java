@@ -27,4 +27,11 @@ class MemoryStorageFoodItemDAOTest extends FoodItemDAOTest {
         ((MemoryStorage) foodStorage).resetInstance();
     }
 
+    @Test
+    @Override
+    @Disabled
+    void testReturnsSeparateInstance() {
+        fail();
+    }
+
 }

@@ -5,6 +5,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.VBox;
+
 import java.sql.Timestamp;
 
 import java.io.IOException;
@@ -14,6 +16,7 @@ public class AnalysisController {
 
     @FXML private ComboBox xComboBox;
     @FXML private ComboBox yComboBox;
+    @FXML private VBox graphVbox;
 
     public void initialize() {
         xComboBox.getItems().addAll("Date", "Time", "Day");
@@ -44,6 +47,7 @@ public class AnalysisController {
 
         lineChart.getData().add(dataSeries);
 
+        graphVbox.getChildren().add(lineChart);
 
     }
 

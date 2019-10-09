@@ -54,6 +54,7 @@ public class Kitchen {
             while (amount > 0) {
                 getFoodItemInstance(ingredient);
                 amount -= 1;
+                if (ingredient.getCode().equals("ING9")) System.out.println(foodStorage.getFoodItemStock("ING9"));
             }
         }
         addAmountToFoodStorage(foodItem, amountToCreate - 1);
