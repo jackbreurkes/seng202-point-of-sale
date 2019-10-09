@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Assertions;
 import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.InvalidOrderStatusException;
 import seng202.team1.util.UnitType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -90,92 +90,43 @@ public class OrderSteps {
 
 
 
-
-
-    //This test case is stupid cause it test GUI.
-    @Ignore
-    @Given("the list of food items available")
-    public void the_list_of_food_items_available() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @When("the user views the list of food items")
-    public void the_user_views_the_list_of_food_items() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("the list of food items is displayed")
-    public void the_list_of_food_items_is_displayed() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @And("general information about each food item is displayed")
-    public void general_information_about_each_food_item_is_displayed() {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new cucumber.api.PendingException();
-    }
-
-
-
-
-
-
-
-    // Recipe class isn't written yet so idk how to do this
     @Ignore
     @Given("an order with at least one food item exists")
     public void an_order_with_at_least_one_food_item_exists() {
-        // Write code here that turns the phrase above into concrete actions
+        order = new Order();
+        foodItem = new FoodItem("WATER", "Cup of water", UnitType.COUNT);
+        //initializes a list to check against the order
+        testList.add(foodItem);
+        //adds an item
+        order.addItem(foodItem);
         //throw new cucumber.api.PendingException();
     }
 
     @Ignore
     @When("the employee removes an ingredient from the food item")
     public void the_employee_removes_an_ingredient_from_the_food_item() {
-        // Write code here that turns the phrase above into concrete actions
-       // throw new cucumber.api.PendingException();
+
+        FoodItem foodItem2 = new FoodItem("GLASS", "Cup", UnitType.COUNT);
+
+        Set<FoodItem> ingredients = new HashSet<>();
+        Set<FoodItem> addableIngredients = new HashSet<>();
+        ingredients.add(foodItem2);
+        Map<String, Integer> ingredientAmounts = new HashMap<String, Integer>();
+        ingredientAmounts.put("GLASS", 1);
+
+        foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
+        foodItem.getRecipe().removeIngredient("GLASS");
+
+        // throw new cucumber.api.PendingException();
     }
 
     @Ignore
-    @Then("the item in the order will no longer contain that ingredient and will be marked as modified")
-    public void the_item_in_the_order_will_no_longer_contain_that_ingredient_and_will_be_marked_as_modified() {
-        // Write code here that turns the phrase above into concrete actions
+    @Then("the item in the order will no longer contain that ingredient")
+    public void the_item_in_the_order_will_no_longer_contain_that_ingredient() {
+        Assertions.assertEquals(order.getOrderContents(), testList);
         //throw new cucumber.api.PendingException();
     }
 
-
-
-
-
-
-
-
-    @Ignore
-    @Given("an incomplete order exists in the orders list")
-    public void an_incomplete_order_exists_in_the_orders_list() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @When("the employee specifies details for the note")
-    public void the_employee_specifies_details_for_the_note() {
-        // Write code here that turns the phrase above into concrete actions
-       //  throw new cucumber.api.PendingException();
-    }
-
-    @Ignore
-    @Then("the note will be displayed alongside the order")
-    public void the_note_will_be_displayed_alongside_the_order() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new cucumber.api.PendingException();
-    }
 
 
 
