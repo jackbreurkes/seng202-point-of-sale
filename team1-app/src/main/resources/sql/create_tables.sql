@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS CustomerOrder
 
 
 CREATE TABLE IF NOT EXISTS OrderContains
-(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder,
- FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem,
+(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder(Id),
+ FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem(Id),
  PRIMARY KEY (CustomerOrder, FoodItem));
 
 
 CREATE TABLE IF NOT EXISTS OrderedFoodItem
 (Id /* primary key ID */ INTEGER PRIMARY KEY,
- Code /* alphanumberic code of the FoodItem */ VARCHAR(10) NOT NULL
+ Code /* alphanumeric code of the FoodItem */ VARCHAR(10) NOT NULL
     CONSTRAINT code_min_size CHECK (LENGTH(Code) >= 3),
  Name /* the FoodItem's name */ VARCHAR(20) NOT NULL
     CONSTRAINT name_min_size CHECK (LENGTH(Name) >= 3),

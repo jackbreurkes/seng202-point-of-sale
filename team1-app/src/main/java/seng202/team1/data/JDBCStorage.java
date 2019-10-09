@@ -10,7 +10,11 @@ import seng202.team1.util.UnitType;
 
 import java.io.*;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
@@ -59,14 +63,14 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     private void initializeDatabaseIfNotExists() {
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(url); // if the database file does not exist, this creates it
              Statement stmt = conn.createStatement()) {
 
             InputStream createTablesStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
             String createTables = new BufferedReader(new InputStreamReader(createTablesStream))
                     .lines().collect(Collectors.joining("\n"));
 
-            InputStream createTriggersStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
+            InputStream createTriggersStream = JDBCStorage.class.getResourceAsStream("/sql/create_triggers.sql");
             String createTriggers = new BufferedReader(new InputStreamReader(createTriggersStream))
                     .lines().collect(Collectors.joining("\n"));
 
@@ -121,24 +125,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return result;
     }
 
-    private Recipe getFoodItemRecipe(String foodItemCode) {
-        String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
-
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, foodItemCode);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next() == false) {
-                return null;
-            } else {
-                return readRecipe(rs);
-            }
-
+    private int readFoodItemStock(ResultSet rs) {
+        try {
+            return rs.getInt("StockLevel");
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; // TODO error handling?
+            return 0; // TODO error handling
         }
     }
 
@@ -164,6 +156,82 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             return result;
         } catch (Exception ignored) {
             return null;
+        }
+    }
+
+    /**
+     * reads the next row in a ResultSet and returns an Order corresponding to the information derived from that row.
+     * @param rs the ResultSet to read from, rs should contain at least one row after the cursor
+     * @return an Order corresponding to the next row in the ResultSet
+     */
+    private Order readOrder(ResultSet rs) {
+        int id;
+        List<FoodItem> foodItems = new ArrayList<FoodItem>();
+        String orderNote, statusString, lastUpdatedString;
+        Date lastUpdated = null;
+
+        try {
+            id = rs.getInt("Id");
+            orderNote = rs.getString("Note");
+            statusString = rs.getString("Status");
+            lastUpdatedString = rs.getString("LastUpdated");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            lastUpdated = dateFormat.parse(lastUpdatedString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Order result = new Order();
+        result.setId(id);
+        result.setOrderNote(orderNote);
+        result.setLastUpdated(lastUpdated);
+
+
+        String sql = "SELECT *\n" +
+                "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
+                "WHERE CustomerOrder = ?";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, result.getOrderID());
+            ResultSet rs2 = pstmt.executeQuery();
+
+            while (rs2.next()) {
+                result.addItem(readFoodItem(rs2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        OrderStatus status = OrderStatus.getValueFromString(statusString);
+        setOrderStatus(result, status);
+        return result;
+    }
+
+    private Recipe getFoodItemRecipe(String foodItemCode) {
+        String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, foodItemCode);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() == false) {
+                return null;
+            } else {
+                return readRecipe(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null; // TODO error handling?
         }
     }
 
@@ -210,45 +278,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    private Order readOrder(ResultSet rs) {
-        int id;
-        List<FoodItem> foodItems = new ArrayList<FoodItem>();
-        String orderNote, statusString;
-
-        try {
-            id = rs.getInt("Id");
-            orderNote = rs.getString("Note");
-            statusString = rs.getString("Status");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        Order result = new Order();
-        result.setId(id);
-        result.setOrderNote(orderNote);
-
-        String sql = "SELECT *\n" +
-                "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
-                "WHERE CustomerOrder = ?";
-
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, result.getOrderID());
-            ResultSet rs2 = pstmt.executeQuery();
-
-            while (rs2.next()) {
-                result.addItem(readFoodItem(rs2));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        OrderStatus status = OrderStatus.getValueFromString(statusString);
-        setOrderStatus(result, status);
-        return result;
-    }
-
     /**
      * sets the status of an Order using the correct sequence of status modifications.
      * this has not been placed in Order since it only works for orders with the CREATING status.
@@ -274,15 +303,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 order.refundOrder();
             default:
                 break;
-        }
-    }
-
-    private int readFoodItemStock(ResultSet rs) {
-        try {
-            return rs.getInt("StockLevel");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0; // TODO error handling
         }
     }
 
@@ -541,11 +561,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     @Override
-    public Set<Order> getAllOrders() {
-        return null;
-    }
-
-    @Override
     public Order getOrderByID(int id) {
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
@@ -682,6 +697,27 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Set<Order> getAllOrders() {
+        String sql = "SELECT * FROM CustomerOrder;";
+
+        Set<Order> allOrders = new HashSet<>();
+
+        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+             while (rs.next()) {
+                 allOrders.add(readOrder(rs));
+             }
+
+        } catch (SQLException e) {
+             e.printStackTrace();
+        }
+
+        return allOrders;
     }
 
     @Override

@@ -3,8 +3,11 @@ package seng202.team1.model;
 import seng202.team1.data.FoodItemDAO;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
-public class Kitchen implements FoodSource {
+public class Kitchen {
 
     private FoodItemDAO foodStorage;
 
@@ -16,16 +19,58 @@ public class Kitchen implements FoodSource {
         this.foodStorage = foodStorage;
     }
 
-    @Override
+    public FoodItem getFoodItemInstance(FoodItem modelFoodItem) {
+
+        String code = modelFoodItem.getCode();
+        FoodItem storedFoodItem = foodStorage.getFoodItemByCode(code);
+        if (storedFoodItem != null) {
+            boolean recipesAreEqual = Objects.equals(modelFoodItem.getRecipe(), storedFoodItem.getRecipe());
+            int stockCount = foodStorage.getFoodItemStock(code);
+            if (recipesAreEqual && stockCount > 0) {
+                foodStorage.setFoodItemStock(code, stockCount - 1);
+                return storedFoodItem;
+            }
+        }
+
+        if (modelFoodItem.getRecipe() == null) {
+            return modelFoodItem; // for now we don't want to give any issues here
+        }
+        return makeFoodItemFromRecipe(modelFoodItem);
+    }
+
     /**
-     * tries to create the given amount of a FoodItem with the given code using its recipe.
-     * @param code the code of the FoodItem to create using its recipe
-     * @param amount the amount of the given FoodItem to create
-     * @return list of created food items, should all be the same item
-     * TODO figure out how to deal with recipes that return amounts > 1 since it may not divide 'amount' perfectly
+     *
+     * @param foodItem
+     * @return
      */
-    public List<FoodItem> createFoodItems(String code, int amount) {
-        return null;
+    private FoodItem makeFoodItemFromRecipe(FoodItem foodItem) {
+        Recipe recipe = foodItem.getRecipe();
+        Set<FoodItem> ingredients = recipe.getIngredients();
+        Map<String, Integer> ingredientAmounts = recipe.getIngredientAmounts();
+
+        int amountToCreate = recipe.getAmountCreated();
+        for (FoodItem ingredient : ingredients) {
+            int amount = ingredientAmounts.get(ingredient.getCode());
+            while (amount > 0) {
+                getFoodItemInstance(ingredient);
+                amount -= 1;
+            }
+        }
+        addAmountToFoodStorage(foodItem, amountToCreate - 1);
+        return foodItem;
+    }
+
+    /**
+     * this does not treat different recipes for the same order different
+     * @param item
+     */
+    private void addAmountToFoodStorage(FoodItem item, int amount) {
+        String code = item.getCode();
+        if (foodStorage.getFoodItemByCode(code) == null) {
+            foodStorage.addFoodItem(item, 0);
+        }
+        int currentStock = foodStorage.getFoodItemStock(code);
+        foodStorage.setFoodItemStock(code, currentStock + amount);
     }
 
 }

@@ -15,11 +15,11 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 class KitchenTest {
 
     FoodItemDAO storage;
     Kitchen kitchen;
+
 
     @BeforeEach
     void beforeEach() {
@@ -29,6 +29,7 @@ class KitchenTest {
     }
 
     @Test
+    @Disabled
     void testConstructor() {
         // null storage instance
         assertThrows(NullPointerException.class, () -> {
@@ -37,70 +38,62 @@ class KitchenTest {
     }
 
     @Test
-    void testCreateFoodItemsArgErrors() {
-        // code is null
+    void testGetFoodItemInstance() {
+        // FoodItem is null
         assertThrows(NullPointerException.class, () -> {
-            kitchen.createFoodItems(null, 1);
-        });
-
-        // amount is < 0
-        assertThrows(IllegalArgumentException.class, () -> {
-            kitchen.createFoodItems("12345", -1);
-        });
-
-        // amount = 0
-        assertThrows(IllegalArgumentException.class, () -> {
-            kitchen.createFoodItems("12345", 0);
-        });
-
-        // FoodItem doesn't exist
-        assertThrows(InvalidDataCodeException.class, () -> {
-            kitchen.createFoodItems("12345", 1);
+            kitchen.getFoodItemInstance(null);
         });
 
         // FoodItem exists but has no recipe
-        fail("not yet implemented");
+        FoodItem testItem = new FoodItem("TEST", "Test Item", UnitType.COUNT);
+        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
 
-        // recipe exists but not enough stock in storage
-        FoodItem testItem = new FoodItem("TESTITEM", "test food item", UnitType.COUNT);
+
+        //FoodItem is out of stock
         FoodItem testIngredient = new FoodItem("ING1", "ingred", UnitType.COUNT);
         Set<FoodItem> ingredients = new HashSet<>(Arrays.asList(testIngredient));
         Map<String, Integer> ingredAmounts = new HashMap<>();
         ingredAmounts.put(testIngredient.getCode(), 2);
-        testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 1));
-        storage.addFoodItem(testIngredient, 5);
+        testItem.setRecipe(new Recipe(ingredients, new HashSet<>(), ingredAmounts, 3));
+        storage.addFoodItem(testIngredient, 6);
         storage.addFoodItem(testItem, 0);
-        assertThrows(NotEnoughStockException.class, () -> {
-            kitchen.createFoodItems(testItem.getCode(), 10);
-        });
-        // TODO reconsider how missing stock is handled, do we actually want to throw an error?
+
+
+
+        //make sure the correct value is returned
+        assertTrue(kitchen.getFoodItemInstance(testItem) == testItem);
+        //check the correct amount of ingredients are removed from the database
+        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
+        //check the correct amount of fooditems are created
+        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 2);
+
+        //check that after getting a fooditem that is in stock, the stock correctly decrements by one
+        kitchen.getFoodItemInstance(testItem);
+        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 1);
+        //check that the stock of an ingredient for a fooditem is not changed when the fooditem is in stock (doesn't need to be made)
+        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
+
+
+        FoodItem testItem2 = new FoodItem("TEST2", "Test Item 2", UnitType.COUNT);
+        Set<FoodItem> ingredients2 = new HashSet<>(Arrays.asList(testItem));
+        Map<String, Integer> ingredAmounts2 = new HashMap<>();
+        ingredAmounts2.put(testItem.getCode(), 2);
+
+
+        //test fooditems whose recipe contains other fooditems that contain ingredients.
+        testItem2.setRecipe(new Recipe(ingredients2, new HashSet<>(), ingredAmounts2, 2));
+
+        //test return value
+        assertSame(kitchen.getFoodItemInstance(testItem2), testItem2);
+        //test item stock updates correctly
+        assertEquals(storage.getFoodItemStock(testItem2.getCode()), 1);
+        //test fooditem in recipe updates correctly
+        assertEquals(storage.getFoodItemStock(testItem.getCode()), 2);
+        //test recursive removal of ingredient
+        assertEquals(storage.getFoodItemStock(testIngredient.getCode()), 2);
+
+
+        //test fooditems in the database that do not match the fooditem being updated
     }
 
-    @Test
-    void testCreateFoodItemsAmounts() {
-        // recipe exists enough stock in storage
-        FoodItem foodItem = new FoodItem("TESTITEM2", "test item 2", UnitType.COUNT);
-        Recipe recipe = new Recipe(null, null, null, 1);
-        foodItem.setRecipe(recipe);
-        // TODO add foodItem to memory storage
-        // TODO add required ingredients to storage
-        List<FoodItem> expectedItems = Arrays.asList(foodItem);
-        assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 1));
-
-        // more than one
-        List<FoodItem> expectedItems2 = Arrays.asList(foodItem, foodItem);
-        assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 2));
-
-        // TODO test when amount parameter does not perfectly divide the FoodItem's recipe creation amount
-        FoodItem gramFoodItem = new FoodItem("GRAMITEM", "item measured grams", UnitType.GRAM);
-        Recipe recipeFor100 = new Recipe(null, null, null, 100);
-        // TODO add gramFoodItem to storage and ingredients
-
-        kitchen.createFoodItems("GRAMITEM", 100); // TODO test this
-
-        kitchen.createFoodItems("GRAMITEM", 60); // TODO test this
-
-        kitchen.createFoodItems("GRAMITEM", 120); // TODO test this
-
-    }
 }

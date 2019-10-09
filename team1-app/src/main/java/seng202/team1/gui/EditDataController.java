@@ -74,6 +74,16 @@ public class EditDataController {
 
         selectedItem = null;
 
+        foodItemTable.setRowFactory(tv -> {
+            TableRow<FoodItemDisplay> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    editSelectedItem();
+                }
+            });
+            return row;
+        });
+
         foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
 
@@ -156,9 +166,9 @@ public class EditDataController {
 
         recipeView.updateModel(selectedItem.getRecipe());
 
-        statusText.setText("editing " + selectedItem.getCode());
+        statusText.setText("");
 
-        codeLabel.setText(selectedItem.getCode());
+        codeLabel.setText("EDITING: " + selectedItem.getCode());
         newName.setText(selectedItem.getName());
         newCost.setText(selectedItem.getCost().toString());
         newCalories.setText(Double.toString(selectedItem.getCaloriesPerUnit()));
@@ -200,7 +210,11 @@ public class EditDataController {
             return;
         }
 
-        selectedItem.getModelFoodItem().setRecipe(recipe);
+        try {
+            selectedItem.getModelFoodItem().setRecipe(recipe);
+        } catch (IllegalArgumentException e) {
+            statusText.setText("an item's recipe cannot contain itself.");
+        }
         foodStorage.updateFoodItem(selectedItem.getModelFoodItem());
     }
 
@@ -226,6 +240,15 @@ public class EditDataController {
     {
         SceneController sceneChanger = new SceneController();
         sceneChanger.changeScene(event, "order.fxml", "ROSEMARY | Order Screen");
+    }
+
+    /**
+     * When this methods is called, it will change the scene to datatype controller view
+     */
+    public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
+    {
+        SceneController sceneChanger = new SceneController();
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
     }
 
 }

@@ -7,7 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import seng202.team1.data.DAOFactory;
+import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.OrderDAO;
+import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 
 import java.io.IOException;
@@ -79,13 +81,17 @@ public class OrderProgressDisplay extends VBox {
     }
 
     public void cancelOrder(Order order) {
-        System.out.println("cancel");
         if (!submittedOrders.contains(order)) {
             throw new IllegalArgumentException("only submitted orders can be cancelled");
         }
         submittedOrders.remove(order);
         order.cancelOrder();
         orderStorage.updateOrder(order);
+
+        FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
+        for (FoodItem orderedItem : order.getOrderContents()) {
+            //foodStorage.addFoodItem(orderedItem, 1); // put back the items we created because the customer does not want them TODO uncomment when kitchen is fully tested
+        }
 
         updateSubmittedOrders();
     }
