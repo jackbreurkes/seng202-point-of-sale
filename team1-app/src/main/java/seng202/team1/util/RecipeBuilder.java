@@ -85,7 +85,8 @@ public class RecipeBuilder {
      * @param ingredient the FoodItem to remove from the ingredients Set
      */
     public void removeIngredient(FoodItem ingredient) {
-        throw new RuntimeException("method not yet implemented");
+        ingredients.remove(ingredient);
+        ingredientAmounts.remove(ingredient.getCode());
     }
 
     /**
@@ -93,7 +94,8 @@ public class RecipeBuilder {
      * @param ingredient the FoodItem to remove from the addableIngredients Set
      */
     public void removeAddableIngredient(FoodItem ingredient) {
-        throw new RuntimeException("method not yet implemented");
+        addableIngredients.remove(ingredient);
+        ingredientAmounts.remove(ingredient.getCode());
     }
 
     /**
@@ -102,7 +104,13 @@ public class RecipeBuilder {
      * @param amount the new amount to use
      */
     public void updateIngredientAmount(FoodItem ingredient, int amount) {
-        throw new RuntimeException("method not yet implemented");
+        if (!ingredientAmounts.containsKey(ingredient.getCode())) {
+            throw new InvalidDataCodeException("ingredient is not in the recipe");
+        }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("cannot have a non-positive amount of an ingredient");
+        }
+        ingredientAmounts.put(ingredient.getCode(), amount);
     }
 
     /**

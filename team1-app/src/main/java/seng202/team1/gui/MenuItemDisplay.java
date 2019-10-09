@@ -47,7 +47,7 @@ public class MenuItemDisplay extends VBox {
         addToOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                createDisplay.addItemToOrder(model);
+                createDisplay.addItemToOrder(model.getCode());
             }
         });
     }

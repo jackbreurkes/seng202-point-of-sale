@@ -70,7 +70,8 @@ public class CreateOrderDisplay extends VBox {
         });
     }
 
-    public void addItemToOrder(FoodItem item) {
+    public void addItemToOrder(String code) {
+        FoodItem item = DAOFactory.getFoodItemDAO().getFoodItemByCode(code);
         model.addItem(item);
         orderTotalCost.setText("Order Cost - " + model.getCost().toString());
         orderItems.getChildren().add(new OrderItemDisplay(this, item));
@@ -79,6 +80,7 @@ public class CreateOrderDisplay extends VBox {
     public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
         model.removeItem(item);
         orderTotalCost.setText("Order Total - " + model.getCost().toString());
+        System.out.println("pls");
         orderItems.getChildren().remove(display);
     }
 

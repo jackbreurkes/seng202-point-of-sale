@@ -18,7 +18,7 @@
                   <Font size="19.0" />
                </font></Label>
             <Region prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="editRecipe" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="saveRecipe" mnemonicParsing="false" text="Save recipe" />
          </children>
          <VBox.margin>
             <Insets />

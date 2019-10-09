@@ -44,14 +44,14 @@ public class OrderItemDisplay extends VBox {
 
     public void initialize() {
         itemName.setText(model.getName());
-        OrderItemDisplay display = this;
 
         if (model.getRecipe() != null) {
             for (FoodItem ingredient : model.getRecipe().getIngredients()) {
-                ingredients.getChildren().add(new OrderIngredientDisplay(ingredient));
+                ingredients.getChildren().add(new OrderIngredientDisplay(this, ingredient));
             }
         }
 
+        OrderItemDisplay display = this;
         removeItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -59,6 +59,11 @@ public class OrderItemDisplay extends VBox {
             }
         });
 
+    }
+
+    protected void removeIngredient(FoodItem ingredient, OrderIngredientDisplay display) {
+        model.getRecipe().removeIngredient(ingredient.getCode());
+        ingredients.getChildren().remove(display);
     }
 
 }

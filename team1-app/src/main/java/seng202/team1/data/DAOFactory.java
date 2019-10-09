@@ -14,7 +14,6 @@ public class DAOFactory {
      * resets any storage implementations
      */
     public static void resetInstances() {
-        MemoryStorage.getInstance().resetInstance();
         JDBCStorage.getInstance().resetInstance();
     }
 

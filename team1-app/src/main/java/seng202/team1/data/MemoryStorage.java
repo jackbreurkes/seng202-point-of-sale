@@ -6,7 +6,10 @@ import seng202.team1.util.InvalidDataCodeException;
 import java.util.*;
 
 /**
- * @deprecated because it returns a mutable version of the object as it appears in storage
+ * Basic storage implementation that holds objects in memory.
+ * @deprecated because it returns a reference to the object as it is stored, meaning that modifying a
+ * value returned by one of the retrieve methods will also change it within the database. in some contexts,
+ * this can have unexpected results.
  */
 @Deprecated
 public class MemoryStorage implements FoodItemDAO {

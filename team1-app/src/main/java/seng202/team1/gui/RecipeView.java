@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -18,7 +19,7 @@ public class RecipeView extends VBox {
     @FXML
     private VBox ingredientsVBox;
 
-    @FXML private Button editRecipe, addSelected;
+    @FXML private Button saveRecipe, addSelected;
 
     @FXML private Label addItemErrorMsg;
 
@@ -43,11 +44,10 @@ public class RecipeView extends VBox {
     }
 
     public void resetView() {
-        editRecipe.setText("edit recipe");
-        editRecipe.setOnAction(new EventHandler<ActionEvent>() {
+        saveRecipe.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                editRecipe();
+                saveChanges();
             }
         });
 
@@ -68,7 +68,6 @@ public class RecipeView extends VBox {
     public void updateModel(Recipe modelRecipe) {
 
         resetView();
-        addSelected.setVisible(false);
         model = new RecipeBuilder();
         model.loadExistingRecipeData(modelRecipe);
 
@@ -84,19 +83,8 @@ public class RecipeView extends VBox {
         for (FoodItem ingredient : model.getIngredients()) {
             String name = ingredient.getName();
             int amount = model.getIngredientAmounts().get(ingredient.getCode());
-            ingredientsVBox.getChildren().add(new Label(name + " (" + amount + ")"));
+            ingredientsVBox.getChildren().add(new RecipeIngredientDisplay(this, ingredient));//new Label(name + " (" + amount + ")"));
         }
-    }
-
-    public void editRecipe() {
-        addSelected.setVisible(true);
-        editRecipe.setText("save recipe");
-        editRecipe.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                saveChanges();
-            }
-        });
     }
 
     private void saveChanges() {
@@ -117,6 +105,11 @@ public class RecipeView extends VBox {
 
     private void resetIngredientList() {
         ingredientsVBox.getChildren().clear();
+    }
+
+    protected void removeIngredient(FoodItem ingredient) {
+        model.removeIngredient(ingredient);
+        refreshIngredientList();
     }
 
 }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.JDBCStorage;
-import seng202.team1.data.MemoryStorage;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.NotEnoughStockException;
 import seng202.team1.util.RecipeNotFoundException;

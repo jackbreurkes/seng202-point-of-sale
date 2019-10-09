@@ -11,7 +11,7 @@ import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
-public class OrderIngredientDisplay extends HBox {
+public class RecipeIngredientDisplay extends HBox {
 
     @FXML
     private Label ingredientName;
@@ -19,10 +19,10 @@ public class OrderIngredientDisplay extends HBox {
     @FXML
     private Button ingredientAction;
 
-    private OrderItemDisplay parent;
+    private RecipeView parent;
     private FoodItem model;
 
-    public OrderIngredientDisplay(OrderItemDisplay parent, FoodItem model) {
+    public RecipeIngredientDisplay(RecipeView parent, FoodItem model) {
 
         this.parent = parent;
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
@@ -42,13 +42,21 @@ public class OrderIngredientDisplay extends HBox {
     public void initialize() {
         ingredientName.setText(model.getName());
 
-        OrderIngredientDisplay display = this;
+        RecipeIngredientDisplay display = this;
         ingredientAction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                parent.removeIngredient(model, display);
+                parent.removeIngredient(model);
             }
         });
+    }
+
+    public void enterEditMode() {
+        ingredientAction.setVisible(true);
+    }
+
+    public void exitEditMode() {
+        ingredientAction.setVisible(false);
     }
 
 
