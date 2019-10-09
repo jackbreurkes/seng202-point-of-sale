@@ -74,38 +74,26 @@ class KitchenTest {
         assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 4);
 
 
+        FoodItem testItem2 = new FoodItem("TEST", "Test Item 2", UnitType.COUNT);
+        Set<FoodItem> ingredients2 = new HashSet<>(Arrays.asList(testItem));
+        Map<String, Integer> ingredAmounts2 = new HashMap<>();
+        ingredAmounts2.put(testItem.getCode(), 2);
 
+
+        //test fooditems whose recipe contains other fooditems that contain ingredients.
+        testItem2.setRecipe(new Recipe(ingredients2, new HashSet<>(), ingredAmounts2, 2));
+
+        //test return value
+        assertSame(kitchen.getFoodItemInstance(testItem2), testItem2);
+        //test item stock updates correctly
+        //assertTrue(storage.getFoodItemStock(testItem2.getCode()) == 1);
+        //test fooditem in recipe updates correctly
+        assertTrue(storage.getFoodItemStock(testItem.getCode()) == 4);
+        //test recursive removal of ingredient
+        assertTrue(storage.getFoodItemStock(testIngredient.getCode()) == 2);
+
+
+        //test fooditems in the database that do not match the fooditem being updated
     }
 
-
-
-    @Disabled
-    @Test
-    void testAddAmountToFoodStorage() {
-        // recipe exists enough stock in storage
-        FoodItem foodItem = new FoodItem("TESTITEM2", "test item 2", UnitType.COUNT);
-        Recipe recipe = new Recipe(null, null, null, 1);
-        foodItem.setRecipe(recipe);
-
-        // TODO add foodItem to memory storage
-        // TODO add required ingredients to storage
-        List<FoodItem> expectedItems = Arrays.asList(foodItem);
-        //assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 1));
-
-        // more than one
-        List<FoodItem> expectedItems2 = Arrays.asList(foodItem, foodItem);
-        //assertEquals(expectedItems, kitchen.createFoodItems("TESTITEM2", 2));
-
-        // TODO test when amount parameter does not perfectly divide the FoodItem's recipe creation amount
-        FoodItem gramFoodItem = new FoodItem("GRAMITEM", "item measured grams", UnitType.GRAM);
-        Recipe recipeFor100 = new Recipe(null, null, null, 100);
-        // TODO add gramFoodItem to storage and ingredients
-
-        //kitchen.createFoodItems("GRAMITEM", 100); // TODO test this
-
-        //kitchen.createFoodItems("GRAMITEM", 60); // TODO test this
-
-        //kitchen.createFoodItems("GRAMITEM", 120); // TODO test this
-
-    }
 }
