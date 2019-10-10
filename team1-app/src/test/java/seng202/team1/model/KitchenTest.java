@@ -70,7 +70,7 @@ class KitchenTest {
         testItem2.setRecipe(new Recipe(ingredients2, new HashSet<>(), ingredAmounts2, 2));
 
         //test return value
-        assertSame(kitchen.getFoodItemInstance(testItem2), testItem2);
+        assertEquals(kitchen.getFoodItemInstance(testItem2), testItem2);
         //test item stock updates correctly
         assertEquals(storage.getFoodItemStock(testItem2.getCode()), 1);
         //test fooditem in recipe updates correctly
@@ -164,11 +164,21 @@ class KitchenTest {
         assertEquals(testRecipe.getAmountCreated() - 1, storage.getFoodItemStock(testItem.getCode()));
         int amountOfTestIngredientNeeded = testRecipe.getIngredientAmounts().get(testIngredient.getCode());
         assertEquals(testIngredientRecipe.getAmountCreated() - amountOfTestIngredientNeeded, storage.getFoodItemStock(testIngredient.getCode()));
-        // TODO check testIngredientIngredient amount is correct
+        assertEquals(0, storage.getFoodItemStock(testIngredientIngredient.getCode()));
     }
 
     @Test
     void testSomeIngredientsInStockNotEnough() {
+        storage.setFoodItemStock(testIngredient.getCode(), 2);
+        storage.setFoodItemStock(testItem.getCode(), 0);
+        //needs 3 ingredients to build, only 2 in database
+        kitchen.getFoodItemInstance(testItem);
+        //test return value
+        assertEquals(kitchen.getFoodItemInstance(testItem), testItem);
+        //test item stock updates correctly
+        assertEquals(1, storage.getFoodItemStock(testItem.getCode()));
+        //test correct number of ingredient now in database
+        assertEquals(0, storage.getFoodItemStock(testIngredient.getCode()));
         // TODO test when not enough of testIngredient but there is still some
     }
 
