@@ -6,6 +6,7 @@ import seng202.team1.model.Order;
 import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
 import seng202.team1.util.OrderStatus;
+import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import java.io.*;
@@ -81,8 +82,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-
     private FoodItem readFoodItem(ResultSet rs) {
+        return readFoodItem(rs, false);
+    }
+
+    private FoodItem readFoodItem(ResultSet rs, boolean setRecipeToNull) {
         String code, name, cost, unitType, calPerUnit;
         boolean isVegetarian, isVegan, isGlutenFree;
 
@@ -120,7 +124,9 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
 
-        result.setRecipe(getRecipeOfFoodItem(code));
+        if (!setRecipeToNull) {
+            result.setRecipe(getRecipeOfFoodItem(code));
+        }
 
         return result;
     }
@@ -145,6 +151,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             return null;
         }
 
+//        RecipeBuilder builder = new RecipeBuilder();
 
         Set<FoodItem> ingredients = new HashSet<>();
         Set<FoodItem> addableIngredients = new HashSet<>();
@@ -246,7 +253,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
             while (rs.next()) {
                 int foodItemId = rs.getInt("FoodItem");
-                FoodItem item = getFoodItemByCode(getFoodItemCodeFromId(foodItemId));
+                FoodItem item = getFoodItemByCode(getFoodItemCodeFromId(foodItemId), true);
                 ingredients.add(item);
                 int amount = rs.getInt("Amount");
                 ingredientAmounts.put(item.getCode(), amount);
@@ -328,6 +335,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public FoodItem getFoodItemByCode(String code) {
+        return getFoodItemByCode(code, false);
+    }
+
+    private FoodItem getFoodItemByCode(String code, boolean setRecipeToNull) {
         String sql = "SELECT * FROM FoodItem WHERE Code = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
@@ -339,7 +350,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             if (rs.next() == false) {
                 return null;
             } else {
-                return readFoodItem(rs);
+                return readFoodItem(rs, setRecipeToNull);
             }
 
         } catch (SQLException e) {

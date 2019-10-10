@@ -70,8 +70,7 @@ public class Kitchen {
             int amount = ingredientAmounts.get(code);
 
             totalAmountRequired.putIfAbsent(code, 0);
-            if (totalAmountRequired.get(code) > 0) {
-                System.out.println("cycle detected");
+            if (totalAmountRequired.get(code) > 0) { // cycle detected
                 totalAmountRequired.put(code, totalAmountRequired.get(code) - amount);
                 break;
             }

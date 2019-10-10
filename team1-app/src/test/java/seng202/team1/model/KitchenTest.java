@@ -184,7 +184,6 @@ class KitchenTest {
 
 
     @Test
-    @Disabled
     void testCyclicRecipeDependencies() {
         FoodItem a = new FoodItem("ITEMA", "item A", UnitType.COUNT);
         FoodItem b = new FoodItem("ITEMB", "item B", UnitType.COUNT);

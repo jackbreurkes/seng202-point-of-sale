@@ -197,16 +197,32 @@ public class Recipe {
 
     @Override
     public int hashCode() {
-        return Objects.hash(amountCreated, ingredientAmounts, ingredients, addableIngredients);
+        Set<String> ingredientCodes = new HashSet<>();
+        for (FoodItem ingredient : ingredients) {
+            ingredientCodes.add(ingredient.getCode());
+        }
+        Set<String> addableIngredientCodes = new HashSet<>();
+        for (FoodItem ingredient : addableIngredients) {
+            addableIngredientCodes.add(ingredient.getCode());
+        }
+        return Objects.hash(amountCreated, ingredientAmounts, ingredientCodes, addableIngredientCodes);
     }
 
     @Override
     public String toString() {
+        Set<String> ingredientCodes = new HashSet<>();
+        for (FoodItem ingredient : ingredients) {
+            ingredientCodes.add(ingredient.getCode());
+        }
+        Set<String> addableIngredientCodes = new HashSet<>();
+        for (FoodItem ingredient : addableIngredients) {
+            addableIngredientCodes.add(ingredient.getCode());
+        }
         return "Recipe{" +
                 "amountCreated=" + amountCreated +
                 ", ingredientAmounts=" + ingredientAmounts +
-                ", ingredients=" + ingredients +
-                ", addableIngredients=" + addableIngredients +
+                ", ingredients=" + ingredientCodes +
+                ", addableIngredients=" + addableIngredientCodes +
                 '}';
     }
 }
