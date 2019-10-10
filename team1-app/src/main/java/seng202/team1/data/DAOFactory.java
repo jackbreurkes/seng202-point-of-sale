@@ -1,5 +1,9 @@
 package seng202.team1.data;
 
+/**
+ * factory class to be used to retrieve or reset the currently in use implementation of the
+ * data access object interfaces available within the system.
+ */
 public class DAOFactory {
 
     /**
@@ -11,7 +15,7 @@ public class DAOFactory {
     }
 
     /**
-     * resets any storage implementations
+     * resets any storage implementations.
      */
     public static void resetInstances() {
         JDBCStorage.getInstance().resetInstance();

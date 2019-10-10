@@ -4,6 +4,9 @@ import seng202.team1.model.Menu;
 
 import java.util.Set;
 
+/**
+ * Data access object interface specification for interacting with Menus stored within the system.
+ */
 public interface MenuDAO {
 
     /**

@@ -7,6 +7,10 @@ import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
 import seng202.team1.util.UnitType;
 
+/**
+ * display class to be used in TableViews where FoodItems should be displayed with their stock.
+ * allows populating of the table with information both from a FoodItem instance and its stock count.
+ */
 public class FoodItemDisplay {
 
     private FoodItem item;

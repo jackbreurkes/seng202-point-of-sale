@@ -16,6 +16,9 @@ import seng202.team1.util.InvalidOrderStatusException;
 
 import java.io.IOException;
 
+/**
+ * display shown when creating an order on the order screen.
+ */
 public class CreateOrderDisplay extends VBox {
 
     @FXML
@@ -35,8 +38,12 @@ public class CreateOrderDisplay extends VBox {
     private OrderDAO orderStorage;
     private Kitchen kitchen;
 
-
-    public CreateOrderDisplay(OrderController orderController, Order model) { // TODO add OrderDAO orderStorage as an arg
+    /**
+     * default constructor
+     * @param orderController the parent OrderController that this CreateOrderDisplay is a part of
+     * @param model the Order the CreateOrderDisplay is creating
+     */
+    public CreateOrderDisplay(OrderController orderController, Order model) {
 
         this.orderController = orderController;
         this.model = model;
@@ -70,6 +77,10 @@ public class CreateOrderDisplay extends VBox {
         });
     }
 
+    /**
+     * add a food item with the given code to the Order.
+     * @param code the code of the FoodItem to add to the Order
+     */
     public void addItemToOrder(String code) {
         FoodItem item = DAOFactory.getFoodItemDAO().getFoodItemByCode(code);
         model.addItem(item);
@@ -77,6 +88,11 @@ public class CreateOrderDisplay extends VBox {
         orderItems.getChildren().add(new OrderItemDisplay(this, item));
     }
 
+    /**
+     * remove the given food item from the Order.
+     * @param item FoodItem from the Order to remove
+     * @param display the OrderItemDisplay modelling the item being removed
+     */
     public void removeItemFromOrder(FoodItem item, OrderItemDisplay display) {
         model.removeItem(item);
         orderTotalCost.setText("Order Total - " + model.getCost().toString());
@@ -84,11 +100,14 @@ public class CreateOrderDisplay extends VBox {
         orderItems.getChildren().remove(display);
     }
 
+    /**
+     * submits the order and closes the CreateOrderDisplay.
+     */
     public void submitOrder() {
         try {
             model.submitOrder();
             for (FoodItem orderedItem : model.getOrderContents()) {
-                //kitchen.getFoodItemInstance(orderedItem); // create the items for the customer TODO uncomment when Kitchen is fully tested
+                kitchen.createFoodItem(orderedItem); // create the items for the customer
             }
             orderStorage.addOrder(model);
         } catch (InvalidOrderStatusException e) {
@@ -98,10 +117,16 @@ public class CreateOrderDisplay extends VBox {
         closeCreateOrderPanel(model);
     }
 
+    /**
+     * closes the CreateOrderDisplay.
+     */
     public void closeCreateOrderPanel() {
         orderController.stopCreatingOrder();
     }
 
+    /**
+     * closes the CreateOrderDisplay while also passing the submitted order to the parent OrderController.
+     */
     public void closeCreateOrderPanel(Order submittedOrder) {
         orderController.submitOrderAndClose(submittedOrder);
     }

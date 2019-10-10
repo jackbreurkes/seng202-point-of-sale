@@ -4,6 +4,9 @@ import seng202.team1.model.FoodItem;
 
 import java.util.Set;
 
+/**
+ * Data access object interface specification for interacting with FoodItems stored within the system.
+ */
 public interface FoodItemDAO {
 
     /**

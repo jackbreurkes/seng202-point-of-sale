@@ -14,6 +14,9 @@ import seng202.team1.model.Recipe;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * controller for the edit data screen.
+ */
 public class EditDataController {
 
 

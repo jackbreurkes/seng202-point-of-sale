@@ -4,6 +4,7 @@ import seng202.team1.model.Recipe;
 
 import java.util.Set;
 
+@Deprecated
 public interface RecipeDAO {
 
     /**

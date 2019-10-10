@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * used to handle changing and loading of JavaFX scenes within the application.
+ */
 public class SceneController {
 
     /**

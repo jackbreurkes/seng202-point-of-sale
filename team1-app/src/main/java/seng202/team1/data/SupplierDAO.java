@@ -4,6 +4,9 @@ import seng202.team1.model.Supplier;
 
 import java.util.Set;
 
+/**
+ * Data access object interface specification for interacting with Suppliers stored within the system.
+ */
 public interface SupplierDAO {
 
     /**
