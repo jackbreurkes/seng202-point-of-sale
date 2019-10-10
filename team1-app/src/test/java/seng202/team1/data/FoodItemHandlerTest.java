@@ -33,46 +33,7 @@ class FoodItemHandlerTest {
         source = "src/test/resources/xml/TESTXML1.xml";
         handler = new FoodItemHandler(source, true);
     }
-
-    @Test
-    @Disabled
-    void parseInput() throws ParserConfigurationException, IOException, SAXException {
-        assertNull(handler.parsedDoc());
-        handler.parseInput();
-        // Create another document to parse and assert equals to.
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(true);
-
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace(); // the parser configuration is set in this method only, so this shouldn't be a problem
-        }
-
-        builder.setEntityResolver((publicId, systemId) -> new InputSource(SupplierHandler.class.getResourceAsStream("/dtd/fooditems.dtd")));
-        builder.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void error(SAXParseException exception) throws SAXException {
-                throw exception;
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
-                throw exception;
-            }
-
-            @Override
-            public void warning(SAXParseException exception) throws SAXException {
-                throw exception;
-            }
-        });
-
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document parsedDocument = builder.parse(source);
-        assertEquals(handler.parsedDoc().toString(), parsedDocument.toString());
-    }
-
-
+    
     @Test
     void testParseTESTXML1() {
         try {
