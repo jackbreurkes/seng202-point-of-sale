@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
+import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import javax.xml.parsers.*;
@@ -27,11 +28,6 @@ public class FoodItemHandler {
     private String source;
     private Map<String, FoodItem> foodItems;
 
-//    private List<FoodItem> components;
-//    private Map<FoodItem, Integer> ingredientCounts;
-//    private String recipeNotes;
-//    private double salePrice;
-
     private String code;
     private String name;
     private BigMoney cost;
@@ -41,9 +37,12 @@ public class FoodItemHandler {
     private boolean isVegan;
     private boolean isGlutenFree;
 
-    private Set<FoodItem> ingredients;
-    private Set<FoodItem> addableIngredients;
-    private Map<String, Integer> ingredientAmounts;
+//    private Set<FoodItem> ingredients;
+//    private Set<FoodItem> addableIngredients;
+//    private Map<String, Integer> ingredientAmounts;
+
+    private RecipeBuilder recipeBuilder;
+    private Recipe recipe;
 
     private String ingredientCode;
     private String ingredientName;
@@ -53,9 +52,9 @@ public class FoodItemHandler {
     private int ingredientAmount;
 
     // REMOVE DIETARY CONSTRAINTS BC ALREADY know from FOODITEM ITS
-    private boolean ingredientVegetarian;
-    private boolean ingredientVegan;
-    private boolean ingredientGlutenFree;
+//    private boolean ingredientVegetarian;
+//    private boolean ingredientVegan;
+//    private boolean ingredientGlutenFree;
 
 
     /**
@@ -68,7 +67,6 @@ public class FoodItemHandler {
         source = filePath;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
-
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException pce) {
@@ -123,32 +121,32 @@ public class FoodItemHandler {
         foodItems = new HashMap<String, FoodItem>();
         NodeList nodeList = parsedDoc.getElementsByTagName("fooditem");
         int numNodes = nodeList.getLength();
-
         Element node;
 
         for (int i = 0; i < numNodes; i++) {
             reset();
             node = (Element) nodeList.item(i);
-
             code = node.getElementsByTagName("code").item(0).getTextContent();
             name = node.getElementsByTagName("name").item(0).getTextContent();
             unit = units(node.getAttribute("unit"));
             cost = BigMoney.parse(node.getElementsByTagName("cost").item(0).getTextContent());
             caloriesPerUnit = Double.parseDouble(node.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
 
-
             NodeList recipePlaceholder = node.getElementsByTagName("recipe");
             Element recipeNode = (Element) recipePlaceholder.item(0);
 
-            ingredients = new HashSet<FoodItem>();
-            addableIngredients = new HashSet<FoodItem>();
-            ingredientAmounts = new HashMap<>();
+//            ingredients = new HashSet<FoodItem>();
+//            addableIngredients = new HashSet<FoodItem>();
+//            ingredientAmounts = new HashMap<>();
+            recipeBuilder = new RecipeBuilder();
 
             NodeList ingredientNodeList = recipeNode.getElementsByTagName("ingredient");
             parseIngredients(ingredientNodeList, 0);
 
             NodeList addableIngredientPlaceholder = recipeNode.getElementsByTagName("addableIngredient");
             parseIngredients(addableIngredientPlaceholder, 1);
+
+            recipe = recipeBuilder.generateRecipe(1);
 
             FoodItem foodItem = new FoodItem(code, name, unit);
             foodItem.setCost(cost);
@@ -165,13 +163,17 @@ public class FoodItemHandler {
                 isGlutenFree = diet(node.getAttribute("isGlutenFree"));
                 foodItem.setIsGlutenFree(isGlutenFree);
             }
+//            System.out.println(recipe);
+            foodItem.setRecipe(recipe);
 
             // If 0, then recipe = null
-            if (ingredients.size() != 0) {
-                Recipe recipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
-                foodItem.setRecipe(recipe);
-            }
+//            if (ingredients.size() != 0) {
+//                Recipe recipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
+//                foodItem.setRecipe(recipe);
+//            }
+
             foodItems.put(code, foodItem);
+
         }
         return foodItems;
     }
@@ -192,19 +194,21 @@ public class FoodItemHandler {
             ingredientNode = (Element) ingredientNodeList.item(l);
             ingredientCode = ingredientNode.getElementsByTagName("code").item(0).getTextContent();
             ingredientName = ingredientNode.getElementsByTagName("name").item(0).getTextContent();
-            unit = units(ingredientNode.getAttribute("unit"));
+            ingredientUnit = units(ingredientNode.getAttribute("unit"));
             ingredientCost = BigMoney.parse(ingredientNode.getElementsByTagName("cost").item(0).getTextContent());
             ingredientCaloriesPerUnit = Double.parseDouble(ingredientNode.getElementsByTagName("caloriesPerUnit").item(0).getTextContent());
             ingredientAmount = Integer.parseInt(ingredientNode.getElementsByTagName("amount").item(0).getTextContent());
-            ingredientFoodItem = new FoodItem(ingredientCode, ingredientName, unit);
+            ingredientFoodItem = new FoodItem(ingredientCode, ingredientName, ingredientUnit);
             ingredientFoodItem.setCost(ingredientCost);
             ingredientFoodItem.setCaloriesPerUnit(ingredientCaloriesPerUnit);
             if (check == 0) {
-                ingredients.add(ingredientFoodItem);
+                recipeBuilder.addIngredient(ingredientFoodItem, ingredientAmount);
+                //ingredients.add(ingredientFoodItem);
             } else {
-                addableIngredients.add(ingredientFoodItem);
+                recipeBuilder.addAddableIngredient(ingredientFoodItem, ingredientAmount);
+                //addableIngredients.add(ingredientFoodItem);
             }
-            ingredientAmounts.put(ingredientCode, ingredientAmount);
+            //ingredientAmounts.put(ingredientCode, ingredientAmount);
         }
     }
 
