@@ -54,6 +54,13 @@ public class Recipe {
             throw new IllegalArgumentException("a FoodItem cannot be contained in both ingredients and addableIngredients.");
         }
 
+//        for (FoodItem ingredient : ingredients) { // used to eliminate risk of StackOverflowErrors with circular recipe dependencies
+//            ingredient.setRecipe(null);
+//        }
+//        for (FoodItem addableIngredient : addableIngredients) {
+//            addableIngredient.setRecipe(null);
+//        }
+
         this.amountCreated = amountCreated;
         this.ingredients = ingredients;
         this.addableIngredients = addableIngredients;
@@ -64,7 +71,7 @@ public class Recipe {
      * Gets the ingredient amounts used in the recipe and the ingredient amounts of the addable food items
      * @return the ingredient amounts used in the recipe
      */
-    public Map<String, Integer> getIngredientAmounts() { return ingredientAmounts; }
+    public Map<String, Integer> getIngredientAmounts() { return Collections.unmodifiableMap(ingredientAmounts); }
 
     /**
      * Gets the amount of food items the recipe creates
@@ -76,13 +83,13 @@ public class Recipe {
      * Gets the set of ingredients in the recipe
      * @return set of food items in the recipe
      */
-    public Set<FoodItem> getIngredients(){ return ingredients; }
+    public Set<FoodItem> getIngredients(){ return Collections.unmodifiableSet(ingredients); }
 
     /**
      * Gets the set of addable ingredients in the recipe
      * @return set of addable ingredients in the recipe
      */
-    public Set<FoodItem> getAddableIngredients(){ return addableIngredients; }
+    public Set<FoodItem> getAddableIngredients(){ return Collections.unmodifiableSet(addableIngredients); }
 
     /**
      * Add an addable food item to the recipe during the order
