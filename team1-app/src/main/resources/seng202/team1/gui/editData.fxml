@@ -93,6 +93,7 @@
                 <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Cost:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -175,7 +176,7 @@
                         </CheckBox>
                      </children>
                   </AnchorPane>
-                  <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                  <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -183,6 +184,16 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
+                  <Label text="Stock count:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="newStockCount" alignment="CENTER_RIGHT" promptText="Input new stock count" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
                </children>
             </GridPane>
          </children>
