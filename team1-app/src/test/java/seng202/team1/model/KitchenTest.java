@@ -31,7 +31,7 @@ class KitchenTest {
         recipeBuilder.addIngredient(testIngredient, 2);
         testRecipe = recipeBuilder.generateRecipe(3);
         testItem.setRecipe(testRecipe);
-        storage.addFoodItem(testItem, 0);
+        storage.addFoodItem(testItem, 0); // will also add testIngredient with count 0
     }
 
     @Disabled
@@ -69,7 +69,7 @@ class KitchenTest {
         testItem2.setRecipe(new Recipe(ingredients2, new HashSet<>(), ingredAmounts2, 2));
 
         //test return value
-        assertEquals(kitchen.createFoodItem(testItem2), testItem2);
+        assertSame(kitchen.createFoodItem(testItem2), testItem2);
         //test item stock updates correctly
         assertEquals(storage.getFoodItemStock(testItem2.getCode()), 1);
         //test fooditem in recipe updates correctly
@@ -117,7 +117,7 @@ class KitchenTest {
         storage.setFoodItemStock(testItem.getCode(), 1);
         FoodItem instance = kitchen.createFoodItem(testItem);
 
-        assertEquals(testItem, instance);
+        assertSame(testItem, instance);
         assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
     }
 
@@ -129,7 +129,7 @@ class KitchenTest {
 
         //make sure the correct value is returned
         FoodItem instance = kitchen.createFoodItem(testItem);
-        assertEquals(testItem, instance);
+        assertSame(testItem, instance);
         //check the correct amount of ingredients are removed from the database
         assertEquals(4, storage.getFoodItemStock(testIngredient.getCode()));
         //check the correct amount of food items are created
@@ -141,8 +141,8 @@ class KitchenTest {
         testItem.setRecipe(testRecipe);
         storage.setFoodItemStock(testIngredient.getCode(), 6);
         storage.setFoodItemStock(testItem.getCode(), 1);
-        kitchen.createFoodItem(testItem); // shouldn't use the recipe as we have the item in the database
 
+        assertSame(testItem, kitchen.createFoodItem(testItem)); // shouldn't use the recipe as we have the item in the database
         assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
         assertEquals(6, storage.getFoodItemStock(testIngredient.getCode()));
     }
@@ -158,8 +158,9 @@ class KitchenTest {
         storage.setFoodItemStock(testIngredient.getCode(), 0);
         storage.setFoodItemStock(testIngredientIngredient.getCode(), 0);
         storage.setFoodItemStock(testIngredientIngredient.getCode(), 1);
-        kitchen.createFoodItem(testItem);
 
+
+        assertSame(testItem, kitchen.createFoodItem(testItem));
         assertEquals(testRecipe.getAmountCreated() - 1, storage.getFoodItemStock(testItem.getCode()));
         int amountOfTestIngredientNeeded = testRecipe.getIngredientAmounts().get(testIngredient.getCode());
         assertEquals(testIngredientRecipe.getAmountCreated() - amountOfTestIngredientNeeded, storage.getFoodItemStock(testIngredient.getCode()));
@@ -173,7 +174,7 @@ class KitchenTest {
         //needs 3 ingredients to build, only 2 in database
         kitchen.createFoodItem(testItem);
         //test return value
-        assertEquals(kitchen.createFoodItem(testItem), testItem);
+        assertSame(testItem, kitchen.createFoodItem(testItem));
         //test item stock updates correctly
         assertEquals(1, storage.getFoodItemStock(testItem.getCode()));
         //test correct number of ingredient now in database
@@ -197,7 +198,7 @@ class KitchenTest {
         b.setRecipe(builderB.generateRecipe(1));
 
         FoodItem aInstance = kitchen.createFoodItem(a); // should not throw a StackOverflowError
-        assertEquals(a, aInstance);
+        assertSame(a, aInstance);
     }
 
 }

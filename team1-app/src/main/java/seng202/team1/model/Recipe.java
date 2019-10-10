@@ -199,4 +199,14 @@ public class Recipe {
     public int hashCode() {
         return Objects.hash(amountCreated, ingredientAmounts, ingredients, addableIngredients);
     }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "amountCreated=" + amountCreated +
+                ", ingredientAmounts=" + ingredientAmounts +
+                ", ingredients=" + ingredients +
+                ", addableIngredients=" + addableIngredients +
+                '}';
+    }
 }

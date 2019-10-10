@@ -11,6 +11,7 @@ import java.util.*;
 public class Kitchen {
 
     private FoodItemDAO foodStorage;
+    //private Set<FoodItem> beingCreated = new HashSet<>();
     private Map<String, Integer> totalAmountRequired = new HashMap<>();
 
     /**
@@ -30,7 +31,7 @@ public class Kitchen {
      * @implNote currently this function will not throw any errors or warnings if there is not enough stock to
      * retrieve or create the FoodItem.
      * @param modelFoodItem the FoodItem to create an instance of
-     * @return the same FoodItem passed as an argument
+     * @return a pointer to modelFoodItem
      */
     public FoodItem createFoodItem(FoodItem modelFoodItem) {
 
@@ -41,14 +42,15 @@ public class Kitchen {
             int stockCount = foodStorage.getFoodItemStock(code);
             if (recipesAreEqual && stockCount > 0) {
                 foodStorage.setFoodItemStock(code, stockCount - 1);
-                return storedFoodItem;
+                return modelFoodItem;
             }
         }
 
         if (modelFoodItem.getRecipe() == null) {
             return modelFoodItem; // for now we don't want to give any issues here
         }
-        return makeFoodItemFromRecipe(modelFoodItem);
+        FoodItem result = makeFoodItemFromRecipe(modelFoodItem);
+        return result;
     }
 
     /**
@@ -60,26 +62,27 @@ public class Kitchen {
         Recipe recipe = foodItem.getRecipe();
         Set<FoodItem> ingredients = recipe.getIngredients();
 
-        Integer totalAlreadyRequired = totalAmountRequired.get(foodItem.getCode());
-        if (totalAlreadyRequired != null && totalAlreadyRequired > 0) {
-            System.out.println("cycle detected " + foodItem.getCode());
-        }
-
-        recipe.getIngredientAmounts().forEach((code, amount) -> {
-            totalAmountRequired.merge(code, amount, (amountRecipe, amountKitchen) -> amountRecipe + amountKitchen);
-        });
-
         Map<String, Integer> ingredientAmounts = recipe.getIngredientAmounts();
 
         int amountToCreate = recipe.getAmountCreated();
         for (FoodItem ingredient : ingredients) {
             String code = ingredient.getCode();
             int amount = ingredientAmounts.get(code);
+
+            totalAmountRequired.putIfAbsent(code, 0);
+            if (totalAmountRequired.get(code) > 0) {
+                System.out.println("cycle detected");
+                totalAmountRequired.put(code, totalAmountRequired.get(code) - amount);
+                break;
+            }
+            totalAmountRequired.put(code, totalAmountRequired.get(code) + amount);
+
             while (amount > 0) {
                 createFoodItem(ingredient);
                 amount -= 1;
-                totalAmountRequired.put(code, totalAmountRequired.get(code) - 1);
             }
+
+            totalAmountRequired.put(code, totalAmountRequired.get(code) - amount);
         }
         addAmountToFoodStorage(foodItem, amountToCreate - 1);
         return foodItem;
@@ -87,8 +90,8 @@ public class Kitchen {
 
     /**
      * adds the given amount of an item to food storage. used when a recipe creates more than one of its product.
-     * does not store the item if there is already an item of that type in storage and the stored item has a
-     * different recipe.
+     * @implNote if there is already an item with the given item's code in storage then the count of that food
+     * item will be increased even if it has a different recipe.
      * @param item the FoodItem to update the stock count of in food storage
      */
     private void addAmountToFoodStorage(FoodItem item, int amount) {
@@ -98,10 +101,8 @@ public class Kitchen {
             foodStorage.addFoodItem(item, 0);
             storedItem = foodStorage.getFoodItemByCode(code);
         }
-        //if (Objects.equals(item.getRecipe(), storedItem.getRecipe())) {
-            int currentStock = foodStorage.getFoodItemStock(code);
-            foodStorage.setFoodItemStock(code, currentStock + amount);
-        //}
+        int currentStock = foodStorage.getFoodItemStock(code);
+        foodStorage.setFoodItemStock(code, currentStock + amount);
     }
 
 }

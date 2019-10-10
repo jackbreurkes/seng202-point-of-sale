@@ -120,7 +120,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         result.setIsGlutenFree(isGlutenFree);
         result.setCaloriesPerUnit(Double.parseDouble(calPerUnit)); // TODO error handling, or add a DB column constraint
 
-        result.setRecipe(getFoodItemRecipe(code));
+        result.setRecipe(getRecipeOfFoodItem(code));
 
         return result;
     }
@@ -214,7 +214,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return result;
     }
 
-    private Recipe getFoodItemRecipe(String foodItemCode) {
+    public Recipe getRecipeOfFoodItem(String foodItemCode) {
         String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
