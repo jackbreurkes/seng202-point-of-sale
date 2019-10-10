@@ -54,12 +54,12 @@ public class Recipe {
             throw new IllegalArgumentException("a FoodItem cannot be contained in both ingredients and addableIngredients.");
         }
 
-//        for (FoodItem ingredient : ingredients) { // used to eliminate risk of StackOverflowErrors with circular recipe dependencies
-//            ingredient.setRecipe(null);
-//        }
-//        for (FoodItem addableIngredient : addableIngredients) {
-//            addableIngredient.setRecipe(null);
-//        }
+        for (FoodItem ingredient : ingredients) { // used to eliminate risk of StackOverflowErrors with circular recipe dependencies
+            ingredient.setRecipe(null);
+        }
+        for (FoodItem addableIngredient : addableIngredients) {
+            addableIngredient.setRecipe(null);
+        }
 
         this.amountCreated = amountCreated;
         this.ingredients = ingredients;

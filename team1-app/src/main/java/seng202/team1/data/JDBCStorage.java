@@ -476,8 +476,6 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
         String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
 
-        // TODO why does this fail if the DB exists? shouldn't reset instance fix this?
-
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, recipeId);
@@ -566,7 +564,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return 0; // TODO error handling
         }
     }

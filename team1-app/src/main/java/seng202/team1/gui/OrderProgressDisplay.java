@@ -90,7 +90,7 @@ public class OrderProgressDisplay extends VBox {
 
         FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
         for (FoodItem orderedItem : order.getOrderContents()) {
-            //foodStorage.addFoodItem(orderedItem, 1); // put back the items we created because the customer does not want them TODO uncomment when kitchen is fully tested
+            foodStorage.addFoodItem(orderedItem, 1); // put back the items we created because the customer does not want them
         }
 
         updateSubmittedOrders();
