@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 /**
- * 
+ * models a single instance of a food item used by the vendor.
  */
 public class FoodItem {
 

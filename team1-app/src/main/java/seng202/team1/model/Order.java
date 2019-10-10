@@ -15,7 +15,8 @@ import java.util.*;
 import static seng202.team1.util.OrderStatus.*;
 
 /**
- * 
+ * models a customer's order. contains information about what they ordered, the status of their order, and optionally
+ * information about a custom message associated with the order and when the order was last updated.
  */
 public class Order {
 
@@ -26,11 +27,8 @@ public class Order {
     private String orderNote;
     private OrderStatus status = OrderStatus.CREATING;
     private Date lastUpdated;
-    // private Location location;
-    // private Weather weather;
 
-    // Should change this to getID to mantain consistency with setID but scared to do so
-    public int getOrderID() { return ID; }
+    public int getId() { return ID; }
 
     public void setId(int id) {
         this.ID = id;
@@ -171,11 +169,11 @@ public class Order {
         // TODO do we want this type of rounding here?
     }
 
-    @Override
     /**
      * since timestamps are managed on a database level it cannot be guaranteed that two otherwise equal
      * orders will have the same timestamp. therefore, timestamp is not considered when checking for equality.
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

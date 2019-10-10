@@ -1,7 +1,7 @@
 package seng202.team1.util;
 
 /**
- * Simple enum to illustrate XML attribute parsingin SAX example
+ * enum to represent the type of a Supplier's phone number.
  */
 public enum PhoneType {
     MOBILE, WORK, HOME, UNKNOWN

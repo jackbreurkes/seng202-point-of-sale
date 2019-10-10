@@ -47,7 +47,7 @@ public class OrderDisplay extends VBox {
     }
 
     public void initialize() {
-        orderId.setText("Order " + Integer.toString(model.getOrderID()) + " - cost " + model.getCost().toString());
+        orderId.setText("Order " + Integer.toString(model.getId()) + " - cost " + model.getCost().toString());
         secondaryActionButton.setVisible(false);
         OrderDisplay display = this;
 

@@ -3,13 +3,8 @@ package seng202.team1.model;
 import org.joda.money.BigMoney;
 import org.joda.money.Money;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import seng202.team1.model.FoodItem;
-import seng202.team1.model.Order;
 import seng202.team1.util.InvalidOrderStatusException;
-import seng202.team1.util.OrderStatus;
-import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import java.math.RoundingMode;
@@ -44,7 +39,7 @@ class OrderTest {
 
     @Test
     void testGetOrderCode() {
-        assertNotNull(testOrder.getOrderID());
+        assertNotNull(testOrder.getId());
     }
 
     @Test
