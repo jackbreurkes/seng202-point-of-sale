@@ -6,6 +6,9 @@ import seng202.team1.model.Supplier;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,15 +67,23 @@ public class UploadHandler {
             for (FoodItem foodItem: foodItemsUploaded.values()) {
                 String code = foodItem.getCode();
                 FoodItem storageFoodItem = itemStorage.getFoodItemByCode(code);
+                // This checks if foodItem already in database or nah
                 if (storageFoodItem == null) {
                     itemStorage.addFoodItem(foodItem, 1);
                 } else {
+//                    System.out.println("IN STORAGE: " + storageFoodItem);
+//                    System.out.println("COMING: " + foodItem);
+
+                    //findDifferences(storageFoodItem, foodItem);
+
+                    // Find differences in storage food item
+
 
                     // LETS USER choose between keeping old value or overwriting data
                     // Consult the GUI pros
-                    //like if user wants updated: update
-                    //else don't update?
-                    //but have to alter JDBC storage?
+                    // like if user wants updated: update
+                    // else don't update?
+                    // but have to alter JDBC storage?
                     // Update don't have to but prioritising
                     // led to the decision of maybe not going forward with this.
                     // Please review in future
@@ -83,6 +94,11 @@ public class UploadHandler {
             }
         }
     }
+
+    public static void findDifferences(FoodItem storageFoodItem, FoodItem uploadedFoodItem) {
+        List<FoodItem> foodItems = new ArrayList<>();
+    }
+
 
     /**
      * Helper function to check if pathName is valid.
@@ -102,17 +118,12 @@ public class UploadHandler {
 
 
     public static void main(String args[]) throws IOException, SAXException {
-        UploadHandler u = new UploadHandler();
-
-        u.uploadFoodItems("resources/data/FoodItem.xml");
-        u.uploadFoodItems("resources/data/FoodItem.xml");
-        System.out.println(foodItemsUploaded.keySet());
-        System.out.println(foodItemsUploaded.values());
-        System.out.println("");
-        for (FoodItem foo: foodItemsUploaded.values()) {
-            System.out.println(foo.getName());
-        }
+//        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
+//        DAOFactory.resetInstances();
+//        UploadHandler.uploadFoodItems("resources/data/FoodItem2.xml");
+//        UploadHandler.uploadFoodItems("resources/data/FoodItem3.xml");
+//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
+//            System.out.println(foo);
+//        }
     }
-
-
 }

@@ -88,6 +88,7 @@ public class ImportController {
             if (fileExtension.equals("xml")) {
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
                     try {
+                        // Check if duplicates exist
                         UploadHandler.uploadFoodItems(selectedFile.getPath());
                     } catch (SAXException e) {
                         statusText.setText("An error has occured while parsing: " + e.getMessage());

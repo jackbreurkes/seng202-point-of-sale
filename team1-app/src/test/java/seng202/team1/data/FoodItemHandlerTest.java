@@ -26,14 +26,12 @@ class FoodItemHandlerTest {
     String source;
     DocumentBuilder builder;
 
-
-
     @BeforeEach
     void beforeEach() {
         source = "src/test/resources/xml/TESTXML1.xml";
         handler = new FoodItemHandler(source, true);
     }
-    
+
     @Test
     void testParseTESTXML1() {
         try {
@@ -63,12 +61,9 @@ class FoodItemHandlerTest {
         );
         List<FoodItem> items = new ArrayList<FoodItem>(handler.getFoodItems().values());
 
-
-
         // sorting lists is used for ease of reading if assertEquals(expectedItems, items) fails
         expectedItems.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
-
 
         assertEquals(expectedItems.size(), items.size());
         assertEquals(expectedItems, items);

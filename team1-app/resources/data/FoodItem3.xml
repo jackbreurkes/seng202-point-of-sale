@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE fooditems SYSTEM "fooditems.dtd">
+<fooditems>
+    <description>Food sold by our food truck - file 2</description>
+    <fooditem unit="count">
+        <code>BANANA</code>
+        <name>Banana</name>
+        <cost>NZD 69.00</cost>
+        <caloriesPerUnit>100</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+</fooditems>
