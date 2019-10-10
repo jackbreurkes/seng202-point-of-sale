@@ -4,6 +4,10 @@ import seng202.team1.data.FoodItemDAO;
 
 import java.util.*;
 
+/**
+ * used to get instances of a FoodItem, either from storage if some are available or by creating it using its
+ * Recipe if it has one.
+ */
 public class Kitchen {
 
     private FoodItemDAO foodStorage;
@@ -14,10 +18,21 @@ public class Kitchen {
      * @param foodStorage the FoodItemDAO to use when retrieving information about FoodItems
      */
     public Kitchen(FoodItemDAO foodStorage) {
+        if (foodStorage == null) {
+            throw new NullPointerException("foodStorage cannot be null");
+        }
         this.foodStorage = foodStorage;
     }
 
-    public FoodItem getFoodItemInstance(FoodItem modelFoodItem) {
+    /**
+     * Creates a single instance of the desired FoodItem either by taking one from storage or creating it
+     * using its recipe.
+     * @implNote currently this function will not throw any errors or warnings if there is not enough stock to
+     * retrieve or create the FoodItem.
+     * @param modelFoodItem the FoodItem to create an instance of
+     * @return the same FoodItem passed as an argument
+     */
+    public FoodItem createFoodItem(FoodItem modelFoodItem) {
 
         String code = modelFoodItem.getCode();
         FoodItem storedFoodItem = foodStorage.getFoodItemByCode(code);
@@ -37,9 +52,9 @@ public class Kitchen {
     }
 
     /**
-     *
-     * @param foodItem
-     * @return
+     * makes the given FoodItem using its recipe.
+     * @param foodItem the FoodItem to create. must have a non-null recipe.
+     * @return the FoodItem being created.
      */
     private FoodItem makeFoodItemFromRecipe(FoodItem foodItem) {
         Recipe recipe = foodItem.getRecipe();
@@ -61,7 +76,7 @@ public class Kitchen {
             String code = ingredient.getCode();
             int amount = ingredientAmounts.get(code);
             while (amount > 0) {
-                getFoodItemInstance(ingredient);
+                createFoodItem(ingredient);
                 amount -= 1;
                 totalAmountRequired.put(code, totalAmountRequired.get(code) - 1);
             }
@@ -71,16 +86,22 @@ public class Kitchen {
     }
 
     /**
-     * this does not treat different recipes for the same order different
-     * @param item
+     * adds the given amount of an item to food storage. used when a recipe creates more than one of its product.
+     * does not store the item if there is already an item of that type in storage and the stored item has a
+     * different recipe.
+     * @param item the FoodItem to update the stock count of in food storage
      */
     private void addAmountToFoodStorage(FoodItem item, int amount) {
         String code = item.getCode();
-        if (foodStorage.getFoodItemByCode(code) == null) {
+        FoodItem storedItem = foodStorage.getFoodItemByCode(code);
+        if (storedItem == null) {
             foodStorage.addFoodItem(item, 0);
+            storedItem = foodStorage.getFoodItemByCode(code);
         }
-        int currentStock = foodStorage.getFoodItemStock(code);
-        foodStorage.setFoodItemStock(code, currentStock + amount);
+        //if (Objects.equals(item.getRecipe(), storedItem.getRecipe())) {
+            int currentStock = foodStorage.getFoodItemStock(code);
+            foodStorage.setFoodItemStock(code, currentStock + amount);
+        //}
     }
 
 }

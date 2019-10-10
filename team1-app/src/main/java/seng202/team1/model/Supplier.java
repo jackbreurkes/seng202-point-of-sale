@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Class Supplier contains methods to set and obtain attributes associated with a supplier.
  */
-public class Supplier implements FoodSource {
+public class Supplier {
 
     /**
      * A unique ID to identify a supplier. Attribute must be a String.
@@ -57,18 +57,6 @@ public class Supplier implements FoodSource {
     public Supplier(String id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    @Override
-    /**
-     * creates FoodItems using money.
-     * TODO figure out how the cost is associated with the creation of the item
-     * @param code the code of the FoodItem to create
-     * @param amount the amount of the given FoodItem to create
-     * @return a List containing the desired amount of FoodItem
-     */
-    public List<FoodItem> createFoodItems(String code, int amount) {
-        return null;
     }
 
     /**

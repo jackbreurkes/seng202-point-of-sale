@@ -5,7 +5,7 @@ import seng202.team1.util.UnitType;
 import java.util.*;
 
 /**
- * 
+ * allows FoodItems to be grouped into different menus for different purposes.
  */
 public class Menu {
 

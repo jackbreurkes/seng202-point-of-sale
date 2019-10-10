@@ -2,16 +2,12 @@ package seng202.team1.data;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidDataCodeException;
-import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,16 +44,16 @@ abstract class OrderDAOTest {
     @Test
     void testReturnsSeparateInstance() {
         orderStorage.addOrder(testOrder);
-        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
-        assertNotSame(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getId()));
+        assertNotSame(testOrder, orderStorage.getOrderByID(testOrder.getId()));
     }
 
     @Test
     void testGetDoesNotAllowModification() {
         orderStorage.addOrder(testOrder);
-        Order testOrderFromStorage = orderStorage.getOrderByID(testOrder.getOrderID());
+        Order testOrderFromStorage = orderStorage.getOrderByID(testOrder.getId());
         testOrderFromStorage.submitOrder();
-        assertNotEquals(testOrderFromStorage, orderStorage.getOrderByID(testOrder.getOrderID()));
+        assertNotEquals(testOrderFromStorage, orderStorage.getOrderByID(testOrder.getId()));
     }
 
     @Test
@@ -127,10 +123,10 @@ abstract class OrderDAOTest {
     void testGetOrderById() {
         orderStorage.addOrder(testOrder);
 
-        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getId()));
 
         //cant get an order that doesn't exist in the system
-        assertNull(orderStorage.getOrderByID(testOrder.getOrderID() + 1));
+        assertNull(orderStorage.getOrderByID(testOrder.getId() + 1));
     }
 
     @Test
@@ -141,7 +137,7 @@ abstract class OrderDAOTest {
         });
 
         orderStorage.addOrder(testOrder);
-        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getOrderID()));
+        assertEquals(testOrder, orderStorage.getOrderByID(testOrder.getId()));
 
         // test adding an order with an id already existing
         assertThrows(InvalidDataCodeException.class, () -> {
@@ -166,7 +162,7 @@ abstract class OrderDAOTest {
 
         //adds an order to storage, then updates the order and calls updateOrder, then checks the order was correctly updated
         orderStorage.addOrder(testOrder);
-        int orderId = testOrder.getOrderID();
+        int orderId = testOrder.getId();
 
         testOrder.cancelOrder();
         orderStorage.updateOrder(testOrder);
@@ -180,7 +176,7 @@ abstract class OrderDAOTest {
         // can't update an order to the CREATING status
         Order creatingTestOrder = new Order();
         creatingTestOrder.addItem(testItem);
-        creatingTestOrder.setId(testOrder.getOrderID());
+        creatingTestOrder.setId(testOrder.getId());
         assertThrows(IllegalArgumentException.class, () -> {
             orderStorage.updateOrder(creatingTestOrder);
         });
@@ -198,17 +194,17 @@ abstract class OrderDAOTest {
 
         //cant remove from an order that isnt in the system
         assertThrows(NullPointerException.class, () -> {
-            orderStorage.removeOrder(testOrder.getOrderID());
+            orderStorage.removeOrder(testOrder.getId());
         });
         orderStorage.addOrder(testOrder);
 
         //checks orders are correctly removed
-        orderStorage.removeOrder(testOrder.getOrderID());
-        assertNull(orderStorage.getOrderByID(testOrder.getOrderID()));
+        orderStorage.removeOrder(testOrder.getId());
+        assertNull(orderStorage.getOrderByID(testOrder.getId()));
 
         //cant remove an order that has already been removed
         assertThrows(InvalidDataCodeException.class, () -> {
-            orderStorage.removeOrder(testOrder.getOrderID());
+            orderStorage.removeOrder(testOrder.getId());
         });
 
 

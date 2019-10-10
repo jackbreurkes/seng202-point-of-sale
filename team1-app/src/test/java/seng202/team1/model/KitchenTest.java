@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
-import seng202.team1.data.JDBCStorage;
 import seng202.team1.util.*;
 
 import java.util.*;
@@ -57,7 +56,7 @@ class KitchenTest {
 
 
         //check that after getting a fooditem that is in stock, the stock correctly decrements by one
-        kitchen.getFoodItemInstance(testItem);
+        kitchen.createFoodItem(testItem);
 
 
         FoodItem testItem2 = new FoodItem("TEST2", "Test Item 2", UnitType.COUNT);
@@ -70,7 +69,7 @@ class KitchenTest {
         testItem2.setRecipe(new Recipe(ingredients2, new HashSet<>(), ingredAmounts2, 2));
 
         //test return value
-        assertEquals(kitchen.getFoodItemInstance(testItem2), testItem2);
+        assertEquals(kitchen.createFoodItem(testItem2), testItem2);
         //test item stock updates correctly
         assertEquals(storage.getFoodItemStock(testItem2.getCode()), 1);
         //test fooditem in recipe updates correctly
@@ -91,7 +90,7 @@ class KitchenTest {
         testItem2.setRecipe(new Recipe(ingredients3, new HashSet<>(), ingredAmounts3, 2));
         //test return value
 //        kitchen.getFoodItemInstance(testItem2);
-        assertEquals(kitchen.getFoodItemInstance(testItem2), testItem2);
+        assertEquals(kitchen.createFoodItem(testItem2), testItem2);
         //System.out.println(storage.getFoodItemStock("ING9"));
 
 
@@ -106,7 +105,7 @@ class KitchenTest {
     void testGetNull() {
         // FoodItem is null
         assertThrows(NullPointerException.class, () -> {
-            kitchen.getFoodItemInstance(null);
+            kitchen.createFoodItem(null);
         });
     }
 
@@ -116,7 +115,7 @@ class KitchenTest {
         testItem.setRecipe(null);
         storage.updateFoodItem(testItem);
         storage.setFoodItemStock(testItem.getCode(), 1);
-        FoodItem instance = kitchen.getFoodItemInstance(testItem);
+        FoodItem instance = kitchen.createFoodItem(testItem);
 
         assertEquals(testItem, instance);
         assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
@@ -129,7 +128,7 @@ class KitchenTest {
         storage.setFoodItemStock(testIngredient.getCode(), 6);
 
         //make sure the correct value is returned
-        FoodItem instance = kitchen.getFoodItemInstance(testItem);
+        FoodItem instance = kitchen.createFoodItem(testItem);
         assertEquals(testItem, instance);
         //check the correct amount of ingredients are removed from the database
         assertEquals(4, storage.getFoodItemStock(testIngredient.getCode()));
@@ -142,7 +141,7 @@ class KitchenTest {
         testItem.setRecipe(testRecipe);
         storage.setFoodItemStock(testIngredient.getCode(), 6);
         storage.setFoodItemStock(testItem.getCode(), 1);
-        kitchen.getFoodItemInstance(testItem); // shouldn't use the recipe as we have the item in the database
+        kitchen.createFoodItem(testItem); // shouldn't use the recipe as we have the item in the database
 
         assertEquals(0, storage.getFoodItemStock(testItem.getCode()));
         assertEquals(6, storage.getFoodItemStock(testIngredient.getCode()));
@@ -159,7 +158,7 @@ class KitchenTest {
         storage.setFoodItemStock(testIngredient.getCode(), 0);
         storage.setFoodItemStock(testIngredientIngredient.getCode(), 0);
         storage.setFoodItemStock(testIngredientIngredient.getCode(), 1);
-        kitchen.getFoodItemInstance(testItem);
+        kitchen.createFoodItem(testItem);
 
         assertEquals(testRecipe.getAmountCreated() - 1, storage.getFoodItemStock(testItem.getCode()));
         int amountOfTestIngredientNeeded = testRecipe.getIngredientAmounts().get(testIngredient.getCode());
@@ -172,9 +171,9 @@ class KitchenTest {
         storage.setFoodItemStock(testIngredient.getCode(), 2);
         storage.setFoodItemStock(testItem.getCode(), 0);
         //needs 3 ingredients to build, only 2 in database
-        kitchen.getFoodItemInstance(testItem);
+        kitchen.createFoodItem(testItem);
         //test return value
-        assertEquals(kitchen.getFoodItemInstance(testItem), testItem);
+        assertEquals(kitchen.createFoodItem(testItem), testItem);
         //test item stock updates correctly
         assertEquals(1, storage.getFoodItemStock(testItem.getCode()));
         //test correct number of ingredient now in database
@@ -197,7 +196,7 @@ class KitchenTest {
         builderB.addIngredient(a, 1);
         b.setRecipe(builderB.generateRecipe(1));
 
-        FoodItem aInstance = kitchen.getFoodItemInstance(a); // should not throw a StackOverflowError
+        FoodItem aInstance = kitchen.createFoodItem(a); // should not throw a StackOverflowError
         assertEquals(a, aInstance);
     }
 

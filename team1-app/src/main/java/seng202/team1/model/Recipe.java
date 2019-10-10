@@ -2,6 +2,11 @@ package seng202.team1.model;
 
 import java.util.*;
 
+/**
+ * stores information about the component FoodItems needed to create a FoodItem, their required amounts and
+ * the amount of the desired FoodItem created by the process.
+ * ingredients can marked as default or addable - addable ingredients can optionally be added when ordering.
+ */
 public class Recipe {
 
     private int amountCreated;

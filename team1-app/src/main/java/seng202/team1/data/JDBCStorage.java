@@ -199,7 +199,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, result.getOrderID());
+            pstmt.setInt(1, result.getId());
             ResultSet rs2 = pstmt.executeQuery();
 
             while (rs2.next()) {
@@ -604,7 +604,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             String sql2 = "INSERT INTO OrderContains(CustomerOrder, FoodItem) VALUES (?,?)";
 
             try (PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
-                pstmt2.setInt(1, order.getOrderID());
+                pstmt2.setInt(1, order.getId());
                 pstmt2.setInt(2, insertedId);
                 pstmt2.executeUpdate();
             } catch (SQLException e) {
@@ -630,7 +630,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             throw new IllegalArgumentException("creating orders should not be stored in the database, please submit it first.");
         }
 
-        if (getOrderByID(order.getOrderID()) != null) {
+        if (getOrderByID(order.getId()) != null) {
             throw new InvalidDataCodeException("order with the given order's id already exists. please use update.");
         }
 
@@ -677,7 +677,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     @Override
     public void updateOrder(Order alteredOrder) {
-        if (getOrderByID(alteredOrder.getOrderID()) == null) {
+        if (getOrderByID(alteredOrder.getId()) == null) {
             throw new InvalidDataCodeException("order with given order's code does not exist in the database.");
         }
 
@@ -692,7 +692,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredOrder.getOrderStatus().toString());
-            pstmt.setInt(2, alteredOrder.getOrderID());
+            pstmt.setInt(2, alteredOrder.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
