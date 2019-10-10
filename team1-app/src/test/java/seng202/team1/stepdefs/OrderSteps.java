@@ -18,7 +18,10 @@ import seng202.team1.util.UnitType;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 
 public class OrderSteps {
@@ -256,6 +259,36 @@ public class OrderSteps {
 
 
 
+
+
+    @Given("an order exists in the orders list")
+    public void an_order_exists_in_the_orders_list() {
+        order = new Order();
+        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
+        //adds an item
+        order.addItem(foodItem);
+        //throw new cucumber.api.PendingException();
+    }
+
+    @And("the order has been confirmed")
+    public void the_order_has_been_confirmed() {
+        order.submitOrder();
+        assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
+
+        //System.out.println(order.getOrderStatus());
+        //throw new cucumber.api.PendingException();
+    }
+
+    @And("the order has not been completed")
+    public void the_order_has_not_been_completed() {
+        assertNotEquals(order.getOrderStatus(), OrderStatus.COMPLETED);
+        //throw new cucumber.api.PendingException();
+    }
+
+    @Then("the order is cancelled")
+    public void the_order_is_cancelled() {
+        assertEquals(order.getOrderStatus(), OrderStatus.CANCELLED);
+    }
 
 
 }
