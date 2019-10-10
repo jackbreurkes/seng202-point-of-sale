@@ -56,6 +56,7 @@ public class AnalysisController {
         JDBCStorage memory = JDBCStorage.getInstance();
         Set<Order> allOrders = memory.getAllOrders();
         ArrayList<Date> counted = new ArrayList<>();
+        ArrayList<String> toBeSorted = new ArrayList<>();
 
         Iterator<Order> iterator1 = allOrders.iterator();
         int count = 0;
@@ -82,10 +83,49 @@ public class AnalysisController {
                     }
                 }
                 String calendarString = "" + cal1.get(Calendar.DAY_OF_MONTH) + "/" + cal1.get(Calendar.MONTH) + "/"
-                        + cal1.get(Calendar.YEAR);
-                dataSeries.getData().add(new XYChart.Data<String,Number>(calendarString, count));
+                        + cal1.get(Calendar.YEAR) + "/" + count;
+                toBeSorted.add(calendarString);
                 counted.add(date1);
             }
+        }
+        insertionSort(toBeSorted);
+        addDataFromSortedList(toBeSorted, dataSeries);
+    }
+
+    public static void insertionSort(ArrayList<String> array) {
+        for (int i = 1; i < array.size(); i++) {
+            String current = array.get(i);
+            int j = i - 1;
+            while(j >= 0 && dateLessThan(current, array.get(j))) {
+                array.set(j + 1, array.get(j));
+                j--;
+            }
+            array.set(j + 1, current);
+        }
+    }
+
+    public static boolean dateLessThan(String date1, String date2) {
+        String[] array1 = date1.split("/");
+        String[] array2 = date2.split("/");
+        if (Integer.parseInt(array1[2]) < Integer.parseInt(array2[2])) {
+            return true;
+        } else if (Integer.parseInt(array1[2]) == Integer.parseInt(array2[2])) {
+            if (Integer.parseInt(array1[1]) < Integer.parseInt(array2[1])) {
+                return true;
+            } else if (Integer.parseInt(array1[1]) == Integer.parseInt(array2[1])) {
+                if (Integer.parseInt(array1[0]) < Integer.parseInt(array2[0])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void addDataFromSortedList(ArrayList<String> sortedArray, XYChart.Series dataSeries) {
+        for (int i = 0; i < sortedArray.size(); i++) {
+            String[] array = sortedArray.get(i).split("/");
+            String calendarString = array[0] + "/" + array[1] + "/" + array[2];
+            dataSeries.getData().add(new XYChart.Data<String,Number>(calendarString, Integer.parseInt(array[3])));
         }
     }
 
