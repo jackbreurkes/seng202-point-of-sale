@@ -31,7 +31,6 @@ import static org.junit.Assert.assertNull;
 public class DataHandlingSteps {
 
     String directory;
-    String fileName;
 
     static String MONEY_COUNTRY_CODE_PREFIX = "NZD ";
     FoodItemDAO itemStorage;
@@ -57,21 +56,24 @@ public class DataHandlingSteps {
     }
 
     @When("{string} is parsed and uploaded")
-    public void is_parsed_and_uploaded(String fileName) {
+    public void is_parsed_and_uploaded(String filename) {
         itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         try {
             UploadHandler.uploadFoodItems(directory);
         } catch (IOException | SAXException e) {
-            throw new cucumber.api.PendingException(fileName + " is not a valid file");
+            throw new cucumber.api.PendingException(filename + " is not a valid file");
         }
     }
 
     @Then("upload of {string} is a success")
-    public void upload_of_is_a_success(String string) {
-        assertEquals( 4, itemStorage.getAllFoodItems().size());
+    public void upload_of_is_a_success(String filename) {
+        try {
+            assertEquals(4, itemStorage.getAllFoodItems().size());
+        } catch (AssertionError ae) {
+            throw new cucumber.api.PendingException("Upload of " + filename + " failed");
+        }
     }
-
 
     @Given("XML file from {string} is uploaded")
     public void XML_file_from_directory_is_uploaded(String directory) {
