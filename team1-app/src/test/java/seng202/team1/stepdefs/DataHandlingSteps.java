@@ -19,6 +19,8 @@ import seng202.team1.util.UnitType;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,9 @@ import static org.junit.Assert.assertNull;
 
 public class DataHandlingSteps {
 
+    String directory;
+    String fileName;
+
     static String MONEY_COUNTRY_CODE_PREFIX = "NZD ";
     FoodItemDAO itemStorage;
     FoodItem foodItem;
@@ -35,6 +40,37 @@ public class DataHandlingSteps {
     BigMoney updatedCost;
     BigMoney discountedCost;
     BigMoney expectedCostNZD;
+
+
+    @Given("the user has data from directory {string} to upload")
+    public void the_user_has_data_from_directory_to_upload(String expectedDirectory) {
+        directory = expectedDirectory;
+    }
+
+    @And("data is within a valid directory")
+    public void data_is_within_a_valid_directory() {
+        try {
+            Paths.get(directory);
+        } catch (InvalidPathException | NullPointerException ex) {
+            throw new cucumber.api.PendingException(directory + " is not a valid directory");
+        }
+    }
+
+    @When("{string} is parsed and uploaded")
+    public void is_parsed_and_uploaded(String fileName) {
+        itemStorage = DAOFactory.getFoodItemDAO();
+        DAOFactory.resetInstances();
+        try {
+            UploadHandler.uploadFoodItems(directory);
+        } catch (IOException | SAXException e) {
+            throw new cucumber.api.PendingException(fileName + " is not a valid file");
+        }
+    }
+
+    @Then("upload of {string} is a success")
+    public void upload_of_is_a_success(String string) {
+        assertEquals( 4, itemStorage.getAllFoodItems().size());
+    }
 
 
     @Given("XML file from {string} is uploaded")

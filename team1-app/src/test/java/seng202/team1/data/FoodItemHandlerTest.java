@@ -111,11 +111,5 @@ class FoodItemHandlerTest {
 
         assertEquals(expectedItems.size(), items.size());
         assertEquals(expectedItems, items);
-//        for (int i = 0; i < items.size(); i++) {
-//            assertEquals(expectedItems.get(i), items.get(i));
-//        }
-//
-//        I wrote this test then realised that I am not sure if this test
-//        is necessary since assertEquals(expectedItems, items) pretty much does the same thing.. - Euan
     }
 }

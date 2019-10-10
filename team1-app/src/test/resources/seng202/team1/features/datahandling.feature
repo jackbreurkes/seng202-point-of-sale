@@ -1,6 +1,12 @@
 Feature: User handles data using the app
   Data handling
 
+  Scenario: Valid XML file
+    Given the user has data from directory "src/test/resources/xml/TESTXML1.xml" to upload
+    And data is within a valid directory
+    When "TESTXML21.xml" is parsed and uploaded
+    Then upload of "TESTXML1.xml" is a success
+
   Scenario Outline: Cost of tofu burgers
     Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
     When user wants to know the total cost of <count> "TOFUBURG"
