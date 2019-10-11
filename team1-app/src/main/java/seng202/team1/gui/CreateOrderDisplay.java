@@ -114,7 +114,7 @@ public class CreateOrderDisplay extends VBox {
             statusText.setText("Error submitting order: " + e.getMessage());
             return;
         }
-        closeCreateOrderPanel(model);
+        closeCreateOrderPanel();
     }
 
     /**
@@ -124,11 +124,5 @@ public class CreateOrderDisplay extends VBox {
         orderController.stopCreatingOrder();
     }
 
-    /**
-     * closes the CreateOrderDisplay while also passing the submitted order to the parent OrderController.
-     */
-    public void closeCreateOrderPanel(Order submittedOrder) {
-        orderController.submitOrderAndClose(submittedOrder);
-    }
 
 }

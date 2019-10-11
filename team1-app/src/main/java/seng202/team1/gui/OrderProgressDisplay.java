@@ -26,7 +26,6 @@ public class OrderProgressDisplay extends VBox {
 
     private OrderController orderController;
     private OrderDAO orderStorage = DAOFactory.getOrderDAO();
-    private Set<Order> submittedOrders = new HashSet<>();
     private Set<Order> completedOrders = new HashSet<>();
 
 
@@ -53,15 +52,10 @@ public class OrderProgressDisplay extends VBox {
                 orderController.startCreatingOrder();
             }
         });
-        updateSubmittedOrders();
+        displaySubmittedOrders();
     }
 
-    public void displaySubmittedOrder(Order order) {
-        submittedOrders.add(order);
-        updateSubmittedOrders();
-    }
-
-    private void updateSubmittedOrders() {
+    public void displaySubmittedOrders() {
         pendingOrdersVBox.getChildren().clear();
         for (Order displayOrder : orderStorage.getAllSubmittedOrders()) {
             pendingOrdersVBox.getChildren().add(new OrderDisplay(this, displayOrder));
@@ -69,23 +63,15 @@ public class OrderProgressDisplay extends VBox {
     }
 
     public void completeOrder(Order order) {
-        if (!submittedOrders.contains(order)) {
-            throw new IllegalArgumentException("only submitted orders can be completed");
-        }
-        submittedOrders.remove(order);
         order.completeOrder();
         completedOrders.add(order);
         orderStorage.updateOrder(order);
 
-        updateSubmittedOrders();
+        displaySubmittedOrders();
         updateCompletedOrders();
     }
 
     public void cancelOrder(Order order) {
-        if (!submittedOrders.contains(order)) {
-            throw new IllegalArgumentException("only submitted orders can be cancelled");
-        }
-        submittedOrders.remove(order);
         order.cancelOrder();
         orderStorage.updateOrder(order);
 
@@ -94,7 +80,7 @@ public class OrderProgressDisplay extends VBox {
             foodStorage.setFoodItemStock(orderedItem.getCode(), foodStorage.getFoodItemStock(orderedItem.getCode()) + 1); // put back the items we created because the customer does not want them
         }
 
-        updateSubmittedOrders();
+        displaySubmittedOrders();
     }
 
     public void refundOrder(Order order) {
