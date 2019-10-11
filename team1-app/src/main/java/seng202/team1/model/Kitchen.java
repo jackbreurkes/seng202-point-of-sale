@@ -11,7 +11,6 @@ import java.util.*;
 public class Kitchen {
 
     private FoodItemDAO foodStorage;
-    //private Set<FoodItem> beingCreated = new HashSet<>();
     private Map<String, Integer> totalAmountRequired = new HashMap<>();
 
     /**
