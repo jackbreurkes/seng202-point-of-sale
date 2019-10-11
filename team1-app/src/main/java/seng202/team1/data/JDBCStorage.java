@@ -29,7 +29,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     /**
      * Creates a database configuration
      *  - enables foreign key cascades
-     * @return SQLConfig congifuration
+     * @return SQLConfig configuration
      */
     private SQLiteConfig makeConfig() {
         SQLiteConfig config = new SQLiteConfig();
