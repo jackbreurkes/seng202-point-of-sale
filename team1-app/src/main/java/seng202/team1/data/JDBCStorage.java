@@ -161,7 +161,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         try {
             Recipe result = new Recipe(ingredients, addableIngredients, ingredientAmounts, amountCreated);
             return result;
-        } catch (Exception ignored) {
+        } catch (Exception ignored) { // the recipe has no food items
             return null;
         }
     }
@@ -328,7 +328,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             return items;
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null; // TODO error handling?
         }
     }

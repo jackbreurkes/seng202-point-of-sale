@@ -159,7 +159,7 @@ public class OrderSteps {
         ingredientAmounts.put("TAPWATER", 1);
 
         foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
-        foodItem.getRecipe().addIngredient(foodItem2);
+        foodItem.getRecipe().addIngredient(foodItem2.getCode());
         // throw new cucumber.api.PendingException();
 
     }
