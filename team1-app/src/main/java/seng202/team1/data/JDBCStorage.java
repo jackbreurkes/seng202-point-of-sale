@@ -53,6 +53,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return instance;
     }
 
+    /**
+     * returns a Connection to the database at JDBCStorage.url.
+     * @return a Connection to the database
+     */
     private Connection getConnection() {
         Connection conn = null;
         try {
