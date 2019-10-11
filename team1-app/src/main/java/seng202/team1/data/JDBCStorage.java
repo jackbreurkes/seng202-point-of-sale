@@ -1,6 +1,7 @@
 package seng202.team1.data;
 
 import org.joda.money.BigMoney;
+import org.sqlite.SQLiteConfig;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.model.Recipe;
@@ -23,6 +24,13 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
     private static String url = "jdbc:sqlite:rosemary.db";
     private static JDBCStorage instance;
+    private SQLiteConfig config = makeConfig();
+
+    private SQLiteConfig makeConfig() {
+        SQLiteConfig config = new SQLiteConfig();
+        config.enforceForeignKeys(true);
+        return config;
+    }
 
     private JDBCStorage() {
         initializeDatabaseIfNotExists();
@@ -51,10 +59,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         };
 
         for (String sql : dropStatements) {
-            try (Connection conn = DriverManager.getConnection(url);
+            try (Connection conn = DriverManager.getConnection(url, config.toProperties());
                  Statement stmt = conn.createStatement()) {
-                // create a new table
-                stmt.execute(sql);
+                    // create a new table
+                    stmt.execute(sql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -64,7 +72,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     }
 
     private void initializeDatabaseIfNotExists() {
-        try (Connection conn = DriverManager.getConnection(url); // if the database file does not exist, this creates it
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              Statement stmt = conn.createStatement()) {
 
             InputStream createTablesStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
@@ -204,7 +212,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
                 "WHERE CustomerOrder = ?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, result.getId());
             ResultSet rs2 = pstmt.executeQuery();
@@ -224,7 +232,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Recipe getRecipeOfFoodItem(String foodItemCode) {
         String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, foodItemCode);
@@ -245,7 +253,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private void populateRecipeData(int recipeId, Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts) {
         String sql = "SELECT * FROM RecipeContains WHERE Recipe = ?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, recipeId);
@@ -267,7 +275,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private String getFoodItemCodeFromId(int id) {
         String sql = "SELECT Code FROM FoodItem WHERE Id = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
@@ -317,7 +325,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Set<FoodItem> getAllFoodItems() {
         String sql = "SELECT * FROM FoodItem";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -341,7 +349,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private FoodItem getFoodItemByCode(String code, boolean setRecipeToNull) {
         String sql = "SELECT * FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
@@ -367,7 +375,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         String sql = "INSERT INTO FoodItem(Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
@@ -398,7 +406,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredItem.getName());
             pstmt.setString(2, alteredItem.getCost().toString());
@@ -432,7 +440,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         String sql = "INSERT INTO Recipe (Product, AmountCreated) VALUES (?, ?)";
 
         int recipeId;
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, item.getCode());
             pstmt.setInt(2, recipe.getAmountCreated());
@@ -456,7 +465,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private int getFoodItemIdFromCode(String code) {
         String sql = "SELECT Id FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
@@ -476,7 +485,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
         String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, recipeId);
             pstmt.setInt(2, getFoodItemIdFromCode(ingredient.getCode()));
@@ -493,7 +502,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
      */
     private void deleteRecipeWithProduct(FoodItem product) {
         String sql2 = "DELETE FROM Recipe WHERE Product = ?";
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql2)) {
             pstmt.setString(1, product.getCode());
             pstmt.executeUpdate();
@@ -511,7 +520,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         String sql = "DELETE FROM FoodItem\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, code);
             pstmt.executeUpdate();
@@ -533,7 +542,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET StockLevel=?\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, count);
             pstmt.setString(2, code);
@@ -551,7 +560,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         String sql = "SELECT StockLevel FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
@@ -573,7 +582,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Order getOrderByID(int id) {
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
@@ -596,7 +605,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         int insertedId;
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
@@ -646,7 +655,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         String insertOrder = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
         //String insertOrderItem = "INSERT INTO OrderContains(CustomerOrder, FoodItem)"
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, order.getOrderStatus().toString());
@@ -668,7 +677,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Set<Order> getAllSubmittedOrders() {
         String sql = "SELECT * FROM CustomerOrder WHERE status = 's'";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -698,7 +707,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET Status=?\n" +
                 "WHERE Id=?";
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredOrder.getOrderStatus().toString());
             pstmt.setInt(2, alteredOrder.getId());
@@ -714,7 +723,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         Set<Order> allOrders = new HashSet<>();
 
-        try (Connection conn = DriverManager.getConnection(JDBCStorage.url);
+        try (Connection conn = DriverManager.getConnection(url, config.toProperties());
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
