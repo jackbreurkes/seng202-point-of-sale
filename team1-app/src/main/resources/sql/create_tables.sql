@@ -18,13 +18,13 @@ CREATE TABLE IF NOT EXISTS FoodItem
 
 CREATE TABLE IF NOT EXISTS Recipe
 (Id /* unique identifier for a Recipe */ INTEGER PRIMARY KEY,
- Product /* the Id of the FoodItem created by the Recipe */ INTEGER UNIQUE NOT NULL REFERENCES FoodItem,
+ Product /* the Id of the FoodItem created by the Recipe */ VARCHAR(10) UNIQUE NOT NULL REFERENCES FoodItem(Code) ON DELETE CASCADE,
  AmountCreated /* the amount of the Product created by the Recipe */ INT NOT NULL);
 
 
 CREATE TABLE IF NOT EXISTS RecipeContains
-(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe(Id),
- FoodItem /* FoodItem contained in the recipe */ INT NOT NULL REFERENCES FoodItem, /* TODO cascade stuff if FoodItem deleted */
+(Recipe /* Id of the Recipe */ INT NOT NULL REFERENCES Recipe(Id) ON DELETE CASCADE,
+ FoodItem /* FoodItem contained in the recipe */ INTEGER NOT NULL REFERENCES FoodItem(Id) ON DELETE CASCADE,
  Amount /* the amount of the FoodItem in the Recipe */ INT NOT NULL,
  PRIMARY KEY (Recipe, FoodItem));
 
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS CustomerOrder
 
 
 CREATE TABLE IF NOT EXISTS OrderContains
-(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder(Id),
- FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES FoodItem(Id),
+(CustomerOrder /* Id of the Order*/ INTEGER NOT NULL REFERENCES CustomerOrder(Id) ON DELETE CASCADE,
+ FoodItem /* Id of the FoodItem contained in the Order */ INTEGER NOT NULL REFERENCES OrderedFoodItem(Id) ON DELETE CASCADE,
  PRIMARY KEY (CustomerOrder, FoodItem));
 
 

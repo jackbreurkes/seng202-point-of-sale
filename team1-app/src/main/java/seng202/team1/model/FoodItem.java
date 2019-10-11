@@ -214,6 +214,21 @@ public class FoodItem {
         this.recipe = recipe;
     }
 
+    /**
+     * creates a clone of this FoodItem that does not have a Recipe associated with it.
+     * @return a new FoodItem instance identical to this one with its Recipe set to null
+     */
+    public FoodItem cloneWithoutRecipe() {
+        FoodItem clone = new FoodItem(code, name, unit);
+        clone.setCost(cost);
+        clone.setIsVegetarian(isVegetarian);
+        clone.setIsVegan(isVegan);
+        clone.setIsGlutenFree(isGlutenFree);
+        clone.setCaloriesPerUnit(caloriesPerUnit);
+        clone.setRecipe(null);
+        return clone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

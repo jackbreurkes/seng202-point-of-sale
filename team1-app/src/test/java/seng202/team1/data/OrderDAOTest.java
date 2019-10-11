@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.OrderStatus;
 import seng202.team1.util.UnitType;
 
 import java.util.HashSet;
@@ -72,13 +73,38 @@ abstract class OrderDAOTest {
     }
 
     @Test
-    void testGetAllSubmittedOrders() {
+    void testGetSubmittedOrdersWhenDBEmpty() {
+        assertEquals(new HashSet<>(), orderStorage.getAllSubmittedOrders());
+    }
+
+    @Test
+    void testGetMultipleSubmittedOrders() {
         Set<Order> expectedResult = new HashSet<Order>();
 
-        // no orders in database
-        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+        Order testOrder1 = new Order();
+        testOrder1.setId(1);
+        testOrder1.addItem(testItem);
+        testOrder1.submitOrder();
+        orderStorage.addOrder(testOrder1);
+        expectedResult.add(testOrder1);
 
-        // single submitted order
+        Order testOrder2 = new Order();
+        testOrder2.setId(2);
+        testOrder2.addItem(testItem);
+        testOrder2.submitOrder();
+        orderStorage.addOrder(testOrder2);
+        expectedResult.add(testOrder2);
+
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+        for (Order order : orderStorage.getAllSubmittedOrders()) {
+            assertEquals(OrderStatus.SUBMITTED, order.getOrderStatus());
+        }
+    }
+
+    @Test
+    void testGetSubmittedOrdersWithNonSubmittedInDB() {
+        Set<Order> expectedResult = new HashSet<Order>();
+
         Order testOrder1 = new Order();
         testOrder1.setId(1);
         testOrder1.addItem(testItem);
@@ -87,7 +113,6 @@ abstract class OrderDAOTest {
         expectedResult.add(testOrder1);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
 
-        // two submitted orders
         Order testOrder2 = new Order();
         testOrder2.setId(2);
         testOrder2.addItem(testItem);
@@ -96,13 +121,13 @@ abstract class OrderDAOTest {
         expectedResult.add(testOrder2);
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
 
-        // un-submitted orders in storage
         Order testOrder3 = new Order();
         testOrder3.setId(3);
         testOrder3.addItem(testItem);
         testOrder3.submitOrder();
         testOrder3.completeOrder();
         orderStorage.addOrder(testOrder3);
+
         Order testOrder4 = new Order();
         testOrder4.setId(4);
         testOrder4.addItem(testItem);
@@ -110,9 +135,22 @@ abstract class OrderDAOTest {
         testOrder4.completeOrder();
         testOrder4.refundOrder();
         orderStorage.addOrder(testOrder4);
-        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
 
-        // existing submitted order marked as completed
+        assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
+    }
+
+    @Test
+    void testGetSubmittedOrdersAfterOrderInDBCancelled() {
+        Set<Order> expectedResult = new HashSet<Order>();
+
+        // single submitted order
+        Order testOrder1 = new Order();
+        testOrder1.setId(1);
+        testOrder1.addItem(testItem);
+        testOrder1.submitOrder();
+        orderStorage.addOrder(testOrder1);
+        expectedResult.add(testOrder1);
+
         expectedResult.remove(testOrder1);
         testOrder1.cancelOrder();
         orderStorage.updateOrder(testOrder1);

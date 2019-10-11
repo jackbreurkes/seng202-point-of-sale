@@ -53,11 +53,6 @@ public class OrderController {
         hideOrderCreationElements();
     }
 
-    public void submitOrderAndClose(Order order) {
-        orderProgressDisplay.displaySubmittedOrder(order);
-        hideOrderCreationElements();
-    }
-
     private void showOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
         ordersInfo.getChildren().clear();
@@ -74,6 +69,7 @@ public class OrderController {
         menuName.setText(activeMenu.getMenuName());
         ordersInfo.getChildren().clear();
         ordersInfo.getChildren().add(orderProgressDisplay);
+        orderProgressDisplay.displaySubmittedOrders();
 
         for (Node node : menuItems.getChildren()) {
             MenuItemDisplay display = (MenuItemDisplay)node;
