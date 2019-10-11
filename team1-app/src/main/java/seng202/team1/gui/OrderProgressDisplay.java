@@ -53,6 +53,7 @@ public class OrderProgressDisplay extends VBox {
                 orderController.startCreatingOrder();
             }
         });
+        updateSubmittedOrders();
     }
 
     public void displaySubmittedOrder(Order order) {
@@ -62,7 +63,7 @@ public class OrderProgressDisplay extends VBox {
 
     private void updateSubmittedOrders() {
         pendingOrdersVBox.getChildren().clear();
-        for (Order displayOrder : submittedOrders) {
+        for (Order displayOrder : orderStorage.getAllSubmittedOrders()) {
             pendingOrdersVBox.getChildren().add(new OrderDisplay(this, displayOrder));
         }
     }
