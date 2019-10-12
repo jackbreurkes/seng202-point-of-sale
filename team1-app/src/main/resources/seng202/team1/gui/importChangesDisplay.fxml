@@ -2,67 +2,26 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="447.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.ImportChangesController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="14.0" prefHeight="60.0" prefWidth="417.0" text="Review Changes">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="62.0" prefWidth="426.0" text="Review Changes">
          <font>
             <Font name="AnjaliOldLipi" size="30.0" />
          </font>
       </Label>
-      <ScrollPane layoutY="85.0" prefHeight="425.0" prefWidth="426.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="408.0" prefWidth="426.0">
-               <children>
-                  <Pane prefHeight="126.0" prefWidth="426.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" prefHeight="41.0" prefWidth="388.0" text="Price of Apple has been altered">
-                           <font>
-                              <Font name="Loma Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="Old Value: $21">
-                           <font>
-                              <Font name="Loma Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="207.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="New Value: $21">
-                           <font>
-                              <Font name="Loma Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="51.0" layoutY="79.0" mnemonicParsing="false" text="Ignore Changes" />
-                        <Button layoutX="242.0" layoutY="79.0" mnemonicParsing="false" text="Accept Changes" />
-                     </children>
-                  </Pane>
-                  <Pane layoutY="126.0" prefHeight="126.0" prefWidth="426.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" prefHeight="41.0" prefWidth="388.0" text="Price of Apple has been altered">
-                           <font>
-                              <Font name="Loma Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="Old Value: $21">
-                           <font>
-                              <Font name="Loma Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="207.0" layoutY="42.0" prefHeight="32.0" prefWidth="194.0" text="New Value: $21">
-                           <font>
-                              <Font name="Loma Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="51.0" layoutY="79.0" mnemonicParsing="false" text="Ignore Changes" />
-                        <Button layoutX="242.0" layoutY="79.0" mnemonicParsing="false" text="Accept Changes" />
-                     </children>
-                  </Pane>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <Pane layoutY="70.0" prefHeight="192.0" prefWidth="447.0">
+         <children>
+            <Label fx:id="descriptionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" prefHeight="62.0" prefWidth="417.0" text="already present in database with different values">
+               <font>
+                  <Font name="Loma Bold" size="17.0" />
+               </font>
+            </Label>
+            <Button fx:id="ignoreButton" layoutX="51.0" layoutY="150.0" mnemonicParsing="false" onAction="#ignore" prefHeight="26.0" prefWidth="181.0" text="Ignore Changes" />
+            <Button fx:id="acceptButton" layoutX="262.0" layoutY="150.0" mnemonicParsing="false" onAction="#accept" text="Accept Changes" />
+         </children>
+      </Pane>
    </children>
 </Pane>
