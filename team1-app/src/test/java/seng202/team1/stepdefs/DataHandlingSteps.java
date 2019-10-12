@@ -43,7 +43,30 @@ public class DataHandlingSteps {
     BigMoney discountedCost;
     BigMoney expectedCostNZD;
 
-
+    /**
+     * Takes a String that corresponds to a unit, validates it,
+     * and returns a UnitType object of that unit.
+     * @param unitString a unit type in the form of a string
+     * @return a unit type of type UnitType
+     */
+    private UnitType units(String unitString) {
+        UnitType unitType;
+        switch(unitString) {
+            case "g":
+                unitType = UnitType.GRAM;
+                break;
+            case "ml":
+                unitType = UnitType.ML;
+                break;
+            case "c":
+                unitType = UnitType.COUNT;
+                break;
+            default:
+                throw new cucumber.api.PendingException(unitString + " does not correspond to a valid unit type");
+        }
+        return unitType;
+    }
+    
     @Given("the user has data from directory {string} to upload")
     public void the_user_has_data_from_directory_to_upload(String expectedDirectory) {
         directory = expectedDirectory;
@@ -164,20 +187,7 @@ public class DataHandlingSteps {
 
     @When("user creates a new dish {string} with the code {string} and the unit {string}")
     public void user_adds_a_new_dish_with_the_code_and_the_unit(String name, String code, String unitString) {
-        UnitType unitType = UnitType.GRAM;
-        switch(unitString) {
-            case "g":
-                unitType = UnitType.GRAM;
-                break;
-            case "ml":
-                unitType = UnitType.ML;
-                break;
-            case "c":
-                unitType = UnitType.COUNT;
-                break;
-            default:
-                throw new cucumber.api.PendingException(unitString + " does not correspond to a valid unit type");
-        }
+        UnitType unitType = units(unitString);
         try {
             foodItem = new FoodItem(code, name, unitType);
         } catch (IllegalArgumentException iae) {
@@ -250,20 +260,7 @@ public class DataHandlingSteps {
 
     @When("user manually adds {int} ingredient {string} with the code {string} and the unit {string}")
     public void user_manually_adds_ingredient_with_the_code_and_the_unit(Integer ingredientCount, String ingredientName, String ingredientCode, String ingredientUnit) {
-        UnitType unitType = UnitType.GRAM;
-        switch(ingredientUnit) {
-            case "g":
-                unitType = UnitType.GRAM;
-                break;
-            case "ml":
-                unitType = UnitType.ML;
-                break;
-            case "c":
-                unitType = UnitType.COUNT;
-                break;
-            default:
-                throw new cucumber.api.PendingException(ingredientUnit + " does not correspond to a valid unit type");
-        }
+        UnitType unitType = units(ingredientUnit);
         ingredient = new FoodItem(ingredientCode, ingredientName, unitType);
         RecipeBuilder rb = new RecipeBuilder();
         rb.loadExistingRecipeData(foodItem.getRecipe());
