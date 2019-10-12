@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="TOP_CENTER" prefWidth="250.0" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" maxHeight="420.0" prefWidth="250.0" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -29,7 +29,7 @@
             <Insets bottom="5.0" top="5.0" />
          </VBox.margin>
       </Separator>
-      <ScrollPane>
+      <ScrollPane VBox.vgrow="SOMETIMES">
          <content>
             <VBox fx:id="ingredientsVBox" />
          </content>
