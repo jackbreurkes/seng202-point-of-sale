@@ -221,41 +221,4 @@ public class OrderSteps {
 
 
 
-
-    @Given("the order has been created")
-    public void the_order_has_been_created() {
-        //By default it is creating
-        order = new Order();
-        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
-        //adds an item
-        order.addItem(foodItem);
-        // throw new cucumber.api.PendingException();
-
-        //initializes a list to check against the order
-        testList.add(foodItem);
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Given("the order has been submitted")
-    public void the_order_has_been_submitted() {
-        order.submitOrder();
-        assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Given("the order has been completed")
-    public void the_order_has_been_completed() {
-        order.completeOrder();
-        assertEquals(order.getOrderStatus(), OrderStatus.COMPLETED);
-        //throw new cucumber.api.PendingException();
-    }
-
-    @When("the customer asks for a refund, the order is refunded")
-    public void the_customer_asks_for_a_refund_the_order_is_refunded() {
-        order.refundOrder();
-        //throw new cucumber.api.PendingException();
-    }
-
-
-
 }

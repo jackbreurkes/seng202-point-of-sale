@@ -21,14 +21,8 @@ Feature: User manages orders within the app
     When the user selects the ingredients to add to the recipe
     Then the recipe is updated to include those ingredients
 
-  Scenario: user cancels an order before it is confirmed
+  Scenario: User cancels an order before it is confirmed
     Given an order is being created
     And the order has not been confirmed
     When the user cancels the order
     Then the order is removed from the list of orders
-
- Scenario: User refunds an order that has been completed
-   Given the order has been created
-   And the order has been submitted
-   And the order has been completed
-   When the customer asks for a refund, the order is refunded
