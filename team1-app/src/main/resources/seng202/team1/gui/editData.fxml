@@ -201,9 +201,10 @@
       </VBox>
       <VBox fx:id="rightPanelBox" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <RecipeView alignment="CENTER_LEFT" fx:id="recipeView" />
-            <HBox alignment="BOTTOM_RIGHT" spacing="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+             <Region prefHeight="50.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
+             <RecipeView alignment="CENTER_LEFT" fx:id="recipeView" />
+             <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+             <HBox alignment="BOTTOM_RIGHT" spacing="65.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="deleteSelected" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#deleteSelectedItem" text="delete">
                      <cursor>
