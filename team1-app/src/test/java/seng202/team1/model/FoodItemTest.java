@@ -25,42 +25,42 @@ class FoodItemTest {
     }
 
     @Test
-    void testConstructor() {
-        // how should we test abstract classes??
-        FoodItem item1 = new FoodItem("COD", "1", COUNT);
-        assertEquals("COD", item1.getCode());
-        assertEquals("1", item1.getName());
-
-
-        FoodItem item2 = new FoodItem("THISIS10", "thisstring is twenty", COUNT);
-        assertEquals(item2.getName(), "thisstring is twenty");
-
-        // code not enough chars
-        assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("CC", "E", COUNT);
-        });
-
-        // code too many chars
-        assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("elevenchars", "E", COUNT);
-        });
-
-        // code not uppercase alphanumeric
-        assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("code", "Test Name", COUNT);
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            new FoodItem("COD\u2202", "Test Name", COUNT);
-        });
-
-        // ask about testing name for characters? some foreign places might use funky chars
-        // damn should we even assume codes can be uppercase alphanumeric? should ask, or check our doc for multilingual support
-
-        // should we be testing if setName is called vs name = "whatever" or is that overkill
-
+    void testNullCode() {
         assertThrows(NullPointerException.class, () -> {
             new FoodItem(null, "Test Name", COUNT);
         });
+    }
+
+    @Test
+    void testNullName() {
+        assertThrows(NullPointerException.class, () -> {
+            new FoodItem("CODE", null, COUNT);
+        });
+    }
+
+    @Test
+    void testNullUnit() {
+        assertThrows(NullPointerException.class, () -> {
+            new FoodItem("CODE", "Test Name", null);
+        });
+    }
+
+    @Test
+    void testConstructorBlueSky() {
+        FoodItem item = new FoodItem("COD", "1", COUNT);
+        assertEquals("COD", item.getCode());
+        assertEquals("1", item.getName());
+        assertEquals(UnitType.COUNT, item.getUnit());
+    }
+
+    @Test
+    void testMaxNameChars() {
+        FoodItem item = new FoodItem("THISIS10", "thisstring is twenty", COUNT);
+        assertEquals(item.getName(), "thisstring is twenty");
+    }
+
+    @Test
+    void testCodeNotEnoughChars() {
     }
 
     @Test

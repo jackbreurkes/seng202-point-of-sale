@@ -19,10 +19,10 @@ public class CodeValidator {
      */
     public static String checkCode(String code) {
         if (code.length() < MIN_CHARS || code.length() > MAX_CHARS) {
-            throw new IllegalArgumentException("food item codes must be between 3 and 10 characters (inclusive)");
+            throw new InvalidDataCodeException("food item codes must be between 3 and 10 characters (inclusive)");
         }
         if (!code.matches(EXPRESSION)) {
-            throw new IllegalArgumentException("food item codes must be uppercase alphanumeric");
+            throw new InvalidDataCodeException("food item codes must be uppercase alphanumeric");
         }
         return code;
     }
