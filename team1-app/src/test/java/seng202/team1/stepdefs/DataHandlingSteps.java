@@ -14,7 +14,9 @@ import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.UploadHandler;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Recipe;
 import seng202.team1.util.InvalidDataCodeException;
+import seng202.team1.util.RecipeBuilder;
 import seng202.team1.util.UnitType;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class DataHandlingSteps {
     static String MONEY_COUNTRY_CODE_PREFIX = "NZD ";
     FoodItemDAO itemStorage;
     FoodItem foodItem;
+    FoodItem ingredient;
     BigMoney foodItemCost;
     BigMoney updatedCost;
     BigMoney discountedCost;
@@ -72,7 +75,7 @@ public class DataHandlingSteps {
         try {
             assertEquals(4, itemStorage.getAllFoodItems().size());
         } catch (AssertionError ae) {
-            throw new cucumber.api.PendingException("Upload of " + filename + " failed");
+            throw new cucumber.api.PendingException("Upload of " + itemStorage.getAllFoodItems() + " failed");
         }
     }
 
@@ -227,6 +230,59 @@ public class DataHandlingSteps {
             throw new cucumber.api.PendingException(expectedDeletedCode + " has not been deleted from the database");
         }
     }
+
+    @And ("contains a recipe for {string}")
+    public void contains_a_recipe_for(String expectedItemCode) {
+        foodItem = itemStorage.getFoodItemByCode(expectedItemCode);
+        if (foodItem == null) {
+            throw new cucumber.api.PendingException("Food item with code " + expectedItemCode + " does not exist in the database");
+        }
+    }
+
+    @And("total number of food items in the database is {int}")
+    public void total_number_of_food_items_in_the_database_is(Integer foodItemCountInDatabase) {
+        try {
+            assertEquals(foodItemCountInDatabase, (Integer) itemStorage.getAllFoodItems().size());
+        } catch (AssertionError ae) {
+            throw new cucumber.api.PendingException("Food items in database does not match expected value of " + foodItemCountInDatabase);
+        }
+    }
+
+    @When("user manually adds {int} ingredient {string} with the code {string} and the unit {string}")
+    public void user_manually_adds_ingredient_with_the_code_and_the_unit(Integer ingredientCount, String ingredientName, String ingredientCode, String ingredientUnit) {
+        UnitType unitType = UnitType.GRAM;
+        switch(ingredientUnit) {
+            case "g":
+                unitType = UnitType.GRAM;
+                break;
+            case "ml":
+                unitType = UnitType.ML;
+                break;
+            case "c":
+                unitType = UnitType.COUNT;
+                break;
+            default:
+                throw new cucumber.api.PendingException(ingredientUnit + " does not correspond to a valid unit type");
+        }
+        ingredient = new FoodItem(ingredientCode, ingredientName, unitType);
+        RecipeBuilder rb = new RecipeBuilder();
+        rb.loadExistingRecipeData(foodItem.getRecipe());
+        rb.addIngredient(ingredient, ingredientCount);
+        foodItem.setRecipe(rb.generateRecipe(1));
+
+        //FIX
+        itemStorage.addFoodItem(ingredient, 0);
+    }
+
+    @Then("a cucumber should be successfully added as an ingredient to a hamburger")
+    public void a_cucumber_should_be_successfully_added_as_an_ingredient_to_a_hamburger() {
+        try {
+            assertEquals(true, foodItem.getRecipe().getIngredients().contains(ingredient));
+        } catch (AssertionError ae){
+            throw new cucumber.api.PendingException(ingredient + " was not added into " + foodItem + "'s recipe");
+        }
+    }
+
 
 
 

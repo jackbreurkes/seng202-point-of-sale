@@ -4,7 +4,7 @@ Feature: User handles data using the app
   Scenario: Valid XML file
     Given the user has data from directory "src/test/resources/xml/TESTXML1.xml" to upload
     And data is within a valid directory
-    When "TESTXML21.xml" is parsed and uploaded
+    When "TESTXML1.xml" is parsed and uploaded
     Then upload of "TESTXML1.xml" is a success
 
   Scenario Outline: Cost of tofu burgers
@@ -36,22 +36,25 @@ Feature: User handles data using the app
       | 25         |  37.5    |
       | 50         |  25.0    |
 
-  Scenario: A paella is added to the database storage
+  Scenario: Adding a food item Paella into existing database storage
     Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
     When user creates a new dish "Paella" with the code "PAELLA" and the unit "c"
     And sets the food item's price to $20.0
     And adds food item to database
     Then the food item "PAELLA" should be successfully added to the database storage
 
-  Scenario: User deletes food item from database storage
+  Scenario: Deleting a food item from database storage
     Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
     When user deletes food item with the code "CHEESEBURG"
     Then "CHEESEBURG" should be successfully removed from the database storage
 
-
-
-
-
+  Scenario: Modifying recipe of food item from database storage
+    Given XML file from "src/test/resources/xml/TESTXML1WITHRECIPE.xml" is uploaded
+    And contains a recipe for "BEEFBURG"
+    And total number of food items in the database is 7
+    When user manually adds 1 ingredient "Cucumber" with the code "CUCUMBER" and the unit "c"
+    Then a cucumber should be successfully added as an ingredient to a hamburger
+    And total number of food items in the database is 8
 
 
 
@@ -75,13 +78,17 @@ Feature: User handles data using the app
 #    Given the system is in data entry mode
 #    When the user provides new or updated data in the correct field(s)
 #    Then the system updates the data entry
-#
+
+
 #  Scenario: User adds a new food item
 #    Given the system is in the food item entry state
 #    When user adds a new food item
 #    Then system adds new food item to database
 #    And system displays the new food item
 #
+
+
+
 #  Scenario: User deletes existing recipe
 #    Given menu is not empty
 #    When user deletes recipe

@@ -21,7 +21,9 @@ import java.util.Map;
 
 /**
  * Processes an XML file containing suppliers using DOM.
+ * Deprecated as system does not use suppliers
  */
+@Deprecated
 public class SupplierHandler {
     private DocumentBuilder builder = null;
     private Document parsedDoc = null;
