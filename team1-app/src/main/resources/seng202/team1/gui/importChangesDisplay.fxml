@@ -5,22 +5,30 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="447.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.ImportChangesController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="243.0" prefWidth="447.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.ImportChangesController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="62.0" prefWidth="426.0" text="Review Changes">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="56.0" prefWidth="426.0" text="Review Changes">
          <font>
-            <Font name="AnjaliOldLipi" size="30.0" />
+            <Font name="Loma Bold" size="30.0" />
          </font>
       </Label>
-      <Pane layoutY="70.0" prefHeight="192.0" prefWidth="447.0">
+      <Pane layoutY="70.0" prefHeight="180.0" prefWidth="447.0">
          <children>
-            <Label fx:id="descriptionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" prefHeight="62.0" prefWidth="417.0" text="already present in database with different values">
+            <Button fx:id="ignoreButton" layoutX="33.0" layoutY="107.0" mnemonicParsing="false" onAction="#ignore" prefHeight="38.0" prefWidth="175.0" text="Ignore Changes">
+                <font>
+                    <Font name="Loma Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button fx:id="acceptButton" layoutX="240.0" layoutY="107.0" mnemonicParsing="false" onAction="#accept" prefHeight="38.0" prefWidth="175.0" text="Accept Changes">
+               <font>
+                  <Font name="Loma Bold" size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="descriptionLabel" layoutX="62.0" layoutY="14.0" prefHeight="71.0" prefWidth="324.0" text="Uploaded file contains food item present in database with different values." textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Loma Bold" size="17.0" />
                </font>
             </Label>
-            <Button fx:id="ignoreButton" layoutX="51.0" layoutY="150.0" mnemonicParsing="false" onAction="#ignore" prefHeight="26.0" prefWidth="181.0" text="Ignore Changes" />
-            <Button fx:id="acceptButton" layoutX="262.0" layoutY="150.0" mnemonicParsing="false" onAction="#accept" text="Accept Changes" />
          </children>
       </Pane>
    </children>

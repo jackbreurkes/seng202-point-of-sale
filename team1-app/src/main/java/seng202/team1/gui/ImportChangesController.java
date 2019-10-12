@@ -17,8 +17,6 @@ public class ImportChangesController {
     @FXML
     private Button ignoreButton;
 
-//    private boolean overwrite;
-
     /**
      * A FoodItemStorageController.
      * Note that despite being a FoodItemStorageController object,
@@ -27,10 +25,6 @@ public class ImportChangesController {
      * intuitively named an importController.
      */
     private FoodItemStorageController importController;
-
-    private static final String DESCRIPTION =
-            "Uploaded file contains food item that is " +
-            "already present in database with different values";
 
     /**
      * Called when the accept button is clicked.
@@ -64,7 +58,6 @@ public class ImportChangesController {
      */
     public void initialize(FoodItemStorageController importController) {
         this.importController = importController;
-        descriptionLabel.setText(DESCRIPTION);
     }
 
     /**
@@ -75,10 +68,6 @@ public class ImportChangesController {
         Stage stage  = (Stage) node.getScene().getWindow();
         stage.close();
     }
-
-//    public boolean getOverwrite() {
-//        return overwrite;
-//    }
 
     /**
      * Called from FoodItemStorageController to set the variable importController
