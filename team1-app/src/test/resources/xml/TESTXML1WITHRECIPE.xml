@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE fooditems SYSTEM "fooditems.dtd">
+<fooditems>
+    <description>Food sold by our food truck</description>
+    <fooditem unit="g">
+        <code>BEEFBURG</code>
+        <name>Hamburger</name>
+        <cost>NZD 21.00</cost>
+        <caloriesPerUnit>295</caloriesPerUnit>
+        <recipe>
+            <ingredient unit="count">
+                <code>BEEF</code>
+                <name>Beef</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>250</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>BUN</code>
+                <name>Bun</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>210</caloriesPerUnit>
+                <amount>2</amount>
+            </ingredient>
+            <ingredient unit="count">
+                <code>LETTUCE</code>
+                <name>Lettuce</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>15</caloriesPerUnit>
+                <amount>1</amount>
+            </ingredient>
+            <addableIngredient unit="count">
+                <code>EGG</code>
+                <name>Egg</name>
+                <cost>NZD 0</cost>
+                <caloriesPerUnit>155</caloriesPerUnit>
+                <amount>1</amount>
+            </addableIngredient>
+        </recipe>
+    </fooditem>
+    <fooditem unit="g">
+        <code>CHEESEBURG</code>
+        <name>Cheeseburger</name>
+        <cost>NZD 22.00</cost>
+        <caloriesPerUnit>303</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="g" isVegetarian="yes">
+        <code>TOFUBURG</code>
+        <name>Tofu Burger</name>
+        <cost>NZD 50.00</cost>
+        <caloriesPerUnit>168.4</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>APPLESODA</code>
+        <name>Sparkling Apple</name>
+        <cost>NZD 96.00</cost>
+        <caloriesPerUnit>87</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+</fooditems>
