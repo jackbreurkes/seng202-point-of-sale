@@ -6,22 +6,21 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
+import seng202.team1.data.DAOFactory;
+import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.OrderDAO;
+import seng202.team1.gui.CreateOrderDisplay;
+import seng202.team1.gui.OrderController;
 import seng202.team1.model.FoodItem;
+import seng202.team1.model.Kitchen;
 import seng202.team1.model.Order;
 import seng202.team1.model.Recipe;
-import seng202.team1.util.InvalidDataCodeException;
-import seng202.team1.util.InvalidOrderStatusException;
-import seng202.team1.util.OrderStatus;
-import seng202.team1.util.UnitType;
+import seng202.team1.util.*;
 
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 
 
 public class OrderSteps {
@@ -29,6 +28,7 @@ public class OrderSteps {
     private FoodItem foodItem;
     protected OrderDAO orderStorage;
     private List<FoodItem> testList = new ArrayList<FoodItem>();
+
 
     @Given("the user has an order to register")
     public void the_user_has_an_order_to_register() {
@@ -162,7 +162,7 @@ public class OrderSteps {
         ingredientAmounts.put("TAPWATER", 1);
 
         foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
-        foodItem.getRecipe().addIngredient(foodItem2);
+        foodItem.getRecipe().addIngredient(foodItem2.getCode());
         // throw new cucumber.api.PendingException();
 
     }
@@ -256,39 +256,6 @@ public class OrderSteps {
         //throw new cucumber.api.PendingException();
     }
 
-
-
-
-
-
-    @Given("an order exists in the orders list")
-    public void an_order_exists_in_the_orders_list() {
-        order = new Order();
-        foodItem = new FoodItem("WATER", "Glass of water", UnitType.COUNT);
-        //adds an item
-        order.addItem(foodItem);
-        //throw new cucumber.api.PendingException();
-    }
-
-    @And("the order has been confirmed")
-    public void the_order_has_been_confirmed() {
-        order.submitOrder();
-        assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
-
-        //System.out.println(order.getOrderStatus());
-        //throw new cucumber.api.PendingException();
-    }
-
-    @And("the order has not been completed")
-    public void the_order_has_not_been_completed() {
-        assertNotEquals(order.getOrderStatus(), OrderStatus.COMPLETED);
-        //throw new cucumber.api.PendingException();
-    }
-
-    @Then("the order is cancelled")
-    public void the_order_is_cancelled() {
-        assertEquals(order.getOrderStatus(), OrderStatus.CANCELLED);
-    }
 
 
 }

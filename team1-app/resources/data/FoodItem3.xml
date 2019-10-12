@@ -5,8 +5,43 @@
     <fooditem unit="count">
         <code>BANANA</code>
         <name>Banana</name>
-        <cost>NZD 69.00</cost>
+        <cost>NZD 29.00</cost>
         <caloriesPerUnit>100</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="count">
+        <code>APPLEPIE</code>
+        <name>Apple Pie</name>
+        <cost>NZD 21.00</cost>
+        <caloriesPerUnit>200</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="ml" isVegetarian="yes">
+        <code>ORNGJCE</code>
+        <name>Orange Juice</name>
+        <cost>NZD 60.00</cost>
+        <caloriesPerUnit>312.4</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>WATER</code>
+        <name>Glass of water</name>
+        <cost>NZD 200.00</cost>
+        <caloriesPerUnit>0</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>MUFFIN</code>
+        <name>A lovely muffin</name>
+        <cost>NZD 122.00</cost>
+        <caloriesPerUnit>0</caloriesPerUnit>
+        <recipe></recipe>
+    </fooditem>
+    <fooditem unit="ml" isVegan="yes" isGlutenFree="yes">
+        <code>APPLESODA</code>
+        <name>Sparkling Apple</name>
+        <cost>NZD 120.00</cost>
+        <caloriesPerUnit>10000</caloriesPerUnit>
         <recipe></recipe>
     </fooditem>
 </fooditems>

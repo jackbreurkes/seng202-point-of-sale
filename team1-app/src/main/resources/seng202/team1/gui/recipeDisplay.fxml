@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -15,10 +16,9 @@
          <children>
             <Label text="Recipe">
                <font>
-                  <Font size="19.0" />
+                  <Font size="40.0" />
                </font></Label>
             <Region prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="saveRecipe" mnemonicParsing="false" text="Save recipe" />
          </children>
          <VBox.margin>
             <Insets />
@@ -29,7 +29,11 @@
             <Insets bottom="5.0" top="5.0" />
          </VBox.margin>
       </Separator>
-      <VBox fx:id="ingredientsVBox" />
+      <ScrollPane>
+         <content>
+            <VBox fx:id="ingredientsVBox" />
+         </content>
+      </ScrollPane>
       <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="230.0">
          <children>
             <Button fx:id="addSelected" mnemonicParsing="false" text="Add Selected" />

@@ -37,12 +37,8 @@ public class FoodItemHandler {
     private boolean isVegan;
     private boolean isGlutenFree;
 
-//    private Set<FoodItem> ingredients;
-//    private Set<FoodItem> addableIngredients;
-//    private Map<String, Integer> ingredientAmounts;
-
-    private RecipeBuilder recipeBuilder;
     private Recipe recipe;
+    private RecipeBuilder recipeBuilder;
 
     private String ingredientCode;
     private String ingredientName;
@@ -50,12 +46,6 @@ public class FoodItemHandler {
     private UnitType ingredientUnit;
     private double ingredientCaloriesPerUnit;
     private int ingredientAmount;
-
-    // REMOVE DIETARY CONSTRAINTS BC ALREADY know from FOODITEM ITS
-//    private boolean ingredientVegetarian;
-//    private boolean ingredientVegan;
-//    private boolean ingredientGlutenFree;
-
 
     /**
      * Constructor for FoodItemHandler class.
@@ -135,17 +125,16 @@ public class FoodItemHandler {
             NodeList recipePlaceholder = node.getElementsByTagName("recipe");
             Element recipeNode = (Element) recipePlaceholder.item(0);
 
-//            ingredients = new HashSet<FoodItem>();
-//            addableIngredients = new HashSet<FoodItem>();
-//            ingredientAmounts = new HashMap<>();
+            // Generate a Recipe using the RecipeBuilder class
             recipeBuilder = new RecipeBuilder();
 
             NodeList ingredientNodeList = recipeNode.getElementsByTagName("ingredient");
-            parseIngredients(ingredientNodeList, 0);
-
             NodeList addableIngredientPlaceholder = recipeNode.getElementsByTagName("addableIngredient");
+
+            parseIngredients(ingredientNodeList, 0);
             parseIngredients(addableIngredientPlaceholder, 1);
 
+            // If recipeBuilder has no ingredients in it, recipe = null
             recipe = recipeBuilder.generateRecipe(1);
 
             FoodItem foodItem = new FoodItem(code, name, unit);
@@ -163,15 +152,7 @@ public class FoodItemHandler {
                 isGlutenFree = diet(node.getAttribute("isGlutenFree"));
                 foodItem.setIsGlutenFree(isGlutenFree);
             }
-//            System.out.println(recipe);
             foodItem.setRecipe(recipe);
-
-            // If 0, then recipe = null
-//            if (ingredients.size() != 0) {
-//                Recipe recipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
-//                foodItem.setRecipe(recipe);
-//            }
-
             foodItems.put(code, foodItem);
 
         }
@@ -203,12 +184,9 @@ public class FoodItemHandler {
             ingredientFoodItem.setCaloriesPerUnit(ingredientCaloriesPerUnit);
             if (check == 0) {
                 recipeBuilder.addIngredient(ingredientFoodItem, ingredientAmount);
-                //ingredients.add(ingredientFoodItem);
             } else {
                 recipeBuilder.addAddableIngredient(ingredientFoodItem, ingredientAmount);
-                //addableIngredients.add(ingredientFoodItem);
             }
-            //ingredientAmounts.put(ingredientCode, ingredientAmount);
         }
     }
 

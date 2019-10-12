@@ -186,8 +186,9 @@ public class EditDataController {
                 foodStorage.setFoodItemStock(selectedItem.getCode(), Integer.parseInt(newStockCount.getText()));
                  editedItem.setIsVegan(veganCheckBox.isSelected());
                 editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
+                editedItem.setRecipe(recipeView.getRecipe());
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 statusText.setText("error setting values: " + e.getMessage());
                 return;
             }

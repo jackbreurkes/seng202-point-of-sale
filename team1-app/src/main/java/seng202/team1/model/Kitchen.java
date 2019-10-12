@@ -11,7 +11,6 @@ import java.util.*;
 public class Kitchen {
 
     private FoodItemDAO foodStorage;
-    //private Set<FoodItem> beingCreated = new HashSet<>();
     private Map<String, Integer> totalAmountRequired = new HashMap<>();
 
     /**
@@ -68,6 +67,7 @@ public class Kitchen {
         for (FoodItem ingredient : ingredients) {
             String code = ingredient.getCode();
             int amount = ingredientAmounts.get(code);
+            ingredient = foodStorage.getFoodItemByCode(code);
 
             totalAmountRequired.putIfAbsent(code, 0);
             if (totalAmountRequired.get(code) > 0) { // cycle detected
