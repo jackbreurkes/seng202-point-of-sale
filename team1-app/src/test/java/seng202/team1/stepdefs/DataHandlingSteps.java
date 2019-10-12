@@ -60,10 +60,11 @@ public class DataHandlingSteps {
         itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         try {
-            UploadHandler.uploadFoodItems(directory);
+            UploadHandler.parseFoodItems(directory);
         } catch (IOException | SAXException e) {
             throw new cucumber.api.PendingException(filename + " is not a valid file");
         }
+        UploadHandler.uploadFoodItems(false);
     }
 
     @Then("upload of {string} is a success")
@@ -81,10 +82,11 @@ public class DataHandlingSteps {
             itemStorage = DAOFactory.getFoodItemDAO();
             DAOFactory.resetInstances();
             try {
-                UploadHandler.uploadFoodItems(directory);
+                UploadHandler.parseFoodItems(directory);
             } catch (IOException | SAXException e) {
-                throw new cucumber.api.PendingException(directory + " not a valid directory");
+                throw new cucumber.api.PendingException(directory + " is not a valid directory");
             }
+            UploadHandler.uploadFoodItems(false);
         } else {
             throw new cucumber.api.PendingException(directory + " not a valid directory");
         }

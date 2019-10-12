@@ -52,10 +52,11 @@ public class UploadHandlerTest {
         FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         try {
-            UploadHandler.uploadFoodItems(source1);
+            UploadHandler.parseFoodItems(source1);
         } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
+        UploadHandler.uploadFoodItems(false);
         List<FoodItem> items = new ArrayList<FoodItem>(itemStorage.getAllFoodItems());
         items.sort((item1, item2) -> item1.getCode().compareTo(item2.getCode()));
 
@@ -64,42 +65,76 @@ public class UploadHandlerTest {
     }
 
     @Test
-    void uploadDuplicateFoodItemsInStorage() {
-        // Checks if duplicates of food items are ignored
-        // Tofu calories altered and stock updated
-        // Two of the same food items in same xml
-        // And attributes of food items are updated to match uploaded food item
-        // And stock count is incremented
+    void uploadAndReplaceModifiedFoodItemsInStorage() {
+        // Checks if duplicates of food items are updated
+        // Tofu calories altered
 
         FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
         try {
-            UploadHandler.uploadFoodItems(source1);
+            UploadHandler.parseFoodItems(source1);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
+        UploadHandler.uploadFoodItems(false);
+
+        // Tofu FoodItem before attributes are altered
+        FoodItem initialTofu = itemStorage.getFoodItemByCode("TOFUBURG");
+
+        // Uploads second XML file with altered tofu calories
+        try {
+            UploadHandler.parseFoodItems(source2);
         } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
 
-        // Tofu FoodItem before attributes are altered
-        FoodItem initialTofu = itemStorage.getFoodItemByCode("TOFUBURG");
-        // Tofu stock before second XML uploaded
-        int initialTofuStock = itemStorage.getFoodItemStock("TOFUBURG");
-        // Uploads second XML file with altered tofu calories
-        try {
-            UploadHandler.uploadFoodItems(source2);
-        } catch (IOException | SAXException e) {
-            e.printStackTrace();
-        }
+        // Upload XML and overwrite FoodItem value that is different
+        // FoodItem value (overwrite = true)
+        UploadHandler.uploadFoodItems(true);
+
         // Updated Tofu FoodItem
         FoodItem changedTofu = itemStorage.getFoodItemByCode("TOFUBURG");
-        // Updated Tofu stock
-        int changedTofuStock = itemStorage.getFoodItemStock("TOFUBURG");
 
         // initialTofu !=  changedTofu
         assertNotEquals(initialTofu, changedTofu);
         // In particular, their calories are different
         assertNotEquals(initialTofu.getCaloriesPerUnit(), changedTofu.getCaloriesPerUnit());
-        // initialTofu stock != changedTofuStock
-        assertNotEquals(initialTofuStock, changedTofuStock);
+    }
 
+
+    @Test
+    void uploadAndIgnoreModifiedFoodItemsInStorage() {
+        // Checks if duplicates of food items are ignored
+        // Tofu calories not altered
+
+        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
+        DAOFactory.resetInstances();
+        try {
+            UploadHandler.parseFoodItems(source1);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
+        UploadHandler.uploadFoodItems(false);
+
+        // Tofu FoodItem before attributes are altered
+        FoodItem initialTofu = itemStorage.getFoodItemByCode("TOFUBURG");
+
+        // Uploads second XML file with altered tofu calories
+        try {
+            UploadHandler.parseFoodItems(source2);
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+        // Upload XML and keep storage FoodItem value (overwrite = false)
+        UploadHandler.uploadFoodItems(false);
+
+        // (Not) Updated Tofu FoodItem
+        FoodItem changedTofu = itemStorage.getFoodItemByCode("TOFUBURG");
+
+        // initialTofu ==  changedTofu
+        assertEquals(initialTofu, changedTofu);
+        // In particular, their calories are identical
+        assertEquals(initialTofu.getCaloriesPerUnit(), changedTofu.getCaloriesPerUnit());
     }
 }
