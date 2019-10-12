@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -46,9 +47,9 @@ public class FoodItemStorageController {
     private Text statusText;
 
     @FXML
-    private Button deleteSelected, importFoodItemsButton;
+    private Button deleteSelected, confirmChangesButton, importFoodItemsButton;
 
-    @FXML private VBox rightPanelBox;
+    @FXML private VBox editItemVBox, rightPanelBox;
 
     @FXML private RecipeView recipeView;
 
@@ -101,6 +102,16 @@ public class FoodItemStorageController {
         updateTable();
 
         recipeView.setParent(this);
+
+        setEditComponentsVisibility(false);
+    }
+
+    private void setEditComponentsVisibility(boolean visible) {
+        editItemVBox.setVisible(visible);
+        recipeView.setVisible(visible);
+        if (!visible) {
+            codeLabel.setText("EDITING: Unselected");
+        }
     }
 
     public void setOverwrite(boolean overwrite) {
@@ -227,11 +238,15 @@ public class FoodItemStorageController {
             if(action.get() == ButtonType.OK) {
                 //FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
                 foodStorage.removeFoodItem(selectedItemD.getCode());
+                if (selectedItemD.equals(selectedItem)) {
+                    setEditComponentsVisibility(false);
+                }
                 selectedItem = null;
                 updateTable();
             }
 
         }
+
 
     }
 
@@ -239,6 +254,8 @@ public class FoodItemStorageController {
      * loads the values of selected item into the edit display ready to be edited
      */
     public void editSelectedItem() {
+
+        setEditComponentsVisibility(true);
 
         selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
