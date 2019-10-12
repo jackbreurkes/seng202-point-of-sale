@@ -91,7 +91,7 @@ public class FoodItemStorageController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    importFile(actionEvent);
+                    importFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -122,7 +122,7 @@ public class FoodItemStorageController {
      * Opens file chooser and then imports file if a file of the correct type is selected
      * also runs error control on file type
      */
-    public void importFile(javafx.event.ActionEvent event) throws IOException {
+    public void importFile() throws IOException {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
 
@@ -167,7 +167,7 @@ public class FoodItemStorageController {
     }
 
 
-    public void popUpImportChanges() throws IOException
+    private void popUpImportChanges() throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
 
@@ -232,7 +232,7 @@ public class FoodItemStorageController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(null);
-            alert.setContentText("Click OK to confirm data deletion");
+            alert.setContentText("are you sure you want to delete " + selectedItemD.getCode() + "? This will also remove it from any recipes it is part of.");
             Optional<ButtonType> action = alert.showAndWait();
 
             if(action.get() == ButtonType.OK) {
@@ -278,7 +278,7 @@ public class FoodItemStorageController {
     }
 
     /**
-     * confirms and saves changes made to item in the GUI
+     * confirms and saves changes made to the selected item in the GUI
      */
     public void confirmChanges() {
         if (selectedItem == null) {
@@ -304,20 +304,6 @@ public class FoodItemStorageController {
             updateTable();
             statusText.setText(editedItem.getCode() + " updated successfully.");
         }
-    }
-
-    public void updateSelectedItemRecipe(Recipe recipe) {
-        if (selectedItem == null) {
-            statusText.setText("No item selected.");
-            return;
-        }
-
-        try {
-            selectedItem.getModelFoodItem().setRecipe(recipe);
-        } catch (IllegalArgumentException e) {
-            statusText.setText("an item's recipe cannot contain itself.");
-        }
-        foodStorage.updateFoodItem(selectedItem.getModelFoodItem());
     }
 
     /**

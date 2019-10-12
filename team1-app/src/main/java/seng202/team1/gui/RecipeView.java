@@ -80,8 +80,7 @@ public class RecipeView extends VBox {
     }
 
     public Recipe getRecipe() {
-        Recipe newRecipe = model.generateRecipe(1);
-        return newRecipe;
+        return model.generateRecipe(1);
     }
 
     public void addSelectedItemInParent() {
@@ -99,7 +98,7 @@ public class RecipeView extends VBox {
     }
 
     protected void removeIngredient(FoodItem ingredient) {
-        model.removeIngredient(ingredient);
+        model.removeIngredient(ingredient.getCode());
         refreshIngredientList();
     }
 

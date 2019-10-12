@@ -81,36 +81,52 @@ public class RecipeBuilder {
     }
 
     /**
-     * removes an ingredient from the Set of ingredients.
-     * @param ingredient the FoodItem to remove from the ingredients Set
+     * removes the ingredient with the given code from the Set of optionally addable ingredients.
+     * @param ingredientCode the code of the FoodItem to remove from the addableIngredients Set
      */
-    public void removeIngredient(FoodItem ingredient) {
-        ingredients.remove(ingredient);
-        ingredientAmounts.remove(ingredient.getCode());
+    public void removeIngredient(String ingredientCode) {
+        removeIngredientFromSet(ingredientCode, ingredients);
     }
 
     /**
-     * removes an ingredient from the Set of optionally addable ingredients.
-     * @param ingredient the FoodItem to remove from the addableIngredients Set
+     * removes the ingredient with the given code from the Set of optionally addable ingredients.
+     * @param ingredientCode the code of the FoodItem to remove from the addableIngredients Set
      */
-    public void removeAddableIngredient(FoodItem ingredient) {
-        addableIngredients.remove(ingredient);
-        ingredientAmounts.remove(ingredient.getCode());
+    public void removeAddableIngredient(String ingredientCode) {
+        removeIngredientFromSet(ingredientCode, addableIngredients);
+    }
+
+    /**
+     * removes the first occurrence of a FoodItem with the given code in the given set.
+     * @param itemCode the code of the FoodItem to remove
+     * @param set the Set of FoodItems to remove the FoodItem from
+     */
+    private void removeIngredientFromSet(String itemCode, Set<FoodItem> set) {
+        Iterator<FoodItem> ingredientsIter = set.iterator();
+        while (ingredientsIter.hasNext()) {
+            FoodItem ingredient = ingredientsIter.next();
+            if (ingredient.getCode().equals(itemCode)) {
+                ingredientAmounts.remove(ingredient.getCode());
+                ingredientsIter.remove();
+                return;
+            }
+        }
+        throw new InvalidDataCodeException("given code not found");
     }
 
     /**
      * updates the amount of a FoodItem to use in the recipe if it is in the recipe.
-     * @param ingredient the FoodItem to update the amount of
+     * @param ingredientCode the code of the FoodItem to update the amount of
      * @param amount the new amount to use
      */
-    public void updateIngredientAmount(FoodItem ingredient, int amount) {
-        if (!ingredientAmounts.containsKey(ingredient.getCode())) {
+    public void updateIngredientAmount(String ingredientCode, int amount) {
+        if (!ingredientAmounts.containsKey(ingredientCode)) {
             throw new InvalidDataCodeException("ingredient is not in the recipe");
         }
         if (amount <= 0) {
             throw new IllegalArgumentException("cannot have a non-positive amount of an ingredient");
         }
-        ingredientAmounts.put(ingredient.getCode(), amount);
+        ingredientAmounts.put(ingredientCode, amount);
     }
 
     /**
@@ -129,7 +145,6 @@ public class RecipeBuilder {
     /**
      * returns a read only version of the builder's ingredient set.
      * @return an unmodifiable set generated from the ingredients set
-     * TODO how to clearly mark these as returning read only??
      */
     public Set<FoodItem> getIngredients() {
         return Collections.unmodifiableSet(ingredients);
