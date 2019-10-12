@@ -12,15 +12,15 @@ public class SampleApplication extends Application {
 
 
     /**
-     * Runs automatically to start primary state (import.fxml)
+     * Runs automatically to start primary state
      * @param primaryStage is the stage it will call
      * @throws IOException exception for any IO errors
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("editData.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("foodItemStorage.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("order.fxml"));
-        primaryStage.setTitle("ROSEMARY | Import a file");
+        primaryStage.setTitle("ROSEMARY | Food Item Storage");
         Scene start = new Scene(root);
         start.getStylesheets().add("stylesheets/default.css");
         primaryStage.setScene(start);

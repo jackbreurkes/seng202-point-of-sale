@@ -103,19 +103,10 @@ public class OrderController {
     /**
      * When this methods is called, it will change the scene to datatype controller view
      */
-    public void changeSceneToImport(javafx.event.ActionEvent event) throws IOException
+    public void changeSceneToFoodItemStorage(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "import.fxml", "ROSEMARY | Import Screen");
-    }
-
-    /**
-     * When this methods is called, it will change the scene to datatype controller view
-     */
-    public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
-    {
-        SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "editData.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "foodItemStorage.fxml", "ROSEMARY | Food Item Storage");
     }
 
     /**
@@ -124,7 +115,7 @@ public class OrderController {
     public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Order Analytics");
     }
 
 

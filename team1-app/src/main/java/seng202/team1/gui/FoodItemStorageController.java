@@ -27,7 +27,7 @@ import java.util.Optional;
 /**
  * controller for the edit data screen.
  */
-public class EditDataController {
+public class FoodItemStorageController {
 
 
     @FXML
@@ -304,21 +304,6 @@ public class EditDataController {
     }
 
     /**
-     * Changes scene back to import with table
-     */
-    private void changeSceneToImport(javafx.event.ActionEvent event) throws IOException {
-        SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "import.fxml", "ROSEMARY | Import Screen");
-    }
-
-    /**
-     * goes back to the import table screen called by the back button
-     */
-    public void goBack(javafx.event.ActionEvent event) throws IOException {
-        changeSceneToImport(event);
-    }
-
-    /**
      * When this methods is called, it will change the scene to datatype controller view
      */
     public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
@@ -333,7 +318,7 @@ public class EditDataController {
     public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Order Analytics");
     }
 
 }
