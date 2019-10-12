@@ -30,10 +30,6 @@ public class UploadHandler {
      */
     private static Map<String, FoodItem> foodItemsUploaded;
 
-
-
-
-
     /**
      * Static function that calls methods from all the necessary
      * methods from FoodItemHandler to upload a food items XML file.
@@ -49,25 +45,15 @@ public class UploadHandler {
             for (FoodItem foodItem: foodItemsUploaded.values()) {
                 String code = foodItem.getCode();
                 FoodItem storageFoodItem = itemStorage.getFoodItemByCode(code);
-                // This checks if foodItem already in database or nah
                 if (storageFoodItem == null) {
                     itemStorage.addFoodItem(foodItem, 1);
                 } else {
-//                    System.out.println("IN STORAGE: " + storageFoodItem);
-//                    System.out.println("COMING: " + foodItem);
-
-                    //findDifferences(storageFoodItem, foodItem);
-
-                    // Find differences in storage food item
-
                     itemStorage.updateFoodItem(foodItem);
                     itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
                 }
             }
         }
     }
-
-
 
     public static void parseFoodItems(String foodItemFile) throws IOException, SAXException {
         if (checkFileOK(foodItemFile)) {
@@ -85,19 +71,11 @@ public class UploadHandler {
             FoodItem storageFoodItem = itemStorage.getFoodItemByCode(code);
             // food item in storage
             if (storageFoodItem != null) {
-                System.out.println("------- FOOD ITEM " + foodItem.toString());
-                System.out.println("STORAGE FOOD ITEM " + storageFoodItem.toString());
                 if (foodItem.toString().compareTo(storageFoodItem.toString()) != 0) {
-                    System.out.println("not identical");
                     return true;
-
-                // food item in storage has different values
-                } else {
-                    System.out.println("identical");
                 }
             }
         }
-        // food item not in storage
         return false;
     }
 
@@ -109,16 +87,13 @@ public class UploadHandler {
 
             if (overwrite == false) {
                 if (storageFoodItem == null) {
-                    itemStorage.addFoodItem(foodItem, 1);
-                } else {
-                    itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
+                    itemStorage.addFoodItem(foodItem, 0);
                 }
             } else {
                 if (storageFoodItem == null) {
-                    itemStorage.addFoodItem(foodItem, 1);
+                    itemStorage.addFoodItem(foodItem, 0);
                 } else {
                     itemStorage.updateFoodItem(foodItem);
-                    itemStorage.setFoodItemStock(code, itemStorage.getFoodItemStock(code) + 1);
                 }
 
             }
@@ -145,21 +120,21 @@ public class UploadHandler {
     public static void main(String args[]) throws IOException, SAXException {
         FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
         DAOFactory.resetInstances();
-        //UploadHandler.uploadFoodItems("resources/data/FoodItem2.xml");
-        UploadHandler.parseFoodItems("resources/data/FoodItem2.xml");
-        Boolean duplicateFoodItem = checkModifiedFoodItem();
-        UploadHandler.uploadFoodItems(false);
-
-        for (FoodItem foo: itemStorage.getAllFoodItems()) {
-            System.out.println(foo);
-        }
-
-        UploadHandler.parseFoodItems("resources/data/FoodItem3.xml");
-        duplicateFoodItem = checkModifiedFoodItem();
-        UploadHandler.uploadFoodItems(true);
-
-        for (FoodItem foo: itemStorage.getAllFoodItems()) {
-            System.out.println(foo);
-        }
+//        //UploadHandler.uploadFoodItems("resources/data/FoodItem2.xml");
+//        UploadHandler.parseFoodItems("resources/data/FoodItem2.xml");
+//        Boolean duplicateFoodItem = checkModifiedFoodItem();
+//        UploadHandler.uploadFoodItems(false);
+//
+//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
+//            System.out.println(foo);
+//        }
+//
+//        UploadHandler.parseFoodItems("resources/data/FoodItem3.xml");
+//        duplicateFoodItem = checkModifiedFoodItem();
+//        UploadHandler.uploadFoodItems(true);
+//
+//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
+//            System.out.println(foo);
+//        }
     }
 }
