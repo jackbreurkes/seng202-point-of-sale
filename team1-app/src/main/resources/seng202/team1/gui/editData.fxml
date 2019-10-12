@@ -48,15 +48,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Import Data Screen">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button disable="true" mnemonicParsing="false" text="Edit Data Screen">
+            <Button disable="true" mnemonicParsing="false" text="Food Items">
                <font>
                   <Font size="20.0" />
                </font>
@@ -92,7 +84,6 @@
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
@@ -177,14 +168,6 @@
                         </CheckBox>
                      </children>
                   </AnchorPane>
-                  <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
                   <Label text="Stock count:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
@@ -197,6 +180,30 @@
                   </TextField>
                </children>
             </GridPane>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="importFoodItemsButton" mnemonicParsing="false" onAction="#confirmChanges" text="Import XML">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Region prefHeight="39.0" prefWidth="40.0" />
+                  <Button fx:id="confirmChangesButton" mnemonicParsing="false" onAction="#confirmChanges" text="Confirm Changes">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox fx:id="rightPanelBox" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">

@@ -18,7 +18,7 @@ public class SampleApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("import.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("editData.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("order.fxml"));
         primaryStage.setTitle("ROSEMARY | Import a file");
         Scene start = new Scene(root);

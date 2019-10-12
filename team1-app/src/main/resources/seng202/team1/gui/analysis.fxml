@@ -35,12 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" onAction="#changeSceneToImportData" text="Import Data Screen">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#changeSceneToEditData" text="Edit Data Screen">
+            <Button mnemonicParsing="false" onAction="#changeSceneToEditData" text="Food Items">
                <font>
                   <Font size="20.0" />
                </font>

@@ -33,7 +33,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></ComboBox>
-             <Button fx:id="importButton" alignment="CENTER" layoutX="271.0" layoutY="14.0" mnemonicParsing="false" onAction="#importFile" text="import from file">
+             <Button fx:id="importButton" alignment="CENTER" layoutX="271.0" layoutY="14.0" mnemonicParsing="false" text="import from file">
                <font>
                   <Font size="20.0" />
                </font>

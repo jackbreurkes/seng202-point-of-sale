@@ -57,9 +57,9 @@ public class ImportController {
         dataTypeComboBox.setVisible(false); // hide this combobox from users for deliverable 2
     }
 
-    public void setOverwrite(boolean overwrite) {
-        this.overwrite = overwrite;
-    }
+//    public void setOverwrite(boolean overwrite) {
+//        this.overwrite = overwrite;
+//    }
 
     /**
      * Update table with food item data
@@ -82,57 +82,57 @@ public class ImportController {
 
     }
 
-    /**
-     * Opens file chooser and then imports file if a file of the correct type is selected
-     * also runs error control on file type
-     */
-    public void importFile(javafx.event.ActionEvent event) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
-
-        if (selectedFile != null) {
-            String fileName = selectedFile.getName();
-            String fileExtension = "";
-            int i = fileName.lastIndexOf('.');
-            if (i >= 0) {
-                fileExtension = fileName.substring(i + 1);
-            }
-            if (fileExtension.equals("xml")) {
-                if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
-                    try {
-                        // Check if duplicates exist
-                        UploadHandler.parseFoodItems(selectedFile.getPath());
-                        boolean duplicateFoodItem = UploadHandler.checkModifiedFoodItem();
-                        if (!duplicateFoodItem) {
-                            UploadHandler.uploadFoodItems(false);
-                        } else {
-                            popUpImportChanges();
-//                            UploadHandler.uploadFoodItems(foodItems, overwrite);
-                            if (!overwrite) {
-                                UploadHandler.uploadFoodItems(false);
-                            } else {
-                                UploadHandler.uploadFoodItems(true);
-                            }
-                        }
-
-                    } catch (SAXException e) {
-                        statusText.setText("An error has occured while parsing: " + e.getMessage());
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        statusText.setText("An IO exception occured: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                    updateTable();
-                } else {
-                    statusText.setText("No data type selected.");
-                }
-            } else {
-                statusText.setText("Incorrect file type.");
-            }
-        } else {
-            statusText.setText("No file selected.");
-        }
-    }
+//    /**
+//     * Opens file chooser and then imports file if a file of the correct type is selected
+//     * also runs error control on file type
+//     */
+//    public void importFile(javafx.event.ActionEvent event) throws IOException {
+//        FileChooser fileChooser = new FileChooser();
+//        File selectedFile = fileChooser.showOpenDialog(null);
+//
+//        if (selectedFile != null) {
+//            String fileName = selectedFile.getName();
+//            String fileExtension = "";
+//            int i = fileName.lastIndexOf('.');
+//            if (i >= 0) {
+//                fileExtension = fileName.substring(i + 1);
+//            }
+//            if (fileExtension.equals("xml")) {
+//                if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
+//                    try {
+//                        // Check if duplicates exist
+//                        UploadHandler.parseFoodItems(selectedFile.getPath());
+//                        boolean duplicateFoodItem = UploadHandler.checkModifiedFoodItem();
+//                        if (!duplicateFoodItem) {
+//                            UploadHandler.uploadFoodItems(false);
+//                        } else {
+//                            popUpImportChanges();
+////                            UploadHandler.uploadFoodItems(foodItems, overwrite);
+//                            if (!overwrite) {
+//                                UploadHandler.uploadFoodItems(false);
+//                            } else {
+//                                UploadHandler.uploadFoodItems(true);
+//                            }
+//                        }
+//
+//                    } catch (SAXException e) {
+//                        statusText.setText("An error has occured while parsing: " + e.getMessage());
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        statusText.setText("An IO exception occured: " + e.getMessage());
+//                        e.printStackTrace();
+//                    }
+//                    updateTable();
+//                } else {
+//                    statusText.setText("No data type selected.");
+//                }
+//            } else {
+//                statusText.setText("Incorrect file type.");
+//            }
+//        } else {
+//            statusText.setText("No file selected.");
+//        }
+//    }
 
     /**
      * When this methods is called, it will change the scene to datatype controller view
@@ -161,20 +161,20 @@ public class ImportController {
         sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
     }
 
-    public void popUpImportChanges() throws IOException
-    {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
-
-        Parent newParent = fxmlLoader.load();
-
-        ImportChangesController controller = fxmlLoader.getController();
-        controller.setImportController(this);
-
-        Scene scene = new Scene(newParent);
-        Stage stage = new Stage();
-        stage.setTitle("Import Changes");
-        stage.setScene(scene);
-        stage.showAndWait();
-    }
+//    public void popUpImportChanges() throws IOException
+//    {
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
+//
+//        Parent newParent = fxmlLoader.load();
+//
+//        ImportChangesController controller = fxmlLoader.getController();
+//        controller.setImportController(this);
+//
+//        Scene scene = new Scene(newParent);
+//        Stage stage = new Stage();
+//        stage.setTitle("Import Changes");
+//        stage.setScene(scene);
+//        stage.showAndWait();
+//    }
 
 }

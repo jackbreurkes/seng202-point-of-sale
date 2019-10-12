@@ -1,16 +1,26 @@
 package seng202.team1.gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.joda.money.BigMoney;
+import org.xml.sax.SAXException;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.DAOFactory;
+import seng202.team1.data.UploadHandler;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Recipe;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -36,7 +46,7 @@ public class EditDataController {
     private Text statusText;
 
     @FXML
-    private Button deleteSelected;
+    private Button deleteSelected, importFoodItemsButton;
 
     @FXML private VBox rightPanelBox;
 
@@ -47,6 +57,7 @@ public class EditDataController {
 
     private FoodItemDisplay selectedItem;
     private FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
+    private boolean overwrite = false;
 
     /**
      * runs automatically when the window is created
@@ -75,10 +86,90 @@ public class EditDataController {
             return row;
         });
 
+        importFoodItemsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    importFile(actionEvent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         foodItemTable.getColumns().addAll(itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories);
         updateTable();
 
         recipeView.setParent(this);
+    }
+
+    public void setOverwrite(boolean overwrite) {
+        this.overwrite = overwrite;
+    }
+
+    /**
+     * Opens file chooser and then imports file if a file of the correct type is selected
+     * also runs error control on file type
+     */
+    public void importFile(javafx.event.ActionEvent event) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            String fileName = selectedFile.getName();
+            String fileExtension = "";
+            int i = fileName.lastIndexOf('.');
+            if (i >= 0) {
+                fileExtension = fileName.substring(i + 1);
+            }
+            if (fileExtension.equals("xml")) {
+                try {
+                    // Check if duplicates exist
+                    UploadHandler.parseFoodItems(selectedFile.getPath());
+                    boolean duplicateFoodItem = UploadHandler.checkModifiedFoodItem();
+                    if (!duplicateFoodItem) {
+                        UploadHandler.uploadFoodItems(false);
+                    } else {
+                        popUpImportChanges();
+//                            UploadHandler.uploadFoodItems(foodItems, overwrite);
+                        if (!overwrite) {
+                            UploadHandler.uploadFoodItems(false);
+                        } else {
+                            UploadHandler.uploadFoodItems(true);
+                        }
+                    }
+
+                } catch (SAXException e) {
+                    statusText.setText("An error has occured while parsing: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    statusText.setText("An IO exception occured: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                updateTable();
+            } else {
+                statusText.setText("Incorrect file type.");
+            }
+        } else {
+            statusText.setText("No file selected.");
+        }
+    }
+
+
+    public void popUpImportChanges() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
+
+        Parent newParent = fxmlLoader.load();
+
+        ImportChangesController controller = fxmlLoader.getController();
+        controller.setImportController(this);
+
+        Scene scene = new Scene(newParent);
+        Stage stage = new Stage();
+        stage.setTitle("Import Changes");
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     /**
