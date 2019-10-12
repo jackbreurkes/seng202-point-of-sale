@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
@@ -17,8 +18,7 @@ import java.io.IOException;
  */
 public class MenuItemDisplay extends VBox {
 
-    @FXML private Image itemImage;
-    @FXML private Label itemName;
+    @FXML private Label itemName, itemCost, isVegetarian, isVegan, isGlutenFree, stockCount;
     @FXML private Button addToOrder;
 
     private FoodItem model;
@@ -48,7 +48,24 @@ public class MenuItemDisplay extends VBox {
      */
     public void initialize() {
         itemName.setText(model.getName());
+        itemCost.setText(model.getCost().toString());
+        isVegetarian.setText("vegetarian: " + boolToNaturalLanguage(model.getIsVegetarian()));
+        isVegan.setText("vegan: " + boolToNaturalLanguage(model.getIsVegan()));
+        isGlutenFree.setText("gluten free: " + boolToNaturalLanguage(model.getIsGlutenFree()));
         addToOrder.setVisible(false);
+    }
+
+    /**
+     * converts a boolean value to a human-friendly string ("yes" or "no")
+     * @param bool the boolean to convert to a String
+     * @return "yes" if bool is true, "no" otherwise
+     */
+    private String boolToNaturalLanguage(boolean bool) {
+        if (bool) {
+            return "yes";
+        } else {
+            return "no";
+        }
     }
 
     /**
