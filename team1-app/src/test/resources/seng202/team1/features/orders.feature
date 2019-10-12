@@ -32,4 +32,3 @@ Feature: User manages orders within the app
    And the order has been submitted
    And the order has been completed
    When the customer asks for a refund, the order is refunded
-
