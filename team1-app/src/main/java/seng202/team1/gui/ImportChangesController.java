@@ -18,7 +18,7 @@ public class ImportChangesController {
     private Button ignoreButton;
 
     private boolean overwrite;
-    private ImportController importController;
+    private EditDataController importController;
 
     private static final String DESCRIPTION =
             "Uploaded file contains food item that is " +
@@ -38,7 +38,7 @@ public class ImportChangesController {
     /**
      * runs automatically when the window is created
      */
-    public void initialize(ImportController importController) {
+    public void initialize(EditDataController importController) {
         this.importController = importController;
         descriptionLabel.setText(DESCRIPTION);
 
@@ -53,7 +53,7 @@ public class ImportChangesController {
         return overwrite;
     }
 
-    public void setImportController(ImportController importController) {
+    public void setImportController(EditDataController importController) {
         this.importController = importController;
     }
 }

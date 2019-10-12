@@ -34,15 +34,7 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#changeSceneToImport" text="Import Data Screen">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#changeSceneToEditData" text="Edit Data Screen">
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#changeSceneToEditData" text="Food Items">
                <font>
                   <Font size="20.0" />
                </font>
