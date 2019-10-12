@@ -31,7 +31,7 @@ public class OrderController {
      */
     public void initialize() {
         Menu testMenu = new Menu();
-        testMenu.setMenuName("Test menu");
+        testMenu.setMenuName("Menu");
         for (FoodItem item : DAOFactory.getFoodItemDAO().getAllFoodItems()) {
             testMenu.addItem(item);
         }
