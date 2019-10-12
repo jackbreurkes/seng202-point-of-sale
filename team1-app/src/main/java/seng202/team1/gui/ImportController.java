@@ -1,19 +1,25 @@
 package seng202.team1.gui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.UploadHandler;
+import seng202.team1.model.FoodItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class ImportController {
 
@@ -26,6 +32,8 @@ public class ImportController {
 
     TableColumn itemCode, itemName, itemCost, unitType, stockLevel, isVegetarian, isVegan, isGlutenFree, calories;
     ObservableFoodItems items;
+
+    private boolean overwrite = false;
 
     /**
      * runs automatically when the window is created
@@ -47,6 +55,10 @@ public class ImportController {
         dataTypeComboBox.getItems().addAll("Suppliers", "Food Items");
         dataTypeComboBox.setValue("Food Items");
         dataTypeComboBox.setVisible(false); // hide this combobox from users for deliverable 2
+    }
+
+    public void setOverwrite(boolean overwrite) {
+        this.overwrite = overwrite;
     }
 
     /**
@@ -89,7 +101,20 @@ public class ImportController {
                 if (dataTypeComboBox.getValue().toString().equals("Food Items")) {
                     try {
                         // Check if duplicates exist
-                        UploadHandler.uploadFoodItems(selectedFile.getPath());
+                        UploadHandler.parseFoodItems(selectedFile.getPath());
+                        boolean duplicateFoodItem = UploadHandler.checkModifiedFoodItem();
+                        if (!duplicateFoodItem) {
+                            UploadHandler.uploadFoodItems(false);
+                        } else {
+                            popUpImportChanges();
+//                            UploadHandler.uploadFoodItems(foodItems, overwrite);
+                            if (!overwrite) {
+                                UploadHandler.uploadFoodItems(false);
+                            } else {
+                                UploadHandler.uploadFoodItems(true);
+                            }
+                        }
+
                     } catch (SAXException e) {
                         statusText.setText("An error has occured while parsing: " + e.getMessage());
                         e.printStackTrace();
@@ -97,9 +122,6 @@ public class ImportController {
                         statusText.setText("An IO exception occured: " + e.getMessage());
                         e.printStackTrace();
                     }
-                    updateTable();
-                } else if (dataTypeComboBox.getValue().toString().equals("Suppliers")) {
-                    UploadHandler.uploadSuppliers(selectedFile.getPath());
                     updateTable();
                 } else {
                     statusText.setText("No data type selected.");
@@ -139,5 +161,20 @@ public class ImportController {
         sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
     }
 
+    public void popUpImportChanges() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
+
+        Parent newParent = fxmlLoader.load();
+
+        ImportChangesController controller = fxmlLoader.getController();
+        controller.setImportController(this);
+
+        Scene scene = new Scene(newParent);
+        Stage stage = new Stage();
+        stage.setTitle("Import Changes");
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
 
 }
