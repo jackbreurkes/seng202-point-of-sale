@@ -155,8 +155,8 @@ class KitchenTest {
         Recipe testIngredientRecipe = builder.generateRecipe(10);
         testIngredient.setRecipe(testIngredientRecipe);
         storage.updateFoodItem(testIngredient);
+        storage.setFoodItemStock(testItem.getCode(), 0);
         storage.setFoodItemStock(testIngredient.getCode(), 0);
-        storage.setFoodItemStock(testIngredientIngredient.getCode(), 0);
         storage.setFoodItemStock(testIngredientIngredient.getCode(), 1);
 
 
@@ -196,8 +196,17 @@ class KitchenTest {
         builderB.addIngredient(a, 1);
         b.setRecipe(builderB.generateRecipe(1));
 
+        storage.addFoodItem(a, 0);
+        storage.updateFoodItem(b);
+        storage.setFoodItemStock(b.getCode(), 0);
+
         FoodItem aInstance = kitchen.createFoodItem(a); // should not throw a StackOverflowError
+        FoodItem bInstance = kitchen.createFoodItem(b); // should not throw a StackOverflowError
+
         assertSame(a, aInstance);
+        assertSame(b, bInstance);
+        assertEquals(0, storage.getFoodItemStock(a.getCode()));
+        assertEquals(0, storage.getFoodItemStock(b.getCode()));
     }
 
 }

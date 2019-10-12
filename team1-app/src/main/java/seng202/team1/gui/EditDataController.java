@@ -27,22 +27,10 @@ public class EditDataController {
     private Label codeLabel;
 
     @FXML
-    private TextField newName;
+    private TextField newName, newCost, newCalories, newStockCount;
 
     @FXML
-    private TextField newCost;
-
-    @FXML
-    private TextField newCalories;
-
-    @FXML
-    private CheckBox vegetarianCheckBox;
-
-    @FXML
-    private CheckBox veganCheckBox;
-
-    @FXML
-    private CheckBox glutenFreeCheckBox;
+    private CheckBox vegetarianCheckBox, veganCheckBox, glutenFreeCheckBox;
 
     @FXML
     private Text statusText;
@@ -175,6 +163,7 @@ public class EditDataController {
         newName.setText(selectedItem.getName());
         newCost.setText(selectedItem.getCost().toString());
         newCalories.setText(Double.toString(selectedItem.getCaloriesPerUnit()));
+        newStockCount.setText(Integer.toString(foodStorage.getFoodItemStock(selectedItem.getCode())));
         vegetarianCheckBox.setSelected(selectedItem.getIsVegetarian());
         veganCheckBox.setSelected(selectedItem.getIsVegan());
         glutenFreeCheckBox.setSelected(selectedItem.getIsGlutenFree());
@@ -193,11 +182,13 @@ public class EditDataController {
                 editedItem.setCost(BigMoney.parse(newCost.getText()));
                 editedItem.setCaloriesPerUnit(Double.valueOf(newCalories.getText()));
                 editedItem.setIsVegetarian(vegetarianCheckBox.isSelected());
-                // for some reason the vegan checkbox doesnt work gets null pointer exception
-                // even though code is the same as the others
+                System.out.println(newStockCount.getText());
+                foodStorage.setFoodItemStock(selectedItem.getCode(), Integer.parseInt(newStockCount.getText()));
                  editedItem.setIsVegan(veganCheckBox.isSelected());
                 editedItem.setIsGlutenFree(glutenFreeCheckBox.isSelected());
+                editedItem.setRecipe(recipeView.getRecipe());
             } catch (Exception e) {
+                //e.printStackTrace();
                 statusText.setText("error setting values: " + e.getMessage());
                 return;
             }

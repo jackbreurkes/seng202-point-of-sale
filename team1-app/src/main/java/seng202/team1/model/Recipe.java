@@ -54,16 +54,18 @@ public class Recipe {
             throw new IllegalArgumentException("a FoodItem cannot be contained in both ingredients and addableIngredients.");
         }
 
+        Set<FoodItem> ingredientsWithoutRecipes = new HashSet<>();
         for (FoodItem ingredient : ingredients) { // used to eliminate risk of StackOverflowErrors with circular recipe dependencies
-            ingredient.setRecipe(null);
+            ingredientsWithoutRecipes.add(ingredient.cloneWithoutRecipe());
         }
+        Set<FoodItem> addableIngredientsWithoutRecipes = new HashSet<>();
         for (FoodItem addableIngredient : addableIngredients) {
-            addableIngredient.setRecipe(null);
+            addableIngredientsWithoutRecipes.add(addableIngredient.cloneWithoutRecipe());
         }
 
         this.amountCreated = amountCreated;
-        this.ingredients = ingredients;
-        this.addableIngredients = addableIngredients;
+        this.ingredients = ingredientsWithoutRecipes;
+        this.addableIngredients = addableIngredientsWithoutRecipes;
         this.ingredientAmounts = ingredientAmounts;
     }
 
@@ -93,16 +95,18 @@ public class Recipe {
 
     /**
      * Add an addable food item to the recipe during the order
-     * @param ingredient food item from the set of addable ingredients
+     * @param code code of the food item from the set of addable ingredients
      */
-    public void addIngredient(FoodItem ingredient){
-        if (ingredient == null) {
-            throw new NullPointerException("the ingredients cannot be null.");
+    public void addIngredient(String code){
+        if (code == null) {
+            throw new NullPointerException("the code cannot be null.");
         }
         Iterator<FoodItem> itr = addableIngredients.iterator();
         while (itr.hasNext()) {
-            if (itr.next() == ingredient) {
+            FoodItem ingredient = itr.next();
+            if (ingredient.getCode().equals(code)) {
                 ingredients.add(ingredient);
+                addableIngredients.remove(ingredient);
                 return;
             }
         }
