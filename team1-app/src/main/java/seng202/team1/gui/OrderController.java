@@ -12,6 +12,8 @@ import seng202.team1.model.Menu;
 import seng202.team1.model.Order;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * controller class for the order screen.
@@ -19,7 +21,7 @@ import java.io.IOException;
 public class OrderController {
 
     @FXML private Label menuName;
-    @FXML private TilePane menuItems;
+    @FXML private TilePane menuItemsPane;
     @FXML private VBox ordersInfo;
     @FXML private Button cancelOrderButton;
 
@@ -45,13 +47,15 @@ public class OrderController {
     }
 
     /**
-     * displays the items in a menu in the order-able items display.
+     * displays the items in a menu in the order-able items display, sorted in alphabetical order of the item names.
      * @param menu the Menu to display the items of
      */
     private void populateMenuItemsDisplay(Menu menu) {
-        for (FoodItem item : menu.getMenuItems()) {
+        List<FoodItem> menuItems = menu.getMenuItems();
+        menuItems.sort(Comparator.comparing(FoodItem::getName));
+        for (FoodItem item : menuItems) {
             MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
-            menuItems.getChildren().add(itemDisplay);
+            menuItemsPane.getChildren().add(itemDisplay);
         }
     }
 
@@ -78,7 +82,7 @@ public class OrderController {
         CreateOrderDisplay createOrderDisplay = new CreateOrderDisplay(this, new Order());
         ordersInfo.getChildren().add(createOrderDisplay);
 
-        for (Node node : menuItems.getChildren()) {
+        for (Node node : menuItemsPane.getChildren()) {
             MenuItemDisplay display = (MenuItemDisplay)node;
             display.linkToCreateOrderDisplay(createOrderDisplay);
         }
@@ -93,7 +97,7 @@ public class OrderController {
         ordersInfo.getChildren().add(orderProgressDisplay);
         orderProgressDisplay.displaySubmittedOrders();
 
-        for (Node node : menuItems.getChildren()) {
+        for (Node node : menuItemsPane.getChildren()) {
             MenuItemDisplay display = (MenuItemDisplay)node;
             display.unlinkFromOrder();
         }
@@ -103,19 +107,10 @@ public class OrderController {
     /**
      * When this methods is called, it will change the scene to datatype controller view
      */
-    public void changeSceneToImport(javafx.event.ActionEvent event) throws IOException
+    public void changeSceneToFoodItemStorage(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "import.fxml", "ROSEMARY | Import Screen");
-    }
-
-    /**
-     * When this methods is called, it will change the scene to datatype controller view
-     */
-    public void changeSceneToEditData(javafx.event.ActionEvent event) throws IOException
-    {
-        SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "editData.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "foodItemStorage.fxml", "ROSEMARY | Food Item Storage");
     }
 
     /**
@@ -124,7 +119,7 @@ public class OrderController {
     public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Order Analytics");
     }
 
 

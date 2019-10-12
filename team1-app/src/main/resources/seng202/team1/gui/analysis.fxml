@@ -35,7 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button mnemonicParsing="false" onAction="#changeSceneToEditData" text="Food Items">
+            <Button mnemonicParsing="false" onAction="#changeSceneToFoodItemStorage" text="Food Items">
                <font>
                   <Font size="20.0" />
                </font>

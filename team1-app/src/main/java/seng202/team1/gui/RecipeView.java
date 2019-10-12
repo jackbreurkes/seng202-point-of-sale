@@ -22,7 +22,7 @@ public class RecipeView extends VBox {
 
     @FXML private Label addItemErrorMsg;
 
-    private EditDataController parent;
+    private FoodItemStorageController parent;
     private RecipeBuilder model;
 
     public RecipeView() {
@@ -53,7 +53,7 @@ public class RecipeView extends VBox {
         resetIngredientList();
     }
 
-    public void setParent(EditDataController parent) {
+    public void setParent(FoodItemStorageController parent) {
         this.parent = parent;
     }
 

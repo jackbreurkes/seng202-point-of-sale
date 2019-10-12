@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -27,7 +28,7 @@ import java.util.Optional;
 /**
  * controller for the edit data screen.
  */
-public class EditDataController {
+public class FoodItemStorageController {
 
 
     @FXML
@@ -46,9 +47,9 @@ public class EditDataController {
     private Text statusText;
 
     @FXML
-    private Button deleteSelected, importFoodItemsButton;
+    private Button deleteSelected, confirmChangesButton, importFoodItemsButton;
 
-    @FXML private VBox rightPanelBox;
+    @FXML private VBox editItemVBox, rightPanelBox;
 
     @FXML private RecipeView recipeView;
 
@@ -101,6 +102,16 @@ public class EditDataController {
         updateTable();
 
         recipeView.setParent(this);
+
+        setEditComponentsVisibility(false);
+    }
+
+    private void setEditComponentsVisibility(boolean visible) {
+        editItemVBox.setVisible(visible);
+        recipeView.setVisible(visible);
+        if (!visible) {
+            codeLabel.setText("EDITING: Unselected");
+        }
     }
 
     public void setOverwrite(boolean overwrite) {
@@ -227,11 +238,15 @@ public class EditDataController {
             if(action.get() == ButtonType.OK) {
                 //FoodItemDisplay selectedItemD = foodItemTable.getSelectionModel().getSelectedItem();
                 foodStorage.removeFoodItem(selectedItemD.getCode());
+                if (selectedItemD.equals(selectedItem)) {
+                    setEditComponentsVisibility(false);
+                }
                 selectedItem = null;
                 updateTable();
             }
 
         }
+
 
     }
 
@@ -239,6 +254,8 @@ public class EditDataController {
      * loads the values of selected item into the edit display ready to be edited
      */
     public void editSelectedItem() {
+
+        setEditComponentsVisibility(true);
 
         selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -304,21 +321,6 @@ public class EditDataController {
     }
 
     /**
-     * Changes scene back to import with table
-     */
-    private void changeSceneToImport(javafx.event.ActionEvent event) throws IOException {
-        SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "import.fxml", "ROSEMARY | Import Screen");
-    }
-
-    /**
-     * goes back to the import table screen called by the back button
-     */
-    public void goBack(javafx.event.ActionEvent event) throws IOException {
-        changeSceneToImport(event);
-    }
-
-    /**
      * When this methods is called, it will change the scene to datatype controller view
      */
     public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
@@ -333,7 +335,7 @@ public class EditDataController {
     public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
     {
         SceneController sceneChanger = new SceneController();
-        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Edit Data Screen");
+        sceneChanger.changeScene(event, "analysis.fxml", "ROSEMARY | Order Analytics");
     }
 
 }
