@@ -62,6 +62,9 @@ public class CreateOrderDisplay extends VBox {
 
     }
 
+    /**
+     * run automatically when loading fxml.
+     */
     public void initialize() {
         cancelOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override

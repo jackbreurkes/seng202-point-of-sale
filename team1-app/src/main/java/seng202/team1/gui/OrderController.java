@@ -13,6 +13,9 @@ import seng202.team1.model.Order;
 
 import java.io.IOException;
 
+/**
+ * controller class for the order screen.
+ */
 public class OrderController {
 
     @FXML private Label menuName;
@@ -23,6 +26,9 @@ public class OrderController {
     private Menu activeMenu;
     private OrderProgressDisplay orderProgressDisplay;
 
+    /**
+     * called automatically when loading FXML.
+     */
     public void initialize() {
         Menu testMenu = new Menu();
         testMenu.setMenuName("Test menu");
@@ -38,6 +44,10 @@ public class OrderController {
         populateMenuItemsDisplay(activeMenu);
     }
 
+    /**
+     * displays the items in a menu in the order-able items display.
+     * @param menu the Menu to display the items of
+     */
     private void populateMenuItemsDisplay(Menu menu) {
         for (FoodItem item : menu.getMenuItems()) {
             MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
@@ -45,14 +55,23 @@ public class OrderController {
         }
     }
 
+    /**
+     * allows users to create an order.
+     */
     public void startCreatingOrder() {
         showOrderCreationElements();
     }
 
+    /**
+     * stops the create order process.
+     */
     public void stopCreatingOrder() {
         hideOrderCreationElements();
     }
 
+    /**
+     * shows  the javaFX components related to the creation of orders
+     */
     private void showOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName() + " \u2014 creating order");
         ordersInfo.getChildren().clear();
@@ -65,6 +84,9 @@ public class OrderController {
         }
     }
 
+    /**
+     * hides the javaFX components related to the creation of orders
+     */
     private void hideOrderCreationElements() {
         menuName.setText(activeMenu.getMenuName());
         ordersInfo.getChildren().clear();
@@ -76,9 +98,6 @@ public class OrderController {
             display.unlinkFromOrder();
         }
     }
-
-
-
 
 
     /**
