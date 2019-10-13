@@ -17,7 +17,7 @@
 
 <?import seng202.team1.gui.RecipeView?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" prefHeight="900.0" prefWidth="1500.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.FoodItemStorageController">
+<VBox prefHeight="900.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team1.gui.FoodItemStorageController">
    <children>
       <HBox prefWidth="200.0">
          <children>
@@ -43,6 +43,9 @@
                </cursor>
             </Button>
          </children>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
       </HBox>
       <GridPane alignment="TOP_CENTER" hgap="10.0" maxHeight="500.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1500.0" vgap="10.0">
          <columnConstraints>
