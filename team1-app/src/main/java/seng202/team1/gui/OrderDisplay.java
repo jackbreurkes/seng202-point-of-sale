@@ -68,8 +68,8 @@ public class OrderDisplay extends VBox {
             cal.add(Calendar.HOUR_OF_DAY, 13);
         }
 
-        DateFormat format = new SimpleDateFormat("EEE h:mm:ss a");
-        orderId.setText(format.format(cal.getTime()) + " - cost " + model.getCost().toString());
+        DateFormat format = new SimpleDateFormat("E h:mm:ss a");
+        orderId.setText(format.format(cal.getTime()) + " - " + model.getCost().toString());
         secondaryActionButton.setVisible(false);
         OrderDisplay display = this;
 
