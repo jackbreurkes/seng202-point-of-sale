@@ -23,6 +23,9 @@ public class AnalysisController {
     @FXML private VBox graphVbox;
 
 
+    /**
+     * Runs on opening of the window
+     */
     public void initialize() {
         xComboBox.getItems().addAll("Date", "Time", "Day");
         yComboBox.getItems().addAll("Orders");
@@ -30,8 +33,10 @@ public class AnalysisController {
         yComboBox.setValue("Orders");
     }
 
+    /**
+     * plots a graph based on the options chosen from the combo boxes
+     */
     public void plotGraph() {
-
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel(String.valueOf(xComboBox.getValue()));
 
@@ -42,8 +47,13 @@ public class AnalysisController {
 
         XYChart.Series dataSeries = new XYChart.Series();
         dataSeries.setName(String.valueOf(yComboBox.getValue()) + " against " + String.valueOf(xComboBox.getValue()));
-
-        addDataToSeries(dataSeries, String.valueOf(xComboBox.getValue()), String.valueOf(yComboBox.getValue()));
+        if (xComboBox.getValue() == "Date") {
+            addDateDataToSeries(dataSeries);
+        } else if (xComboBox.getValue() == "Time") {
+            addTimeDataToSeries(dataSeries);
+        } else if (xComboBox.getValue() == "Day"){
+            //addDayDataToSeries();
+        }
 
         lineChart.getData().add(dataSeries);
 
@@ -52,7 +62,11 @@ public class AnalysisController {
 
     }
 
-    public void addDataToSeries(XYChart.Series dataSeries, String xValue, String yValue) {
+    /**
+     * Takes a data series ad adds data to plot a graph of orders on each day whe there was at least oe order
+     * @param dataSeries the dataseries initialized in the plot graph method
+     */
+    public void addDateDataToSeries(XYChart.Series dataSeries) {
         JDBCStorage memory = JDBCStorage.getInstance();
         Set<Order> allOrders = memory.getAllOrders();
         ArrayList<Date> counted = new ArrayList<>();
@@ -92,6 +106,36 @@ public class AnalysisController {
         addDataFromSortedList(toBeSorted, dataSeries);
     }
 
+    /**
+     * Takes a data series and populates it with data for a graph showing how may orders were at each hour of the day
+     * @param dataSeries the dataseries initialised in the plot graph method
+     */
+    public void addTimeDataToSeries(XYChart.Series dataSeries) {
+        JDBCStorage memory = JDBCStorage.getInstance();
+        Set<Order> allOrders = memory.getAllOrders();
+
+        int[] ordersEachHour = new int[24];
+        Iterator<Order> iterator = allOrders.iterator();
+
+        while (iterator.hasNext()) {
+            Order order = iterator.next();
+            Date date = order.getLastUpdated();
+            String dateString = date.toString();
+            int hour = Integer.parseInt(dateString.substring(11, 13)) + 13;
+            if (hour >= 24) {
+                hour = hour - 24;
+            }
+            ordersEachHour[hour] += 1;
+        }
+        for (int i = 0; i < 24; i++) {
+            dataSeries.getData().add(new XYChart.Data("" + i, ordersEachHour[i]));
+        }
+    }
+
+    /**
+     * insertion sort on an array of datestrings
+     * @param array and array of date strings to be sorted
+     */
     public static void insertionSort(ArrayList<String> array) {
         for (int i = 1; i < array.size(); i++) {
             String current = array.get(i);
@@ -104,6 +148,12 @@ public class AnalysisController {
         }
     }
 
+    /**
+     * return true if date1 is before date2
+     * @param date1
+     * @param date2
+     * @return boolean true if date1 is before date2
+     */
     public static boolean dateLessThan(String date1, String date2) {
         String[] array1 = date1.split("/");
         String[] array2 = date2.split("/");
@@ -121,6 +171,11 @@ public class AnalysisController {
         return false;
     }
 
+    /**
+     * takes a sorted array of date strings and adds it to the dataseries provided
+     * @param sortedArray a sorted array of date strings returned by the insertion sort method
+     * @param dataSeries the dataseries initialized in plot graph
+     */
     public static void addDataFromSortedList(ArrayList<String> sortedArray, XYChart.Series dataSeries) {
         for (int i = 0; i < sortedArray.size(); i++) {
             String[] array = sortedArray.get(i).split("/");
@@ -129,6 +184,11 @@ public class AnalysisController {
         }
     }
 
+    /**
+     * takes a date and sets the time to be 0 for testing equality of dates.
+     * @param old the old date value before neutralising time
+     * @return result the new date with time neutralised for testing equality of two dates on the same day
+     */
     public Date dateOnly(Date old) {
         long millisInDay = 60 * 60 * 24 * 1000;
         long currentTime = old.getTime();
