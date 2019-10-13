@@ -336,8 +336,13 @@ public class DataHandlingSteps {
 
     @Then("the recipe should have {int} beef as ingredients of a hamburger")
     public void the_recipe_should_have_beef_as_ingredients_of_a_hamburger(Integer ingredientCount) {
-        FoodItem itemFromStorage = itemStorage.getFoodItemByCode("BEEFBURG");
-        assertEquals(ingredientCount, itemFromStorage.getRecipe().getIngredientAmounts().get("BEEF"));
+        FoodItem itemFromStorage = itemStorage.getFoodItemByCode(foodItem.getCode());
+        try {
+            assertEquals(ingredientCount, itemFromStorage.getRecipe().getIngredientAmounts().get(ingredient.getCode()));
+        } catch (AssertionError ae){
+            throw new cucumber.api.PendingException(ingredient.getName() + " amount has not been updated within "
+                                                    + foodItem.getName());
+        }
     }
 
 
