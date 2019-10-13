@@ -43,6 +43,29 @@ public class DataHandlingSteps {
     BigMoney discountedCost;
     BigMoney expectedCostNZD;
 
+    /**
+     * Takes a String that corresponds to a unit, validates it,
+     * and returns a UnitType object of that unit.
+     * @param unitString a unit type in the form of a string
+     * @return a unit type of type UnitType
+     */
+    private UnitType units(String unitString) {
+        UnitType unitType;
+        switch(unitString) {
+            case "g":
+                unitType = UnitType.GRAM;
+                break;
+            case "ml":
+                unitType = UnitType.ML;
+                break;
+            case "c":
+                unitType = UnitType.COUNT;
+                break;
+            default:
+                throw new cucumber.api.PendingException(unitString + " does not correspond to a valid unit type");
+        }
+        return unitType;
+    }
 
     @Given("the user has data from directory {string} to upload")
     public void the_user_has_data_from_directory_to_upload(String expectedDirectory) {
@@ -164,20 +187,7 @@ public class DataHandlingSteps {
 
     @When("user creates a new dish {string} with the code {string} and the unit {string}")
     public void user_adds_a_new_dish_with_the_code_and_the_unit(String name, String code, String unitString) {
-        UnitType unitType = UnitType.GRAM;
-        switch(unitString) {
-            case "g":
-                unitType = UnitType.GRAM;
-                break;
-            case "ml":
-                unitType = UnitType.ML;
-                break;
-            case "c":
-                unitType = UnitType.COUNT;
-                break;
-            default:
-                throw new cucumber.api.PendingException(unitString + " does not correspond to a valid unit type");
-        }
+        UnitType unitType = units(unitString);
         try {
             foodItem = new FoodItem(code, name, unitType);
         } catch (IllegalArgumentException iae) {
@@ -231,55 +241,49 @@ public class DataHandlingSteps {
         }
     }
 
-    @And ("contains a recipe for {string}")
-    public void contains_a_recipe_for(String expectedItemCode) {
+
+
+
+    @And ("uploaded file contains a recipe for {string}")
+    public void uploaded_file_contains_a_recipe_for(String expectedItemCode) {
         foodItem = itemStorage.getFoodItemByCode(expectedItemCode);
         if (foodItem == null) {
             throw new cucumber.api.PendingException("Food item with code " + expectedItemCode + " does not exist in the database");
         }
-    }
-
-    @And("total number of food items in the database is {int}")
-    public void total_number_of_food_items_in_the_database_is(Integer foodItemCountInDatabase) {
-        try {
-            assertEquals(foodItemCountInDatabase, (Integer) itemStorage.getAllFoodItems().size());
-        } catch (AssertionError ae) {
-            throw new cucumber.api.PendingException("Food items in database does not match expected value of " + foodItemCountInDatabase);
+        if (foodItem.getRecipe() == null) {
+            throw new cucumber.api.PendingException("Food item with code " + expectedItemCode + " does not have a recipe in the database");
         }
     }
 
     @When("user manually adds {int} ingredient {string} with the code {string} and the unit {string}")
     public void user_manually_adds_ingredient_with_the_code_and_the_unit(Integer ingredientCount, String ingredientName, String ingredientCode, String ingredientUnit) {
-        UnitType unitType = UnitType.GRAM;
-        switch(ingredientUnit) {
-            case "g":
-                unitType = UnitType.GRAM;
-                break;
-            case "ml":
-                unitType = UnitType.ML;
-                break;
-            case "c":
-                unitType = UnitType.COUNT;
-                break;
-            default:
-                throw new cucumber.api.PendingException(ingredientUnit + " does not correspond to a valid unit type");
-        }
+        UnitType unitType = units(ingredientUnit);
         ingredient = new FoodItem(ingredientCode, ingredientName, unitType);
         RecipeBuilder rb = new RecipeBuilder();
         rb.loadExistingRecipeData(foodItem.getRecipe());
         rb.addIngredient(ingredient, ingredientCount);
         foodItem.setRecipe(rb.generateRecipe(1));
 
-        //FIX
-        itemStorage.addFoodItem(ingredient, 0);
+        itemStorage.updateFoodItem(foodItem);
     }
 
-    @Then("a cucumber should be successfully added as an ingredient to a hamburger")
-    public void a_cucumber_should_be_successfully_added_as_an_ingredient_to_a_hamburger() {
+    @Then("a cucumber should be successfully added as an ingredient to a {string}")
+    public void a_cucumber_should_be_successfully_added_as_an_ingredient_to_a(String expectedFoodItemCode) {
+        boolean ingredientIsInFoodItem = itemStorage.getFoodItemByCode(expectedFoodItemCode).getRecipe().getIngredients().contains(ingredient);
         try {
-            assertEquals(true, foodItem.getRecipe().getIngredients().contains(ingredient));
+            assertEquals(true, ingredientIsInFoodItem);
         } catch (AssertionError ae){
             throw new cucumber.api.PendingException(ingredient + " was not added into " + foodItem + "'s recipe");
+        }
+
+    }
+
+    @Then("a {string} should be added to the database storage")
+    public void a_should_be_added_to_the_database_storage(String expectedIngredientCode) {
+        try {
+            assertEquals(ingredient, itemStorage.getFoodItemByCode(expectedIngredientCode));
+        } catch (AssertionError ae){
+            throw new cucumber.api.PendingException(expectedIngredientCode + " was not added into the database storage");
         }
     }
 

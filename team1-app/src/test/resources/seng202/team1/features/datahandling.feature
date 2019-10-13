@@ -48,14 +48,13 @@ Feature: User handles data using the app
     When user deletes food item with the code "CHEESEBURG"
     Then "CHEESEBURG" should be successfully removed from the database storage
 
+  # Feature not present in current app
   Scenario: Modifying recipe of food item from database storage
     Given XML file from "src/test/resources/xml/TESTXML1WITHRECIPE.xml" is uploaded
-    And contains a recipe for "BEEFBURG"
-    And total number of food items in the database is 7
+    And uploaded file contains a recipe for "BEEFBURG"
     When user manually adds 1 ingredient "Cucumber" with the code "CUCUMBER" and the unit "c"
-    Then a cucumber should be successfully added as an ingredient to a hamburger
-    And total number of food items in the database is 8
-
+    Then a cucumber should be successfully added as an ingredient to a "BEEFBURG"
+    And a "CUCUMBER" should be added to the database storage
 
 
 
