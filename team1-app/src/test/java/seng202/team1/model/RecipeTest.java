@@ -578,4 +578,23 @@ class RecipeTest {
         testRecipe.removeIngredient("9876");
         assertEquals(157, testRecipe.getCalories());
     }
+
+    @Test
+    void testUsingDifferentStringObjectsAsCodes() {
+        FoodItem niceBun = new FoodItem("6969", "niceBun", UnitType.COUNT);
+        Set<FoodItem> ingredients2 = new HashSet<>();
+        ingredients2.add(niceBun);
+
+        Map<String, Integer> ingredientAmounts2 = new HashMap<String, Integer>();
+        ingredientAmounts2.put("6969", 1);
+
+        Recipe testRecipe2 = new Recipe(ingredients2, new HashSet<>(), ingredientAmounts2, 1);
+        testRecipe2.removeIngredient("6969");
+
+        Set<FoodItem> testSet = new HashSet<>();
+        testSet.add(niceBun);
+
+        assertEquals(new HashSet<>(), testRecipe2.getIngredients());
+        assertEquals(testSet, testRecipe2.getAddableIngredients());
+    }
 }

@@ -126,7 +126,7 @@ public class Recipe {
         Iterator<FoodItem> itr = ingredients.iterator();
         while (itr.hasNext()) {
             FoodItem item = itr.next();
-            if (item.getCode() == code) {
+            if (item.getCode().equals(code)) {
                 ingredients.remove(item);
                 addableIngredients.add(item);
                 return;
@@ -144,7 +144,7 @@ public class Recipe {
     public boolean getIsVegetarian() {
         Iterator<FoodItem> itr = ingredients.iterator();
         while (itr.hasNext()) {
-            if (itr.next().getIsVegetarian() == false) {
+            if (!itr.next().getIsVegetarian()) {
                 return false;
             }
         }
@@ -158,7 +158,7 @@ public class Recipe {
     public boolean getIsVegan() {
         Iterator<FoodItem> itr = ingredients.iterator();
         while (itr.hasNext()) {
-            if (itr.next().getIsVegan() == false) {
+            if (!itr.next().getIsVegan()) {
                 return false;
             }
         }
@@ -172,7 +172,7 @@ public class Recipe {
     public boolean getIsGlutenFree() {
         Iterator<FoodItem> itr = ingredients.iterator();
         while (itr.hasNext()) {
-            if (itr.next().getIsGlutenFree() == false) {
+            if (!itr.next().getIsGlutenFree()) {
                 return false;
             }
         }
