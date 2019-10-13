@@ -111,15 +111,11 @@ public class OrderSteps {
     public void the_employee_removes_an_ingredient_from_the_food_item() {
 
         FoodItem foodItem2 = new FoodItem("GLASS", "Cup", UnitType.COUNT);
+        RecipeBuilder builder = new RecipeBuilder();
+        builder.addIngredient(foodItem2, 1);
 
-        Set<FoodItem> ingredients = new HashSet<>();
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        ingredients.add(foodItem2);
-        Map<String, Integer> ingredientAmounts = new HashMap<String, Integer>();
-        ingredientAmounts.put("GLASS", 1);
-
-        foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
-        foodItem.getRecipe().removeIngredient("GLASS");
+        foodItem.setRecipe(builder.generateRecipe(1));
+        foodItem.getRecipe().removeIngredient(foodItem2.getCode());
 
         // throw new cucumber.api.PendingException();
     }
@@ -127,7 +123,6 @@ public class OrderSteps {
     @Then("the item in the order will no longer contain that ingredient")
     public void the_item_in_the_order_will_no_longer_contain_that_ingredient() {
         Assertions.assertEquals(order.getOrderContents(), testList);
-        //throw new cucumber.api.PendingException();
     }
 
 
@@ -153,17 +148,12 @@ public class OrderSteps {
         FoodItem foodItem2 = new FoodItem("SALT", "Salt", UnitType.GRAM);
         FoodItem foodItem3 = new FoodItem("TAPWATER", "Tap Water", UnitType.ML);
 
-        Set<FoodItem> ingredients = new HashSet<>();
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        ingredients.add(foodItem3);
-        addableIngredients.add(foodItem2);
-        Map<String, Integer> ingredientAmounts = new HashMap<String, Integer>();
-        ingredientAmounts.put("SALT", 1);
-        ingredientAmounts.put("TAPWATER", 1);
+        RecipeBuilder builder = new RecipeBuilder();
+        builder.addIngredient(foodItem3, 1);
+        builder.addAddableIngredient(foodItem2, 1);
 
-        foodItem.setRecipe(new Recipe(ingredients, addableIngredients, ingredientAmounts, 1));
+        foodItem.setRecipe(builder.generateRecipe(1));
         foodItem.getRecipe().addIngredient(foodItem2.getCode());
-        // throw new cucumber.api.PendingException();
 
     }
 
