@@ -7,6 +7,9 @@ import seng202.team1.model.FoodItem;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * creates an observable list of FoodItemDisplays to be used to populate the TableView on the Food Item Storage screen.
+ */
 public class ObservableFoodItems {
 
     private ObservableList<FoodItemDisplay> items;
