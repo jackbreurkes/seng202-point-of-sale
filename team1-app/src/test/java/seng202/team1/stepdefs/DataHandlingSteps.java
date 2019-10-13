@@ -303,23 +303,42 @@ public class DataHandlingSteps {
         }
     }
 
-    @When("user removes {string} as an ingredient of {string} in the database storage")
-    public void user_removes_as_an_ingredient_of_in_the_database_storage(String expectedIngredientCode, String expectedFoodItemCode) {
-        foodItem.getRecipe().removeIngredient(expectedIngredientCode);
-        itemStorage.updateFoodItem(foodItem);
+    @When("user removes {string} as an ingredient of a hamburger in the database storage")
+    public void user_removes_as_an_ingredient_of_in_a_hamburger_the_database_storage(String expectedIngredientCode) {
+        if (foodItem.getRecipe().getIngredients().contains(ingredient) == false) {
+            throw new cucumber.api.PendingException(expectedIngredientCode + " is not an ingredient of " + foodItem.getName());
+        } else {
+            foodItem.getRecipe().removeIngredient(expectedIngredientCode);
+            itemStorage.updateFoodItem(foodItem);
+        }
     }
 
-    @Then("a {string} should be successfully removed as an ingredient of {string} in the storage")
-    public void a_should_be_successfully_removed_as_an_ingredient_of_in_the_storage(String removedIngredient, String expectedFoodItemCode) {
-        System.out.println(itemStorage.getFoodItemByCode(expectedFoodItemCode).getRecipe().getIngredients().contains(ingredient));
+    @Then("a lettuce should be successfully removed as an ingredient of {string} in the storage")
+    public void a_lettuce_should_be_successfully_removed_as_an_ingredient_of_in_the_storage(String expectedFoodItemCode) {
+        FoodItem itemFromStorage = itemStorage.getFoodItemByCode(expectedFoodItemCode);
+        Recipe recipeFromItem = itemFromStorage.getRecipe();
+        try {
+        assertEquals(false, recipeFromItem.getIngredients().contains(ingredient));
+        } catch (AssertionError ae){
+            throw new cucumber.api.PendingException(ingredient.getName() + " still exists as ingredient of " + foodItem.getName());
+        }
     }
 
-    @And("lettuce should not be in db")
-    public void lettuce_should_not_be_in_db() {
-        System.out.println(itemStorage.getAllFoodItems().contains(ingredient));
+    @When("another beef is added as an ingredient of a hamburger")
+    public void another_beef_is_added_as_an_ingredient_of_a_hamburger() {
+        RecipeBuilder rb = new RecipeBuilder();
+        rb.loadExistingRecipeData(foodItem.getRecipe());
+        rb.updateIngredientAmount(ingredient.getCode(), 2);
+        FoodItem itemFromStorage = itemStorage.getFoodItemByCode(foodItem.getCode());
+        itemFromStorage.setRecipe(rb.generateRecipe(1));
+        itemStorage.updateFoodItem(itemFromStorage);
     }
 
-
+    @Then("the recipe should have {int} beef as ingredients of a hamburger")
+    public void the_recipe_should_have_beef_as_ingredients_of_a_hamburger(Integer ingredientCount) {
+        FoodItem itemFromStorage = itemStorage.getFoodItemByCode("BEEFBURG");
+        assertEquals(ingredientCount, itemFromStorage.getRecipe().getIngredientAmounts().get("BEEF"));
+    }
 
 
 
