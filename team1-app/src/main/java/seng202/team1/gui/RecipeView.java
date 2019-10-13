@@ -46,7 +46,7 @@ public class RecipeView extends VBox {
         addSelected.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                addSelectedItemInParent();
+                addSelectedItemFromParent();
             }
         });
 
@@ -83,13 +83,17 @@ public class RecipeView extends VBox {
         return model.generateRecipe(1);
     }
 
-    public void addSelectedItemInParent() {
+    public void addSelectedItemFromParent() {
         FoodItem candidate = parent.getSelectionAsFoodItem();
         if (candidate == null) {
             addItemErrorMsg.setText("no item selected.");
         } else {
-            model.addIngredient(candidate, 1);
-            refreshIngredientList();
+            try {
+                model.addIngredient(candidate, 1);
+                refreshIngredientList();
+            } catch (IllegalArgumentException e) {
+                parent.setStatusText(e.getMessage(), true);
+            }
         }
     }
 

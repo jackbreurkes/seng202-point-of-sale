@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -114,6 +115,19 @@ public class FoodItemStorageController {
         }
     }
 
+    public void setStatusText(String message) {
+        setStatusText(message, false);
+    }
+
+    public void setStatusText(String message, boolean isError) {
+        statusText.setText(message);
+        if (isError) {
+            statusText.setFill(Color.RED);
+        } else {
+            statusText.setFill(Color.BLACK);
+        }
+    }
+
     public void setOverwrite(boolean overwrite) {
         this.overwrite = overwrite;
     }
@@ -151,18 +165,18 @@ public class FoodItemStorageController {
                     }
 
                 } catch (SAXException e) {
-                    statusText.setText("An error has occured while parsing: " + e.getMessage());
+                    setStatusText("An error has occured while parsing: " + e.getMessage(), true);
                     e.printStackTrace();
                 } catch (IOException e) {
-                    statusText.setText("An IO exception occured: " + e.getMessage());
+                    setStatusText("An IO exception occured: " + e.getMessage(), true);
                     e.printStackTrace();
                 }
                 updateTable();
             } else {
-                statusText.setText("Incorrect file type.");
+                setStatusText("Incorrect file type.", true);
             }
         } else {
-            statusText.setText("No file selected.");
+            setStatusText("No file selected.", true);
         }
     }
 
@@ -259,13 +273,13 @@ public class FoodItemStorageController {
 
         selectedItem = foodItemTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
-            statusText.setText("No item selected.");
+            setStatusText("No item selected.", true);
             return;
         }
 
         recipeView.updateModel(selectedItem.getRecipe());
 
-        statusText.setText("");
+        setStatusText("");
 
         codeLabel.setText("EDITING: " + selectedItem.getCode());
         newName.setText(selectedItem.getName());
@@ -282,7 +296,7 @@ public class FoodItemStorageController {
      */
     public void confirmChanges() {
         if (selectedItem == null) {
-            statusText.setText("No item selected.");
+            setStatusText("No item selected.", true);
         } else {
             FoodItem editedItem = foodStorage.getFoodItemByCode(selectedItem.getCode());
             try {
@@ -297,17 +311,17 @@ public class FoodItemStorageController {
                 editedItem.setRecipe(recipeView.getRecipe());
             } catch (Exception e) {
                 //e.printStackTrace();
-                statusText.setText("error setting values: " + e.getMessage());
+                setStatusText("error setting values: " + e.getMessage(), true);
                 return;
             }
             foodStorage.updateFoodItem(editedItem);
             updateTable();
-            statusText.setText(editedItem.getCode() + " updated successfully.");
+            setStatusText(editedItem.getCode() + " updated successfully.");
         }
     }
 
     /**
-     * When this methods is called, it will change the scene to datatype controller view
+     * When this methods is called, it will change the scene to order screen controller view
      */
     public void changeSceneToOrder(javafx.event.ActionEvent event) throws IOException
     {
@@ -316,7 +330,7 @@ public class FoodItemStorageController {
     }
 
     /**
-     * When this methods is called, it will change the scene to datatype controller view
+     * When this methods is called, it will change the scene to analysis controller view
      */
     public void changeSceneToAnalysis(javafx.event.ActionEvent event) throws IOException
     {

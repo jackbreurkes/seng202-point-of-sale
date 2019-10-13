@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
-public class RecipeIngredientDisplay extends HBox {
+/**
+ * display to show a FoodItem in the create recipe view component in the edit data screen.
+ */
+public class RecipeIngredientDisplay extends VBox {
 
     @FXML
     private Label ingredientName;
@@ -50,15 +53,5 @@ public class RecipeIngredientDisplay extends HBox {
             }
         });
     }
-
-    public void enterEditMode() {
-        ingredientAction.setVisible(true);
-    }
-
-    public void exitEditMode() {
-        ingredientAction.setVisible(false);
-    }
-
-
 
 }
