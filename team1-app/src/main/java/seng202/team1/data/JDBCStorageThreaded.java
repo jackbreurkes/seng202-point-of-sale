@@ -26,7 +26,7 @@ public class JDBCStorageThreaded implements FoodItemDAO, OrderDAO {
 
 
     private static String url = "jdbc:sqlite:rosemary.db";
-    private static JDBCStorage instance;
+    private static JDBCStorageThreaded instance;
     private SQLiteConfig config = makeConfig();
     private static Connection conn;
 
@@ -41,7 +41,7 @@ public class JDBCStorageThreaded implements FoodItemDAO, OrderDAO {
         return config;
     }
 
-    private JDBCStorage() {
+    private JDBCStorageThreaded() {
         initializeDatabaseIfNotExists();
     }
 
@@ -50,9 +50,9 @@ public class JDBCStorageThreaded implements FoodItemDAO, OrderDAO {
      *Implements the singleton pattern
      * @return an instance of InMemoryDAO
      */
-    public static JDBCStorage getInstance() {
+    public static JDBCStorageThreaded getInstance() {
         if (instance == null) {
-            instance = new JDBCStorage();
+            instance = new JDBCStorageThreaded();
         }
         return instance;
     }
