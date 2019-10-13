@@ -291,6 +291,41 @@ public class DataHandlingSteps {
 
 
 
+//
+//    @And("uploaded file contains a recipe for {string} with ingredient {string}")
+//    public void uploaded_file_contains_a_recipe_for_with_ingredient(String expectedFoodItemCode, String expectedIngredientCode) {
+//        foodItem = itemStorage.getFoodItemByCode(expectedFoodItemCode);
+//        ingredient = itemStorage.getFoodItemByCode(expectedIngredientCode);
+//        if (foodItem == null) {
+//            throw new cucumber.api.PendingException("Food item with code " + expectedFoodItemCode + " does not exist in storage");
+//        } else if (ingredient == null) {
+//            throw new cucumber.api.PendingException("Ingredient with code " + expectedIngredientCode + " does not exist in storage");
+//
+//        }
+//    }
+//
+//    @When("user removes {string} as an ingredient of {string} in the database storage")
+//    public void user_removes_as_an_ingredient_of_in_the_database_storage(String expectedIngredientCode, String expectedFoodItemCode) {
+////        itemStorage.getFoodItemByCode(foodItem.getCode()).getRecipe().removeIngredient(ingredient.getCode());
+////        itemStorage.getFoodItemByCode(expectedFoodItemCode).getRecipe().removeIngredient(expectedIngredientCode);
+//    }
+//
+//    @Then("a lettuce should be successfully removed from {string} in the storage")
+//    public void a_lettuce_should_be_successfully_removed_from_in_the_storage(String string) {
+//        // Write code here that turns the phrase above into concrete actions
+//        throw new cucumber.api.PendingException();
+//    }
+//
+//    @And("lettuce should not be in db")
+//    public void lettuce_should_not_be_in_db() {
+//        // Write code here that turns the phrase above into concrete actions
+//        throw new cucumber.api.PendingException();
+//    }
+
+
+
+
+
 
 
 

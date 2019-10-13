@@ -43,7 +43,7 @@ Feature: User handles data using the app
     And adds food item to database
     Then the food item "PAELLA" should be successfully added to the database storage
 
-  Scenario: Deleting a food item from database storage
+  Scenario: Deleting a cheeseburger from database storage
     Given XML file from "src/test/resources/xml/TESTXML1.xml" is uploaded
     When user deletes food item with the code "CHEESEBURG"
     Then "CHEESEBURG" should be successfully removed from the database storage
@@ -55,6 +55,27 @@ Feature: User handles data using the app
     When user manually adds 1 ingredient "Cucumber" with the code "CUCUMBER" and the unit "c"
     Then a cucumber should be successfully added as an ingredient to a "BEEFBURG"
     And a "CUCUMBER" should be added to the database storage
+
+
+
+
+
+#  Scenario: User deletes ingredient "LETTUCE" from existing "BEEFBURG" recipe in the database
+#    Given XML file from "src/test/resources/xml/TESTXML1WITHRECIPE.xml" is uploaded
+#    And uploaded file contains a recipe for "BEEFBURG" with ingredient "LETTUCE"
+#    When user removes "LETTUCE" as an ingredient of "BEEFBURG" in the database storage
+#    Then a lettuce should be successfully removed from "BEEFBURG" in the storage
+#    And lettuce should not be in db
+
+#
+#  Scenario: User modifies existing recipe
+#    Given menu is not empty2
+#    When user modifies recipe
+#    Then system updates recipe in database
+
+
+
+
 
 
 
