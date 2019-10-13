@@ -75,7 +75,7 @@ public class RecipeView extends VBox {
         for (FoodItem ingredient : model.getIngredients()) {
             String name = ingredient.getName();
             int amount = model.getIngredientAmounts().get(ingredient.getCode());
-            ingredientsVBox.getChildren().add(new RecipeIngredientDisplay(this, ingredient));//new Label(name + " (" + amount + ")"));
+            ingredientsVBox.getChildren().add(new RecipeIngredientDisplay(this, ingredient));
         }
     }
 
