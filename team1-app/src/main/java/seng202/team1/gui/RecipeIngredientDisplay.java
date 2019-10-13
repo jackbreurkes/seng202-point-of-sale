@@ -25,6 +25,11 @@ public class RecipeIngredientDisplay extends VBox {
     private RecipeView parent;
     private FoodItem model;
 
+    /**
+     * default constructor
+     * @param parent the RecipeView this RecipeIngredientDisplay is a child of
+     * @param model the FoodItem this ingredient display should model
+     */
     public RecipeIngredientDisplay(RecipeView parent, FoodItem model) {
 
         this.parent = parent;
@@ -42,6 +47,9 @@ public class RecipeIngredientDisplay extends VBox {
 
     }
 
+    /**
+     * runs automatically when loading FXML. sets the on action events for the remove and add buttons.
+     */
     public void initialize() {
         ingredientName.setText(model.getName() + " (x" + parent.getModel().getIngredientAmounts().get(model.getCode()) + ")");
 

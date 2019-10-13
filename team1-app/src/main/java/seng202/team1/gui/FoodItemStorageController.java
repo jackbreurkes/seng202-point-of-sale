@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -86,6 +88,15 @@ public class FoodItemStorageController {
                 }
             });
             return row;
+        });
+
+        foodItemTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+                    deleteSelectedItem();
+                }
+            }
         });
 
         importFoodItemsButton.setOnAction(new EventHandler<ActionEvent>() {
