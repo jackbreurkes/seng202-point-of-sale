@@ -12,6 +12,7 @@ import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 import seng202.team1.util.OrderStatus;
+import seng202.team1.util.UseThreading;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -88,8 +89,13 @@ public class OrderProgressDisplay extends VBox {
                 orderStorage.updateOrder(order);
             }
         };
-        Thread t = new Thread(updateStorage);
-        t.start();
+        if (UseThreading.using) {
+            Thread t = new Thread(updateStorage);
+            t.start();
+        } else {
+            updateStorage.run();
+        }
+
     }
 
     public void cancelOrder(Order order, OrderDisplay display) {
@@ -108,8 +114,13 @@ public class OrderProgressDisplay extends VBox {
                 }
             }
         };
-        Thread t = new Thread(updateStorage);
-        t.start();
+
+        if (UseThreading.using) {
+            Thread t = new Thread(updateStorage);
+            t.start();
+        } else {
+            updateStorage.run();
+        }
 
     }
 

@@ -13,6 +13,7 @@ import seng202.team1.model.FoodItem;
 import seng202.team1.model.Kitchen;
 import seng202.team1.model.Order;
 import seng202.team1.util.InvalidOrderStatusException;
+import seng202.team1.util.UseThreading;
 
 import java.io.IOException;
 
@@ -123,8 +124,13 @@ public class CreateOrderDisplay extends VBox {
                 orderStorage.addOrder(model);
             }
         };
-        Thread t = new Thread(updateStorage);
-        t.start();
+
+        if (UseThreading.using) {
+            Thread t = new Thread(updateStorage);
+            t.start();
+        } else {
+            updateStorage.run();
+        }
 
         orderController.addOrderToProgressDisplay(model);
         orderController.stopCreatingOrder();
