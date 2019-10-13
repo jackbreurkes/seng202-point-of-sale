@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
@@ -22,14 +23,16 @@ public class MenuItemDisplay extends VBox {
     @FXML private Button addToOrder;
 
     private FoodItem model;
+    private OrderController parent;
 
     /**
      * default constructor.
      * @param model the FoodItem the MenuItemDisplay should model
      */
-    public MenuItemDisplay(FoodItem model) {
+    public MenuItemDisplay(FoodItem model, OrderController parent) {
 
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
+        this.parent = parent;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("foodItemDisplay.fxml"));
         loader.setRoot(this);
@@ -53,6 +56,15 @@ public class MenuItemDisplay extends VBox {
         isVegan.setText("vegan: " + boolToNaturalLanguage(model.getIsVegan()));
         isGlutenFree.setText("gluten free: " + boolToNaturalLanguage(model.getIsGlutenFree()));
         addToOrder.setVisible(false);
+
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+                if (click.getClickCount() == 2) {
+                    parent.startCreatingOrder();
+                }
+            }
+        });
     }
 
     /**

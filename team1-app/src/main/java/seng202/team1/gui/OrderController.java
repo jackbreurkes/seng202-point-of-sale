@@ -52,9 +52,9 @@ public class OrderController {
      */
     private void populateMenuItemsDisplay(Menu menu) {
         List<FoodItem> menuItems = menu.getMenuItems();
-        menuItems.sort(Comparator.comparing(FoodItem::getName));
+        menuItems.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
         for (FoodItem item : menuItems) {
-            MenuItemDisplay itemDisplay = new MenuItemDisplay(item);
+            MenuItemDisplay itemDisplay = new MenuItemDisplay(item, this);
             menuItemsPane.getChildren().add(itemDisplay);
         }
     }
