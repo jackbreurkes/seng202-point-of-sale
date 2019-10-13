@@ -246,17 +246,4 @@ public class FoodItemHandler {
         isGlutenFree = false;
     }
 
-
-    public static void main(String args[]) {
-        FoodItemHandler fh = new FoodItemHandler("resources/data/FoodItem.xml", true);
-        try {
-            fh.parseInput();
-        } catch (IOException | SAXException e) {
-            e.printStackTrace();
-        }
-
-        for (FoodItem foo : fh.getFoodItems().values()) {
-            System.out.println(foo);
-        }
-    }
 }

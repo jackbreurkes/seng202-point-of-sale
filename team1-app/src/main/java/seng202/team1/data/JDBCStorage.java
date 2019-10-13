@@ -19,12 +19,16 @@ import java.util.*;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+/**
+ * concrete implementation of data access object interfaces using JDBC and SQLite.
+ */
 public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
 
     private static String url = "jdbc:sqlite:rosemary.db";
     private static JDBCStorage instance;
     private SQLiteConfig config = makeConfig();
+    private static Connection conn;
 
     /**
      * Creates a database configuration
@@ -58,11 +62,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
      * @return a Connection to the database
      */
     private Connection getConnection() {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, config.toProperties());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (conn == null) {
+            try {
+                conn = DriverManager.getConnection(url, config.toProperties());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return conn;
     }
@@ -90,9 +95,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         initializeDatabaseIfNotExists();
     }
 
+    /**
+     * runs the scripts in resources/sql to set up the database if it does not already exist.
+     */
     private void initializeDatabaseIfNotExists() {
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement()) {
 
             InputStream createTablesStream = JDBCStorage.class.getResourceAsStream("/sql/create_tables.sql");
             String createTables = new BufferedReader(new InputStreamReader(createTablesStream))
@@ -109,10 +117,22 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * reads a single food item from a non-empty result set from the FoodItem or OrderedFoodItem tables.
+     * @param rs the ResultSet containing at least one valid row
+     * @return the FoodItem created using the data from the result set
+     */
     private FoodItem readFoodItem(ResultSet rs) {
         return readFoodItem(rs, false);
     }
 
+    /**
+     * reads a single food item from a non-empty result set from the FoodItem or OrderedFoodItem tables.
+     * can optionally set the recipe of the FoodItem to null.
+     * @param rs the ResultSet containing at least one valid row
+     * @param setRecipeToNull whether the food item's recipe should be set to null
+     * @return the FoodItem created using the data from the result set
+     */
     private FoodItem readFoodItem(ResultSet rs, boolean setRecipeToNull) {
         String code, name, cost, unitType, calPerUnit;
         boolean isVegetarian, isVegan, isGlutenFree;
@@ -158,6 +178,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return result;
     }
 
+    /**
+     * reads the stock level attribute from the result set of the FoodItem table.
+     * @param rs the non-empty ResultSet
+     * @return integer stock level for the food item
+     */
     private int readFoodItemStock(ResultSet rs) {
         try {
             return rs.getInt("StockLevel");
@@ -167,6 +192,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * reads a single recipe from a non-empty result set from the Recipe table.
+     * @param rs the ResultSet containing at least one valid row
+     * @return the Recipe created using the data from the result set
+     */
     private Recipe readRecipe(ResultSet rs) {
         int id, amountCreated;
 
@@ -231,8 +261,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "FROM OrderContains JOIN OrderedFoodItem ON FoodItem = Id\n" +
                 "WHERE CustomerOrder = ?";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, result.getId());
             ResultSet rs2 = pstmt.executeQuery();
 
@@ -248,11 +278,16 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return result;
     }
 
+    /**
+     * returns the Recipe of the stored FoodItem with the given code.
+     * @param foodItemCode the code of the FoodItem to get the Recipe of
+     * @return the FoodItem's Recipe or null if it has none
+     */
     public Recipe getRecipeOfFoodItem(String foodItemCode) {
         String sql = "SELECT * FROM Recipe WHERE Product = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, foodItemCode);
             ResultSet rs = pstmt.executeQuery();
@@ -269,13 +304,18 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * returns the RecipeBuilder loaded with the data needed to generate the recipe with the given id.
+     * @param recipeId the
+     * @return
+     */
     private RecipeBuilder getBuilderForRecipe(int recipeId) {
         String sql = "SELECT * FROM RecipeContains WHERE Recipe = ?";
 
         RecipeBuilder builder = new RecipeBuilder();
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, recipeId);
             ResultSet rs = pstmt.executeQuery();
@@ -297,8 +337,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private String getFoodItemCodeFromId(int id) {
         String sql = "SELECT Code FROM FoodItem WHERE Id = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -347,8 +387,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Set<FoodItem> getAllFoodItems() {
         String sql = "SELECT * FROM FoodItem";
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             Set<FoodItem> items = new HashSet<FoodItem>();
@@ -371,8 +411,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private FoodItem getFoodItemByCode(String code, boolean setRecipeToNull) {
         String sql = "SELECT * FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
             ResultSet rs = pstmt.executeQuery();
@@ -397,8 +437,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         String sql = "INSERT INTO FoodItem(Code, Name, Cost, UnitType, StockLevel, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
             pstmt.setString(3, item.getCost().toString());
@@ -428,8 +468,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET Name=?, Cost=?, UnitType=?, IsVegetarian=?, IsVegan=?, IsGlutenFree=?, CalPerUnit=?\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredItem.getName());
             pstmt.setString(2, alteredItem.getCost().toString());
             pstmt.setString(3, alteredItem.getUnit().toString()); // TODO error handling
@@ -463,8 +503,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         int recipeId;
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, item.getCode());
             pstmt.setInt(2, recipe.getAmountCreated());
             pstmt.executeUpdate();
@@ -487,8 +527,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private int getFoodItemIdFromCode(String code) {
         String sql = "SELECT Id FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
             ResultSet rs = pstmt.executeQuery();
@@ -507,8 +547,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
         String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, recipeId);
             pstmt.setInt(2, getFoodItemIdFromCode(ingredient.getCode()));
             pstmt.setInt(3, amount);
@@ -524,8 +564,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
      */
     private void deleteRecipeWithProduct(FoodItem product) {
         String sql2 = "DELETE FROM Recipe WHERE Product = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
             pstmt.setString(1, product.getCode());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -542,8 +582,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         String sql = "DELETE FROM FoodItem\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, code);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -564,8 +604,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET StockLevel=?\n" +
                 "WHERE Code=?";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, count);
             pstmt.setString(2, code);
             pstmt.executeUpdate();
@@ -582,8 +622,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         String sql = "SELECT StockLevel FROM FoodItem WHERE Code = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, code);
             ResultSet rs = pstmt.executeQuery();
@@ -604,8 +644,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Order getOrderByID(int id) {
         String sql = "SELECT * FROM CustomerOrder WHERE Id = ? LIMIT 1";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -627,8 +667,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         int insertedId;
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, item.getCode());
             pstmt.setString(2, item.getName());
             pstmt.setString(3, item.getCost().toString());
@@ -677,8 +717,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         String insertOrder = "INSERT INTO CustomerOrder(Status, Note) VALUES (?,?)";
         //String insertOrderItem = "INSERT INTO OrderContains(CustomerOrder, FoodItem)"
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, order.getStatus().toString());
             pstmt.setString(2, order.getOrderNote());
@@ -699,8 +739,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
     public Set<Order> getAllSubmittedOrders() {
         String sql = "SELECT * FROM CustomerOrder WHERE status = 's'";
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             Set<Order> submittedOrders = new HashSet<Order>();
@@ -729,8 +769,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
                 "SET Status=?\n" +
                 "WHERE Id=?";
 
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = getConnection();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alteredOrder.getStatus().toString());
             pstmt.setInt(2, alteredOrder.getId());
             pstmt.executeUpdate();
@@ -745,8 +785,8 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         Set<Order> allOrders = new HashSet<>();
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
              while (rs.next()) {
