@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * starts the JavaFX application for Rosemary
+ */
 public class SampleApplication extends Application {
 
 

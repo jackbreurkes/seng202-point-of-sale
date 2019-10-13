@@ -13,6 +13,7 @@ import seng202.team1.util.*;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -180,7 +181,6 @@ public class OrderSteps {
 
     @And("the order has not been confirmed")
     public void the_order_has_not_been_confirmed() {
-        // Write code here that turns the phrase above into concrete actions
        order.submitOrder();
        assertEquals(order.getStatus(), OrderStatus.SUBMITTED);
        //  throw new cucumber.api.PendingException();
@@ -197,11 +197,6 @@ public class OrderSteps {
         Assertions.assertEquals(order.getOrderContents(), testList);
         // throw new cucumber.api.PendingException();
     }
-
-
-
-
-
 
 
 }
