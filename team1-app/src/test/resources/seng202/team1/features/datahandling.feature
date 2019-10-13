@@ -64,7 +64,7 @@ Feature: User handles data using the app
     Given XML file from "src/test/resources/xml/TESTXML1WITHRECIPE.xml" is uploaded
     And uploaded file contains a recipe for "BEEFBURG" with ingredient "LETTUCE"
     When user removes "LETTUCE" as an ingredient of "BEEFBURG" in the database storage
-    Then a lettuce should be successfully removed from "BEEFBURG" in the storage
+    Then a "LETTUCE" should be successfully removed as an ingredient of "BEEFBURG" in the storage
     And lettuce should not be in db
 
 #

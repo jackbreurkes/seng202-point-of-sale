@@ -300,27 +300,23 @@ public class DataHandlingSteps {
             throw new cucumber.api.PendingException("Food item with code " + expectedFoodItemCode + " does not exist in storage");
         } else if (ingredient == null) {
             throw new cucumber.api.PendingException("Ingredient with code " + expectedIngredientCode + " does not exist in storage");
-
         }
     }
 
     @When("user removes {string} as an ingredient of {string} in the database storage")
     public void user_removes_as_an_ingredient_of_in_the_database_storage(String expectedIngredientCode, String expectedFoodItemCode) {
-        Recipe itemRecipe = itemStorage.getFoodItemByCode(foodItem.getCode()).getRecipe();
-        itemRecipe.removeIngredient(ingredient.getCode());
-//        itemStorage.getFoodItemByCode(expectedFoodItemCode).getRecipe().removeIngredient(expectedIngredientCode);
+        foodItem.getRecipe().removeIngredient(expectedIngredientCode);
+        itemStorage.updateFoodItem(foodItem);
     }
 
-    @Then("a lettuce should be successfully removed from {string} in the storage")
-    public void a_lettuce_should_be_successfully_removed_from_in_the_storage(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @Then("a {string} should be successfully removed as an ingredient of {string} in the storage")
+    public void a_should_be_successfully_removed_as_an_ingredient_of_in_the_storage(String removedIngredient, String expectedFoodItemCode) {
+        System.out.println(itemStorage.getFoodItemByCode(expectedFoodItemCode).getRecipe().getIngredients().contains(ingredient));
     }
 
     @And("lettuce should not be in db")
     public void lettuce_should_not_be_in_db() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        System.out.println(itemStorage.getAllFoodItems().contains(ingredient));
     }
 
 
