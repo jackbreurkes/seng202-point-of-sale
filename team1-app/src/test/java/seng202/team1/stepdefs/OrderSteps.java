@@ -4,17 +4,10 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
-import seng202.team1.data.DAOFactory;
-import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.OrderDAO;
-import seng202.team1.gui.CreateOrderDisplay;
-import seng202.team1.gui.OrderController;
 import seng202.team1.model.FoodItem;
-import seng202.team1.model.Kitchen;
 import seng202.team1.model.Order;
-import seng202.team1.model.Recipe;
 import seng202.team1.util.*;
 
 import java.util.*;
@@ -189,7 +182,7 @@ public class OrderSteps {
     public void the_order_has_not_been_confirmed() {
         // Write code here that turns the phrase above into concrete actions
        order.submitOrder();
-       assertEquals(order.getOrderStatus(), OrderStatus.SUBMITTED);
+       assertEquals(order.getStatus(), OrderStatus.SUBMITTED);
        //  throw new cucumber.api.PendingException();
     }
 

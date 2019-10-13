@@ -11,9 +11,12 @@ import seng202.team1.data.FoodItemDAO;
 import seng202.team1.data.OrderDAO;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
+import seng202.team1.util.OrderStatus;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class OrderProgressDisplay extends VBox {
@@ -43,6 +46,7 @@ public class OrderProgressDisplay extends VBox {
             throw new RuntimeException(e);
         }
 
+        displaySubmittedOrders();
     }
 
     public void initialize() {
@@ -52,45 +56,73 @@ public class OrderProgressDisplay extends VBox {
                 orderController.startCreatingOrder();
             }
         });
-        displaySubmittedOrders();
+    }
+
+    public void displayOrder(Order order) {
+        OrderDisplay display = new OrderDisplay(this, order);
+        if (order.getStatus() == OrderStatus.SUBMITTED) {
+            pendingOrdersVBox.getChildren().add(0, display);
+        } else if (order.getStatus() == OrderStatus.COMPLETED) {
+            completedOrdersVBox.getChildren().add(0, display);
+        }
     }
 
     public void displaySubmittedOrders() {
         pendingOrdersVBox.getChildren().clear();
-        for (Order displayOrder : orderStorage.getAllSubmittedOrders()) {
-            pendingOrdersVBox.getChildren().add(new OrderDisplay(this, displayOrder));
+        for (Order order : orderStorage.getAllSubmittedOrders()) {
+            displayOrder(order);
         }
     }
 
-    public void completeOrder(Order order) {
+    public void completeOrder(Order order, OrderDisplay display) {
         order.completeOrder();
+
+        pendingOrdersVBox.getChildren().remove(display);
+        displayOrder(order);
         completedOrders.add(order);
-        orderStorage.updateOrder(order);
-
-        displaySubmittedOrders();
         updateCompletedOrders();
+
+        Runnable updateStorage = new Runnable() {
+            @Override
+            public void run() {
+                orderStorage.updateOrder(order);
+            }
+        };
+        Thread t = new Thread(updateStorage);
+        t.start();
     }
 
-    public void cancelOrder(Order order) {
+    public void cancelOrder(Order order, OrderDisplay display) {
         order.cancelOrder();
-        orderStorage.updateOrder(order);
+        //displaySubmittedOrders();
+        pendingOrdersVBox.getChildren().remove(display);
+        displayOrder(order);
 
-        FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
-        for (FoodItem orderedItem : order.getOrderContents()) {
-            foodStorage.setFoodItemStock(orderedItem.getCode(), foodStorage.getFoodItemStock(orderedItem.getCode()) + 1); // put back the items we created because the customer does not want them
-        }
+        Runnable updateStorage = new Runnable() {
+            @Override
+            public void run() {
+                orderStorage.updateOrder(order);
+                FoodItemDAO foodStorage = DAOFactory.getFoodItemDAO();
+                for (FoodItem orderedItem : order.getOrderContents()) {
+                    foodStorage.setFoodItemStock(orderedItem.getCode(), foodStorage.getFoodItemStock(orderedItem.getCode()) + 1); // put back the items we created because the customer does not want them
+                }
+            }
+        };
+        Thread t = new Thread(updateStorage);
+        t.start();
 
-        displaySubmittedOrders();
     }
 
-    public void refundOrder(Order order) {
-        if (!completedOrders.contains(order)) {
-            throw new IllegalArgumentException("only completed orders can be refunded");
-        }
-        completedOrders.remove(order);
+    public void refundOrder(Order order, OrderDisplay display) {
+//        if (!completedOrders.contains(order)) {
+//            throw new IllegalArgumentException("only completed orders can be refunded");
+//        }
+//        completedOrders.remove(order);
         order.refundOrder();
         orderStorage.updateOrder(order);
-        updateCompletedOrders();
+        completedOrdersVBox.getChildren().remove(display);
+        displayOrder(order);
+//        updateCompletedOrders();
     }
 
     private void updateCompletedOrders() {

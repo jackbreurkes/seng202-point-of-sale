@@ -155,7 +155,7 @@ class OrderTest {
         testOrder.cancelOrder();
 
         // checks the status of the order has correctly been set to cancelled
-        assertEquals(testOrder.getOrderStatus(), CANCELLED);
+        assertEquals(testOrder.getStatus(), CANCELLED);
 
         //makes sure an order can't be cancelled twice
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.cancelOrder());
@@ -180,7 +180,7 @@ class OrderTest {
         testOrder.submitOrder();
         testOrder.completeOrder();
         // checks the status of the order has correctly been set to completed
-        assertEquals(testOrder.getOrderStatus(), COMPLETED);
+        assertEquals(testOrder.getStatus(), COMPLETED);
 
         //Makes sure an order cannot be completed twice
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());
@@ -202,7 +202,7 @@ class OrderTest {
         testOrder.submitOrder();
 
         // checks the status of the order has correctly been set to submitted
-        assertEquals(testOrder.getOrderStatus(), SUBMITTED);
+        assertEquals(testOrder.getStatus(), SUBMITTED);
 
         //Makes sure an order cannot be submitted twice
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.submitOrder());
@@ -229,7 +229,7 @@ class OrderTest {
         testOrder.refundOrder();
 
         // checks the status of the order has correctly been set to refunded
-        assertEquals(testOrder.getOrderStatus(), REFUNDED);
+        assertEquals(testOrder.getStatus(), REFUNDED);
 
         //makes sure a refunded order cannot be completed
         assertThrows(InvalidOrderStatusException.class, () -> testOrder.completeOrder());

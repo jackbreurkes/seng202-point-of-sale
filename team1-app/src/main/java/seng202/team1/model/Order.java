@@ -151,7 +151,7 @@ public class Order {
      * returns the current status of the order
      * @return the OrderStatus of the Order
      */
-    public OrderStatus getOrderStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 

@@ -97,7 +97,7 @@ abstract class OrderDAOTest {
 
         assertEquals(expectedResult, orderStorage.getAllSubmittedOrders());
         for (Order order : orderStorage.getAllSubmittedOrders()) {
-            assertEquals(OrderStatus.SUBMITTED, order.getOrderStatus());
+            assertEquals(OrderStatus.SUBMITTED, order.getStatus());
         }
     }
 

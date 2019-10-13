@@ -11,6 +11,12 @@ import seng202.team1.model.FoodItem;
 import seng202.team1.model.Order;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class OrderDisplay extends VBox {
 
@@ -46,8 +52,24 @@ public class OrderDisplay extends VBox {
 
     }
 
+    /**
+     * runs automatically when loading FXML.
+     */
     public void initialize() {
-        orderId.setText("Order " + Integer.toString(model.getId()) + " - cost " + model.getCost().toString());
+        Calendar cal = Calendar.getInstance();
+        Date lastUpdatedDate = model.getLastUpdated();
+        boolean fromStorage = true;
+        if (lastUpdatedDate == null) {
+            fromStorage = false;
+            lastUpdatedDate = new Date();
+        }
+        cal.setTime(lastUpdatedDate);
+        if (fromStorage) {
+            cal.add(Calendar.HOUR_OF_DAY, 13);
+        }
+
+        DateFormat format = new SimpleDateFormat("EEE h:mm:ss a");
+        orderId.setText(format.format(cal.getTime()) + " - cost " + model.getCost().toString());
         secondaryActionButton.setVisible(false);
         OrderDisplay display = this;
 
@@ -55,13 +77,14 @@ public class OrderDisplay extends VBox {
             orderItems.getChildren().add(new Label(orderItem.getName()));
         }
 
-        switch (model.getOrderStatus()) {
+        OrderDisplay thisDisplay = this;
+        switch (model.getStatus()) {
             case SUBMITTED:
                 orderActionButton.setText("Complete");
                 orderActionButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        orderProgressDisplay.completeOrder(model);
+                        orderProgressDisplay.completeOrder(model, thisDisplay);
                     }
                 });
 
@@ -70,7 +93,7 @@ public class OrderDisplay extends VBox {
                 secondaryActionButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        orderProgressDisplay.cancelOrder(model);
+                        orderProgressDisplay.cancelOrder(model, thisDisplay);
                     }
                 });
                 break;
@@ -79,7 +102,7 @@ public class OrderDisplay extends VBox {
                 orderActionButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        orderProgressDisplay.refundOrder(model);
+                        orderProgressDisplay.refundOrder(model, thisDisplay);
                     }
                 });
                 break;

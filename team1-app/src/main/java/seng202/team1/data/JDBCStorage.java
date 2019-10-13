@@ -666,7 +666,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             throw new IllegalArgumentException("cannot add an empty order");
         }
 
-        if (order.getOrderStatus() == OrderStatus.CREATING) {
+        if (order.getStatus() == OrderStatus.CREATING) {
             throw new IllegalArgumentException("creating orders should not be stored in the database, please submit it first.");
         }
 
@@ -680,7 +680,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.setString(1, order.getOrderStatus().toString());
+            pstmt.setString(1, order.getStatus().toString());
             pstmt.setString(2, order.getOrderNote());
 
             pstmt.executeUpdate();
@@ -721,7 +721,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             throw new InvalidDataCodeException("order with given order's code does not exist in the database.");
         }
 
-        if (alteredOrder.getOrderStatus() == OrderStatus.CREATING) {
+        if (alteredOrder.getStatus() == OrderStatus.CREATING) {
             throw new IllegalArgumentException("creating orders should not be stored in the database.");
         }
 
@@ -731,7 +731,7 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, alteredOrder.getOrderStatus().toString());
+            pstmt.setString(1, alteredOrder.getStatus().toString());
             pstmt.setInt(2, alteredOrder.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {

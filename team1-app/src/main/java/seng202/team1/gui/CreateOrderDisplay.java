@@ -69,7 +69,7 @@ public class CreateOrderDisplay extends VBox {
         cancelOrder.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                closeCreateOrderPanel();
+                orderController.stopCreatingOrder();
             }
         });
         submitOrder.setOnAction(new EventHandler<ActionEvent>() {
@@ -109,21 +109,24 @@ public class CreateOrderDisplay extends VBox {
     public void submitOrder() {
         try {
             model.submitOrder();
-            for (FoodItem orderedItem : model.getOrderContents()) {
-                kitchen.createFoodItem(orderedItem); // create the items for the customer
-            }
-            orderStorage.addOrder(model);
         } catch (InvalidOrderStatusException e) {
             statusText.setText("Error submitting order: " + e.getMessage());
             return;
         }
-        closeCreateOrderPanel();
-    }
 
-    /**
-     * closes the CreateOrderDisplay.
-     */
-    public void closeCreateOrderPanel() {
+        Runnable updateStorage = new Runnable() {
+            @Override
+            public void run() {
+                for (FoodItem orderedItem : model.getOrderContents()) {
+                    kitchen.createFoodItem(orderedItem); // create the items for the customer
+                }
+                orderStorage.addOrder(model);
+            }
+        };
+        Thread t = new Thread(updateStorage);
+        t.start();
+
+        orderController.addOrderToProgressDisplay(model);
         orderController.stopCreatingOrder();
     }
 

@@ -10,6 +10,7 @@ import seng202.team1.data.DAOFactory;
 import seng202.team1.model.FoodItem;
 import seng202.team1.model.Menu;
 import seng202.team1.model.Order;
+import seng202.team1.util.UnitType;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -74,6 +75,14 @@ public class OrderController {
     }
 
     /**
+     * adds an Order to the OrderProgressDisplay.
+     * @param order the Order to add to the progress display
+     */
+    public void addOrderToProgressDisplay(Order order) {
+        orderProgressDisplay.displayOrder(order);
+    }
+
+    /**
      * shows  the javaFX components related to the creation of orders
      */
     private void showOrderCreationElements() {
@@ -95,7 +104,7 @@ public class OrderController {
         menuName.setText(activeMenu.getMenuName());
         ordersInfo.getChildren().clear();
         ordersInfo.getChildren().add(orderProgressDisplay);
-        orderProgressDisplay.displaySubmittedOrders();
+        //orderProgressDisplay.displaySubmittedOrders();
 
         for (Node node : menuItemsPane.getChildren()) {
             MenuItemDisplay display = (MenuItemDisplay)node;
