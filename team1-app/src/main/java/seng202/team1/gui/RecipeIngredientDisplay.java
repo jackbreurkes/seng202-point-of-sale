@@ -6,28 +6,36 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
-public class RecipeIngredientDisplay extends HBox {
+/**
+ * display to show a FoodItem in the create recipe view component in the edit data screen.
+ */
+public class RecipeIngredientDisplay extends VBox {
 
     @FXML
     private Label ingredientName;
 
     @FXML
-    private Button ingredientAction;
+    private Button addOne, removeOne;
 
     private RecipeView parent;
     private FoodItem model;
 
+    /**
+     * default constructor
+     * @param parent the RecipeView this RecipeIngredientDisplay is a child of
+     * @param model the FoodItem this ingredient display should model
+     */
     public RecipeIngredientDisplay(RecipeView parent, FoodItem model) {
 
         this.parent = parent;
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("orderIngredientDisplay.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("recipeIngredientDisplay.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -39,26 +47,26 @@ public class RecipeIngredientDisplay extends HBox {
 
     }
 
+    /**
+     * runs automatically when loading FXML. sets the on action events for the remove and add buttons.
+     */
     public void initialize() {
-        ingredientName.setText(model.getName());
+        ingredientName.setText(model.getName() + " (x" + parent.getModel().getIngredientAmounts().get(model.getCode()) + ")");
 
         RecipeIngredientDisplay display = this;
-        ingredientAction.setOnAction(new EventHandler<ActionEvent>() {
+        removeOne.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                parent.removeIngredient(model);
+                parent.removeOneIngredient(model.getCode());
+            }
+        });
+
+        addOne.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                parent.addOneOfIngredient(model.getCode());
             }
         });
     }
-
-    public void enterEditMode() {
-        ingredientAction.setVisible(true);
-    }
-
-    public void exitEditMode() {
-        ingredientAction.setVisible(false);
-    }
-
-
 
 }

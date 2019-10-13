@@ -23,16 +23,16 @@ abstract class FoodItemDAOTest {
     protected Recipe testRecipe;
 
     @BeforeEach
-    void testtest() {
+    void createTestItems() {
         testItem  = new FoodItem("ITEM1", "Oil", UnitType.GRAM);
 
         FoodItem testIngredient = new FoodItem("TESTINGR", "test ingredient", UnitType.COUNT);
-        Set<FoodItem> ingredients = new HashSet<>();
-        Set<FoodItem> addableIngredients = new HashSet<>();
-        Map<String, Integer> ingredientAmounts = new HashMap<>();
-        ingredients.add(testIngredient);
-        ingredientAmounts.put(testIngredient.getCode(), 1);
-        testRecipe = new Recipe(ingredients, addableIngredients, ingredientAmounts, 1);
+
+        RecipeBuilder builder = new RecipeBuilder();
+        builder.addIngredient(testIngredient, 1);
+        testRecipe = builder.generateRecipe(1);
+
+
     }
 
     @Test

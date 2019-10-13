@@ -7,11 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
-public class OrderIngredientDisplay extends HBox {
+public class OrderIngredientDisplay extends VBox {
 
     @FXML
     private Label ingredientName;

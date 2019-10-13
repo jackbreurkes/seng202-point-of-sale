@@ -184,9 +184,9 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         Set<FoodItem> addableIngredients = new HashSet<>();
         Map<String, Integer> ingredientAmounts = new HashMap<>();
 
-        populateRecipeData(id, ingredients, addableIngredients, ingredientAmounts);
+        RecipeBuilder builder = getBuilderForRecipe(id);
         try {
-            Recipe result = new Recipe(ingredients, addableIngredients, ingredientAmounts, amountCreated);
+            Recipe result = builder.generateRecipe(amountCreated);
             return result;
         } catch (Exception ignored) { // the recipe has no food items
             return null;
@@ -269,8 +269,10 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
-    private void populateRecipeData(int recipeId, Set<FoodItem> ingredients, Set<FoodItem> addableIngredients, Map<String, Integer> ingredientAmounts) {
+    private RecipeBuilder getBuilderForRecipe(int recipeId) {
         String sql = "SELECT * FROM RecipeContains WHERE Recipe = ?";
+
+        RecipeBuilder builder = new RecipeBuilder();
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -281,14 +283,15 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
             while (rs.next()) {
                 int foodItemId = rs.getInt("FoodItem");
                 FoodItem item = getFoodItemByCode(getFoodItemCodeFromId(foodItemId), true);
-                ingredients.add(item);
                 int amount = rs.getInt("Amount");
-                ingredientAmounts.put(item.getCode(), amount);
+                builder.addIngredient(item, amount);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return builder;
     }
 
     private String getFoodItemCodeFromId(int id) {

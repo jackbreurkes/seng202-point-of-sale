@@ -42,11 +42,15 @@ public class RecipeView extends VBox {
         ingredientsVBox.getChildren().add(new Label("no item selected."));
     }
 
+    public RecipeBuilder getModel() {
+        return this.model;
+    }
+
     public void resetView() {
         addSelected.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                addSelectedItemInParent();
+                addSelectedItemFromParent();
             }
         });
 
@@ -75,7 +79,7 @@ public class RecipeView extends VBox {
         for (FoodItem ingredient : model.getIngredients()) {
             String name = ingredient.getName();
             int amount = model.getIngredientAmounts().get(ingredient.getCode());
-            ingredientsVBox.getChildren().add(new RecipeIngredientDisplay(this, ingredient));//new Label(name + " (" + amount + ")"));
+            ingredientsVBox.getChildren().add(new RecipeIngredientDisplay(this, ingredient));
         }
     }
 
@@ -83,13 +87,17 @@ public class RecipeView extends VBox {
         return model.generateRecipe(1);
     }
 
-    public void addSelectedItemInParent() {
+    public void addSelectedItemFromParent() {
         FoodItem candidate = parent.getSelectionAsFoodItem();
         if (candidate == null) {
             addItemErrorMsg.setText("no item selected.");
         } else {
-            model.addIngredient(candidate, 1);
-            refreshIngredientList();
+            try {
+                model.addIngredient(candidate, 1);
+                refreshIngredientList();
+            } catch (IllegalArgumentException e) {
+                parent.setStatusText(e.getMessage(), true);
+            }
         }
     }
 
@@ -97,8 +105,26 @@ public class RecipeView extends VBox {
         ingredientsVBox.getChildren().clear();
     }
 
-    protected void removeIngredient(FoodItem ingredient) {
-        model.removeIngredient(ingredient.getCode());
+    protected void removeOneIngredient(String ingredientCode) {
+        Integer currentAmount = model.getIngredientAmounts().get(ingredientCode);
+        if (currentAmount == null) {
+            throw new IllegalArgumentException("cannot remove an ingredient not in the recipe");
+        }
+
+        if (currentAmount <= 1) {
+            model.removeIngredient(ingredientCode);
+        } else {
+            model.updateIngredientAmount(ingredientCode, currentAmount - 1);
+        }
+        refreshIngredientList();
+    }
+
+    protected void addOneOfIngredient(String ingredientCode) {
+        Integer currentAmount = model.getIngredientAmounts().get(ingredientCode);
+        if (currentAmount == null) {
+            throw new IllegalArgumentException("cannot remove an ingredient not in the recipe");
+        }
+        model.updateIngredientAmount(ingredientCode, currentAmount + 1);
         refreshIngredientList();
     }
 

@@ -13,13 +13,18 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefWidth="250.0">
          <children>
-            <Label fx:id="ingredientName" text="ingredient">
+            <Label fx:id="ingredientName" text="ingredient (x1)">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
             <Region prefHeight="0.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="ingredientAction" mnemonicParsing="false" text="remove">
+            <Button fx:id="removeOne" mnemonicParsing="false" text="-">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="addOne" mnemonicParsing="false" text="+">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -29,5 +34,3 @@
       <Separator prefWidth="200.0" />
    </children>
 </fx:root>
-
-
