@@ -27,7 +27,7 @@ public class AnalysisController {
      * Runs on opening of the window
      */
     public void initialize() {
-        xComboBox.getItems().addAll("Date", "Time", "Day");
+        xComboBox.getItems().addAll("Date", "Time", "Day of week");
         yComboBox.getItems().addAll("Orders");
         xComboBox.setValue("Date");
         yComboBox.setValue("Orders");
@@ -51,8 +51,8 @@ public class AnalysisController {
             addDateDataToSeries(dataSeries);
         } else if (xComboBox.getValue() == "Time") {
             addTimeDataToSeries(dataSeries);
-        } else if (xComboBox.getValue() == "Day"){
-            //addDayDataToSeries();
+        } else if (xComboBox.getValue() == "Day of week") {
+            addDayDataToSeries(dataSeries);
         }
 
         lineChart.getData().add(dataSeries);
@@ -129,6 +129,36 @@ public class AnalysisController {
         }
         for (int i = 0; i < 24; i++) {
             dataSeries.getData().add(new XYChart.Data("" + i, ordersEachHour[i]));
+        }
+    }
+
+    /**
+     * Takes a data series and populates it with data for a graph showing how may orders have been on each day of the week
+     *
+     * @param dataSeries the dataseries initialised in the plot graph method
+     */
+    public void addDayDataToSeries(XYChart.Series dataSeries) {
+        JDBCStorage memory = JDBCStorage.getInstance();
+        Set<Order> allOrders = memory.getAllOrders();
+
+        int[] ordersEachDay = new int[7];
+        String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        Iterator<Order> iterator = allOrders.iterator();
+
+        while (iterator.hasNext()) {
+            Order order = iterator.next();
+            Date date = order.getLastUpdated();
+            String dateString = date.toString();
+            String day = dateString.substring(0, 3);
+            for (int i = 0; i < 7; i++) {
+                if (day.equals(days[i])) {
+                    ordersEachDay[i] += 1;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < 7; i++) {
+            dataSeries.getData().add(new XYChart.Data(days[i], ordersEachDay[i]));
         }
     }
 
