@@ -53,7 +53,7 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#changeSceneToAnalysis" text="Analysis">
+            <Button mnemonicParsing="false" onAction="#changeSceneToAnalysis" text="Past Order Analysis">
                <font>
                   <Font size="20.0" />
                </font>
