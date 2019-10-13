@@ -148,6 +148,9 @@ public class AnalysisController {
         while (iterator.hasNext()) {
             Order order = iterator.next();
             Date date = order.getLastUpdated();
+            long timeInMil = date.getTime();
+            timeInMil += 46800000;
+            date = new Date(timeInMil);
             String dateString = date.toString();
             String day = dateString.substring(0, 3);
             for (int i = 0; i < 7; i++) {
