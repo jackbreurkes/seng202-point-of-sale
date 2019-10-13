@@ -3,13 +3,9 @@ package seng202.team1.gui;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class ImportChangesController {
-
-    @FXML
-    private Label descriptionLabel;
 
     @FXML
     private Button acceptButton;
@@ -44,20 +40,6 @@ public class ImportChangesController {
     public void ignore() {
         importController.setOverwrite(false);
         closeWindow(ignoreButton);
-    }
-
-
-    /**
-     * Runs automatically when the window is created
-     */
-
-    /**
-     * Runs when the pop upwindow is created. Takes a FoodItemStorageController
-     * for usage in setting the variable 'overwrite' in the aforementioned class.
-     * @param importController a FoodItemStorageController
-     */
-    public void initialize(FoodItemStorageController importController) {
-        this.importController = importController;
     }
 
     /**

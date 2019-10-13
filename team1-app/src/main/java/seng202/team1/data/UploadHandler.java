@@ -114,26 +114,4 @@ public class UploadHandler {
         }
         return true;
     }
-
-
-    public static void main(String args[]) throws IOException, SAXException {
-        FoodItemDAO itemStorage = DAOFactory.getFoodItemDAO();
-        DAOFactory.resetInstances();
-//        //UploadHandler.uploadFoodItems("resources/data/FoodItem2.xml");
-//        UploadHandler.parseFoodItems("resources/data/FoodItem2.xml");
-//        Boolean duplicateFoodItem = checkModifiedFoodItem();
-//        UploadHandler.uploadFoodItems(false);
-//
-//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
-//            System.out.println(foo);
-//        }
-//
-//        UploadHandler.parseFoodItems("resources/data/FoodItem3.xml");
-//        duplicateFoodItem = checkModifiedFoodItem();
-//        UploadHandler.uploadFoodItems(true);
-//
-//        for (FoodItem foo: itemStorage.getAllFoodItems()) {
-//            System.out.println(foo);
-//        }
-    }
 }
