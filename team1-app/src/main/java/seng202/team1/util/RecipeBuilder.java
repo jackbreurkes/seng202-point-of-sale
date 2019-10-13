@@ -34,6 +34,15 @@ public class RecipeBuilder {
                 // do nothing
             }
         }
+
+        for (FoodItem addableIngredient : recipe.getAddableIngredients()) {
+            int amount = recipe.getIngredientAmounts().get(addableIngredient.getCode());
+            try {
+                addAddableIngredient(addableIngredient, amount);
+            } catch (IllegalArgumentException ignored) {
+                // do nothing
+            }
+        }
     }
 
     /**
