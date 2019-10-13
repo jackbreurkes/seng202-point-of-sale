@@ -20,7 +20,7 @@ public class RecipeIngredientDisplay extends VBox {
     private Label ingredientName;
 
     @FXML
-    private Button ingredientAction;
+    private Button addOne, removeOne;
 
     private RecipeView parent;
     private FoodItem model;
@@ -30,7 +30,7 @@ public class RecipeIngredientDisplay extends VBox {
         this.parent = parent;
         this.model = model; // keep this above loader.load() or initialize() will throw a NullPointerException
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("orderIngredientDisplay.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("recipeIngredientDisplay.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
@@ -43,13 +43,20 @@ public class RecipeIngredientDisplay extends VBox {
     }
 
     public void initialize() {
-        ingredientName.setText(model.getName());
+        ingredientName.setText(model.getName() + " (x" + parent.getModel().getIngredientAmounts().get(model.getCode()) + ")");
 
         RecipeIngredientDisplay display = this;
-        ingredientAction.setOnAction(new EventHandler<ActionEvent>() {
+        removeOne.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                parent.removeIngredient(model);
+                parent.removeOneIngredient(model.getCode());
+            }
+        });
+
+        addOne.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                parent.addOneOfIngredient(model.getCode());
             }
         });
     }

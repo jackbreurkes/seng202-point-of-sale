@@ -42,6 +42,10 @@ public class RecipeView extends VBox {
         ingredientsVBox.getChildren().add(new Label("no item selected."));
     }
 
+    public RecipeBuilder getModel() {
+        return this.model;
+    }
+
     public void resetView() {
         addSelected.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -101,8 +105,26 @@ public class RecipeView extends VBox {
         ingredientsVBox.getChildren().clear();
     }
 
-    protected void removeIngredient(FoodItem ingredient) {
-        model.removeIngredient(ingredient.getCode());
+    protected void removeOneIngredient(String ingredientCode) {
+        Integer currentAmount = model.getIngredientAmounts().get(ingredientCode);
+        if (currentAmount == null) {
+            throw new IllegalArgumentException("cannot remove an ingredient not in the recipe");
+        }
+
+        if (currentAmount <= 1) {
+            model.removeIngredient(ingredientCode);
+        } else {
+            model.updateIngredientAmount(ingredientCode, currentAmount - 1);
+        }
+        refreshIngredientList();
+    }
+
+    protected void addOneOfIngredient(String ingredientCode) {
+        Integer currentAmount = model.getIngredientAmounts().get(ingredientCode);
+        if (currentAmount == null) {
+            throw new IllegalArgumentException("cannot remove an ingredient not in the recipe");
+        }
+        model.updateIngredientAmount(ingredientCode, currentAmount + 1);
         refreshIngredientList();
     }
 
