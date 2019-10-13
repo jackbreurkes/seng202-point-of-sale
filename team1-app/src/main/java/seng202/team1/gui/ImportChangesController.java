@@ -5,6 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * controller for the import conflict resolution window.
+ */
 public class ImportChangesController {
 
     @FXML

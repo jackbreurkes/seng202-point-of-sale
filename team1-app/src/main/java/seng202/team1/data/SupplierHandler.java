@@ -11,19 +11,11 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// Hello from Euan
-// To everybody:
-// Just a heads up:
-// The starter kit's DTD dictates that Email and URL are optional.
-// But since that is not OUR DTD then the code below has not
-// made choices regarding assigning 'NULL' values to email and url.
-// Chur.
 
 /**
  * Processes an XML file containing suppliers using DOM.
  * Deprecated as system does not use suppliers
  */
-@Deprecated
 public class SupplierHandler {
     private DocumentBuilder builder = null;
     private Document parsedDoc = null;

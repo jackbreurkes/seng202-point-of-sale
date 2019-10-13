@@ -40,6 +40,9 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return config;
     }
 
+    /**
+     * default constructor initializes the database.
+     */
     private JDBCStorage() {
         initializeDatabaseIfNotExists();
     }
@@ -298,14 +301,14 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; // TODO error handling?
+            return null;
         }
     }
 
     /**
      * returns the RecipeBuilder loaded with the data needed to generate the recipe with the given id.
-     * @param recipeId the
-     * @return
+     * @param recipeId the id of the recipe to load the RecipeBuilder data with
+     * @return a RecipeBuilder with the recipe's data loaded into it
      */
     private RecipeBuilder getBuilderForRecipe(int recipeId) {
         String sql = "SELECT * FROM RecipeContains WHERE Recipe = ?";
@@ -332,6 +335,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return builder;
     }
 
+    /**
+     * get the code of a food item in storage based on its stored primary key ID.
+     * @param id the id of the FoodItem to get the code of
+     * @return the code of the FoodItem or null if entry not found
+     */
     private String getFoodItemCodeFromId(int id) {
         String sql = "SELECT Code FROM FoodItem WHERE Id = ? LIMIT 1";
 
@@ -406,6 +414,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         return getFoodItemByCode(code, false);
     }
 
+    /**
+     * gets a single FoodItem stored in the system with its recipe optionally set to null.
+     * @param code the FoodItem's unique code
+     * @param setRecipeToNull whether the FoodItem's recipe should be set to null
+     * @return the desired FoodItem or null if not found
+     */
     private FoodItem getFoodItemByCode(String code, boolean setRecipeToNull) {
         String sql = "SELECT * FROM FoodItem WHERE Code = ? LIMIT 1";
 
@@ -522,6 +536,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * gets the id of a FoodItem in the database given its unique code.
+     * @param code the code of the desired FoodItem
+     * @return the FoodItem's ID
+     */
     private int getFoodItemIdFromCode(String code) {
         String sql = "SELECT Id FROM FoodItem WHERE Code = ? LIMIT 1";
 
@@ -542,6 +561,12 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * adds an entry to the RecipeContains table.
+     * @param recipeId the id of the recipe to add an entry for
+     * @param ingredient the ingredient to associate with the recipe
+     * @param amount the amount of the ingredient used in the recipe
+     */
     private void addRecipeContains(int recipeId, FoodItem ingredient, int amount) {
         String sql = "INSERT INTO RecipeContains (Recipe, FoodItem, Amount) VALUES (?, ?, ?)";
 
@@ -660,6 +685,11 @@ public class JDBCStorage implements FoodItemDAO, OrderDAO {
         }
     }
 
+    /**
+     * add an instance of a food item to the OrderedFoodItem table and associates it with an order.
+     * @param order the order to associate the ordered food item with
+     * @param item the FoodItem to add to the OrderedFoodItem table
+     */
     private void addOrderedFoodItem(Order order, FoodItem item) {
         String sql = "INSERT INTO OrderedFoodItem(Code, Name, Cost, UnitType, IsVegetarian, IsVegan, IsGlutenFree, CalPerUnit) VALUES(?,?,?,?,?,?,?,?)";
 

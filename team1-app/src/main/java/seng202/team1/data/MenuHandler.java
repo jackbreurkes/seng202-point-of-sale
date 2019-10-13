@@ -14,7 +14,6 @@ import java.util.Map;
 /**
  * Processes an XML file containing suppliers using DOM.
  */
-@Deprecated
 public class MenuHandler {
 
     private DocumentBuilder builder;

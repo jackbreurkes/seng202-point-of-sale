@@ -11,6 +11,9 @@ import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
+/**
+ * displays a single order item in a CreateOrderDisplay.
+ */
 public class OrderItemDisplay extends VBox {
 
     @FXML

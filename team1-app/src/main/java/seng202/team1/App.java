@@ -3,7 +3,7 @@ package seng202.team1;
 import seng202.team1.gui.SampleApplication;
 
 /**
- * Hello world!
+ * main application class for Rosemary.
  *
  */
 public class App 

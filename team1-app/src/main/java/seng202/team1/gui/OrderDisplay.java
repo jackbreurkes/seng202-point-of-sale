@@ -18,6 +18,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * displays a single order in the order progress display.
+ */
 public class OrderDisplay extends VBox {
 
     @FXML

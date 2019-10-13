@@ -138,7 +138,7 @@ public class RecipeBuilder {
         try {
             return new Recipe(ingredients, addableIngredients, ingredientAmounts, amount);
         } catch (Exception ignored) {
-            return null; // TODO best way to handle this?
+            return null;
         }
     }
 

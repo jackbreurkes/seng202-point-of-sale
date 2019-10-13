@@ -20,6 +20,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * displays the progress of orders within the application.
+ */
 public class OrderProgressDisplay extends VBox {
 
     @FXML
@@ -59,6 +62,10 @@ public class OrderProgressDisplay extends VBox {
         });
     }
 
+    /**
+     * display an order in the correct display section.
+     * @param order the Order to display
+     */
     public void displayOrder(Order order) {
         OrderDisplay display = new OrderDisplay(this, order);
         if (order.getStatus() == OrderStatus.SUBMITTED) {
@@ -68,6 +75,9 @@ public class OrderProgressDisplay extends VBox {
         }
     }
 
+    /**
+     * displays all submitted orders in the database.
+     */
     public void displaySubmittedOrders() {
         pendingOrdersVBox.getChildren().clear();
         for (Order order : orderStorage.getAllSubmittedOrders()) {
@@ -75,6 +85,11 @@ public class OrderProgressDisplay extends VBox {
         }
     }
 
+    /**
+     * completes a given order and updates the display.
+     * @param order the Order to complete
+     * @param display the OrderDisplay displaying the given order
+     */
     public void completeOrder(Order order, OrderDisplay display) {
         order.completeOrder();
 
@@ -98,6 +113,11 @@ public class OrderProgressDisplay extends VBox {
 
     }
 
+    /**
+     * cancels a given order and updates the display.
+     * @param order the Order to cancel
+     * @param display the OrderDisplay displaying the given order
+     */
     public void cancelOrder(Order order, OrderDisplay display) {
         order.cancelOrder();
         //displaySubmittedOrders();
@@ -124,11 +144,12 @@ public class OrderProgressDisplay extends VBox {
 
     }
 
+    /**
+     * refunds a given order and updates the display.
+     * @param order the Order to refund
+     * @param display the OrderDisplay displaying the given order
+     */
     public void refundOrder(Order order, OrderDisplay display) {
-//        if (!completedOrders.contains(order)) {
-//            throw new IllegalArgumentException("only completed orders can be refunded");
-//        }
-//        completedOrders.remove(order);
         order.refundOrder();
         orderStorage.updateOrder(order);
         completedOrdersVBox.getChildren().remove(display);

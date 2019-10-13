@@ -12,6 +12,9 @@ import seng202.team1.model.FoodItem;
 
 import java.io.IOException;
 
+/**
+ * displays a single ingredient of an order item in an OrderItemDisplay.
+ */
 public class OrderIngredientDisplay extends VBox {
 
     @FXML

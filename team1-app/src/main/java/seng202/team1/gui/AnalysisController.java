@@ -16,6 +16,9 @@ import java.io.IOException;
 
 import java.util.*;
 
+/**
+ * controller class for the analysis screen.
+ */
 public class AnalysisController {
 
     @FXML private ComboBox xComboBox;

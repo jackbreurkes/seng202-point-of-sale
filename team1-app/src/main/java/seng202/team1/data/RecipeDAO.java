@@ -4,6 +4,10 @@ import seng202.team1.model.Recipe;
 
 import java.util.Set;
 
+/**
+ * Data access object for retrieving Recipes from a storage implementation.
+ * @deprecated because recipes are no longer stored in the system using unique codes.
+ */
 @Deprecated
 public interface RecipeDAO {
 

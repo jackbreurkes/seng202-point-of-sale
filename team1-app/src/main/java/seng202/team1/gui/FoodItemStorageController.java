@@ -118,6 +118,10 @@ public class FoodItemStorageController {
         setEditComponentsVisibility(false);
     }
 
+    /**
+     * sets the visibility of the components related to editing a food item.
+     * @param visible true if components should be visible, false otherwise
+     */
     private void setEditComponentsVisibility(boolean visible) {
         editItemVBox.setVisible(visible);
         recipeView.setVisible(visible);
@@ -126,10 +130,19 @@ public class FoodItemStorageController {
         }
     }
 
+    /**
+     * sets the food item screen's status text.
+     * @param message the message to display
+     */
     public void setStatusText(String message) {
         setStatusText(message, false);
     }
 
+    /**
+     * sets the food item screen's status text. optionally styles the message as an error.
+     * @param message the message to display
+     * @param isError whether the message should be shown as an error
+     */
     public void setStatusText(String message, boolean isError) {
         statusText.setText(message);
         if (isError) {
@@ -139,6 +152,11 @@ public class FoodItemStorageController {
         }
     }
 
+    /**
+     * Sets the variable overwrite that dictates whether or not an uploaded XML file
+     * overwrites the database. Called when a button is clicked from ImportChangesController.
+     * @param overwrite whether XML file should be overwritten
+     */
     public void setOverwrite(boolean overwrite) {
         this.overwrite = overwrite;
     }
@@ -191,7 +209,9 @@ public class FoodItemStorageController {
         }
     }
 
-
+    /**
+     * shows the import conflict resolution window.
+     */
     private void popUpImportChanges() throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("importChangesDisplay.fxml"));
